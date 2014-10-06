@@ -26,10 +26,8 @@ set fileencodings=utf-8,gbk
 set nobomb
 " 按F12执行python文件
 map <F12> :!/usr/bin/python %
-" 显示当前鼠标行列号
-set ruler
 
-set background=light
+set background=dark
 " 设置autocompletion 的颜色
 "highlight Pmenu term=reverse ctermbg=cyan ctermfg=red
 "highlight PmenuSel term=reverse ctermbg=black ctermfg=green
@@ -38,3 +36,12 @@ set hlsearch
 
 au BufNewFile,BufRead *.handlebars set filetype=html
 au BufNewFile,BufRead *.ejs set filetype=html
+
+" 一直显示状态栏
+set laststatus=2
+" 显示当前鼠标行列号
+set ruler
+"高亮当前行
+set cursorline
+"高亮当前列
+set cursorcolumn
