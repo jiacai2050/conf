@@ -12,6 +12,6 @@
     "terminal-plus": "0.14.5",
     "atom-beautify": "0.28.22",
     "vim-mode": "0.64.0"
-  }
+  },
   "license": "MIT"
 }
