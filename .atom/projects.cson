@@ -1,0 +1,53 @@
+"browser-extension":
+  title: "browser-extension"
+  paths: [
+    "/Users/liujiacai/codes/chrome"
+  ]
+sicp:
+  title: "sicp"
+  paths: [
+    "/Users/liujiacai/codes/git/sicp"
+  ]
+blog:
+  title: "blog"
+  paths: [
+    "/Users/liujiacai/codes/blog"
+  ]
+python:
+  title: "python"
+  paths: [
+    "/Users/liujiacai/codes/python"
+    "/Users/liujiacai/codes/youzan/hadoopproject"
+  ]
+"study-note":
+  title: "study-note"
+  paths: [
+    "/Users/liujiacai/Documents/study-note"
+  ]
+youzan:
+  title: "youzan"
+  paths: [
+    "/Users/liujiacai/codes/youzan"
+  ]
+html:
+  title: "html"
+  paths: [
+    "/Users/liujiacai/codes/ife"
+    "/Users/liujiacai/codes/html"
+  ]
+"add-on":
+  title: "add-on"
+  paths: [
+    "/Users/liujiacai/codes/chrome"
+    "/Users/liujiacai/codes/mozilla"
+  ]
+node:
+  title: "node"
+  paths: [
+    "/Users/liujiacai/codes/node"
+  ]
+ruby:
+  title: "ruby"
+  paths: [
+    "/Users/liujiacai/codes/ruby"
+  ]

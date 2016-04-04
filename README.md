@@ -1,8 +1,6 @@
-code-wheels
+conf
 ===========
 
-一些开发中可能用到的功能整理
+工欲善其事，必先利其器。
 
-避免以后重复造轮子
-
-Save time，Do more creative thing
+我的 vim/atom/tmux.... 配置文件

@@ -1,0 +1,39 @@
+"*":
+  "":
+    source:
+      scheme:
+        tabLength: 2
+  "atom-beautify":
+    _analyticsUserId: "d7d8a6d5-bd9b-4c69-b50a-dd9d230211ee"
+  "atom-terminal": {}
+  "autocomplete-plus": {}
+  core:
+    disabledPackages: [
+      "language-csharp"
+      "language-go"
+      "spell-check"
+    ]
+    themes: [
+      "atom-dark-ui"
+      "one-dark-syntax"
+    ]
+  editor:
+    autoIndentOnPaste: false
+    invisibles: {}
+    softWrap: true
+    tabLength: 4
+  "exception-reporting":
+    userId: "4a0f06a1-f38e-7cd6-6af5-159e9b51e8c0"
+  "gfm-pdf": {}
+  "spell-check": {}
+  term3: {}
+  "terminal-plus":
+    core: {}
+    style: {}
+  "tree-view":
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
+".scheme.source":
+  editor:
+    tabLength: 2
