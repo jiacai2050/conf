@@ -3,8 +3,8 @@ if has("autocmd")
 endif
 execute pathogen#infect()
 syntax enable
-syntax on   
-filetype plugin on 
+syntax on
+filetype plugin on
 filetype plugin indent on
 
 " start conf https://github.com/scrooloose/syntastic
@@ -20,13 +20,13 @@ filetype plugin indent on
 set pastetoggle=<F2>
 "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
 set bg=dark
-set nocompatible    
+set nocompatible
 set backspace=indent,eol,start
 
 set number
 set smartindent "智能缩进
 set tabstop=4    "设置tab为4个空格
-set shiftwidth=4 "设置缩进宽度为4	
+set shiftwidth=4 "设置缩进宽度为4
 set softtabstop=4 "Backspace一次删除4格
 set expandtab	"将tab制表符转换为空格,打印输出更好看
 
@@ -64,3 +64,14 @@ let mapleader = ","
 " 折叠HTML标签
 nnoremap <leader>f Vatzf
 
+
+" 行末空格高亮
+autocmd ColorScheme * highlight TrailWhitespace ctermbg=red guibg=red
+highlight TrailWhitespace ctermbg=red guibg=red
+match TrailWhitespace /\s\+$/
+
+" 脚本文件自动添加 SheBang
+augroup Shebang
+    autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># coding: utf-8\<nl>\"|$
+    autocmd BufNewFile *.sh 0put =\"#!/usr/bin/env bash\<nl>\"|$
+augroup END
