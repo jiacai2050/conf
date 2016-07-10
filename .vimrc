@@ -7,15 +7,15 @@ syntax on
 filetype plugin on
 filetype plugin indent on
 
-" start conf https://github.com/scrooloose/syntastic
- set statusline+=%#warningmsg#
- set statusline+=%{SyntasticStatuslineFlag()}
- set statusline+=%*
- let g:syntastic_always_populate_loc_list = 1
- let g:syntastic_auto_loc_list = 1
- let g:syntastic_check_on_open = 1
- let g:syntastic_check_on_wq = 0
-" end conf https://github.com/scrooloose/syntastic
+" {{{ https://github.com/scrooloose/syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" }}} https://github.com/scrooloose/syntastic
 
 set pastetoggle=<F2>
 "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
@@ -35,8 +35,10 @@ set expandtab	"将tab制表符转换为空格,打印输出更好看
 set fileencodings=utf-8,gbk
 set encoding=utf-8
 
-" 按F12执行python文件
-map <F12> :!/usr/bin/python %
+" 按F8执行python文件
+map <F8> :!/usr/bin/python %
+" 按F9 格式化json数据
+map <F9> :%!python -m json.tool
 
 " 设置autocompletion 的颜色
 highlight Pmenu term=reverse ctermbg=white ctermfg=black
@@ -74,4 +76,5 @@ match TrailWhitespace /\s\+$/
 augroup Shebang
     autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># coding: utf-8\<nl>\"|$
     autocmd BufNewFile *.sh 0put =\"#!/usr/bin/env bash\<nl>\"|$
+    autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl>\"|$
 augroup END

@@ -4,7 +4,8 @@
       scheme:
         tabLength: 2
   "atom-beautify":
-    _analyticsUserId: "d7d8a6d5-bd9b-4c69-b50a-dd9d230211ee"
+    general:
+      _analyticsUserId: "e707e90a-da8d-4dd3-9dee-ca4420962009"
   "atom-terminal": {}
   "autocomplete-plus": {}
   core:
@@ -35,5 +36,8 @@
   welcome:
     showOnStartup: false
 ".scheme.source":
+  editor:
+    tabLength: 2
+".clojure.source":
   editor:
     tabLength: 2
