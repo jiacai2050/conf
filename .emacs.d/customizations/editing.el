@@ -52,7 +52,7 @@
 (global-set-key (kbd "C-;") 'toggle-comment-on-line)
 
 ;; yay rainbows!
-(global-rainbow-delimiters-mode t)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; use 2 spaces for tabs
 (defun die-tabs ()
@@ -70,3 +70,13 @@
     (quit nil)))
 
 (setq electric-indent-mode nil)
+
+;; init expand-region
+(require 'expand-region)
+(global-unset-key (kbd "M--"))
+(global-set-key (kbd "M-=") 'er/expand-region)
+(global-set-key (kbd "M--") 'er/contract-region)
+
+;; init auto-complete
+(require 'auto-complete-config)
+(ac-config-default)

@@ -1,7 +1,3 @@
-;;;;
-;; Packages
-;;;;
-
 ;; Define package repositories
 (require 'package)
 (add-to-list 'package-archives
@@ -74,8 +70,8 @@
 ;; environment variables from the user's shell.
 ;; https://github.com/purcell/exec-path-from-shell
 (when (eq system-type 'darwin)
-  (setq mac-command-modifier 'control)
-  (setq mac-control-modifier 'super)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super)
   (add-to-list 'my-packages 'exec-path-from-shell))
 
 (dolist (p my-packages)
@@ -128,10 +124,3 @@
 ;; Langauage-specific
 (load "setup-clojure.el")
 (load "setup-js.el")
-
-;; (require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; init auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
