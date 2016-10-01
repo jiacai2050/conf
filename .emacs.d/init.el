@@ -3,7 +3,9 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-             '("tromey" . "http://tromey.com/elpa/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 
@@ -59,6 +61,12 @@
     expand-region
 
     auto-complete
+
+    ;; https://github.com/justbur/emacs-which-key
+    which-key
+
+    ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
+    magit
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user
@@ -70,8 +78,6 @@
 ;; environment variables from the user's shell.
 ;; https://github.com/purcell/exec-path-from-shell
 (when (eq system-type 'darwin)
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'super)
   (add-to-list 'my-packages 'exec-path-from-shell))
 
 (dolist (p my-packages)
@@ -108,10 +114,6 @@
 ;; switch buffers, and choose options from the minibuffer.
 (load "navigation.el")
 
-;; These customizations change the way emacs looks and disable/enable
-;; some user interface elements
-(load "ui.el")
-
 ;; These customizations make editing a bit nicer.
 (load "editing.el")
 
@@ -124,3 +126,26 @@
 ;; Langauage-specific
 (load "setup-clojure.el")
 (load "setup-js.el")
+
+;; These customizations change the way emacs looks and disable/enable
+;; some user interface elements
+(load "ui.el")
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:background "nil")))))
+(set-face-foreground 'linum "#f8f8f2")
+(setq linum-format "%d ")
+(set-face-attribute 'linum nil :background nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(coffee-tab-width 2)
+ '(custom-safe-themes
+   (quote
+    ("b97a01622103266c1a26a032567e02d920b2c697ff69d40b7d9956821ab666cc" "01ce486c3a7c8b37cf13f8c95ca4bb3c11413228b35676025fdf239e77019ea1" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))

@@ -10,3 +10,9 @@
 
 ;; Go straight to scratch buffer on startup
 (setq inhibit-startup-message t)
+
+;; set up some useful mode
+(which-key-mode)
+
+;; magit
+(global-set-key (kbd "C-x g") 'magit-status)
