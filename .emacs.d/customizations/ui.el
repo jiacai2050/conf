@@ -69,19 +69,9 @@
 ;; no bell
 (setq ring-bell-function 'ignore)
 
-;; 设置字体与窗口大小
-(set-default-font "Monaco 12")
-(global-set-key (kbd "<f2>") 'toggle-frame-fullscreen)
 
 (load-theme 'dracula t)
-
-
 ;; workaround blue problem https://github.com/bbatsov/solarized-emacs/issues/18
-(custom-set-faces 
- (if (not window-system) 
-     '(default ((t (:background "nil"))))))
-
-(set-face-foreground 'linum "#f8f8f2")
-(setq linum-format "%d ")
-(set-face-attribute 'linum nil :background nil)
-
+(custom-set-faces
+(if (not window-system)
+  '(default ((t (:background "nil"))))))

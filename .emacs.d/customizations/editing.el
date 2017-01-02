@@ -82,7 +82,7 @@
 (ac-config-default)
 
 
-;; rename file and buffer added 2016/09/16
+;; Rename file and buffer added on 2016/09/16
 
 (defun rename-this-buffer-and-file ()
   "Renames current buffer and file it is visiting."
@@ -102,3 +102,13 @@
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
 
 (global-set-key (kbd "C-c r") 'rename-this-buffer-and-file)
+
+;; 设置字体与窗口大小
+;; (set-default-font "Monaco 12")
+;; (global-set-key (kbd "<f2>") 'toggle-frame-fullscreen)
+(require 'hlinum)
+(hlinum-activate)
+(set-face-attribute 'linum nil :background nil)
+(set-face-foreground 'linum "#f8f8f2")
+(setq linum-format "%d ")
+(set-face-attribute 'hl-line nil :foreground nil :background "gray5")
