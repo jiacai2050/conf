@@ -111,4 +111,4 @@
 (set-face-attribute 'linum nil :background nil)
 (set-face-foreground 'linum "#f8f8f2")
 (setq linum-format "%d ")
-(set-face-attribute 'hl-line nil :foreground nil :background "gray5")
+(set-face-attribute 'hl-line nil :foreground nil :background "#330")
