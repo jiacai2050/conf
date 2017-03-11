@@ -1,14 +1,10 @@
 ;; Define package repositories
 (require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 
+(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
 ;; This also sets the load path.
@@ -61,7 +57,8 @@
     expand-region
 
     auto-complete
-
+    hlinum
+    dracula-theme
     ;; https://github.com/justbur/emacs-which-key
     which-key
 
@@ -72,7 +69,7 @@
 
     ;; ruby
     robe
-    enh-ruby-mode-hook
+    enh-ruby-mode
 
     ;; misc
     restclient
@@ -141,3 +138,4 @@
 (load "setup-clojure.el")
 (load "setup-js.el")
 (load "setup-common-lisp.el")
+(load "setup-ruby.el")
