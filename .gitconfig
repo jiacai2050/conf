@@ -1,0 +1,23 @@
+[user]
+	email = jiacai2050@gmail.com
+	name = jiacai2050
+[push]
+	default = simple
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	pl = pull
+	ps = push
+	m = merge
+[core]
+	editor = emacsclient -t -a=\\\"\\\"
