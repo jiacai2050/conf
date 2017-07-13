@@ -111,4 +111,8 @@
 (set-face-attribute 'linum nil :background nil)
 (set-face-foreground 'linum "#f8f8f2")
 (setq linum-format "%d ")
-(set-face-attribute 'hl-line nil :foreground nil :background "#330")
+;; (set-face-attribute 'hl-line nil :foreground nil :background "#330")
+(set-face-attribute 'hl-line nil :foreground nil :background "#353535")
+
+;; 2017/7/13
+(browse-kill-ring-default-keybindings)

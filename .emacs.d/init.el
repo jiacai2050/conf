@@ -34,6 +34,8 @@
     ;; integration with a Clojure REPL
     ;; https://github.com/clojure-emacs/cider
     cider
+    ;; https://github.com/clojure-emacs/clj-refactor.el
+    clj-refactor
 
     ;; allow ido usage in as many contexts as possible. see
     ;; customizations/navigation.el line 23 for a description
@@ -65,6 +67,7 @@
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
     magit
 
+    ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
     slime
 
     ;; ruby
@@ -73,6 +76,8 @@
 
     ;; misc
     restclient
+    ;; super convenient for cut & paste
+    browse-kill-ring
     ))
 
 
