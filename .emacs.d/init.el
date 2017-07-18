@@ -47,34 +47,29 @@
     ;; http://www.emacswiki.org/emacs/Smex
     smex
 
+    ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
+    slime
+    ;; ruby
+    robe
+    enh-ruby-mode
+    ;; js
+    nodejs-repl
+    js2-mode
+    ;; misc
     ;; project navigation
     projectile
-
     ;; colorful parenthesis matching
     rainbow-delimiters
-
     ;; edit html tags like sexps
     tagedit
-
     expand-region
-
     auto-complete
     hlinum
     dracula-theme
     ;; https://github.com/justbur/emacs-which-key
     which-key
-
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
     magit
-
-    ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
-    slime
-
-    ;; ruby
-    robe
-    enh-ruby-mode
-
-    ;; misc
     restclient
     ;; super convenient for cut & paste
     browse-kill-ring
