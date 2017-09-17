@@ -62,10 +62,10 @@
     rainbow-delimiters
     ;; edit html tags like sexps
     tagedit
+    evil-numbers
     expand-region
-    auto-complete
+    company
     hlinum
-    dracula-theme
     ;; https://github.com/justbur/emacs-which-key
     which-key
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started

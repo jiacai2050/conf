@@ -77,11 +77,6 @@
 (global-set-key (kbd "M-=") 'er/expand-region)
 (global-set-key (kbd "M--") 'er/contract-region)
 
-;; init auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
-
-
 ;; Rename file and buffer added on 2016/09/16
 
 (defun rename-this-buffer-and-file ()
@@ -103,16 +98,12 @@
 
 (global-set-key (kbd "C-c r") 'rename-this-buffer-and-file)
 
-;; 设置字体与窗口大小
-;; (set-default-font "Monaco 12")
-;; (global-set-key (kbd "<f2>") 'toggle-frame-fullscreen)
 (require 'hlinum)
 (hlinum-activate)
-(set-face-attribute 'linum nil :background nil)
-(set-face-foreground 'linum "#f8f8f2")
 (setq linum-format "%d ")
-;; (set-face-attribute 'hl-line nil :foreground nil :background "#330")
-(set-face-attribute 'hl-line nil :foreground nil :background "#353535")
-
 ;; 2017/7/13
 (browse-kill-ring-default-keybindings)
+;; 2017/9/16
+(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+(add-hook 'after-init-hook 'global-company-mode)

@@ -68,10 +68,6 @@
 
 ;; no bell
 (setq ring-bell-function 'ignore)
-
-
-(load-theme 'dracula t)
-;; workaround blue problem https://github.com/bbatsov/solarized-emacs/issues/18
-(custom-set-faces
-(if (not window-system)
-  '(default ((t (:background "nil"))))))
+;; (load-theme 'dracula t)
+;; (load-theme 'hc-zenburn t)
+(load-theme 'sanityinc-tomorrow-night t)
