@@ -73,6 +73,8 @@
     restclient
     ;; super convenient for cut & paste
     browse-kill-ring
+    ;; theme
+    color-theme-sanityinc-tomorrow
     ))
 
 
