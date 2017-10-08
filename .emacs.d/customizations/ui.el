@@ -70,4 +70,6 @@
 (setq ring-bell-function 'ignore)
 ;; (load-theme 'dracula t)
 ;; (load-theme 'hc-zenburn t)
-(load-theme 'sanityinc-tomorrow-night t)
+(load-theme 'wombat t)
+;; https://stackoverflow.com/a/2718543/2163429
+(set-face-attribute 'region nil :background "#666" :foreground "#ffffff")

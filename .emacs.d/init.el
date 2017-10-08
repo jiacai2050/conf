@@ -74,10 +74,7 @@
     ;; restclient doesn't have stable version, so can't install via melpa-stable, so install directly
     ;; restclient
     ;; super convenient for cut & paste
-    browse-kill-ring
-    ;; theme
-    color-theme-sanityinc-tomorrow
-    ))
+    browse-kill-ring))
 
 
 ;; On OS X, an Emacs instance started from the graphical user
