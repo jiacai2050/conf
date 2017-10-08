@@ -98,8 +98,6 @@
 
 (global-set-key (kbd "C-c r") 'rename-this-buffer-and-file)
 
-(require 'hlinum)
-(hlinum-activate)
 (setq linum-format "%d ")
 ;; 2017/7/13
 (browse-kill-ring-default-keybindings)

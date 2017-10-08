@@ -2,9 +2,11 @@
 (require 'package)
 
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-                         ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                         ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
+                         ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")))
+
+;;                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
+;;                         ("marmalada" . "http://elpa.emacs-china.org/marmalade/")
+
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
 ;; This also sets the load path.
@@ -65,12 +67,12 @@
     evil-numbers
     expand-region
     company
-    hlinum
     ;; https://github.com/justbur/emacs-which-key
     which-key
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
     magit
-    restclient
+    ;; restclient doesn't have stable version, so can't install via melpa-stable, so install directly
+    ;; restclient
     ;; super convenient for cut & paste
     browse-kill-ring
     ;; theme
