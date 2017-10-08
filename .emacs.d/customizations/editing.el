@@ -95,7 +95,6 @@
 
 (global-set-key (kbd "C-c r") 'rename-this-buffer-and-file)
 
-(setq linum-format "%d ")
 ;; 2017/7/13
 (browse-kill-ring-default-keybindings)
 ;; 2017/9/16

@@ -9,6 +9,8 @@
 
 ;; Show line numbers
 (global-linum-mode)
+(set-face-foreground 'linum "#888")
+;; (setq linum-format "%d ")
 
 ;; You can uncomment this to remove the graphical toolbar at the top. After
 ;; awhile, you won't need the toolbar.
@@ -70,6 +72,9 @@
 (setq ring-bell-function 'ignore)
 ;; (load-theme 'dracula t)
 ;; (load-theme 'hc-zenburn t)
+;; (load-theme 'tomorrow-night-bright t)
 (load-theme 'wombat t)
+(global-hl-line-mode -1)
+
 ;; https://stackoverflow.com/a/2718543/2163429
 (set-face-attribute 'region nil :background "#666" :foreground "#ffffff")
