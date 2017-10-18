@@ -1,6 +1,8 @@
 ;; javascript / html
-;; (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
-;; (setq js-indent-level 2)
+
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+(setq js-indent-level 2)
+
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-hook 'js2-mode-hook 'subword-mode)
 (add-hook 'js2-mode-hook

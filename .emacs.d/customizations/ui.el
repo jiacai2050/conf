@@ -74,7 +74,27 @@
 ;; (load-theme 'hc-zenburn t)
 ;; (load-theme 'tomorrow-night-bright t)
 (load-theme 'wombat t)
-(global-hl-line-mode -1)
+(global-hl-line-mode 1)
+;; (set-face-underline 'hl-line nil)
+;; (set-face-attribute hl-line-face nil :underline t)
+(custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#111")))))
 
 ;; https://stackoverflow.com/a/2718543/2163429
-(set-face-attribute 'region nil :background "#666" :foreground "#ffffff")
+;; (set-face-attribute 'region nil :background "#777" :foreground "#ffffff")
+
+;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424  
+(custom-set-faces
+ '(company-preview
+   ((t (:foreground "darkgray" :underline t))))
+ '(company-preview-common
+   ((t (:inherit company-preview))))
+ '(company-tooltip
+   ((t (:background "lightgray" :foreground "black"))))
+ '(company-tooltip-selection
+   ((t (:background "steelblue" :foreground "white"))))
+ '(company-tooltip-common
+   ((((type x)) (:inherit company-tooltip :weight bold))
+    (t (:inherit company-tooltip))))
+ '(company-tooltip-common-selection
+   ((((type x)) (:inherit company-tooltip-selection :weight bold))
+    (t (:inherit company-tooltip-selection)))))
