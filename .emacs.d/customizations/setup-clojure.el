@@ -86,11 +86,17 @@
 
 (require 'clj-refactor)
 
-(defun my-clojure-mode-hook ()
+(defun cljr-mode-hook ()
     (clj-refactor-mode 1)
     (yas-minor-mode 1) ; for adding require/use/import statements
     ;; This choice of keybinding leaves cider-macroexpand-1 unbound
     (cljr-add-keybindings-with-prefix "C-c C-m")
     (define-key clojure-mode-map (kbd "C-c M-RET") 'cider-macroexpand-1))
 
-(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+(add-hook 'clojure-mode-hook #'cljr-mode-hook)
+
+(defun set-cljs-repl-figwheel ()
+  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
+
+(defun set-cljs-repl-rhino ()
+  (setq cider-cljs-lein-repl "rhino"))

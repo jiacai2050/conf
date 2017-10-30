@@ -16,6 +16,7 @@
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
+;; (magithub-feature-autoinject t)
 
 (require 'restclient)
 (add-to-list 'auto-mode-alist '("\\.api\\'" . restclient-mode))
