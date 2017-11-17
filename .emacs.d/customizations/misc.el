@@ -16,6 +16,7 @@
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
+;; (require 'magithub)
 ;; (magithub-feature-autoinject t)
 
 (require 'restclient)
