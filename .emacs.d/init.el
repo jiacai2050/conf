@@ -3,7 +3,7 @@
 
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ;; ("melpa" . "http://elpa.emacs-china.org/melpa/")
                          ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 
 
@@ -54,6 +54,7 @@
     ;; ruby
     robe
     enh-ruby-mode
+    ruby-end
     ;; python
     elpy
     pyenv-mode
@@ -75,8 +76,6 @@
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
     magit
     magithub
-    ;; restclient doesn't have stable version, so can't install via melpa-stable, so install directly
-    ;; restclient
     ;; super convenient for cut & paste
     browse-kill-ring))
 

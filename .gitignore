@@ -6,3 +6,4 @@ storage
 .npm
 .emacs.d/magithub/
 .emacs.d/places
+tramp

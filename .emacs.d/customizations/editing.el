@@ -102,3 +102,18 @@
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq column-number-mode t)
+
+;; insert date added at Sun 2017-12-17 18:05:55 CST
+
+(defun insert-current-date-time ()
+  (interactive)
+  (insert (format-time-string "%a %Y-%m-%d %H:%M:%S %Z" (current-time)))
+  (insert "\n"))
+
+(defun insert-current-time ()
+  (interactive)
+  (insert (format-time-string "%a %H:%M:%S" (current-time)))
+  (insert "\n"))
+
+(global-set-key "\C-c\C-d" 'insert-current-date-time)
+(global-set-key "\C-c\C-t" 'insert-current-time)
