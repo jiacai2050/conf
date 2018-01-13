@@ -71,11 +71,12 @@
     evil-numbers
     expand-region
     company
+    multiple-cursors
     ;; https://github.com/justbur/emacs-which-key
     which-key
     ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
     magit
-    magithub
+    ;; magithub
     ;; super convenient for cut & paste
     browse-kill-ring))
 

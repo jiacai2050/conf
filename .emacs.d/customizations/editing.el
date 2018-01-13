@@ -67,16 +67,12 @@
     (quit nil)))
 
 (setq electric-indent-mode nil)
+(browse-kill-ring-default-keybindings)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq column-number-mode t)
 
-;; init expand-region
-(require 'expand-region)
-(global-unset-key (kbd "M--"))
-(global-set-key (kbd "M-=") 'er/expand-region)
-(global-set-key (kbd "M--") 'er/contract-region)
-
-;; Rename file and buffer added on 2016/09/16
-
-(defun rename-this-buffer-and-file ()
+;; 以下为自定义函数
+(defun my/rename-this-buffer-and-file ()
   "Renames current buffer and file it is visiting."
   (interactive)
   (let ((name (buffer-name))
@@ -92,28 +88,35 @@
                (set-visited-file-name new-name)
                (set-buffer-modified-p nil)
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
-
-(global-set-key (kbd "C-c r") 'rename-this-buffer-and-file)
-
-;; 2017/7/13
-(browse-kill-ring-default-keybindings)
-;; 2017/9/16
-(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq column-number-mode t)
-
-;; insert date added at Sun 2017-12-17 18:05:55 CST
-
-(defun insert-current-date-time ()
+(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
+(defun my/insert-current-date-time ()
   (interactive)
   (insert (format-time-string "%a %Y-%m-%d %H:%M:%S %Z" (current-time)))
   (insert "\n"))
-
-(defun insert-current-time ()
+(defun my/insert-current-time ()
   (interactive)
   (insert (format-time-string "%a %H:%M:%S" (current-time)))
   (insert "\n"))
+(global-set-key "\C-c\C-d" 'my/insert-current-date-time)
+(global-set-key "\C-c\C-t" 'my/insert-current-time)
+(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
-(global-set-key "\C-c\C-d" 'insert-current-date-time)
-(global-set-key "\C-c\C-t" 'insert-current-time)
+(defun my/global-map-and-set-key (key command &optional prefix suffix)
+   "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
+ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
+   (my/map-key key)
+   (global-set-key (kbd (concat prefix key suffix)) command))
+
+ (defun my/map-key (key)
+   "Map KEY from escape sequence \"\e[emacs-KEY\."
+   (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
+
+(global-set-key (kbd "C-c l") 'mc/edit-lines)
+;; 需要配合 iTerm2 进行 key mapping
+;; https://stackoverflow.com/a/40222318/2163429
+(my/global-map-and-set-key "C-=" 'er/expand-region)
+(my/global-map-and-set-key "C--" 'er/contract-region)
+(my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
+(my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
+(my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
