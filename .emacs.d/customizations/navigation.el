@@ -19,6 +19,15 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
 
+(setq recentf-max-saved-items 150)
+(defun my/ido-recentf-open ()
+  "Use `ido-completing-read' to find a recent file."
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+
+(global-set-key (kbd "C-x f") 'my/ido-recentf-open)
 
 ;; ido-mode allows you to more easily navigate choices. For example,
 ;; when you want to switch buffers, ido presents you with a list

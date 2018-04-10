@@ -1,17 +1,13 @@
 {
-	"font_size": 11,
-	"ignored_packages":
-	[
-		"Markdown",
-		"Vintage"
-	],
-	"tab_size": 4,
-	"translate_tabs_to_spaces": true,
-    "auto_find_in_selection": true,
-        // 使光标闪动更加柔和
-    "caret_style": "phase",
-    // 高亮当前行
-    "highlight_line": true,
-    // 高亮有修改的标签
-    "highlight_modified_tabs": true,
+  "font_size": 11,
+  "ignored_packages": [
+    "Markdown",
+    "Vintage"
+  ],
+  "tab_size": 4,
+  "translate_tabs_to_spaces": true,
+  "auto_find_in_selection": true,
+  "caret_style": "phase",
+  "highlight_line": true,
+  "highlight_modified_tabs": true
 }

@@ -112,7 +112,6 @@
    "Map KEY from escape sequence \"\e[emacs-KEY\."
    (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
 
-(global-set-key (kbd "C-c l") 'mc/edit-lines)
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429
 (my/global-map-and-set-key "C-=" 'er/expand-region)
@@ -120,3 +119,7 @@
 (my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
 (my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
 (my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
+(global-set-key (kbd "C-c c l") 'mc/edit-lines)
+(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
+(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)

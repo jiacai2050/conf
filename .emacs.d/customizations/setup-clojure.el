@@ -98,8 +98,29 @@
 (defun set-cljs-repl-figwheel ()
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
 
+(defun cider-figwheel-repl ()
+  (interactive)
+  (save-some-buffers)
+  (with-current-buffer (cider-current-repl-buffer)
+    (goto-char (point-max))
+    (insert "(require 'figwheel-sidecar.repl-api)
+             (figwheel-sidecar.repl-api/start-figwheel!)
+             (figwheel-sidecar.repl-api/cljs-repl)")
+    (cider-repl-return)))
+
+(global-set-key (kbd "C-c C-f") #'cider-figwheel-repl)
+
 (defun set-cljs-repl-rhino ()
   (setq cider-cljs-lein-repl "rhino"))
+
+(defun start-cider-repl-with-profile ()
+  (interactive)
+  (letrec ((profile (read-string "Enter profile name: "))
+           (lein-params (concat "with-profile +" profile " repl :headless")))
+    (message "lein-params set to: %s" lein-params)
+    (set-variable 'cider-lein-parameters lein-params)
+    (cider-jack-in)
+    (set-variable 'cider-lein-parameters "repl :headless")))
 
 ;; https://github.com/weavejester/compojure/wiki/Emacs-indentation
 (require 'clojure-mode)

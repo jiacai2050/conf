@@ -1,5 +1,6 @@
 (add-hook 'ruby-mode-hook 'robe-mode)
 (add-hook 'robe-mode-hook 'ac-robe-setup)
+(add-hook 'ruby-mode-hook 'ruby-end-mode)
 
 (add-hook 'enh-ruby-mode-hook 'robe-mode)
 (add-to-list 'auto-mode-alist

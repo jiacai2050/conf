@@ -1,6 +1,6 @@
-conf
+dotfiles
 ===========
 
-工欲善其事，必先利其器。
+> Good tools are prerequisite to the successful execution of a job.
+> 工欲善其事，必先利其器。
 
-我的 vim/atom/tmux.... 配置文件
