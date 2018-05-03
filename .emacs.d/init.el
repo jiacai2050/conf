@@ -64,6 +64,10 @@
     ;; misc
     ;; project navigation
     projectile
+    ag
+    ;; https://github.com/rolandwalker/minimal-session-saver
+    minimal-session-saver
+    markdown-mode
     ;; colorful parenthesis matching
     rainbow-delimiters
     ;; edit html tags like sexps
@@ -109,6 +113,11 @@
 ;; Adding this code will make Emacs enter yaml mode whenever you open
 ;; a .yml file
 (add-to-list 'load-path "~/.emacs.d/vendor")
+;; https://github.com/blak3mill3r/vmd-mode
+(let ((vmd-repo-dir "~/.emacs.d/vendor/vmd-mode"))
+  (when (file-exists-p vmd-repo-dir)
+    (add-to-list 'load-path vmd-repo-dir)
+    (require 'vmd-mode)))
 
 ;;;;
 ;; Customization
@@ -145,3 +154,5 @@
 (load "setup-common-lisp.el")
 (load "setup-ruby.el")
 (load "setup-python.el")
+
+;; end

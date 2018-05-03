@@ -123,3 +123,10 @@
 (global-set-key (kbd "C-c c l") 'mc/edit-lines)
 (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
 (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+
+
+;; (desktop-save-mode 1)
+;; (setq history-length 250)
+(require 'minimal-session-saver)
+(minimal-session-saver-install-aliases)
+(setq minimal-session-saver-store-on-exit t)

@@ -68,3 +68,4 @@
 
 ;; projectile everywhere!
 (projectile-global-mode)
+(setq projectile-switch-project-action #'projectile-find-file-dwim)

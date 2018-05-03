@@ -8,3 +8,7 @@
 /projectile-bookmarks.eld
 .mc-lists.el
 /project-explorer-cache/
+/eshell/
+/games/
+/data/
+/vendor/
