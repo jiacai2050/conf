@@ -89,14 +89,33 @@
                (set-buffer-modified-p nil)
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
+
+(defvar my/iso-8601-format "%Y-%m-%dT%H:%M:%S%z")
 (defun my/insert-current-date-time ()
   (interactive)
-  (insert (format-time-string "%a %Y-%m-%d %H:%M:%S %Z" (current-time)))
-  (insert "\n"))
+  (insert (format-time-string my/iso-8601-format (current-time))))
+
 (defun my/insert-current-time ()
   (interactive)
-  (insert (format-time-string "%a %H:%M:%S" (current-time)))
-  (insert "\n"))
+  (insert (format-time-string "%H:%M:%S" (current-time))))
+
+(defun my/timestamp->human-date ()
+  (interactive)
+  (when (not mark-active)
+    ;; require https://github.com/magnars/expand-region.el
+    (er/mark-word))
+  (letrec ((timestamp-str (buffer-substring (mark) (point)))
+           (timestamp-int (string-to-number timestamp-str)))
+    (if (> timestamp-int 0)
+        (let ((fixed-ts (if (> timestamp-int (expt 10 11)) ;; 大于 10^11 为微秒，转为秒
+                            (/ timestamp-int 1000)
+                          timestamp-int)))
+          (kill-region (mark) (point))
+          (insert (format-time-string my/iso-8601-format
+                                      (seconds-to-time fixed-ts))))
+      (deactivate-mark))))
+
+(global-set-key (kbd "C-c d") 'my/timestamp->human-date)
 (global-set-key "\C-c\C-d" 'my/insert-current-date-time)
 (global-set-key "\C-c\C-t" 'my/insert-current-time)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
@@ -130,3 +149,12 @@
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
 (setq minimal-session-saver-store-on-exit t)
+
+
+(setq org-log-done 'time)
+(setq org-startup-folded "showall")
+(setq org-startup-indented t)
+;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
+(require 'ox-md nil t)
+;; terminal emacs can't display those lovely images :-(
+;; (setq org-startup-with-inline-images t)
