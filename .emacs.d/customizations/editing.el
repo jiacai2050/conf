@@ -149,6 +149,10 @@
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
 (setq minimal-session-saver-store-on-exit t)
+(setq persistent-scratch-autosave-interval 5)
+(ignore-errors
+  (persistent-scratch-setup-default))
+(global-set-key (kbd "C-c j") 'json-reformat-region)
 
 
 (setq org-log-done 'time)
@@ -158,3 +162,16 @@
 (require 'ox-md nil t)
 ;; terminal emacs can't display those lovely images :-(
 ;; (setq org-startup-with-inline-images t)
+(defun my/indent-org-block ()
+  (interactive)
+  (when (org-in-src-block-p)
+    (org-edit-special)
+    (indent-region (point-min) (point-max))
+    (org-edit-src-exit)))
+
+(require 'smartparens-config)
+(add-hook 'enh-ruby-mode-hook 'smartparens-mode)
+(add-hook 'js2-mode-hook 'smartparens-mode)
+
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))

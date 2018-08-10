@@ -25,7 +25,7 @@
   '(;; makes handling lisp expressions much, much easier
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
-
+    smartparens
     ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
     clojure-mode
@@ -55,6 +55,7 @@
     robe
     enh-ruby-mode
     ruby-end
+    flymake-ruby
     ;; python
     elpy
     pyenv-mode
@@ -65,8 +66,12 @@
     ;; project navigation
     projectile
     ag
+    json-reformat
+    yaml-mode
     ;; https://github.com/rolandwalker/minimal-session-saver
     minimal-session-saver
+    ;; https://github.com/Fanael/persistent-scratch/
+    persistent-scratch
     markdown-mode
     ;; colorful parenthesis matching
     rainbow-delimiters
