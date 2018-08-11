@@ -172,6 +172,7 @@
 (require 'smartparens-config)
 (add-hook 'enh-ruby-mode-hook 'smartparens-mode)
 (add-hook 'js2-mode-hook 'smartparens-mode)
+(add-hook 'tuareg-mode-hook 'smartparens-mode)
 
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))

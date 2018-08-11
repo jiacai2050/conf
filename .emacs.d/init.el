@@ -159,5 +159,6 @@
 (load "setup-common-lisp.el")
 (load "setup-ruby.el")
 (load "setup-python.el")
+(load "setup-ocaml.el")
 
 ;; end
