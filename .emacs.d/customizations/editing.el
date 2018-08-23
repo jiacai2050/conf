@@ -130,8 +130,17 @@
                       (- (face-attribute 'default :height)
                          10)))
 
-(global-set-key (kbd "<f6>") 'my/zoom-in)
-(global-set-key (kbd "<f5>") 'my/zoom-out)
+(defun my/update-path (new-path)
+  (interactive "sEnter a new path: ")
+  (if (file-directory-p new-path)
+      (progn
+        (setenv "PATH" (concat (getenv "PATH") ":" new-path))
+        (setq exec-path (append exec-path '((concat ":" new-path))))
+        (message "%s added to PATH & exec-path" new-path))
+    (message "%s not exists!")))
+
+(global-set-key (kbd "<f5>") 'my/zoom-in)
+(global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "C-c d") 'my/timestamp->human-date)
 (global-set-key "\C-c\C-d" 'my/insert-current-date-time)
 (global-set-key "\C-c\C-t" 'my/insert-current-time)

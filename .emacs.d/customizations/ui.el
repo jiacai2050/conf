@@ -6,6 +6,7 @@
 
 ;; Turn off the menu bar at the top of each frame because it's distracting
 (menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Show line numbers
 (global-linum-mode)
@@ -74,6 +75,8 @@
 ;; (load-theme 'hc-zenburn t)
 ;; (load-theme 'tomorrow-night-bright t)
 (load-theme 'wombat t)
+(setq-default cursor-type 'bar)
+(set-cursor-color "#ffffff")
 (global-hl-line-mode 1)
 ;; (set-face-underline 'hl-line nil)
 ;; (set-face-attribute hl-line-face nil :underline t)
@@ -98,5 +101,3 @@
  '(company-tooltip-common-selection
    ((((type x)) (:inherit company-tooltip-selection :weight bold))
     (t (:inherit company-tooltip-selection)))))
-
-(tool-bar-mode -1)

@@ -95,10 +95,10 @@
 
 (add-hook 'clojure-mode-hook #'cljr-mode-hook)
 
-(defun set-cljs-repl-figwheel ()
+(defun my/set-cljs-repl-figwheel ()
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
 
-(defun cider-figwheel-repl ()
+(defun my/cider-figwheel-repl ()
   (interactive)
   (save-some-buffers)
   (with-current-buffer (cider-current-repl-buffer)
@@ -108,15 +108,14 @@
              (figwheel-sidecar.repl-api/cljs-repl)")
     (cider-repl-return)))
 
-(global-set-key (kbd "C-c C-f") #'cider-figwheel-repl)
+(global-set-key (kbd "C-c C-f") #'my/cider-figwheel-repl)
 
-(defun set-cljs-repl-rhino ()
+(defun my/set-cljs-repl-rhino ()
   (setq cider-cljs-lein-repl "rhino"))
 
-(defun start-cider-repl-with-profile ()
-  (interactive)
-  (letrec ((profile (read-string "Enter profile name: "))
-           (lein-params (concat "with-profile +" profile " repl :headless")))
+(defun my/start-cider-repl-with-profile (profile)
+  (interactive "sEnter profile name: ")
+  (letrec ((lein-params (concat "with-profile +" profile " repl :headless")))
     (message "lein-params set to: %s" lein-params)
     (set-variable 'cider-lein-parameters lein-params)
     (cider-jack-in)
