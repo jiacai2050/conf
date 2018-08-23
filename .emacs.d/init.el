@@ -154,6 +154,7 @@
 (load "ui.el")
 
 ;; Langauage-specific
+(load "setup-org.el")
 (load "setup-clojure.el")
 (load "setup-js.el")
 (load "setup-common-lisp.el")

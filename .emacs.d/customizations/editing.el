@@ -115,6 +115,23 @@
                                       (seconds-to-time fixed-ts))))
       (deactivate-mark))))
 
+(defun my/zoom-in ()
+  "Increase font size by 10 points"
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height
+                      (+ (face-attribute 'default :height)
+                         10)))
+(defun my/zoom-out ()
+  "Decrease font size by 10 points"
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height
+                      (- (face-attribute 'default :height)
+                         10)))
+
+(global-set-key (kbd "<f6>") 'my/zoom-in)
+(global-set-key (kbd "<f5>") 'my/zoom-out)
 (global-set-key (kbd "C-c d") 'my/timestamp->human-date)
 (global-set-key "\C-c\C-d" 'my/insert-current-date-time)
 (global-set-key "\C-c\C-t" 'my/insert-current-time)
@@ -153,21 +170,6 @@
 (ignore-errors
   (persistent-scratch-setup-default))
 (global-set-key (kbd "C-c j") 'json-reformat-region)
-
-
-(setq org-log-done 'time)
-(setq org-startup-folded "showall")
-(setq org-startup-indented t)
-;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
-(require 'ox-md nil t)
-;; terminal emacs can't display those lovely images :-(
-;; (setq org-startup-with-inline-images t)
-(defun my/indent-org-block ()
-  (interactive)
-  (when (org-in-src-block-p)
-    (org-edit-special)
-    (indent-region (point-min) (point-max))
-    (org-edit-src-exit)))
 
 (require 'smartparens-config)
 (add-hook 'enh-ruby-mode-hook 'smartparens-mode)

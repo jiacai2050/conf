@@ -98,3 +98,5 @@
  '(company-tooltip-common-selection
    ((((type x)) (:inherit company-tooltip-selection :weight bold))
     (t (:inherit company-tooltip-selection)))))
+
+(tool-bar-mode -1)
