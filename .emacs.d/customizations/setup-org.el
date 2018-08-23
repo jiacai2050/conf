@@ -5,6 +5,10 @@
 (require 'ox-md nil t)
 ;; terminal emacs can't display those lovely images :-(
 (setq org-startup-with-inline-images t)
+;; #+LaTeX_HEADER: \usepackage{CJK}
+;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
+(add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))
+
 (defun my/indent-org-block ()
   (interactive)
   (when (org-in-src-block-p)
