@@ -16,6 +16,16 @@
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
+(add-hook 'org-mode-hook
+          (lambda () (local-set-key (kbd "C-c s") #'org-table-sort-lines)))
+
+(when (display-graphic-p)
+  (cnfonts-enable)
+  (setq cnfonts-profiles
+        '("program" "org-mode" "read-book"))
+  (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
+  (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize))
+
 (require 'ox-publish)
 (setq org-publish-project-alist
       '(("org-notes"

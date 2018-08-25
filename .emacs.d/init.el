@@ -87,7 +87,11 @@
     magit
     ;; magithub
     ;; super convenient for cut & paste
-    browse-kill-ring))
+    browse-kill-ring
+
+    ;; https://emacs-china.org/t/topic/440
+    cnfonts
+    ))
 
 ;; On OS X, an Emacs instance started from the graphical user
 ;; interface will have a different environment than a shell in a
