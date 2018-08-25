@@ -22,6 +22,7 @@
 (add-hook 'org-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c s") #'org-table-sort-lines)
+            (local-set-key (kbd "C-c C-c") #'org-toggle-inline-images)
             (org-bullets-mode 1)
             ))
 
