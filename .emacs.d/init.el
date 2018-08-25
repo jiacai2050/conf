@@ -131,6 +131,13 @@
 ;;;;
 ;; Customization
 ;;;;
+(setq custom-file (concat user-emacs-directory ".custom.el"))
+;; https://github.com/DarwinAwardWinner/ido-completing-read-plus/issues/35#issuecomment-36456031
+(defvar ido-cur-item nil)
+(defvar ido-default-item nil)
+(defvar ido-cur-list nil)
+(defvar predicate nil)
+(defvar inherit-input-method nil)
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
@@ -140,13 +147,12 @@
 ;; environment variables
 (load "shell-integration.el")
 
-;; These customizations make it easier for you to navigate files,
-;; switch buffers, and choose options from the minibuffer.
-(load "navigation.el")
-
 ;; These customizations make editing a bit nicer.
 (load "editing.el")
 
+;; These customizations make it easier for you to navigate files,
+;; switch buffers, and choose options from the minibuffer.
+(load "navigation.el")
 ;; Hard-to-categorize customizations
 (load "misc.el")
 
