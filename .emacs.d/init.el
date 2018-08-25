@@ -91,6 +91,7 @@
 
     ;; https://emacs-china.org/t/topic/440
     cnfonts
+    org-bullets
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user

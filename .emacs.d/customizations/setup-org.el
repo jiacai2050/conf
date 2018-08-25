@@ -5,6 +5,9 @@
 (require 'ox-md nil t)
 ;; terminal emacs can't display those lovely images :-(
 (setq org-startup-with-inline-images t)
+(setq org-image-actual-width nil)
+
+
 ;; #+LaTeX_HEADER: \usepackage{CJK}
 ;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
 (add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))
@@ -17,7 +20,10 @@
     (org-edit-src-exit)))
 
 (add-hook 'org-mode-hook
-          (lambda () (local-set-key (kbd "C-c s") #'org-table-sort-lines)))
+          (lambda ()
+            (local-set-key (kbd "C-c s") #'org-table-sort-lines)
+            (org-bullets-mode 1)
+            ))
 
 (when (display-graphic-p)
   (cnfonts-enable)
