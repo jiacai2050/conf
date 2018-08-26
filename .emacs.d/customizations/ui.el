@@ -79,10 +79,10 @@
 (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#111")))))
 
 ;; Show line numbers
-(global-linum-mode)
+;; (global-linum-mode)
 ;; (set-face-foreground 'linum "#888")
 ;; (setq linum-format "%d ")
-
+(global-display-line-numbers-mode 1)
 
 ;; https://stackoverflow.com/a/2718543/2163429
 ;; (set-face-attribute 'region nil :background "#777" :foreground "#ffffff")

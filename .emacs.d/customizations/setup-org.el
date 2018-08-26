@@ -19,12 +19,13 @@
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c s") #'org-table-sort-lines)
-            (local-set-key (kbd "C-c C-c") #'org-toggle-inline-images)
-            (org-bullets-mode 1)
-            ))
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))
+
+(use-package org-mode
+  :bind (:map org-mode-map
+              ("C-c s" . org-table-sort-lines)
+              ("C-c C-c" . org-toggle-inline-images)))
 
 (when (display-graphic-p)
   (cnfonts-enable)

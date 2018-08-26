@@ -3,7 +3,7 @@
 
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                         ;; ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
                          ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 
 
@@ -66,13 +66,13 @@
     ;; project navigation
     projectile
     ag
-    json-reformat
     yaml-mode
     ;; https://github.com/rolandwalker/minimal-session-saver
-    minimal-session-saver
+    ;; minimal-session-saver
     ;; https://github.com/Fanael/persistent-scratch/
     persistent-scratch
     markdown-mode
+    use-package
     ;; colorful parenthesis matching
     rainbow-delimiters
     ;; edit html tags like sexps

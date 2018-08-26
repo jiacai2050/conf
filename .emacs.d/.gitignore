@@ -12,6 +12,6 @@
 /games/
 /data/
 /vendor/
-.persistent-scratch
+.persistent-scratch*
 /cnfonts
 .custom.el

@@ -11,13 +11,13 @@
 ;; Go straight to scratch buffer on startup
 (setq inhibit-startup-message t)
 
-;; set up some useful mode
-(which-key-mode)
+(use-package which-key
+  :config (which-key-mode))
 
-;; magit
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :bind ("C-x g" . magit-status))
+
 ;; (require 'magithub)
 ;; (magithub-feature-autoinject t)
-
-(require 'restclient)
-(add-to-list 'auto-mode-alist '("\\.api\\'" . restclient-mode))
+(use-package restclient
+  :mode ("\\.api\\'" . restclient-mode))

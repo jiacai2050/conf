@@ -168,22 +168,27 @@
 (global-set-key (kbd "C-c c l") 'mc/edit-lines)
 (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
 (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "C-c j") 'json-pretty-print)
+
 
 
 ;; (desktop-save-mode 1)
 ;; (setq history-length 250)
-(require 'minimal-session-saver)
-(minimal-session-saver-install-aliases)
-(setq minimal-session-saver-store-on-exit t)
-(setq persistent-scratch-autosave-interval 5)
-(ignore-errors
-  (persistent-scratch-setup-default))
-(global-set-key (kbd "C-c j") 'json-reformat-region)
+;; (require 'minimal-session-saver)
+;; (minimal-session-saver-install-aliases)
+;; (setq minimal-session-saver-store-on-exit t)
+(use-package persistent-scratch
+  :config
+  (setq persistent-scratch-autosave-interval 5)
+  (setq persistent-scratch-save-file
+        (concat user-emacs-directory
+                (if (display-graphic-p) ".persistent-scratch_gui" ".persistent-scratch_terminal")))
+  (ignore-errors
+    (persistent-scratch-setup-default)))
 
-(require 'smartparens-config)
-(add-hook 'enh-ruby-mode-hook 'smartparens-mode)
-(add-hook 'js2-mode-hook 'smartparens-mode)
-(add-hook 'tuareg-mode-hook 'smartparens-mode)
+(use-package smartparens
+  :config (require 'smartparens-config)
+  :hook ((enh-ruby-mode js2-mode tuareg-mode) . smartparens-mode))
 
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+(use-package yaml-mode
+  :mode "\\.yml\\|ymal\\'")
