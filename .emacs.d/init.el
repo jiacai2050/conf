@@ -88,7 +88,9 @@
     ;; magithub
     ;; super convenient for cut & paste
     browse-kill-ring
+    kill-ring-search
 
+    ;; org
     ;; https://emacs-china.org/t/topic/440
     cnfonts
     org-bullets
@@ -108,7 +110,7 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-
+(setq use-package-always-ensure t)
 
 ;; (require 'yaml-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))

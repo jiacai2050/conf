@@ -1,5 +1,24 @@
 ;; Customizations relating to editing a buffer.
 
+(setq column-number-mode t)
+;; Don't use hard tabs
+(setq-default indent-tabs-mode nil)
+;; Emacs can automatically create backup files. This tells Emacs to
+;; put all backups in ~/.emacs.d/backups. More info:
+;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory
+                                               "backups"))))
+(setq auto-save-default nil)
+;; When you visit a file, point goes to the last place where it
+;; was when you previously visited the same file.
+;; http://www.emacswiki.org/emacs/SavePlace
+(require 'saveplace)
+(setq-default save-place t)
+;; keep track of saved places in ~/.emacs.d/places
+(setq save-place-file (concat user-emacs-directory "places"))
+;; Highlights matching parenthesis
+(show-paren-mode 1)
+
 ;; Key binding to use "hippie expand" for text autocompletion
 ;; http://www.emacswiki.org/emacs/HippieExpand
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -12,9 +31,6 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
-;; Highlights matching parenthesis
-(show-paren-mode 1)
-
 ;; Interactive search key bindings. By default, C-s runs
 ;; isearch-forward, so this swaps the bindings.
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -22,24 +38,10 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-;; Don't use hard tabs
-(setq-default indent-tabs-mode nil)
+(setq electric-indent-mode nil)
+(setq kill-do-not-save-duplicates t)
 
-;; When you visit a file, point goes to the last place where it
-;; was when you previously visited the same file.
-;; http://www.emacswiki.org/emacs/SavePlace
-(require 'saveplace)
-(setq-default save-place t)
-;; keep track of saved places in ~/.emacs.d/places
-(setq save-place-file (concat user-emacs-directory "places"))
-
-;; Emacs can automatically create backup files. This tells Emacs to
-;; put all backups in ~/.emacs.d/backups. More info:
-;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
-(setq backup-directory-alist `(("." . ,(concat user-emacs-directory
-                                               "backups"))))
-(setq auto-save-default nil)
-
+;; 以下为第三方插件配置
 
 ;; comments
 (defun toggle-comment-on-line ()
@@ -49,7 +51,8 @@
 (global-set-key (kbd "C-;") 'toggle-comment-on-line)
 
 ;; yay rainbows!
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; use 2 spaces for tabs
 (defun die-tabs ()
@@ -66,10 +69,19 @@
       (ns-get-selection-internal 'CLIPBOARD)
     (quit nil)))
 
-(setq electric-indent-mode nil)
-(browse-kill-ring-default-keybindings)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq column-number-mode t)
+(use-package kill-ring-search
+  :config (global-set-key "\M-\C-y" 'kill-ring-search))
+(use-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings))
+
+(use-package company
+  :init (global-company-mode)
+  :config
+  (setq company-tooltip-align-annotations t
+        ;; Easy navigation to candidates with M-<n>
+        company-show-numbers t)
+  (setq company-dabbrev-downcase nil))
 
 ;; 以下为自定义函数
 (defun my/rename-this-buffer-and-file ()
@@ -88,7 +100,6 @@
                (set-visited-file-name new-name)
                (set-buffer-modified-p nil)
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
-(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 
 (defvar my/iso-8601-format "%Y-%m-%dT%H:%M:%S%z")
 (defun my/insert-current-date-time ()
@@ -139,11 +150,12 @@
         (message "%s added to PATH & exec-path" new-path))
     (message "%s not exists!")))
 
-(global-set-key (kbd "<f5>") 'my/zoom-in)
-(global-set-key (kbd "<f6>") 'my/zoom-out)
-(global-set-key (kbd "C-c d") 'my/timestamp->human-date)
+(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key "\C-c\C-d" 'my/insert-current-date-time)
 (global-set-key "\C-c\C-t" 'my/insert-current-time)
+(global-set-key (kbd "C-c d") 'my/timestamp->human-date)
+(global-set-key (kbd "<f5>") 'my/zoom-in)
+(global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
