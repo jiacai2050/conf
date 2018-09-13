@@ -40,6 +40,8 @@
 
 (setq electric-indent-mode nil)
 (setq kill-do-not-save-duplicates t)
+;; https://stackoverflow.com/a/24639415/2163429
+(setenv "LANG" "en_US.UTF-8")
 
 ;; 以下为第三方插件配置
 
@@ -106,9 +108,9 @@
   (interactive)
   (insert (format-time-string my/iso-8601-format (current-time))))
 
-(defun my/insert-current-time ()
+(defun my/insert-today ()
   (interactive)
-  (insert (format-time-string "%H:%M:%S" (current-time))))
+  (insert (format-time-string "%Y-%m-%d" (current-time))))
 
 (defun my/timestamp->human-date ()
   (interactive)
@@ -151,13 +153,18 @@
     (message "%s not exists!")))
 
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
-(global-set-key "\C-c\C-d" 'my/insert-current-date-time)
-(global-set-key "\C-c\C-t" 'my/insert-current-time)
+(global-set-key (kbd "C-c c d") 'my/insert-current-date-time)
+(global-set-key (kbd "C-c c t") 'my/insert-today)
 (global-set-key (kbd "C-c d") 'my/timestamp->human-date)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
+;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
+(use-package multiple-cursors
+  :config
+  (define-key mc/keymap (kbd "<return>") nil))
 
 (defun my/global-map-and-set-key (key command &optional prefix suffix)
    "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
@@ -200,7 +207,7 @@
 
 (use-package smartparens
   :config (require 'smartparens-config)
-  :hook ((enh-ruby-mode js2-mode tuareg-mode) . smartparens-mode))
+  :hook ((c++-mode c-mode python-mode enh-ruby-mode js2-mode tuareg-mode) . smartparens-mode))
 
 (use-package yaml-mode
   :mode "\\.yml\\|ymal\\'")

@@ -83,6 +83,9 @@
 ;; (set-face-foreground 'linum "#888")
 ;; (setq linum-format "%d ")
 (global-display-line-numbers-mode 1)
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
+(display-time-mode 1)
+(setq display-time-format "%a %H:%M %d-%B")
 
 ;; https://stackoverflow.com/a/2718543/2163429
 ;; (set-face-attribute 'region nil :background "#777" :foreground "#ffffff")

@@ -16,6 +16,9 @@
       (make-directory pub-dir)))
   (apply orig-fun extension subtreep pub-dir nil))
 
+(use-package ox-gfm
+  :after org)
+
 (use-package org-mode
   :bind (:map org-mode-map
               ("C-c s" . org-table-sort-lines)

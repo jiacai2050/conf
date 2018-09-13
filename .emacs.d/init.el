@@ -94,6 +94,7 @@
     ;; https://emacs-china.org/t/topic/440
     cnfonts
     org-bullets
+    ox-gfm
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user
