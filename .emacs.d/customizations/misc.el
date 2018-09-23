@@ -20,6 +20,9 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+(use-package git-link
+  :bind ("C-c g l" . git-link))
+
 ;; (use-package magithub
 ;;   :after magit
 ;;   :config

@@ -4,3 +4,27 @@
 [ -r ~/.pathrc ] && source ~/.pathrc
 # 自己程序中的相关配置
 [ -r ~/.devrc ] && source ~/.devrc
+
+export LC_ALL=en_US.UTF-8
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+export EDITOR="emacsclient -t -a=\"\""
+# for ctrl-x e
+export ALTERNATE_EDITOR=""
+export LANG=en_US.UTF-8
+# Deprecated: use __git_ps1 env instead
+# parse_git_branch() {
+#      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+# }
+export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\$(__git_ps1)$ "
+
+function proxy_off(){
+    unset http_proxy
+    unset https_proxy
+    echo -e "已关闭代理"
+}
+function proxy_on() {
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export http_proxy="http://127.0.0.1:8118"
+    export https_proxy=$http_proxy
+    echo -e "已开启代理"
+}

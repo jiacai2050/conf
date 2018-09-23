@@ -34,7 +34,13 @@
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width nil)
 
-
+  (custom-set-faces
+   '(org-level-1 ((t (:inherit outline-1 :height 1.6 :bold t))))
+   '(org-level-2 ((t (:inherit outline-2 :height 1.4 :bold t))))
+   '(org-level-3 ((t (:inherit outline-3 :height 1.2 :bold t))))
+   '(org-level-4 ((t (:inherit outline-4 :height 1.0 :bold t))))
+   '(org-level-5 ((t (:inherit outline-5 :height 1.0 :bold t))))
+   )
   ;; #+LaTeX_HEADER: \usepackage{CJK}
   ;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
   (add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))

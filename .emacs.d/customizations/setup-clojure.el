@@ -98,6 +98,9 @@
 (defun my/set-cljs-repl-figwheel ()
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
 
+(setq cider-default-cljs-repl 'figwheel)
+;; (setq cider-figwheel-main-default-options ":dev")
+
 (defun my/cider-figwheel-repl ()
   (interactive)
   (save-some-buffers)
