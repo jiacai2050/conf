@@ -1,8 +1,12 @@
 
 [ -r ~/.bashrc ] && source ~/.bashrc
 
+export PATH=$PATH:/usr/local/sbin
 # settings for Mac OS
-source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+GIT_PROMPT=/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh
+if [[ -r $GIT_PROMPT ]];then
+  source $GIT_PROMPT
+fi
 
 __pid_port() {
     lsof -P -i4TCP:$1 | grep LISTEN

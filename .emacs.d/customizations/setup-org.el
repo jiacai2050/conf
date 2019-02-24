@@ -24,15 +24,17 @@
               ("C-c s" . org-table-sort-lines)
               ("C-c C-c" . org-toggle-inline-images))
   :init
-  (setq org-src-tab-acts-natively t)
-  (setq org-log-done 'time)
-  (setq org-startup-folded "showall")
-  (setq org-startup-indented t)
+  (setq org-src-tab-acts-natively t
+        ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
+        org-src-preserve-indentation t
+        org-log-done 'time
+        org-startup-folded "showall"
+        org-startup-indented t
+        org-image-actual-width nil
+        ;; terminal emacs can't display those lovely images :-(
+        org-startup-with-inline-images t)
   ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
   (require 'ox-md nil t)
-  ;; terminal emacs can't display those lovely images :-(
-  (setq org-startup-with-inline-images t)
-  (setq org-image-actual-width nil)
 
   (custom-set-faces
    '(org-level-1 ((t (:inherit outline-1 :height 1.6 :bold t))))

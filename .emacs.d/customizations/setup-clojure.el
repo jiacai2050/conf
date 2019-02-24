@@ -124,6 +124,11 @@
     (cider-jack-in)
     (set-variable 'cider-lein-parameters "repl :headless")))
 
+;; https://stackoverflow.com/a/20940456/2163429
+(defun my/toggle-clojure-indent-style ()
+  (interactive)
+  (setq clojure-defun-style-default-indent (not clojure-defun-style-default-indent)))
+
 ;; https://github.com/weavejester/compojure/wiki/Emacs-indentation
 (require 'clojure-mode)
 (define-clojure-indent

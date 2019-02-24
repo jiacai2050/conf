@@ -152,12 +152,34 @@
         (message "%s added to PATH & exec-path" new-path))
     (message "%s not exists!")))
 
+(defun my/url-decode-region (start end)
+  "Replace a region with the same contents, only URL decoded."
+  (interactive "r")
+  (let ((text (url-unhex-string (buffer-substring start end))))
+    (delete-region start end)
+    (insert text)))
+
+(defun my/storage-size->human ()
+  "Divide by 1024 for human"
+  (interactive)
+  (when (not mark-active)
+    ;; require https://github.com/magnars/expand-region.el
+    (er/mark-word))
+  (letrec ((raw-size (string-to-number (buffer-substring (mark) (point)))))
+    (while (> raw-size 1024)
+      (setq raw-size (/ raw-size 1024.0)))
+    (kill-region (mark) (point))
+    (insert (format "%f" raw-size))
+    (deactivate-mark)))
+
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
-(global-set-key (kbd "C-c c d") 'my/insert-current-date-time)
-(global-set-key (kbd "C-c c t") 'my/insert-today)
-(global-set-key (kbd "C-c d") 'my/timestamp->human-date)
+(global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
+(global-set-key (kbd "C-c i t") 'my/insert-today)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
+(global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
+(global-set-key (kbd "C-c h u") 'my/url-decode-region)
+(global-set-key (kbd "C-c h s") 'my/storage-size->human)
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
@@ -211,3 +233,6 @@
 
 (use-package yaml-mode
   :mode "\\.yml\\|ymal\\'")
+
+(electric-indent-mode)
+

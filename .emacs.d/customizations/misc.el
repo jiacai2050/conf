@@ -21,7 +21,9 @@
   :bind ("C-x g" . magit-status))
 
 (use-package git-link
-  :bind ("C-c g l" . git-link))
+  :bind (("C-c g l" . git-link)
+         ("C-c g c" . git-link-commit)
+         ("C-c g h" . git-link-homepage)))
 
 ;; (use-package magithub
 ;;   :after magit
