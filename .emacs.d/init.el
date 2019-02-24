@@ -43,12 +43,12 @@
     ;; allow ido usage in as many contexts as possible. see
     ;; customizations/navigation.el line 23 for a description
     ;; of ido
-    ido-ubiquitous
+    ;; ido-ubiquitous
 
     ;; Enhances M-x to allow easier execution of commands. Provides
     ;; a filterable list of possible commands in the minibuffer
     ;; http://www.emacswiki.org/emacs/Smex
-    smex
+    ;; smex
 
     ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
     slime
@@ -137,12 +137,13 @@
 ;; Customization
 ;;;;
 (setq custom-file (concat user-emacs-directory ".custom.el"))
+
 ;; https://github.com/DarwinAwardWinner/ido-completing-read-plus/issues/35#issuecomment-36456031
-(defvar ido-cur-item nil)
-(defvar ido-default-item nil)
-(defvar ido-cur-list nil)
-(defvar predicate nil)
-(defvar inherit-input-method nil)
+;; (defvar ido-cur-item nil)
+;; (defvar ido-default-item nil)
+;; (defvar ido-cur-list nil)
+;; (defvar predicate nil)
+;; (defvar inherit-input-method nil)
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
@@ -176,5 +177,6 @@
 (load "setup-ruby.el")
 (load "setup-python.el")
 (load "setup-ocaml.el")
+(load "setup-cpp.el")
 
 ;; end

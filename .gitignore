@@ -7,3 +7,4 @@ storage
 .emacs.d/magithub/
 .emacs.d/places
 tramp
+projectile.cache

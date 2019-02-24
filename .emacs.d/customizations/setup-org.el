@@ -19,7 +19,7 @@
 (use-package ox-gfm
   :after org)
 
-(use-package org-mode
+(use-package org
   :bind (:map org-mode-map
               ("C-c s" . org-table-sort-lines)
               ("C-c C-c" . org-toggle-inline-images))

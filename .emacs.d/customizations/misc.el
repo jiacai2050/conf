@@ -31,8 +31,8 @@
 ;;   (magithub-feature-autoinject t)
 ;;   (setq magithub-clone-default-directory "~/codes/git"))
 
-(use-package restclient
-  :mode ("\\.api\\'" . restclient-mode))
+;; (use-package restclient
+;;   :mode ("\\.api\\'" . restclient-mode))
 
 ;; https://emacs.stackexchange.com/a/32554/16450
 (setq epa-pinentry-mode 'loopback)

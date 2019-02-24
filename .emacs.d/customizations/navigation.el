@@ -18,54 +18,137 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
-
 (setq recentf-max-saved-items 150)
-(defun my/ido-recentf-open ()
-  "Use `ido-completing-read' to find a recent file."
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
 
-(global-set-key (kbd "C-x f") 'my/ido-recentf-open)
+(defun my/helm-hide-minibuffer-maybe ()
+  "Hide minibuffer contents in a Helm session.
+   https://github.com/emacs-helm/helm/blob/353c84076d5489b6a4085537775992226f9d5156/helm.el#L4942"
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (helm-aif (and helm-display-header-line
+                     (helm-attr 'persistent-help))
+          (progn
+            (overlay-put ov 'display
+                         (truncate-string-to-width
+                          (substitute-command-keys
+                           (concat "\\<helm-map>\\[helm-execute-persistent-action]: "
+                                   (format "%s (keeping session)" it)))
+                          (- (window-width) 1)))
+            (overlay-put ov 'face 'helm-header))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color))))
 
-;; ido-mode allows you to more easily navigate choices. For example,
-;; when you want to switch buffers, ido presents you with a list
-;; of buffers in the the mini-buffer. As you start to type a buffer's
-;; name, ido will narrow down the list of buffers to match the text
-;; you've typed in
-;; http://www.emacswiki.org/emacs/InteractivelyDoThings
-(ido-mode t)
+      (setq cursor-type nil))))
 
-;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
-(setq ido-enable-flex-matching t)
+(use-package helm
+  :init
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
 
-;; Turn this behavior off because it's annoying
-(setq ido-use-filename-at-point nil)
+  (setq helm-split-window-in-side-p t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match    t
+        helm-M-x-fuzzy-match t
+        helm-etags-fuzzy-match t
+        ;; helm-semantic-fuzzy-match t
+        ;; helm-imenu-fuzzy-match    t
+        helm-move-to-line-cycle-in-source t
+        helm-ff-file-name-history-use-recentf t
+        helm-echo-input-in-header-line t
+        helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+        helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 40
+        )
 
-;; Don't try to match file across all "work" directories; only match files
-;; in the current directory displayed in the minibuffer
-(setq ido-auto-merge-work-directories-length -1)
+  
+  (add-hook 'helm-minibuffer-set-up-hook 'my/helm-hide-minibuffer-maybe)
 
-;; Includes buffer names of recently open files, even if they're not
-;; open now
-(setq ido-use-virtual-buffers t)
-
-;; This enables ido in all contexts where it could be useful, not just
-;; for selecting buffer and file names
-(ido-ubiquitous-mode 1)
-
-;; Shows a list of buffers
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x f" . helm-recentf)
+         ;; ("C-SPC" . helm-dabbrev)
+         ;; ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)
+         ("C-c h" . helm-command-prefix)))
 
 
-;; Enhances M-x to allow easier execution of commands. Provides
-;; a filterable list of possible commands in the minibuffer
-;; http://www.emacswiki.org/emacs/Smex
-(setq smex-save-file (concat user-emacs-directory ".smex-items"))
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
+(use-package helm-ls-git
+  :after helm
+  :ensure t
+  :bind (("C-x C-d" . 'helm-browse-project)))
+
+(use-package helm-descbinds
+  :after help
+  :config (helm-descbinds-mode))
+
+;; (defun my/ido-recentf-open ()
+;;   "Use `ido-completing-read' to find a recent file."
+;;   (interactive)
+;;   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+;;       (message "Opening file...")
+;;     (message "Aborting")))
+
+;; (global-set-key (kbd "C-x f") 'my/ido-recentf-open)
+
+;; ;; ido-mode allows you to more easily navigate choices. For example,
+;; ;; when you want to switch buffers, ido presents you with a list
+;; ;; of buffers in the the mini-buffer. As you start to type a buffer's
+;; ;; name, ido will narrow down the list of buffers to match the text
+;; ;; you've typed in
+;; ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
+;; (ido-mode t)
+
+;; ;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
+;; (setq ido-enable-flex-matching t)
+
+;; ;; Turn this behavior off because it's annoying
+;; (setq ido-use-filename-at-point nil)
+
+;; ;; Don't try to match file across all "work" directories; only match files
+;; ;; in the current directory displayed in the minibuffer
+;; (setq ido-auto-merge-work-directories-length -1)
+
+;; ;; Includes buffer names of recently open files, even if they're not
+;; ;; open now
+;; (setq ido-use-virtual-buffers t)
+
+;; ;; This enables ido in all contexts where it could be useful, not just
+;; ;; for selecting buffer and file names
+;; (ido-ubiquitous-mode 1)
+
+;; ;; Shows a list of buffers
+;; (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+
+;; ;; Enhances M-x to allow easier execution of commands. Provides
+;; ;; a filterable list of possible commands in the minibuffer
+;; ;; http://www.emacswiki.org/emacs/Smex
+;; (setq smex-save-file (concat user-emacs-directory ".smex-items"))
+;; (smex-initialize)
+;; (global-set-key (kbd "M-x") 'smex)
 
 ;; projectile everywhere!
-(projectile-global-mode)
-(setq projectile-switch-project-action #'projectile-find-file-dwim)
+(use-package projectile
+  :config
+  (projectile-global-mode)
+  (setq projectile-switch-project-action #'projectile-find-file-dwim
+        projectile-completion-system 'helm
+        projectile-enable-caching t))
+
+(use-package helm-projectile
+  :after projectile helm
+  :bind ("M-t" . helm-projectile-find-file)
+  :config
+  (helm-projectile-on)
+  (setq projectile-switch-project-action 'helm-projectile-find-file))
+
+;; https://github.com/senny/emacs.d/blob/83567797b14e483ae043b7fe57b3154ae9972b4c/init.el#L107
+(use-package helm-ag
+  :after helm-projectile
+  :bind ("M-p" . helm-projectile-ag)
+)
