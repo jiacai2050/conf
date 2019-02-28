@@ -42,9 +42,9 @@
       (setq cursor-type nil))))
 
 (use-package helm
-  :init
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-unset-key (kbd "C-x c"))
+  ;; :init
+  ;; (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  ;; (global-unset-key (kbd "C-x c"))
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
@@ -54,9 +54,10 @@
         helm-recentf-fuzzy-match    t
         helm-M-x-fuzzy-match t
         helm-etags-fuzzy-match t
-        ;; helm-semantic-fuzzy-match t
-        ;; helm-imenu-fuzzy-match    t
-        helm-move-to-line-cycle-in-source t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match    t
+        ;; https://github.com/emacs-helm/helm/issues/1676
+        helm-move-to-line-cycle-in-source nil
         helm-ff-file-name-history-use-recentf t
         helm-echo-input-in-header-line t
         helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
@@ -70,11 +71,13 @@
 
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
+         ;; :map helm-map
          ("C-x f" . helm-recentf)
          ;; ("C-SPC" . helm-dabbrev)
          ;; ("M-y" . helm-show-kill-ring)
          ("C-x b" . helm-buffers-list)
-         ("C-c h" . helm-command-prefix)))
+         ;; ("C-c h" . helm-command-prefix)
+         ))
 
 
 (use-package helm-ls-git
@@ -85,6 +88,51 @@
 (use-package helm-descbinds
   :after help
   :config (helm-descbinds-mode))
+
+;; projectile everywhere!
+(use-package projectile
+  :config
+  (projectile-global-mode)
+  (setq projectile-switch-project-action #'projectile-find-file-dwim
+        projectile-completion-system 'helm
+        projectile-enable-caching t))
+
+(use-package helm-projectile
+  :after (projectile helm)
+  ;; :bind ("C-c f" . helm-projectile-find-file)
+  :config
+  (helm-projectile-on)
+  (setq projectile-switch-project-action 'helm-projectile-find-file))
+
+;; https://github.com/senny/emacs.d/blob/83567797b14e483ae043b7fe57b3154ae9972b4c/init.el#L107
+(use-package helm-ag
+  :after helm-projectile
+  ;; :bind ("C-c g g" . helm-projectile-ag)
+  )
+
+
+(use-package helm-gtags
+  :config
+  (setq helm-gtags-ignore-case t
+        helm-gtags-auto-update t
+        helm-gtags-use-input-at-cursor t
+        helm-gtags-pulse-at-cursor t
+        helm-gtags-prefix-key "\C-cg"
+        helm-gtags-suggested-key-mapping t)
+  :bind (:map helm-gtags-mode-map
+              ("C-c g a" . helm-gtags-tags-in-this-function)
+              ("C-j" . helm-gtags-select)
+              ("M-." . helm-gtags-dwim)
+              ("M-," . helm-gtags-pop-stack)
+              ("C-c <" . helm-gtags-previous-history)
+              ("C-c >" . helm-gtags-next-history))
+  :hook ((dired-mode eshell-mode c-mode c++-mode-hook asm-mode) . helm-gtags-mode))
+
+(use-package sr-speedbar
+  :init (setq speedbar-show-unknown-files t)
+  :bind (("C-c c s" . sr-speedbar-toggle)
+         ("C-c c w" . sr-speedbar-select-window)
+         ("C-c c r" . sr-speedbar-refresh-toggle)))
 
 ;; (defun my/ido-recentf-open ()
 ;;   "Use `ido-completing-read' to find a recent file."
@@ -132,23 +180,3 @@
 ;; (smex-initialize)
 ;; (global-set-key (kbd "M-x") 'smex)
 
-;; projectile everywhere!
-(use-package projectile
-  :config
-  (projectile-global-mode)
-  (setq projectile-switch-project-action #'projectile-find-file-dwim
-        projectile-completion-system 'helm
-        projectile-enable-caching t))
-
-(use-package helm-projectile
-  :after projectile helm
-  :bind ("M-t" . helm-projectile-find-file)
-  :config
-  (helm-projectile-on)
-  (setq projectile-switch-project-action 'helm-projectile-find-file))
-
-;; https://github.com/senny/emacs.d/blob/83567797b14e483ae043b7fe57b3154ae9972b4c/init.el#L107
-(use-package helm-ag
-  :after helm-projectile
-  :bind ("M-p" . helm-projectile-ag)
-)

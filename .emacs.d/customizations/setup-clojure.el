@@ -144,3 +144,5 @@
   (rfn 2)
   (let-routes 1)
   (context 2))
+
+(setq cljr-inject-dependencies-at-jack-in nil)
