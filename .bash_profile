@@ -39,11 +39,15 @@ if [ -d "${JENV_ROOT}" ]; then
   # export JAVA_HOME="$(jenv javahome)" 通过 export 插件导出java_home
 fi
 # export JAVA_HOME=$(/usr/libexec/java_home) deprecated
-# brew install pyenv pyenv-virtualenv
+# brew install pyenv  pyenv-virtualenvwrapper pyenv-virtualenv
+# 激活 virtualenvwrapper
+# pyenv virtualenvwrapper
 export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+    export WORKON_HOME=~/.pyenv/envwrappers
+    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 else
     export PIP_REQUIRE_VIRTUALENV=true
 fi

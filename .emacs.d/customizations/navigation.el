@@ -129,10 +129,15 @@
   :hook ((dired-mode eshell-mode c-mode c++-mode-hook asm-mode) . helm-gtags-mode))
 
 (use-package sr-speedbar
-  :init (setq speedbar-show-unknown-files t)
-  :bind (("C-c c s" . sr-speedbar-toggle)
-         ("C-c c w" . sr-speedbar-select-window)
-         ("C-c c r" . sr-speedbar-refresh-toggle)))
+  :config
+  (setq speedbar-show-unknown-files t ;; show all files
+        speedbar-use-images nil       ;; use text for buttons
+        sr-speedbar-right-side nil    ;; put on left side
+        sr-speedbar-width 30
+        )
+  :bind (("C-c s o" . sr-speedbar-toggle)
+         ("C-c s w" . sr-speedbar-select-window)
+         ("C-c s r" . sr-speedbar-refresh-toggle)))
 
 ;; (defun my/ido-recentf-open ()
 ;;   "Use `ido-completing-read' to find a recent file."

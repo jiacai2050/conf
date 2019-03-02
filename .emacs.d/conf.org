@@ -1,0 +1,55 @@
+* languages
+** Python
+- https://github.com/jorgenschaefer/elpy
+#+BEGIN_SRC shell
+pip install jedi flake8 autopep8
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package anaconda-mode
+  :hook
+  (python-mode . anaconda-mode)
+  (python-mode . anaconda-eldoc-mode))
+
+(use-package company-anaconda
+  :after company
+  :config
+  (add-to-list 'company-backends '(company-anaconda :with company-capf)))
+
+(use-package elpy
+  :config
+  (elpy-enable)
+  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+  (define-key elpy-mode-map (kbd "M-,") 'xref-pop-marker-stack))
+#+END_SRC
+** C/C++
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+#+END_SRC
+** Ocaml
+- https://github.com/ocaml/merlin/wiki/emacs-from-scratch
+#+BEGIN_SRC shell
+opam install tuareg merlin utop
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+  (when (and opam-share (file-directory-p opam-share))
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (load "tuareg-site-file")
+    ;; (load "merlin")
+    (autoload 'merlin-mode "merlin" nil t nil)
+    (autoload 'utop "utop" "Toplevel for OCaml" t)
+    (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (setq tuareg-indent-align-with-first-arg t)
+    (setq tuareg-match-patterns-aligned t)
+
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    (setq utop-command "opam config exec -- utop -emacs")
+    ;; utop-minor cause merlin docstr didn't showup
+    ;; (add-hook 'tuareg-mode-hook 'utop-minor-mode)
+    ))
+#+END_SRC
+

@@ -176,7 +176,5 @@
 (load "setup-common-lisp.el")
 (load "setup-ruby.el")
 (load "setup-python.el")
-(load "setup-ocaml.el")
-(load "setup-cpp.el")
-
+(org-babel-load-file "~/.emacs.d/conf.org")
 ;; end

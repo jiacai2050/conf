@@ -1,2 +1,2 @@
-(package-initialize)
-(elpy-enable)
+
+

@@ -235,4 +235,3 @@
   :mode "\\.yml\\|ymal\\'")
 
 (electric-indent-mode)
-

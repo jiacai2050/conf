@@ -15,3 +15,4 @@
 .persistent-scratch*
 /cnfonts
 .custom.el
+conf.el

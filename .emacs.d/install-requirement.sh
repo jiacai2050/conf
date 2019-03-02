@@ -18,3 +18,11 @@ sudo tlmgr install wrapfig
 sudo tlmgr install capt-of
 # PDF 导出时，需要 cjk 包，然后需要配置org-latex-packages-alist，具体参考 setup-org.el
 sudo tlmgr install cjk
+
+# ocaml setup
+brew install ocaml
+opam install tuareg merlin utop
+
+
+# python setup
+pip install jedi flake8 autopep8
