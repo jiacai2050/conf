@@ -12,6 +12,8 @@ __pid_port() {
     lsof -P -i4TCP:$1 | grep LISTEN
 }
 alias pidport=" __pid_port "
+alias bci="brew cask install "
+alias bi="brew install "
 
 completion_dir="$(brew --prefix)/etc/bash_completion.d"
 if [[ -d $completion_dir && -r $completion_dir && -x $completion_dir ]];then

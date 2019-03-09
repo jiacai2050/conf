@@ -31,6 +31,32 @@ install_ocaml() {
   brew install opam
 }
 
+install_ss() {
+  brew install shadowsocks-libev privoxy
+  cat << EOF > /usr/local/etc/shadowsocks-libev.json
+{
+    "server": "server-ip",
+    "server_port": 443,
+    "local_port": 1080,
+    "password": "mypassword",
+    "timeout": 600,
+    "method": "aes-256-cfb"
+}
+EOF
+  echo 'listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .' >> /usr/local/etc/privoxy/config
+  brew services start privoxy
+}
+
+install_dbgui() {
+  brew cask install sequel-pro robo-3t rdm
+}
+
+install_vm() {
+  brew cask install vagrant docker
+}
+install_life() {
+  brew cask install firefox google-chrome chromium firefox-developer-edition licecap the-unarchiver
+}
 case $1 in
   "link")
     link_dotfiles_if_necessary ".bashrc"
@@ -43,6 +69,7 @@ case $1 in
     link_dotfiles_if_necessary ".lein"
     ;;
   "brew")
+    # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
     command_exists brew || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     ;;
   *)

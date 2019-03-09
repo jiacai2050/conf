@@ -29,7 +29,9 @@ function proxy_on() {
     echo -e "已开启代理"
 }
 
-alias ll='ls -lh'
+alias ls='ls -FG'
+alias ll='ls -l'
 alias cd.='cd ..'
 alias cd..='cd ../..'
 alias cd...='cd ../../..'
+alias gc='git clone '
