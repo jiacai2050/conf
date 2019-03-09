@@ -91,6 +91,7 @@
 
 ;; projectile everywhere!
 (use-package projectile
+  :bind ("C-c p" . projectile-command-map)
   :config
   (projectile-global-mode)
   (setq projectile-switch-project-action #'projectile-find-file-dwim

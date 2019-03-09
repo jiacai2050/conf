@@ -57,7 +57,7 @@ fi
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 
 # ocaml
-. ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+# . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 # fix Inappropriate ioctl for device
 # https://stackoverflow.com/a/41054093/2163429

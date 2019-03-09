@@ -28,3 +28,8 @@ function proxy_on() {
     export https_proxy=$http_proxy
     echo -e "已开启代理"
 }
+
+alias ll='ls -lh'
+alias cd.='cd ..'
+alias cd..='cd ../..'
+alias cd...='cd ../../..'
