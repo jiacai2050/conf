@@ -14,6 +14,8 @@ __pid_port() {
 alias pidport=" __pid_port "
 alias bci="brew cask install "
 alias bi="brew install "
+alias d="docker "
+alias dc="docker-compose "
 
 completion_dir="$(brew --prefix)/etc/bash_completion.d"
 if [[ -d $completion_dir && -r $completion_dir && -x $completion_dir ]];then
@@ -25,6 +27,7 @@ fi
 # brew install nvm
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR" ]] && source "/usr/local/opt/nvm/nvm.sh"
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 # curl -sSL https://get.rvm.io | bash -s stable
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.

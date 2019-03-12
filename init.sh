@@ -13,7 +13,12 @@ set -x
 install_java() {
   brew tap caskroom/versions
   brew cask install java8 intellij-idea-ce
-  brew install jenv maven gradle
+  brew install jenv maven gradle leiningen
+}
+
+install_cpp() {
+  # http://www.gnu.org/software/global/
+  brew install global
 }
 
 install_python() {
@@ -48,12 +53,14 @@ EOF
 }
 
 install_dbgui() {
-  brew cask install sequel-pro robo-3t rdm
+  brew cask install sequel-pro robo-3t
 }
 
 install_vm() {
   brew cask install vagrant docker
+  vagrant plugin install vagrant-disksize
 }
+
 install_life() {
   brew cask install firefox google-chrome chromium firefox-developer-edition licecap the-unarchiver
 }
@@ -67,6 +74,7 @@ case $1 in
     link_dotfiles_if_necessary ".gitconfig"
     link_dotfiles_if_necessary ".tmux.conf"
     link_dotfiles_if_necessary ".lein"
+    link_dotfiles_if_necessary ".pip"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git

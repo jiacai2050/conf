@@ -188,15 +188,15 @@
   :config
   (define-key mc/keymap (kbd "<return>") nil))
 
+(defun my/map-key (key)
+  "Map KEY from escape sequence \"\e[emacs-KEY\."
+  (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
+
 (defun my/global-map-and-set-key (key command &optional prefix suffix)
-   "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
- PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
+  "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
+PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
    (my/map-key key)
    (global-set-key (kbd (concat prefix key suffix)) command))
-
- (defun my/map-key (key)
-   "Map KEY from escape sequence \"\e[emacs-KEY\."
-   (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
 
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429
