@@ -20,9 +20,7 @@ sudo tlmgr install capt-of
 sudo tlmgr install cjk
 
 # ocaml setup
-brew install ocaml
 opam install tuareg merlin utop
-
 
 # python setup
 pip install jedi flake8 autopep8

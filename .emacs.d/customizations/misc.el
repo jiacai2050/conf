@@ -33,7 +33,8 @@
 
 (use-package restclient
   ;; since restclient isn't shared among in elpa, so download it and load locally
-  :load-path "."
+  ;; default-directory variable = directory of current buffer
+  :load-path default-directory
   :mode ("\\.api\\'" . restclient-mode))
 
 ;; https://emacs.stackexchange.com/a/32554/16450

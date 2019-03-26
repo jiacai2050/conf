@@ -33,7 +33,10 @@ install_ruby() {
   curl -sSL https://get.rvm.io | bash -s stable
 }
 install_ocaml() {
-  brew install opam
+  brew install opam ocaml
+  # https://opam.ocaml.org/doc/Install.html
+  # opam init
+
 }
 
 install_ss() {
