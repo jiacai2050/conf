@@ -78,6 +78,7 @@ case $1 in
     link_dotfiles_if_necessary ".tmux.conf"
     link_dotfiles_if_necessary ".lein"
     link_dotfiles_if_necessary ".pip"
+    link_dotfiles_if_necessary ".npmrc"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
