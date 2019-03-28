@@ -7,9 +7,9 @@
 
 export LC_ALL=en_US.UTF-8
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-#export EDITOR="emacsclient -t -a=\"\""
+export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
-#export ALTERNATE_EDITOR=""
+export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
 # Deprecated: use __git_ps1 env instead
 # parse_git_branch() {
@@ -30,8 +30,10 @@ function proxy_on() {
 }
 
 alias ls='ls -FG'
-alias ll='ls -l'
+alias ll='ls -lh'
 alias cd.='cd ..'
 alias cd..='cd ../..'
 alias cd...='cd ../../..'
 alias gc='git clone '
+alias e='emacsclient -t -a ""'
+
