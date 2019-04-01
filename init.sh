@@ -51,7 +51,7 @@ install_ss() {
     "method": "aes-256-cfb"
 }
 EOF
-  echo 'listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .' >> /usr/local/etc/privoxy/config
+  echo -e 'listen-address 0.0.0.0:8118\nforward-socks5 / localhost:1080 .' >> /usr/local/etc/privoxy/config
   brew services start privoxy
 }
 
@@ -65,7 +65,7 @@ install_vm() {
 }
 
 install_life() {
-  brew cask install firefox google-chrome chromium firefox-developer-edition licecap the-unarchiver
+  brew cask install iterm2 firefox google-chrome chromium  licecap the-unarchiver
 }
 case $1 in
   "link")

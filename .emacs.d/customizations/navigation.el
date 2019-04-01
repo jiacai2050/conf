@@ -127,7 +127,7 @@
               ("M-," . helm-gtags-pop-stack)
               ("C-c <" . helm-gtags-previous-history)
               ("C-c >" . helm-gtags-next-history))
-  :hook ((dired-mode eshell-mode c-mode c++-mode-hook asm-mode) . helm-gtags-mode))
+  :hook ((dired-mode eshell-mode c-mode c++-mode asm-mode) . helm-gtags-mode))
 
 (use-package sr-speedbar
   :config
