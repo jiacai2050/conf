@@ -15,20 +15,16 @@ install_java() {
   brew cask install java8 intellij-idea-ce
   brew install jenv maven gradle leiningen
 }
-
 install_cpp() {
   # http://www.gnu.org/software/global/
   brew install global
 }
-
 install_python() {
   brew install pyenv  pyenv-virtualenvwrapper pyenv-virtualenv
 }
-
 install_node() {
   brew install nvm
 }
-
 install_ruby() {
   curl -sSL https://get.rvm.io | bash -s stable
 }
@@ -36,7 +32,9 @@ install_ocaml() {
   brew install opam ocaml
   # https://opam.ocaml.org/doc/Install.html
   # opam init
-
+}
+install_go() {
+  brew install go dep
 }
 
 install_ss() {
@@ -79,6 +77,7 @@ case $1 in
     link_dotfiles_if_necessary ".lein"
     link_dotfiles_if_necessary ".pip"
     link_dotfiles_if_necessary ".npmrc"
+    link_dotfiles_if_necessary ".cargo"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git

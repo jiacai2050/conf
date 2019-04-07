@@ -37,3 +37,9 @@ alias cd...='cd ../../..'
 alias gc='git clone '
 alias e='emacsclient -t -a ""'
 
+export GOPATH="$HOME/code/go"
+
+export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
+export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+
+export PATH=$PATH:$HOME/.cargo/bin
