@@ -21,13 +21,6 @@ pip install jedi flake8 autopep8
   (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
   (define-key elpy-mode-map (kbd "M-,") 'xref-pop-marker-stack))
 #+END_SRC
-** C/C++
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :ensure t
-  :config
-  (global-flycheck-mode))
-#+END_SRC
 ** Ocaml
 - https://github.com/ocaml/merlin/wiki/emacs-from-scratch
 #+BEGIN_SRC shell
