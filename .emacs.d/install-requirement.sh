@@ -24,3 +24,9 @@ opam install tuareg merlin utop
 
 # python setup
 pip install jedi flake8 autopep8
+
+
+# go setup
+go get -u github.com/rogpeppe/godef
+go get -u github.com/nsf/gocode # for go-eldoc/company-go
+go get -u golang.org/x/tools/cmd/goimports
