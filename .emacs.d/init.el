@@ -159,8 +159,6 @@
 ;; These customizations make it easier for you to navigate files,
 ;; switch buffers, and choose options from the minibuffer.
 (load "navigation.el")
-;; Hard-to-categorize customizations
-(load "misc.el")
 
 ;; For editing lisps
 (load "elisp-editing.el")
@@ -178,5 +176,5 @@
 (load "setup-ruby.el")
 (load "setup-python.el")
 (load "setup-go.el")
-(org-babel-load-file "~/.emacs.d/conf.org")
+(org-babel-load-file "~/.emacs.d/customizations/misc.org")
 ;; end
