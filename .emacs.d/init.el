@@ -154,8 +154,6 @@
 ;; These customizations make it easier for you to navigate files,
 ;; switch buffers, and choose options from the minibuffer.
 (load "navigation.el")
-;; Hard-to-categorize customizations
-(load "misc.el")
 
 ;; For editing lisps
 (load "elisp-editing.el")
@@ -174,14 +172,12 @@
 (load "setup-python.el")
 (load "setup-go.el")
 (load "setup-rust.el")
-(org-babel-load-file "~/.emacs.d/conf.org")
-
+(org-babel-load-file "~/.emacs.d/customizations/misc.org")
 ;; https://github.com/blak3mill3r/vmd-mode
 (let ((vmd-repo-dir "~/.emacs.d/vendor/vmd-mode"))
   (when (file-exists-p vmd-repo-dir)
     (add-to-list 'load-path vmd-repo-dir)
     (require 'vmd-mode)
     (global-set-key (kbd "C-c M-m") 'vmd-mode)))
-
 ;; end
 
