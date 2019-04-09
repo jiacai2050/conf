@@ -31,3 +31,10 @@ go get -u github.com/rogpeppe/godef
 go get -u github.com/nsf/gocode # for go-eldoc/company-go
 go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kisielk/errcheck
+
+
+# rust setup
+
+rustup toolchain add nightly
+rustup component add rust-src
+cargo +nightly install racer

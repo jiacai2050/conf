@@ -4,7 +4,7 @@
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
                          ;; ("melpa-stable2" . "https://stable.melpa.org/packages/")
-                         ;; ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
                          ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 
 
@@ -127,11 +127,6 @@
 ;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
 ;; then you can add the following code to this file:
 (add-to-list 'load-path "~/.emacs.d/vendor")
-;; https://github.com/blak3mill3r/vmd-mode
-(let ((vmd-repo-dir "~/.emacs.d/vendor/vmd-mode"))
-  (when (file-exists-p vmd-repo-dir)
-    (add-to-list 'load-path vmd-repo-dir)
-    (require 'vmd-mode)))
 
 ;;;;
 ;; Customization
@@ -178,5 +173,15 @@
 (load "setup-ruby.el")
 (load "setup-python.el")
 (load "setup-go.el")
+(load "setup-rust.el")
 (org-babel-load-file "~/.emacs.d/conf.org")
+
+;; https://github.com/blak3mill3r/vmd-mode
+(let ((vmd-repo-dir "~/.emacs.d/vendor/vmd-mode"))
+  (when (file-exists-p vmd-repo-dir)
+    (add-to-list 'load-path vmd-repo-dir)
+    (require 'vmd-mode)
+    (global-set-key (kbd "C-c M-m") 'vmd-mode)))
+
 ;; end
+

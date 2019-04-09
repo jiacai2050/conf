@@ -230,7 +230,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (use-package smartparens
   :config (require 'smartparens-config)
-  :hook ((c++-mode c-mode python-mode enh-ruby-mode js2-mode tuareg-mode go-mode) . smartparens-mode))
+  :hook ((c++-mode c-mode python-mode enh-ruby-mode js2-mode tuareg-mode go-mode rust-mode) . smartparens-mode))
 
 (use-package yaml-mode
   :mode "\\.yml\\|ymal\\'")
