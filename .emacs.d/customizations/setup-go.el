@@ -31,5 +31,23 @@
   :bind (:map go-mode-map
               ("C-c C-e" . go-errcheck)))
 
+(use-package go-imenu
+  :after go-mode
+  :config
+  (add-hook 'go-mode-hook 'go-imenu-setup))
+
+(use-package gotest
+  :after go-mode
+  :bind (:map go-mode-map
+              ("C-c C-f" . go-test-current-file)
+              ("C-c C-t" . go-test-current-test)
+              ("C-c C-p" . go-test-current-project)
+              ("C-c C-b" . go-test-current-benchmark)
+              ("C-x x" . go-run)))
+
+(use-package go-playground
+  :after gotest
+  )
+
 ;; https://github.com/abrochard/emacs-config/blob/master/configuration.org#go
 

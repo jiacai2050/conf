@@ -68,7 +68,6 @@
 
   
   (add-hook 'helm-minibuffer-set-up-hook 'my/helm-hide-minibuffer-maybe)
-
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ;; :map helm-map
@@ -76,7 +75,7 @@
          ;; ("C-SPC" . helm-dabbrev)
          ;; ("M-y" . helm-show-kill-ring)
          ("C-x b" . helm-buffers-list)
-         ;; ("C-c h" . helm-command-prefix)
+         ("C-c C-i" . helm-imenu)
          ))
 
 
