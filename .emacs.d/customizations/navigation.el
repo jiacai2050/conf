@@ -70,7 +70,7 @@
   (add-hook 'helm-minibuffer-set-up-hook 'my/helm-hide-minibuffer-maybe)
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
-         ("C-x C-i" . helm-imenu)
+         ("C-x i" . helm-imenu)
          ("C-x f" . helm-recentf)
          ("C-x b" . helm-buffers-list)
          ("C-x w" . helm-toggle-resplit-and-swap-windows)

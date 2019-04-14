@@ -90,4 +90,6 @@ opam install tuareg merlin utop
 ;; https://emacs.stackexchange.com/a/32554/16450
 (setq epa-pinentry-mode 'loopback)
 ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
+
+(setq url-configuration-directory (locate-user-emacs-file "data/url/"))
 #+END_SRC
