@@ -29,7 +29,7 @@ function proxy_on() {
     echo -e "已开启代理"
 }
 
-function command_exists () {
+function command_exists() {
     command -v "$1" &> /dev/null
 }
 
@@ -42,11 +42,12 @@ alias gc='git clone '
 alias e='emacsclient -t -a ""'
 
 export GOPATH="$HOME/code/go"
+export GO111MODULE=auto
 
 export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+export PATH=$PATH:$HOME/.cargo/bin:$GOPATH/bin
 if command_exists rustc; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
-export PATH=$PATH:$HOME/.cargo/bin:$GOPATH/bin

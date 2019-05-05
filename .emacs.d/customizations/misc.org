@@ -50,7 +50,7 @@ opam install tuareg merlin utop
 #+BEGIN_SRC emacs-lisp
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
-
+(setq url-configuration-directory (locate-user-emacs-file "data/url/"))
 ;; shell scripts
 (setq-default sh-basic-offset 2)
 (setq-default sh-indentation 2)
@@ -91,5 +91,4 @@ opam install tuareg merlin utop
 (setq epa-pinentry-mode 'loopback)
 ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
 
-(setq url-configuration-directory (locate-user-emacs-file "data/url/"))
 #+END_SRC
