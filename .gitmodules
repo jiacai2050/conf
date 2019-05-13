@@ -1,0 +1,3 @@
+[submodule ".emacs.d/vendor/vmd-mode"]
+	path = .emacs.d/vendor/vmd-mode
+	url = https://github.com/blak3mill3r/vmd-mode

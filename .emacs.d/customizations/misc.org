@@ -84,8 +84,14 @@ opam install tuareg merlin utop
 (use-package restclient
   ;; since restclient isn't shared among in elpa, so download it and load locally
   ;; default-directory variable = directory of current buffer
-  :load-path default-directory
+  :load-path "~/.emacs.d/vendor"
   :mode ("\\.api\\'" . restclient-mode))
+
+(use-package protobuf-mode
+  ;; since restclient isn't shared among in elpa, so download it and load locally
+  ;; default-directory variable = directory of current buffer
+  :load-path "~/.emacs.d/vendor"
+  :mode ("\\.proto\\'" . protobuf-mode))
 
 ;; https://emacs.stackexchange.com/a/32554/16450
 (setq epa-pinentry-mode 'loopback)
