@@ -20,5 +20,10 @@
                        }}
         :aliases {"lint" ["eastwood"]}
         ;; :ultra {:repl false}
-        ;; :repositories [["clojars" {:url "https://mirrors.ustc.edu.cn/clojars"}]]
+         ;;:repositories [["clojars" {:url "https://mirrors.ustc.edu.cn/clojars"}]]
+        ;; :repositories [["clojars" {:url "https://mirrors.tuna.tsinghua.edu.cn/clojars/"}]]
+        ;; :mirrors {#"clojars"
+        ;;   {:name "Clojar Mirror"
+        ;;    :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"
+        ;;    :repo-manager true}}
         }}

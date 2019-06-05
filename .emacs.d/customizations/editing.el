@@ -124,7 +124,9 @@
         (let ((fixed-ts (if (> timestamp-int (expt 10 11)) ;; 大于 10^11 为微秒，转为秒
                             (/ timestamp-int 1000)
                           timestamp-int)))
-          (kill-region (mark) (point))
+          ;; (kill-region (mark) (point))
+          (end-of-line)
+          (newline-and-indent)
           (insert (format-time-string my/iso-8601-format
                                       (seconds-to-time fixed-ts))))
       (deactivate-mark))))
@@ -240,3 +242,14 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+(use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1)
+  :config
+  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :ensure t)

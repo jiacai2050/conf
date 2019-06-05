@@ -85,7 +85,7 @@
   :bind (("C-x C-d" . 'helm-browse-project)))
 
 (use-package helm-descbinds
-  :after help
+  :after helm
   :config (helm-descbinds-mode))
 
 ;; projectile everywhere!
