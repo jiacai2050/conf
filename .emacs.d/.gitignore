@@ -15,3 +15,5 @@
 /cnfonts
 .custom.el
 customizations/misc.el
+transient/
+tutorial/

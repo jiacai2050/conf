@@ -45,6 +45,7 @@
   ;; :init
   ;; (global-set-key (kbd "C-c h") 'helm-command-prefix)
   ;; (global-unset-key (kbd "C-x c"))
+  :pin melpa-stable
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)

@@ -7,7 +7,7 @@
 
 export LC_ALL=en_US.UTF-8
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-export EDITOR="emacsclient -t -a=\"\""
+#export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
@@ -23,7 +23,7 @@ function proxy_off(){
     echo -e "已关闭代理"
 }
 function proxy_on() {
-    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+    export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.33.10"
     export http_proxy="http://127.0.0.1:8118"
     export https_proxy=$http_proxy
     echo -e "已开启代理"
@@ -43,6 +43,7 @@ alias e='emacsclient -t -a ""'
 
 export GOPATH="$HOME/code/go"
 export GO111MODULE=auto
+export GOPROXY=https://goproxy.io
 
 export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"

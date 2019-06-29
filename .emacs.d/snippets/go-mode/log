@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logDebug
+# key: log
+# --
+log.Infof("$1 %+v\n", $2)
