@@ -11,13 +11,11 @@
 (use-package racer
   :after rust-mode
   :if (executable-find "racer")
-  :hook ((rust-mode . racer-mode))
-  :init
-  (setq company-tooltip-align-annotations t))
-
-(use-package company-racer
-  :after racer
-  :config (add-to-list 'company-backends 'company-racer))
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)
+         (racer-mode . company-mode))
+  :bind (:map rust-mode-map
+              ("TAB" . company-indent-or-complete-common)))
 
 (use-package cargo
   :after rust-mode

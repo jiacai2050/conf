@@ -82,9 +82,16 @@
   :init (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
+        company-idle-delay .2
+        company-minimum-prefix-length 1
+        company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
-        company-show-numbers t)
-  (setq company-dabbrev-downcase nil))
+        company-show-numbers t
+        company-dabbrev-downcase nil)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("M-i" . company-complete-selection)))
 
 ;; 以下为自定义函数
 (defun my/rename-this-buffer-and-file ()

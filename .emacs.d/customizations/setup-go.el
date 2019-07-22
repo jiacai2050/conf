@@ -22,8 +22,6 @@
 (use-package company-go
   :after company
   :init (add-to-list 'company-backends 'company-go)
-  :config
-  (setq company-echo-delay 0)
   )
 
 (use-package go-errcheck
