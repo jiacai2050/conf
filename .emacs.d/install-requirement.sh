@@ -28,7 +28,7 @@ pip install jedi flake8 autopep8
 
 # go setup
 go get -u github.com/rogpeppe/godef
-go get -u github.com/nsf/gocode # for go-eldoc/company-go
+go get -u github.com/stamblerre/gocode # for go-eldoc/company-go
 go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kisielk/errcheck
 go get -u github.com/lukehoban/go-outline # for go-imenu
