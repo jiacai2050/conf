@@ -12,8 +12,7 @@
   :after rust-mode
   :if (executable-find "racer")
   :hook ((rust-mode . racer-mode)
-         (racer-mode . eldoc-mode)
-         (racer-mode . company-mode))
+         (racer-mode . eldoc-mode))
   :bind (:map rust-mode-map
               ("TAB" . company-indent-or-complete-common)))
 

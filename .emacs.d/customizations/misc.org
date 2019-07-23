@@ -82,16 +82,17 @@ opam install tuareg merlin utop
 ;;   (setq magithub-clone-default-directory "~/codes/git"))
 
 (use-package restclient
-  ;; since restclient isn't shared among in elpa, so download it and load locally
-  ;; default-directory variable = directory of current buffer
-  :load-path "~/.emacs.d/vendor"
+  :load-path "~/.emacs.d/vendor/restclient"
   :mode ("\\.api\\'" . restclient-mode))
 
 (use-package protobuf-mode
-  ;; since restclient isn't shared among in elpa, so download it and load locally
-  ;; default-directory variable = directory of current buffer
-  :load-path "~/.emacs.d/vendor"
+  :load-path "~/.emacs.d/vendor/protobuf-mode"
   :mode ("\\.proto\\'" . protobuf-mode))
+
+
+(use-package vmd-mode
+  :load-path  "~/.emacs.d/vendor/vmd-mode"
+  :ensure-system-package (vmd . "npm install -g vmd"))
 
 ;; https://emacs.stackexchange.com/a/32554/16450
 (setq epa-pinentry-mode 'loopback)

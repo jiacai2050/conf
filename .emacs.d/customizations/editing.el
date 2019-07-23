@@ -82,8 +82,8 @@
   :init (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
-        company-idle-delay .2
-        company-minimum-prefix-length 1
+        ;; company-idle-delay nil
+        ;; company-minimum-prefix-length 3
         company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t

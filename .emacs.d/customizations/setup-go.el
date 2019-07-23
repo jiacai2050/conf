@@ -19,9 +19,10 @@
   (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
-(use-package company-go
+(use-package go-complete
   :after company
-  :init (add-to-list 'company-backends 'company-go)
+  :config
+  (add-hook 'completion-at-point-functions 'go-complete-at-point)
   )
 
 (use-package go-errcheck

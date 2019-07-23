@@ -74,6 +74,8 @@
     persistent-scratch
     markdown-mode
     use-package
+    use-package-ensure-system-package
+
     ;; colorful parenthesis matching
     rainbow-delimiters
     ;; edit html tags like sexps
@@ -115,19 +117,6 @@
     (package-install p)))
 (setq use-package-always-ensure t)
 
-;; (require 'yaml-mode)
-;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;; 
-;; Adding this code will make Emacs enter yaml mode whenever you open
-;; a .yml file
-
-;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
-;; to load them.
-;;
-;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
-;; then you can add the following code to this file:
-(add-to-list 'load-path "~/.emacs.d/vendor")
-
 ;;;;
 ;; Customization
 ;;;;
@@ -161,7 +150,6 @@
 ;; These customizations change the way emacs looks and disable/enable
 ;; some user interface elements
 (load "ui.el")
-(load "restclient.el")
 
 ;; Langauage-specific
 (load "setup-org.el")
@@ -173,11 +161,5 @@
 (load "setup-go.el")
 (load "setup-rust.el")
 (org-babel-load-file "~/.emacs.d/customizations/misc.org")
-;; https://github.com/blak3mill3r/vmd-mode
-(let ((vmd-repo-dir "~/.emacs.d/vendor/vmd-mode"))
-  (when (file-exists-p vmd-repo-dir)
-    (add-to-list 'load-path vmd-repo-dir)
-    (require 'vmd-mode)
-    (global-set-key (kbd "C-c M-m") 'vmd-mode)))
-;; end
 
+;; end

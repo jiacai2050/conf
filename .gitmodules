@@ -1,3 +1,12 @@
 [submodule ".emacs.d/vendor/vmd-mode"]
 	path = .emacs.d/vendor/vmd-mode
 	url = https://github.com/blak3mill3r/vmd-mode
+[submodule "vmd-mode"]
+	path = .emacs.d/vendor/vmd-mode
+	url = https://github.com/blak3mill3r/vmd-mode
+[submodule "restclient"]
+	path = .emacs.d/vendor/restclient
+	url = https://github.com/pashky/restclient.el
+[submodule "protobuf-mode"]
+	path = .emacs.d/vendor/protobuf-mode
+	url = https://github.com/emacsmirror/protobuf-mode
