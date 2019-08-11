@@ -32,7 +32,7 @@ go get -u github.com/stamblerre/gocode # for go-eldoc/company-go
 go get -u golang.org/x/tools/cmd/goimports
 go get -u github.com/kisielk/errcheck
 go get -u github.com/lukehoban/go-outline # for go-imenu
-
+go get -u  golang.org/x/tools/cmd/gorename
 
 # rust setup
 

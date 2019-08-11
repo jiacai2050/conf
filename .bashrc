@@ -44,9 +44,12 @@ alias e='emacsclient -t -a ""'
 export GOPATH="$HOME/code/go"
 export GO111MODULE=auto
 export GOPROXY=https://goproxy.io
+# go REPL
+alias yaegi='rlwrap yaegi'
 
-export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
-export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+# export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
+# export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
 export PATH=$PATH:$HOME/.cargo/bin:$GOPATH/bin
 if command_exists rustc; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"

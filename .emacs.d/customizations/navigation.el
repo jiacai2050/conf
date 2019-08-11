@@ -96,7 +96,8 @@
   (projectile-global-mode)
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'helm
-        projectile-enable-caching t))
+        ;; projectile-enable-caching t
+        ))
 
 (use-package helm-projectile
   :after (projectile helm)

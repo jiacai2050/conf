@@ -46,13 +46,6 @@
 
 ;; 以下为第三方插件配置
 
-;; comments
-(defun toggle-comment-on-line ()
-  "comment or uncomment current line"
-  (interactive)
-  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
-(global-set-key (kbd "C-;") 'toggle-comment-on-line)
-
 ;; yay rainbows!
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -82,8 +75,8 @@
   :init (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
-        ;; company-idle-delay nil
-        ;; company-minimum-prefix-length 3
+        company-idle-delay .3
+        company-begin-commands '(self-insert-command)
         company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
@@ -260,3 +253,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (use-package yasnippet-snippets
   :after yasnippet
   :ensure t)
+
+(use-package iedit
+  :config
+  (my/global-map-and-set-key "C-;" 'iedit-mode)
+  )
