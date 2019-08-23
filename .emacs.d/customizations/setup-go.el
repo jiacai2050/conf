@@ -54,7 +54,9 @@
 (use-package go-playground
   :after go-mode
   :config
-  (setq go-playground-basedir "~/code/go/src/playground"))
+  (setq go-playground-basedir "~/code/go/src/playground")
+  (my/global-map-and-set-key "C-R" 'go-playground-exec)
+  )
 
 (use-package go-rename
   :after go-mode

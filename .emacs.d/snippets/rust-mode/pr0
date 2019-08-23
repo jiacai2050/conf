@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pr0
+# key: pr0
+# --
+println!("$1");
+$0

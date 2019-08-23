@@ -1,6 +1,6 @@
 {:user {:plugins [[lein-try "0.4.3"]
                   [com.gfredericks/lein-shorthand "0.4.1"]
-                  [venantius/ultra "0.6.0"]
+                  ;; [venantius/ultra "0.6.0"]
                   [jonase/eastwood "0.3.5"]
                   ]
         :dependencies [[alembic "0.3.2"]
@@ -20,10 +20,7 @@
                        }}
         :aliases {"lint" ["eastwood"]}
         ;; :ultra {:repl false}
-         ;;:repositories [["clojars" {:url "https://mirrors.ustc.edu.cn/clojars"}]]
-        ;; :repositories [["clojars" {:url "https://mirrors.tuna.tsinghua.edu.cn/clojars/"}]]
-        ;; :mirrors {#"clojars"
-        ;;   {:name "Clojar Mirror"
-        ;;    :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"
-        ;;    :repo-manager true}}
+        :repositories {"clojars" "https://mirrors.tuna.tsinghua.edu.cn/clojars"
+                       "central" "https://mirrors.huaweicloud.com/repository/maven/"
+                       "tencent" "https://mirrors.cloud.tencent.com/nexus/repository/maven-public"}
         }}

@@ -18,7 +18,9 @@
 
 (use-package cargo
   :after rust-mode
-  :hook ((rust-mode . cargo-minor-mode)))
+  :hook ((rust-mode . cargo-minor-mode))
+  :config
+  (setq cargo-process--command-flags " --nocapture"))
 
 (provide 'setup-rust)
 ;;; setup-rust.el ends here

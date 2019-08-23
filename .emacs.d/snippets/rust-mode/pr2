@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: pr2
+# key: pr2
+# --
+println!("$1 = {:?}, $2 = {:?}", $3, $4);
+$0
