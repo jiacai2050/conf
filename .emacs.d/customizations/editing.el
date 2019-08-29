@@ -256,5 +256,14 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (use-package iedit
   :config
-  (my/global-map-and-set-key "C-;" 'iedit-mode)
+  (my/global-map-and-set-key "C-;" 'iedit-mode))
+
+(use-package symbol-overlay
+  :config (setq symbol-overlay-scope t)
+  :bind (
+         ("M-i" . symbol-overlay-put)
+         ("<f7>" . symbol-overlay-mode)
+         ("<f8>" . symbol-overlay-remove-all))
   )
+
+;;; editing.el ends here

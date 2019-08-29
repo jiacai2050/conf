@@ -19,6 +19,9 @@
 (use-package ox-gfm
   :after org)
 
+(use-package htmlize
+  :after org)
+
 (use-package org
   :bind (:map org-mode-map
               ("C-c s" . org-table-sort-lines)
@@ -65,6 +68,21 @@
            :publishing-directory "~/Documents/public_notes"
            :recursive t
            :publishing-function org-publish-attachment))))
+
+(use-package org-download
+  :ensure-system-package (pngpaste . "brew install pngpaste")
+  :bind (:map org-mode-map
+              ("C-c v" . org-download-screenshot)
+              ("C-c d" . org-download-delete))
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  (setq-default org-download-heading-lvl nil
+                org-download-image-dir "./img"
+                ;; org-download-screenshot-method "screencapture -i %s"
+                org-download-image-org-width 600
+                org-download-screenshot-method "pngpaste %s"
+                org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
+  (setq org-download-annotate-function (lambda (link) "")))
 
 (when (display-graphic-p)
   (cnfonts-enable)
