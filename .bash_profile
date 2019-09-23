@@ -57,6 +57,10 @@ else
     export PIP_REQUIRE_VIRTUALENV=true
 fi
 
+export GOENV_DISABLE_GOPATH=1
+export GOPATH="$HOME/code/go"
+eval "$(goenv init -)"
+
 # brew
 # https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles

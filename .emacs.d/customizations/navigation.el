@@ -93,10 +93,16 @@
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
   :config
-  (projectile-global-mode)
+  (projectile-mode)
+  (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
+
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'helm
         ;; projectile-enable-caching t
+        projectile-project-root-files-functions #'(projectile-root-top-down
+                                                   projectile-root-top-down-recurring
+                                                   projectile-root-bottom-up
+                                                   projectile-root-local)
         ))
 
 (use-package helm-projectile

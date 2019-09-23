@@ -1,4 +1,6 @@
 
+;; this is required when symlink project outside GOPATH into it
+(setq vc-follow-symlinks nil)
 
 (use-package go-mode
   :mode ("\\.go\\'" . go-mode)
@@ -17,18 +19,18 @@
               ("M-." . godef-jump)))
 
 (use-package go-eldoc
+  :after go-mode
   :ensure-system-package (gocode . "go get -u github.com/stamblerre/gocode")
   :config (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
-(use-package company-go
-  :after company
-  :ensure-system-package (gocode . "go get -u github.com/stamblerre/gocode")
-  :config
-  (add-hook 'go-mode-hook (lambda ()
-                          (set (make-local-variable 'company-backends) '(company-go))
-                          (company-mode)))
-)
+;; (use-package company-go
+;;   :after (company go-eldoc)
+;;   :config
+;;   (add-hook 'go-mode-hook (lambda ()
+;;                           (set (make-local-variable 'company-backends) '(company-go))
+;;                           (company-mode)))
+;; )
 
 (use-package go-errcheck
   :after go-mode

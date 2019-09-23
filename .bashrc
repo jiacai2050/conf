@@ -42,9 +42,6 @@ alias gc='git clone '
 alias e='emacsclient -t -a ""'
 alias tailf='tail -F '
 
-export GOPATH="$HOME/code/go"
-export GO111MODULE=auto
-export GOPROXY=https://goproxy.io
 # go REPL
 alias yaegi='rlwrap yaegi'
 
