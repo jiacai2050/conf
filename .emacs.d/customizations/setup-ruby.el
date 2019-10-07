@@ -1,12 +1,25 @@
+(use-package ruby-mode
+  :mode ("\\.rake$"
+         "\\.gemspec$"
+         "\\.ru$"
+         "\\.cap$"
+         "\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file$"
+         ;; "Rakefile$"
+         ;; "Gemfile$"
+         ;; "Capfile$"
+         ;; "Vagrant$"
+         ;; "Guardfile$"
+         ))
 
-(require 'ruby-end)
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
+(use-package robe
+  :after ruby-mode
+  :init
+  (progn
+    (add-hook 'ruby-mode-hook 'robe-mode)
+    (eval-after-load 'company
+      '(push 'company-robe company-backends))
+    ))
 
-(add-to-list 'auto-mode-alist
-             '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode))
+(use-package ruby-end)
 
-(require 'flymake-ruby)
-(add-hook 'enh-ruby-mode-hook 'flymake-ruby-load)
-(add-hook 'enh-ruby-mode-hook 'robe-mode)
-
+(use-package inf-ruby)

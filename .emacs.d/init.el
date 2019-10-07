@@ -26,7 +26,6 @@
   '(;; makes handling lisp expressions much, much easier
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
-    smartparens
     ;; Enhances M-x to allow easier execution of commands. Provides
     ;; a filterable list of possible commands in the minibuffer
     ;; http://www.emacswiki.org/emacs/Smex
@@ -34,53 +33,17 @@
 
     ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
     slime
-    ;; ruby
-    robe
-    enh-ruby-mode
-    ruby-end
-    flymake-ruby
-    ;; python
-    elpy
-    pyenv-mode
-    ;; js
-    nodejs-repl
-    js2-mode
-    ;; misc
-    ;; project navigation
-    projectile
-    ag
-    yaml-mode
-    ;; https://github.com/rolandwalker/minimal-session-saver
-    ;; minimal-session-saver
-    ;; https://github.com/Fanael/persistent-scratch/
-    persistent-scratch
+
     markdown-mode
     use-package
     use-package-ensure-system-package
 
     ;; colorful parenthesis matching
     rainbow-delimiters
-    ;; edit html tags like sexps
-    tagedit
     evil-numbers
-    expand-region
-    company
-    multiple-cursors
-    ;; https://github.com/justbur/emacs-which-key
-    which-key
-    ;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
-    magit
-    git-link
-    ;; magithub
     ;; super convenient for cut & paste
     browse-kill-ring
     kill-ring-search
-
-    ;; org
-    ;; https://emacs-china.org/t/topic/440
-    cnfonts
-    org-bullets
-    ox-gfm
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user

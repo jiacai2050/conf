@@ -19,7 +19,9 @@
 (setq save-place-file (concat user-emacs-directory "places"))
 ;; Highlights matching parenthesis
 (show-paren-mode 1)
-
+;; This is useful for working with camel-case tokens, like names of
+;; Java classes (e.g. JavaClassName)
+(global-subword-mode)
 ;; Key binding to use "hippie expand" for text autocompletion
 ;; http://www.emacswiki.org/emacs/HippieExpand
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -191,6 +193,8 @@
   :config
   (define-key mc/keymap (kbd "<return>") nil))
 
+(use-package expand-region)
+
 (defun my/map-key (key)
   "Map KEY from escape sequence \"\e[emacs-KEY\."
   (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
@@ -216,6 +220,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 
 
+
+
 ;; (desktop-save-mode 1)
 ;; (setq history-length 250)
 ;; (require 'minimal-session-saver)
@@ -232,7 +238,9 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (use-package smartparens
   :config (require 'smartparens-config)
-  :hook ((c++-mode c-mode python-mode enh-ruby-mode js2-mode tuareg-mode go-mode rust-mode) . smartparens-mode))
+  :hook ((c++-mode c-mode python-mode
+                   ruby-mode js2-mode tuareg-mode
+                   go-mode rust-mode) . smartparens-mode))
 
 (use-package yaml-mode
   :mode "\\.yml\\|ymal\\'")

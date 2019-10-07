@@ -1,26 +1,4 @@
 * Languages
-** Python
-- https://github.com/jorgenschaefer/elpy
-#+BEGIN_SRC shell
-pip install jedi flake8 autopep8
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-(use-package anaconda-mode
-  :hook
-  (python-mode . anaconda-mode)
-  (python-mode . anaconda-eldoc-mode))
-
-(use-package company-anaconda
-  :after company
-  :config
-  (add-to-list 'company-backends '(company-anaconda :with company-capf)))
-
-(use-package elpy
-  :config
-  (elpy-enable)
-  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-  (define-key elpy-mode-map (kbd "M-,") 'xref-pop-marker-stack))
-#+END_SRC
 ** Ocaml
 - https://github.com/ocaml/merlin/wiki/emacs-from-scratch
 #+BEGIN_SRC shell
@@ -64,9 +42,11 @@ opam install tuareg merlin utop
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
 (setq enable-local-variables :safe)
 
+;; https://github.com/justbur/emacs-which-key
 (use-package which-key
   :config (which-key-mode))
 
+;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
 (use-package magit
   :bind ("C-x g" . magit-status))
 

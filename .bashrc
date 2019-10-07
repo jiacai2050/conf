@@ -44,6 +44,7 @@ alias tailf='tail -F '
 
 # go REPL
 alias yaegi='rlwrap yaegi'
+alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 
 # export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 # export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"

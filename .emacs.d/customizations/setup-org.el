@@ -84,9 +84,12 @@
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
 
-(when (display-graphic-p)
-  (cnfonts-enable)
-  (setq cnfonts-profiles
-        '("program" "org-mode" "read-book"))
-  (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
-  (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize))
+;; https://emacs-china.org/t/topic/440
+(use-package cnfonts
+  :config
+  (when (display-graphic-p)
+    (cnfonts-enable)
+    (setq cnfonts-profiles
+          '("program" "org-mode" "read-book"))
+    (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
+    (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize)))

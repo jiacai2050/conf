@@ -105,6 +105,10 @@
                                                    projectile-root-local)
         ))
 
+(use-package ag
+  :ensure-system-package (ag . "brew install the_silver_searcher")
+  )
+
 (use-package helm-projectile
   :after (projectile helm)
   ;; :bind ("C-c f" . helm-projectile-find-file)

@@ -6,9 +6,6 @@
   :mode ("\\.clj$" "\\.cljs$" "\\.cljc$" "\\.edn$" "\\.cljx$")
   :config
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  ;; This is useful for working with camel-case tokens, like names of
-  ;; Java classes (e.g. JavaClassName)
-  (add-hook 'clojure-mode-hook 'subword-mode)
   ;; syntax hilighting for midje
   (add-hook 'clojure-mode-hook
             (lambda ()
