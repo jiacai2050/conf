@@ -41,7 +41,7 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(setq electric-indent-mode nil)
+(electric-indent-mode)
 (setq kill-do-not-save-duplicates t)
 ;; https://stackoverflow.com/a/24639415/2163429
 (setenv "LANG" "en_US.UTF-8")
@@ -236,16 +236,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   (ignore-errors
     (persistent-scratch-setup-default)))
 
-(use-package smartparens
-  :config (require 'smartparens-config)
-  :hook ((c++-mode c-mode python-mode
-                   ruby-mode js2-mode tuareg-mode
-                   go-mode rust-mode) . smartparens-mode))
-
 (use-package yaml-mode
   :mode "\\.yml\\|ymal\\'")
-
-(electric-indent-mode)
 
 (use-package flycheck
   :ensure t

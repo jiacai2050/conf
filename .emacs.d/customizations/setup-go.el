@@ -3,6 +3,7 @@
 (setq vc-follow-symlinks nil)
 
 (use-package go-mode
+  ;; :load-path "~/.emacs.d/vendor/go-mode"
   :mode ("\\.go\\'" . go-mode)
   :ensure-system-package
   ((goimports . "go get -u golang.org/x/tools/cmd/goimports")
@@ -17,20 +18,6 @@
               ("C-c C-g" . go-goto-imports)
               ("C-c C-k" . godoc)
               ("M-." . godef-jump)))
-
-(use-package go-eldoc
-  :after go-mode
-  :ensure-system-package (gocode . "go get -u github.com/stamblerre/gocode")
-  :config (add-hook 'go-mode-hook 'go-eldoc-setup))
-
-
-;; (use-package company-go
-;;   :after (company go-eldoc)
-;;   :config
-;;   (add-hook 'go-mode-hook (lambda ()
-;;                           (set (make-local-variable 'company-backends) '(company-go))
-;;                           (company-mode)))
-;; )
 
 (use-package go-errcheck
   :after go-mode
@@ -51,20 +38,23 @@
               ("C-c C-t" . go-test-current-test)
               ("C-c C-p" . go-test-current-project)
               ("C-c C-b" . go-test-current-benchmark)
-              ("C-x x" . go-run)))
+              ("C-x x" . go-run))
+  :config
+  (setq go-test-verbose t))
 
 (use-package go-playground
-  :after go-mode
   :config
   (setq go-playground-basedir "~/code/go/src/playground")
-  (my/global-map-and-set-key "C-R" 'go-playground-exec)
+  (defun my/go-playground-hook ()
+    (my/global-map-and-set-key "C-R" 'go-playground-exec))
+  
+  (add-hook 'go-playground-mode-hook 'my/go-playground-hook)
   )
 
 (use-package go-rename
   :after go-mode
   :ensure-system-package (gorename . "go get -u golang.org/x/tools/cmd/gorename")
   :bind (:map go-mode-map
-              ("C-c C-r" . go-rename)
-              ))
+              ("C-c C-r" . go-rename)))
 
 ;; https://github.com/abrochard/emacs-config/blob/master/configuration.org#go
