@@ -19,3 +19,4 @@ transient/
 tutorial/
 /customizations/flycheck_editing.el
 .lsp-session*
+flycheck*

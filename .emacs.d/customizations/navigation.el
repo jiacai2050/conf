@@ -94,7 +94,8 @@
   :bind ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
-  (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
+  ;; (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
+  ;; (projectile-register-project-type 'rust '("Cargo.toml"))
 
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'helm

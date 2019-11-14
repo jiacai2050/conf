@@ -24,13 +24,14 @@
   :after rust-mode
   :config (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 
-(use-package racer
-  :after rust-mode
-  :if (executable-find "racer")
-  :hook ((rust-mode . racer-mode)
-         (racer-mode . eldoc-mode))
-  :bind (:map rust-mode-map
-              ("TAB" . company-indent-or-complete-common)))
+;; use lsp-mode instead
+;; (use-package racer
+;;   :after rust-mode
+;;   :if (executable-find "racer")
+;;   :hook ((rust-mode . racer-mode)
+;;          (racer-mode . eldoc-mode))
+;;   :bind (:map rust-mode-map
+;;               ("TAB" . company-indent-or-complete-common)))
 
 (use-package cargo
   :after rust-mode

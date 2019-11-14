@@ -13,12 +13,10 @@
 
 (use-package robe
   :after ruby-mode
-  :init
-  (progn
-    (add-hook 'ruby-mode-hook 'robe-mode)
-    (eval-after-load 'company
-      '(push 'company-robe company-backends))
-    ))
+  :hook ((ruby-mode . robe-hook))
+  :config
+  (add-hook 'ruby-mode-hook (lambda ()
+                              (push 'company-robe company-backends))))
 
 (use-package ruby-end)
 
