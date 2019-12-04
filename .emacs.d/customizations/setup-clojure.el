@@ -40,22 +40,25 @@
 (use-package clojure-mode-extra-font-locking
   :after clojure-mode)
 
-(use-package clj-refactor
-  :after cider
-  :config
-  (progn (cljr-add-keybindings-with-prefix "C-c C-m")
-         (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
+;; (use-package clj-refactor
+;;   :after cider
+;;   :config
+;;   (progn (cljr-add-keybindings-with-prefix "C-c C-m")
+;;          (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
 
 (use-package cider
   :after clojure-mode
+  :pin melpa-stable
   :config
   (progn
+    ;; https://docs.cider.mx/cider/0.23/repl/configuration.html#_set_ns_in_repl
+    (setq cider-repl-require-ns-on-set t)
     (setq cider-repl-pop-to-buffer-on-connect t)
     (setq cider-show-error-buffer t)
     (setq cider-auto-select-error-buffer t)
     (setq cider-repl-history-file "~/.emacs.d/cider-history")
     (setq cider-repl-wrap-history t)
-    (setq cider-default-cljs-repl 'figwheel)
+    ;; (setq cider-default-cljs-repl 'figwheel)
     (add-hook 'cider-repl-mode-hook 'paredit-mode)
     (add-hook 'cider-mode-hook #'eldoc-mode)
 
@@ -85,7 +88,7 @@
       (letrec ((lein-params (concat "with-profile +" profile " repl :headless")))
         (message "lein-params set to: %s" lein-params)
         (set-variable 'cider-lein-parameters lein-params)
-        (cider-jack-in)
+        (cider-jack-in '())
         (set-variable 'cider-lein-parameters "repl :headless")))
 
     )

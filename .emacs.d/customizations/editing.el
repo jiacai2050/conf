@@ -83,11 +83,12 @@
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
         company-dabbrev-downcase nil
-         company-dabbrev-ignore-case nil
-        company-backends '(company-capf
+        company-dabbrev-ignore-case nil
+        company-backends '(company-dabbrev-code
+                           ;; company-capf
+                           (company-gtags company-etags
+                                          company-keywords)
                            company-files
-                           (company-dabbrev-code company-gtags company-etags
-                                                 company-keywords)
                            company-dabbrev))
 
   :bind (:map company-active-map

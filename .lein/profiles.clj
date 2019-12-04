@@ -1,11 +1,10 @@
 {:user {:plugins [[lein-try "0.4.3"]
                   [com.gfredericks/lein-shorthand "0.4.1"]
                   ;; [venantius/ultra "0.6.0"]
-                  [jonase/eastwood "0.3.5"]
-                  ]
+                  [jonase/eastwood "0.3.5"]]
+
         :dependencies [[alembic "0.3.2"]
-                       [vvvvalvalval/scope-capture "0.3.2"]
-                       ]
+                       [vvvvalvalval/scope-capture "0.3.2"]]
         :shorthand {. {pp clojure.pprint/pprint
                        distill alembic.still/distill
                        doc clojure.repl/doc
@@ -20,7 +19,10 @@
                        }}
         :aliases {"lint" ["eastwood"]}
         ;; :ultra {:repl false}
-        :repositories {"clojars" "https://mirrors.tuna.tsinghua.edu.cn/clojars"
-                       "central" "https://mirrors.huaweicloud.com/repository/maven/"
-                       "tencent" "https://mirrors.cloud.tencent.com/nexus/repository/maven-public"}
-        }}
+        :repositories [["tencent" "https://mirrors.cloud.tencent.com/nexus/repository/maven-public"]]
+        :plugin-repositories ^:replace [["tsing-clojars-pl" "https://mirrors.tuna.tsinghua.edu.cn/clojars"
+                                         "hw-central-pl" "https://mirrors.huaweicloud.com/repository/maven/"]]
+        :mirrors {"central" {:name "hw-central"
+                             :url "https://mirrors.huaweicloud.com/repository/maven/"}
+                  #"clojars" {:name "tsinghua-clojars"
+                              :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}}}}

@@ -11,11 +11,7 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # for ctrl-x e
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
-# Deprecated: use __git_ps1 env instead
-# parse_git_branch() {
-#      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-# }
-export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\$(__git_ps1)$ "
+export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${http_proxy}\$(__git_ps1)$ "
 
 function proxy_off(){
     unset http_proxy
@@ -42,10 +38,6 @@ alias gc='git clone '
 alias e='emacsclient -t -a ""'
 alias tailf='tail -F '
 
-# go REPL
-alias yaegi='rlwrap yaegi'
-alias gobx='GOOS=linux GOARCH=amd64 go build -v '
-
 # export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 # export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
 export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
@@ -53,4 +45,14 @@ export PATH=$PATH:$HOME/.cargo/bin:$GOPATH/bin
 if command_exists rustc; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
+
+# go
+export GOPATH="$HOME/code/go"
+export GO111MODULE=on
+export GOPROXY="https://goproxy.cn,direct"
+export GOPRIVATE=gitlab.alipay-inc.com,gitlab.alibaba-inc.com
+export PATH=$PATH:$GOPATH/bin
+# REPL
+alias yaegi='rlwrap yaegi'
+alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 

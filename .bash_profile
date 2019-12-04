@@ -26,6 +26,7 @@ fi
 
 # brew install nvm
 export NVM_DIR="$HOME/.nvm"
+export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
 [[ -s "$NVM_DIR" ]] && source "/usr/local/opt/nvm/nvm.sh"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
@@ -57,10 +58,6 @@ else
     export PIP_REQUIRE_VIRTUALENV=true
 fi
 
-export GOENV_DISABLE_GOPATH=1
-export GOPATH="$HOME/code/go"
-eval "$(goenv init -)"
-
 # brew
 # https://lug.ustc.edu.cn/wiki/mirrors/help/homebrew-bottles
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
@@ -68,7 +65,16 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 # ocaml
 [ -r ~/.opam/opam-init/init.sh ] && . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
+# goenv
+export GOENV_ROOT="$HOME/.goenv/"
+if [[ -s "$GOENV_ROOT" ]]; then
+  export GOENV_DISABLE_GOPATH=1
+  eval "$(goenv init -)"
+fi 
+
 # fix Inappropriate ioctl for device
 # https://stackoverflow.com/a/41054093/2163429
 export GPG_TTY=$(tty)
 export GRADLE_HOME=/usr/local/opt/gradle/libexec
+
+alias bs='brew services'
