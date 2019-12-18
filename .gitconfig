@@ -21,3 +21,5 @@
 	m = merge
 [core]
 	editor = emacsclient -t -a=\\\"\\\"
+[url "git@gitlab.alipay-inc.com:"]
+	insteadOf = http://gitlab.alipay-inc.com

@@ -1,3 +1,6 @@
 bin
 pkg
 env
+git
+registry
+.package-cache

@@ -19,6 +19,8 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
 (setq recentf-max-saved-items 150)
+(global-set-key (kbd "C-u") 'scroll-down-command)
+(global-set-key (kbd "C-i") 'scroll-up-command)
 
 (defun my/helm-hide-minibuffer-maybe ()
   "Hide minibuffer contents in a Helm session.

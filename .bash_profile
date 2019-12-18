@@ -27,7 +27,7 @@ fi
 # brew install nvm
 export NVM_DIR="$HOME/.nvm"
 export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
-[[ -s "$NVM_DIR" ]] && source "/usr/local/opt/nvm/nvm.sh"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 # curl -sSL https://get.rvm.io | bash -s stable

@@ -10,10 +10,14 @@ link_dotfiles_if_necessary () {
 }
 
 set -x
+install_emacs() {
+  # https://github.com/d12frosted/homebrew-emacs-plus
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus --without-spacemacs-icon
+}
 install_java() {
-  brew tap caskroom/versions
-  brew cask install java8 intellij-idea-ce
-  brew install jenv maven gradle leiningen
+  brew cask install adoptopenjdk8 intellij-idea-ce
+  brew install jenv maven clojure leiningen
 }
 install_cpp() {
   # http://www.gnu.org/software/global/
@@ -60,10 +64,12 @@ install_dbgui() {
 install_vm() {
   brew cask install vagrant docker
   vagrant plugin install vagrant-disksize
+  vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box --name tsing/trusty
+
 }
 
 install_life() {
-  brew cask install iterm2 firefox google-chrome chromium  licecap the-unarchiver
+  brew cask install iterm2 tmux firefox google-chrome chromium  licecap the-unarchiver
 }
 case $1 in
   "link")
@@ -82,6 +88,9 @@ case $1 in
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
     command_exists brew || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    ;;
+  "sm")
+    git submodule update --init
     ;;
   *)
     CMD=install_$1

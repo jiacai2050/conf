@@ -4,7 +4,7 @@
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
                          ;; ("melpa-stable2" . "https://stable.melpa.org/packages/")
-                         ;; ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
                          ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 
 
