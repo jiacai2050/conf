@@ -185,6 +185,12 @@
     (insert (format "%f" raw-size))
     (deactivate-mark)))
 
+(defun my/reformat-xml ()
+  (interactive)
+  (save-excursion
+    (sgml-pretty-print (point-min) (point-max))
+    (indent-region (point-min) (point-max))))
+
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
@@ -196,10 +202,17 @@
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
-;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
 (use-package multiple-cursors
-  :config
-  (define-key mc/keymap (kbd "<return>") nil))
+  :bind (("C-c c l" . mc/edit-lines)
+         ("C-c c e" . mc/edit-ends-of-lines)
+         ("C-c c a" . mc/edit-beginnings-of-lines)
+         ("C-c c g" . mc/mark-all-like-this)
+         ("C-c c r" . set-rectangular-region-anchor)
+         )
+  ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
+  ;; :config
+  ;; (define-key mc/keymap (kbd "<return>") nil)
+  )
 
 (use-package expand-region)
 
@@ -213,6 +226,16 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
    (my/map-key key)
    (global-set-key (kbd (concat prefix key suffix)) command))
 
+(defun my/eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429
 (my/global-map-and-set-key "C-=" 'er/expand-region)
@@ -220,15 +243,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
 (my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
 (my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-(global-set-key (kbd "C-c c l") 'mc/edit-lines)
-(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
 (global-set-key (kbd "C-c j") 'json-pretty-print)
-
-
-
-
 
 ;; (desktop-save-mode 1)
 ;; (setq history-length 250)

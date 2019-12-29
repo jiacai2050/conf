@@ -275,7 +275,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAc7Gdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAdKGdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -296,18 +296,8 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
-	<key>NSWindow Frame NSColorPanel</key>
-	<string>46 83 224 275 0 0 2560 1417 </string>
-	<key>NSWindow Frame ProfilesPanel</key>
-	<string>531 956 735 382 0 0 2560 1417 </string>
-	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>993 768 620 392 0 0 2560 1417 </string>
-	<key>NSWindow Frame SharedPreferences</key>
-	<string>210 221 1016 512 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>46 0 1394 877 0 0 1440 877 </string>
-	<key>NSWindow Frame iTerm Window 1</key>
-	<string>176 70 650 502 0 0 1440 877 </string>
+	<string>40 0 1400 877 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -911,7 +901,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 14</string>
+			<string>Monaco 12</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
@@ -2310,28 +2300,23 @@
 	</array>
 	<key>NoSyncAllAppVersions</key>
 	<array>
-		<string>3.2.8</string>
-		<string>3.3.6</string>
+		<string>3.3.7</string>
 	</array>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {2560, 1440}}</string>
+		<string>{{0, 0}, {1440, 900}}</string>
 		<key>topLeft</key>
-		<string>{714, 1113}</string>
+		<string>{421, 710}</string>
 	</dict>
-	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
-	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>E73A9BB2-9585-469D-833C-EB99E182B0DE</string>
+	<string>844751B1-CD3C-4649-B5F0-7CBC13EA6214</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
-	<real>592552663.01302302</real>
+	<real>598459289.94599605</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
 	<true/>
-	<key>NoSyncPermissionToShowTip</key>
-	<false/>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
 		<key>0</key>
@@ -2675,22 +2660,6 @@
 				<true/>
 				<key>name</key>
 				<string>currentTab.currentSession.termid</string>
-				<key>nonterminalContext</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>isTerminal</key>
-				<true/>
-				<key>name</key>
-				<string>currentTab.currentSession.terminalWindowName</string>
-				<key>nonterminalContext</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>isTerminal</key>
-				<true/>
-				<key>name</key>
-				<string>currentTab.currentSession.terminalIconName</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -3040,19 +3009,16 @@
 	</dict>
 	<key>NoSyncSearchHistory2</key>
 	<array>
-		<string>i18n</string>
-		<string>0x78c676</string>
-		<string>value_type</string>
-		<string>ceresdb-datanode-cse-</string>
-		<string>vi qvi</string>
-		<string>n2p</string>
-		<string>version2</string>
-		<string>failedlog</string>
-		<string>01DSE489XCK73YHNH7274ZX96Y</string>
-		<string>jiacai</string>
+		<string>1563339450000</string>
+		<string>1576648931000</string>
+		<string>1576649365000</string>
+		<string>query</string>
+		<string>api/query</string>
+		<string>quser</string>
+		<string>user</string>
 	</array>
-	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>575818854.581128</real>
+	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
+	<real>598286489.94576895</real>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenNoWindowsAtStartup</key>
@@ -3105,11 +3071,9 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final_new.xml?shard=97</string>
+	<string>https://iterm2.com/appcasts/final_new.xml?shard=86</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
-	<key>SULastCheckTime</key>
-	<date>2019-10-11T05:57:06Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -3138,6 +3102,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.3.6</string>
+	<string>3.3.7</string>
 </dict>
 </plist>

@@ -38,7 +38,7 @@ install_ocaml() {
   # opam init
 }
 install_go() {
-  brew install go dep
+  brew install go golangci/tap/golangci-lint
 }
 
 install_ss() {
@@ -64,8 +64,8 @@ install_dbgui() {
 install_vm() {
   brew cask install vagrant docker
   vagrant plugin install vagrant-disksize
-  vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box --name tsing/trusty
-
+  vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box --name tsing/bionic
+  # vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box --name tsing/trusty
 }
 
 install_life() {
