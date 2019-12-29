@@ -18,6 +18,7 @@ install_emacs() {
 install_java() {
   brew cask install adoptopenjdk8 intellij-idea-ce
   brew install jenv maven clojure leiningen
+  jenv enable-plugin export
 }
 install_cpp() {
   # http://www.gnu.org/software/global/

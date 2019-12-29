@@ -39,14 +39,15 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # java
 # brew install jenv
-JENV_ROOT="$HOME/.jenv"
+export JENV_ROOT=/usr/local/opt/jenv
 if [ -d "${JENV_ROOT}" ]; then
   export PATH="${JENV_ROOT}/bin:$PATH"
   eval "$(jenv init -)"
   # jenv enable-plugin export
-  # export JAVA_HOME="$(jenv javahome)" 通过 export 插件导出java_home
+  # export JAVA_HOME=$(/usr/libexec/java_home) deprecated，通过 export 插件导出java_home
+  export JAVA_HOME="$(jenv javahome)"
 fi
-# export JAVA_HOME=$(/usr/libexec/java_home) deprecated
+
 # brew install pyenv  pyenv-virtualenvwrapper pyenv-virtualenv
 # 激活 virtualenvwrapper
 # pyenv virtualenvwrapper
