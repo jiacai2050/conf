@@ -4,3 +4,4 @@ env
 git
 registry
 .package-cache
+.crates.toml
