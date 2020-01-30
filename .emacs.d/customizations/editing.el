@@ -191,6 +191,17 @@
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
+(defun my/delete-file-and-buffer (buffername)
+  "Delete the file visited by the buffer named BUFFERNAME."
+  (interactive "b")
+  (let* ((buffer (get-buffer buffername))
+         (filename (buffer-file-name buffer)))
+    (when filename
+      (delete-file filename)
+      (message "Deleted file %s" filename)
+      (kill-buffer))))
+
+(global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)

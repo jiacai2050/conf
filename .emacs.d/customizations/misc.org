@@ -53,29 +53,37 @@ opam install tuareg merlin utop
 (use-package git-link
   :bind (("C-c g l" . git-link)
          ("C-c g c" . git-link-commit)
-         ("C-c g h" . git-link-homepage)))
+         ("C-c g h" . git-link-homepage))
+  :config
+  (progn
+    (setq git-link-open-in-browser nil)
+    (add-to-list 'git-link-remote-alist
+                 '("gitee\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+                 '("gitee\\.com" git-link-commit-github)))
+)
 
-;; (use-package magithub
-;;   :after magit
-;;   :config
-;;   (magithub-feature-autoinject t)
-;;   (setq magithub-clone-default-directory "~/codes/git"))
+  ;; (use-package magithub
+  ;;   :after magit
+  ;;   :config
+  ;;   (magithub-feature-autoinject t)
+  ;;   (setq magithub-clone-default-directory "~/codes/git"))
 
-(use-package restclient
-  :load-path "~/.emacs.d/vendor/restclient"
-  :mode ("\\.api\\'" . restclient-mode))
+  (use-package restclient
+    :load-path "~/.emacs.d/vendor/restclient"
+    :mode ("\\.api\\'" . restclient-mode))
 
-(use-package protobuf-mode
-  :load-path "~/.emacs.d/vendor/protobuf-mode"
-  :mode ("\\.proto\\'" . protobuf-mode))
+  (use-package protobuf-mode
+    :load-path "~/.emacs.d/vendor/protobuf-mode"
+    :mode ("\\.proto\\'" . protobuf-mode))
 
 
-(use-package vmd-mode
-  :load-path  "~/.emacs.d/vendor/vmd-mode"
-  :ensure-system-package (vmd . "npm install -g vmd"))
+  (use-package vmd-mode
+    :load-path  "~/.emacs.d/vendor/vmd-mode"
+    :ensure-system-package (vmd . "npm install -g vmd"))
 
-;; https://emacs.stackexchange.com/a/32554/16450
-(setq epa-pinentry-mode 'loopback)
-;; (setq epa-file-encrypt-to "hello@liujiacai.net")
+  ;; https://emacs.stackexchange.com/a/32554/16450
+  (setq epa-pinentry-mode 'loopback)
+  ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
 
 #+END_SRC

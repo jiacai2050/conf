@@ -70,7 +70,7 @@ install_vm() {
 }
 
 install_life() {
-  brew cask install iterm2 tmux firefox google-chrome chromium  licecap the-unarchiver
+  brew cask install Itsycal iterm2 tmux firefox google-chrome chromium  licecap the-unarchiver
 }
 case $1 in
   "link")

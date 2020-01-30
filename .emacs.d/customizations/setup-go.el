@@ -11,8 +11,9 @@
   :init
   (setq gofmt-command "goimports"
         indent-tabs-mode t)
-  :config
-  (add-hook 'before-save-hook 'gofmt-before-save)
+  ;; use lsp-format-buffer instead
+  ;; :config
+  ;; (add-hook 'before-save-hook 'gofmt-before-save)
   :bind (:map go-mode-map
               ("C-c C-c" . compile)
               ("C-c C-g" . go-goto-imports)
