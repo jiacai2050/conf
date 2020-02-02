@@ -19,8 +19,8 @@
    ;; (bash-language-server . "npm install -g bash-language-server")
    )
   :commands (lsp lsp-deferred)
-  :config
-  (add-hook 'before-save-hook 'lsp-format-buffer)
+  ;; :config
+  ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)))

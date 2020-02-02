@@ -24,7 +24,28 @@ opam install tuareg merlin utop
     ))
 #+END_SRC
 
-*  Others
+* Gpg
+#+BEGIN_SRC emacs-lisp
+  ;; https://emacs.stackexchange.com/a/32554/16450
+  (setq epa-pinentry-mode 'loopback)
+  ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
+#+END_SRC
+* Submodule
+#+BEGIN_SRC emacs-lisp
+(use-package restclient
+  :load-path "~/.emacs.d/vendor/restclient"
+  :mode ("\\.api\\'" . restclient-mode))
+
+(use-package protobuf-mode
+  :load-path "~/.emacs.d/vendor/protobuf-mode"
+  :mode ("\\.proto\\'" . protobuf-mode))
+
+(use-package vmd-mode
+  :load-path  "~/.emacs.d/vendor/vmd-mode"
+  :ensure-system-package (vmd . "npm install -g vmd"))
+#+END_SRC
+
+* Others
 #+BEGIN_SRC emacs-lisp
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -61,29 +82,37 @@ opam install tuareg merlin utop
                  '("gitee\\.com" git-link-github))
     (add-to-list 'git-link-commit-remote-alist
                  '("gitee\\.com" git-link-commit-github)))
-)
+  )
 
-  ;; (use-package magithub
-  ;;   :after magit
-  ;;   :config
-  ;;   (magithub-feature-autoinject t)
-  ;;   (setq magithub-clone-default-directory "~/codes/git"))
+;; (use-package magithub
+;;   :after magit
+;;   :config
+;;   (magithub-feature-autoinject t)
+;;   (setq magithub-clone-default-directory "~/codes/git"))
 
-  (use-package restclient
-    :load-path "~/.emacs.d/vendor/restclient"
-    :mode ("\\.api\\'" . restclient-mode))
-
-  (use-package protobuf-mode
-    :load-path "~/.emacs.d/vendor/protobuf-mode"
-    :mode ("\\.proto\\'" . protobuf-mode))
-
-
-  (use-package vmd-mode
-    :load-path  "~/.emacs.d/vendor/vmd-mode"
-    :ensure-system-package (vmd . "npm install -g vmd"))
-
-  ;; https://emacs.stackexchange.com/a/32554/16450
-  (setq epa-pinentry-mode 'loopback)
-  ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
+(use-package chronos
+  :ensure-system-package
+  ("terminal-notifier" . "brew install terminal-notifier")
+  :config
+  (defun my/chronos-shell-notify (c)
+    "Notify expiration of timer C by running a shell command.
+https://gist.github.com/bravosierrasierra/59d6d0c1ddff46a1b87b18738cecf8a2"
+    (if (eq system-type 'darwin)
+        (chronos--shell-command "Chronos shell notification for Mac OS X"
+                                "terminal-notifier"
+                                (list "-sound" "default" "-title" "TIME OVER" "-message" (chronos--message c))
+                                )
+      (chronos--shell-command "Chronos shell notification for Linux & Windows"
+                              "notify-send"
+                              (list "-t" "3600000" "TIME OVER" (chronos--message c))))
+    ;; 24*60*60*1000 = 86400000  60*60*1000 = 3600000
+    )
+  (defun my/stop-expired-timer (c)
+    (chronos--pause c))
+  
+  (setq chronos-expiry-functions '(chronos-buffer-notify
+                                   my/chronos-shell-notify
+                                   chronos-message-notify
+                                   my/stop-expired-timer)))
 
 #+END_SRC
