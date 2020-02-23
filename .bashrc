@@ -11,17 +11,21 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # for ctrl-x e
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
-export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${http_proxy}\$(__git_ps1)$ "
+export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
 
 function proxy_off(){
+    unset all_proxy
     unset http_proxy
     unset https_proxy
     echo -e "已关闭代理"
 }
 function proxy_on() {
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.33.10,.alipay-inc.com"
-    export http_proxy="http://127.0.0.1:8118"
+    # export http_proxy="http://127.0.0.1:8118"
+    export http_proxy="socks5://127.0.0.1:1080"
+    # export http_proxy="socks5://127.0.0.1:13659"
     export https_proxy=$http_proxy
+    export all_proxy=$http_proxy
     echo -e "已开启代理"
 }
 

@@ -39,3 +39,6 @@ go get -u  golang.org/x/tools/cmd/gorename
 rustup toolchain add nightly
 rustup component add rust-src
 cargo +nightly install racer
+
+# misc
+brew install terminal-notifier

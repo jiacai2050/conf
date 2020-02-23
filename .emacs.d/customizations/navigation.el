@@ -152,7 +152,7 @@
         sr-speedbar-right-side nil    ;; put on left side
         sr-speedbar-width 30
         )
-  :bind (("C-c s o" . sr-speedbar-toggle)
+  :bind (("<f8>" . sr-speedbar-toggle)
          ("C-c s w" . sr-speedbar-select-window)
          ("C-c s r" . sr-speedbar-refresh-toggle)))
 

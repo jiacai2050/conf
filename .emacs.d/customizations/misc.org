@@ -63,6 +63,12 @@ opam install tuareg merlin utop
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
 (setq enable-local-variables :safe)
 
+;; https://stackoverflow.com/a/950553/2163429
+(global-visual-line-mode)
+;; this doesn't work as expect
+;; (setq-default truncate-lines t)
+;; (setq truncate-partial-width-windows nil)
+
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
   :config (which-key-mode))
@@ -91,8 +97,6 @@ opam install tuareg merlin utop
 ;;   (setq magithub-clone-default-directory "~/codes/git"))
 
 (use-package chronos
-  :ensure-system-package
-  ("terminal-notifier" . "brew install terminal-notifier")
   :config
   (defun my/chronos-shell-notify (c)
     "Notify expiration of timer C by running a shell command.

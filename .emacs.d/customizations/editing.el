@@ -299,10 +299,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (use-package symbol-overlay
   :config (setq symbol-overlay-scope t)
-  :bind (
-         ("M-i" . symbol-overlay-put)
-         ("<f7>" . symbol-overlay-mode)
-         ("<f8>" . symbol-overlay-remove-all))
+  :bind (("M-i" . symbol-overlay-put))
   )
 
 ;;; editing.el ends here

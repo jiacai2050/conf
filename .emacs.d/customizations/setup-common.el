@@ -43,3 +43,26 @@
   (add-hook 'lsp-mode-hook (lambda ()
                              (push 'company-lsp company-backends))))
 
+
+(use-package hideshow
+  :hook (prog-mode . hs-minor-mode)
+  :config
+  (defun my/toggle-fold ()
+    (interactive)
+    (save-excursion
+      (end-of-line)
+      (if (hs-already-hidden-p)
+          (hs-show-block)
+        (hs-hide-block))))
+  :bind (:map prog-mode-map
+              ("C-c o" . my/toggle-fold)
+              ("<f11>" . hs-hide-block)
+              ("<f12>" . hs-show-block))
+  )
+
+;; https://github.com/gregsexton/origami.el
+;; (use-package origami
+;;   :hook (prog-mode . origami-mode)
+;;   :bind (:map origami-mode-map
+;;               ("C-c o" . origami-toggle-node))
+;;   )

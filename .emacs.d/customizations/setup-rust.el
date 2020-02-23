@@ -15,7 +15,6 @@
   )
 
 (use-package rust-mode
-  :after rust-playground
   :config
   (setq rust-format-on-save t)
   )
