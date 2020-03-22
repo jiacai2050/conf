@@ -58,9 +58,14 @@
               ("C-c o" . my/toggle-fold))
   )
 
-;; https://github.com/gregsexton/origami.el
-;; (use-package origami
-;;   :hook (prog-mode . origami-mode)
-;;   :bind (:map origami-mode-map
-;;               ("C-c o" . origami-toggle-node))
-;;   )
+;; bridge to go-playground and rust-playground
+(defun my/playground-exec ()
+  (interactive)
+  (cond ((rust-playground-get-snippet-basedir)
+         (rust-playground-mode)
+         (rust-playground-exec))
+        ((string-match-p (file-truename go-playground-basedir) (file-truename (buffer-file-name)))
+         (go-playground-mode)
+         (go-playground-exec))))
+
+(my/global-map-and-set-key "C-R" 'my/playground-exec)

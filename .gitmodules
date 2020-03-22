@@ -1,6 +1,3 @@
-[submodule ".emacs.d/vendor/vmd-mode"]
-	path = .emacs.d/vendor/vmd-mode
-	url = https://github.com/blak3mill3r/vmd-mode
 [submodule "vmd-mode"]
 	path = .emacs.d/vendor/vmd-mode
 	url = https://github.com/blak3mill3r/vmd-mode
@@ -10,3 +7,6 @@
 [submodule "protobuf-mode"]
 	path = .emacs.d/vendor/protobuf-mode
 	url = https://github.com/emacsmirror/protobuf-mode
+[submodule ".emacs.d/vendor/magit"]
+	path = .emacs.d/vendor/magit
+	url = git@github.com:magit/magit.git

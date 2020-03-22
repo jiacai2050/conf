@@ -25,8 +25,8 @@ opam install tuareg merlin utop
 #+END_SRC
 
 * Gpg
+- https://emacs.stackexchange.com/a/32554/16450
 #+BEGIN_SRC emacs-lisp
-  ;; https://emacs.stackexchange.com/a/32554/16450
   (setq epa-pinentry-mode 'loopback)
   ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
 #+END_SRC
@@ -44,11 +44,13 @@ opam install tuareg merlin utop
   :load-path  "~/.emacs.d/vendor/vmd-mode"
   :ensure-system-package (vmd . "npm install -g vmd"))
 #+END_SRC
-* GIT
+* Git
+- https://magit.vc/manual/magit/Getting-started.html#Getting-started
 #+begin_src emacs-lisp
-;; https://magit.vc/manual/magit/Getting-started.html#Getting-started
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :load-path "~/.emacs.d/vendor/magit/lisp"
+  :bind (("C-x g" . magit-status)
+         ("C-c g b" . magit-blame)))
 
 (use-package git-link
   :bind (("C-c g l" . git-link)
@@ -70,6 +72,9 @@ opam install tuareg merlin utop
     (add-to-list 'git-link-commit-remote-alist
                  '("gitee\\.com" git-link-commit-github)))
   )
+
+(use-package git-timemachine
+  :bind (("C-c g t" . git-timemachine-toggle)))
 
 ;; (use-package magithub
 ;;   :after magit

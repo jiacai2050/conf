@@ -2,11 +2,7 @@
 (use-package rust-playground
   :after rust-mode
   :config
-  (setq rust-playground-basedir (expand-file-name "~/code/rust/playground"))
-  (defun my/rust-playground-hook ()
-    (my/global-map-and-set-key "M-R" 'rust-playground-exec))
-  
-  (add-hook 'rust-playground-mode-hook #'my/rust-playground-hook))
+  (setq rust-playground-basedir (expand-file-name "~/code/rust/playground")))
 
 (use-package rust-mode
   :config
