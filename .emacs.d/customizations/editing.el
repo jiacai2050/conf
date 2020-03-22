@@ -207,6 +207,7 @@
 (global-set-key (kbd "C-c i t") 'my/insert-today)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
+(global-set-key (kbd "<f12>") 'view-mode)
 (global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
 (global-set-key (kbd "C-c h u") 'my/url-decode-region)
 (global-set-key (kbd "C-c h s") 'my/storage-size->human)
@@ -301,5 +302,22 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   :config (setq symbol-overlay-scope t)
   :bind (("M-i" . symbol-overlay-put))
   )
+
+(use-package view
+  :bind (:map view-mode-map
+              (("n" . next-line)
+               ("p" . previous-line)
+               ("g" . goto-line))))
+
+;; https://github.com/doublep/logview
+(use-package logview
+  :hook (logview-mode . read-only-mode)
+    ;; (add-hook #'logview-mode-hook #'read-only-mode)
+
+  )
+
+;; https://github.com/m00natic/vlfi
+(use-package vlf
+  :config (require 'vlf-setup))
 
 ;;; editing.el ends here

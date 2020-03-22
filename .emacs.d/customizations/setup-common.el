@@ -55,9 +55,7 @@
           (hs-show-block)
         (hs-hide-block))))
   :bind (:map prog-mode-map
-              ("C-c o" . my/toggle-fold)
-              ("<f11>" . hs-hide-block)
-              ("<f12>" . hs-show-block))
+              ("C-c o" . my/toggle-fold))
   )
 
 ;; https://github.com/gregsexton/origami.el

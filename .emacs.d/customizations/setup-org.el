@@ -24,6 +24,7 @@
 
 (use-package org
   :bind (:map org-mode-map
+              ("C-c SPC" . ace-jump-mode)
               ("C-c s" . org-table-sort-lines)
               ("C-c C-c" . org-toggle-inline-images))
   :init

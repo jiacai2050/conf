@@ -19,10 +19,6 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
 (setq recentf-max-saved-items 150)
-(global-set-key (kbd "C-u") 'scroll-down-command)
-(global-set-key (kbd "C-i") 'scroll-up-command)
-;; emacs-plus 26.3 bind tab to scroll-up-command, hack it back
-(global-set-key (kbd "TAB") 'indent-for-tab-command)
 
 (defun my/helm-hide-minibuffer-maybe ()
   "Hide minibuffer contents in a Helm session.

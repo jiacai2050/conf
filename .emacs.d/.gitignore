@@ -21,3 +21,4 @@ tutorial/
 .lsp-session*
 flycheck*
 .helm-chronos-recent-timers
+logview-cache.extmap

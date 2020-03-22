@@ -81,3 +81,4 @@ export GPG_TTY=$(tty)
 export GRADLE_HOME=/usr/local/opt/gradle/libexec
 
 alias bs='brew services'
+export TZ='Asia/Shanghai'

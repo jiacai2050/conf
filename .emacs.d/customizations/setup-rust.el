@@ -3,16 +3,10 @@
   :after rust-mode
   :config
   (setq rust-playground-basedir (expand-file-name "~/code/rust/playground"))
-  ;; :hook (rust-mode . rust-playground-mode)
-  ;; :bind (:map rust-playground-mode
-  ;;             ("C-c C-c" . rust-playground-exec)
-  ;;             ("C-c b" . rust-playground-switch-between-cargo-and-main)
-  ;;             ("C-c k" . rust-playground-rm))
   (defun my/rust-playground-hook ()
-    (my/global-map-and-set-key "C-R" 'rust-playground-exec))
+    (my/global-map-and-set-key "M-R" 'rust-playground-exec))
   
-  (add-hook 'rust-playground-mode-hook #'my/rust-playground-hook)
-  )
+  (add-hook 'rust-playground-mode-hook #'my/rust-playground-hook))
 
 (use-package rust-mode
   :config
@@ -35,6 +29,8 @@
 (use-package cargo
   :after rust-mode
   :hook ((rust-mode . cargo-minor-mode))
+  :bind (:map cargo-minor-mode-map
+              (("C-c C-t" . cargo-process-current-test)))
   :config
   (setq cargo-process--command-flags "--  --nocapture"))
 
