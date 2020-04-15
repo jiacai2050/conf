@@ -305,9 +305,11 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (use-package view
   :bind (:map view-mode-map
-              (("n" . next-line)
-               ("p" . previous-line)
-               ("g" . goto-line))))
+              (("g" . goto-line)
+               ("j" . next-line)
+               ("k" . previous-line)
+               ("n" . next-logical-line)
+               ("p" . previous-logical-line))))
 
 ;; https://github.com/doublep/logview
 (use-package logview

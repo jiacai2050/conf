@@ -15,12 +15,15 @@
   ((gopls . "go get golang.org/x/tools/gopls@latest")
    (rls . "rustup component add rls rust-analysis rust-src")
    (pyls . "pip install 'python-language-server[all]'")
-   (typescript-language-server . "npm install -g typescript-language-server")
+   ;; (typescript-language-server . "npm install -g typescript-language-server")
    ;; (bash-language-server . "npm install -g bash-language-server")
    )
   :commands (lsp lsp-deferred)
-  ;; :config
+  :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
+  (setq lsp-log-io t
+        lsp-eldoc-render-all t)
+  (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)))
@@ -28,7 +31,8 @@
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
-  (setq lsp-ui-doc-position 'top
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-doc-position 'top
         lsp-ui-doc-max-width 80
         lsp-ui-sideline-show-symbol nil
         lsp-ui-sideline-show-hover nil

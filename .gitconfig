@@ -23,3 +23,5 @@
 	insteadOf = http://gitlab.alipay-inc.com
 # [commit]
 # 	gpgsign = true
+[http]
+	postBuffer = 524288000

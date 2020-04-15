@@ -20,6 +20,13 @@
 (setq recentf-max-menu-items 40)
 (setq recentf-max-saved-items 150)
 
+;; https://stackoverflow.com/a/950553/2163429
+(global-visual-line-mode)
+;; this doesn't work as expect
+;; (setq-default truncate-lines t)
+;; (setq truncate-partial-width-windows nil)
+
+
 (defun my/helm-hide-minibuffer-maybe ()
   "Hide minibuffer contents in a Helm session.
    https://github.com/emacs-helm/helm/blob/353c84076d5489b6a4085537775992226f9d5156/helm.el#L4942"
