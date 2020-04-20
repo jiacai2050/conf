@@ -70,13 +70,9 @@
 
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
-;; (setq-default cursor-type 'bar)
-(set-cursor-color "#ff7700")
-
+(setq-default cursor-type 't)
+(set-cursor-color "green")
 (global-hl-line-mode 1)
-;; (set-face-underline 'hl-line nil)
-;; (set-face-attribute hl-line-face nil :underline t)
-(custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#111")))))
 
 ;; Show line numbers
 ;; (global-linum-mode)
@@ -88,7 +84,9 @@
 (setq display-time-format "%a %H:%M %d-%B")
 
 ;; https://stackoverflow.com/a/2718543/2163429
-;; (set-face-attribute 'region nil :background "#777" :foreground "#ffffff")
+(custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
+                  '(region ((t (:background "blue")))))
+
 
 ;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424  
 ;; (custom-set-faces
@@ -106,3 +104,4 @@
 ;;  '(company-tooltip-common-selection
 ;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
 ;;     (t (:inherit company-tooltip-selection)))))
+

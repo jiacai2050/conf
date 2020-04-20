@@ -312,14 +312,13 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
                ("p" . previous-logical-line))))
 
 ;; https://github.com/doublep/logview
-(use-package logview
-  :hook (logview-mode . read-only-mode)
-    ;; (add-hook #'logview-mode-hook #'read-only-mode)
-
-  )
+;; (use-package logview
+;;   :hook (logview-mode . read-only-mode)
+;;     ;; (add-hook #'logview-mode-hook #'read-only-mode)
+;;   )
 
 ;; https://github.com/m00natic/vlfi
-(use-package vlf
-  :config (require 'vlf-setup))
+;; (use-package vlf
+;;   :config (require 'vlf-setup))
 
 ;;; editing.el ends here

@@ -66,7 +66,7 @@ opam install tuareg merlin utop
       (setq git-link-use-commit t)
       (git-link remote start end)
       (setq git-link-use-commit nil))
-    (setq git-link-open-in-browser nil)
+    (setq git-link-open-in-browser t)
     (add-to-list 'git-link-remote-alist
                  '("gitee\\.com" git-link-github))
     (add-to-list 'git-link-commit-remote-alist
@@ -109,12 +109,6 @@ opam install tuareg merlin utop
 
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
 (setq enable-local-variables :safe)
-
-;; https://stackoverflow.com/a/950553/2163429
-(global-visual-line-mode)
-;; this doesn't work as expect
-;; (setq-default truncate-lines t)
-;; (setq truncate-partial-width-windows nil)
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
