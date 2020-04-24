@@ -22,3 +22,4 @@ tutorial/
 flycheck*
 .helm-chronos-recent-timers
 logview-cache.extmap
+.places

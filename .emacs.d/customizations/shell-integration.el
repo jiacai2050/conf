@@ -22,6 +22,31 @@
   :load-path "~/.emacs.d/vendor/aweshell"
   :bind (("<f8>" . aweshell-dedicated-toggle)
          ("<f9>" . aweshell-toggle))
-  :config (when (display-graphic-p)
-            (setq aweshell-use-exec-path-from-shell nil)))
+  :config
+  (when (display-graphic-p)
+    (setq aweshell-use-exec-path-from-shell nil))
+  (setq aweshell-auto-suggestion-p nil)
+  (setq eshell-prompt-function
+        (lambda ()
+          (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
+          (concat "["
+                  (user-login-name)
+                  "@"
+                  (system-name)
+                  " "
+                  (format-time-string "%H:%M" (current-time))
+                  " "
+                  (abbreviate-file-name (eshell/pwd))
+
+                  "]\n"
+                  (when (epe-git-p)
+                    (concat "("
+                            (epe-git-branch)
+                            (epe-git-dirty)
+                            (epe-git-untracked)
+                            (let ((unpushed (epe-git-unpushed-number)))
+                              (unless (= unpushed 0)
+                                (concat ":" (number-to-string unpushed))))
+                            ")"))
+                  (if (= (user-uid) 0) "# " "$ ")))))
 

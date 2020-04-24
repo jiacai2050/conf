@@ -5,7 +5,6 @@ storage
 .node-gyp
 .npm
 .emacs.d/magithub/
-.emacs.d/places
 tramp
 projectile.cache
 .vim/.netrwhist

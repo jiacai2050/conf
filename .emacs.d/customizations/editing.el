@@ -9,14 +9,17 @@
 ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
                                                "backups"))))
-(setq auto-save-default nil)
 ;; When you visit a file, point goes to the last place where it
 ;; was when you previously visited the same file.
 ;; http://www.emacswiki.org/emacs/SavePlace
-(require 'saveplace)
-(setq-default save-place t)
-;; keep track of saved places in ~/.emacs.d/places
-(setq save-place-file (concat user-emacs-directory "places"))
+(use-package saveplace
+  :ensure nil
+  :config
+  (save-place-mode +1)
+  (setq-default save-place t)
+  (setq save-place-file (concat user-emacs-directory ".places"))
+  )
+
 ;; Highlights matching parenthesis
 (show-paren-mode 1)
 ;; This is useful for working with camel-case tokens, like names of
@@ -34,12 +37,31 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
-;; Interactive search key bindings. By default, C-s runs
-;; isearch-forward, so this swaps the bindings.
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
+(use-package autorevert
+  :ensure nil
+  :hook (after-init . global-auto-revert-mode))
+
+(use-package so-long
+  :ensure nil
+  :config (global-so-long-mode 1))
+
+(use-package isearch
+  :ensure nil
+  :bind (:map isearch-mode-map
+              ([remap isearch-delete-char] . isearch-del-char))
+  :custom
+  (isearch-lazy-count t)
+  (lazy-count-prefix-format "%s/%s ")
+  (lazy-highlight-cleanup nil)
+  :config
+  ;; Interactive search key bindings. By default, C-s runs
+  ;; isearch-forward, so this swaps the bindings.
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+  )
+
 
 (electric-indent-mode)
 (setq kill-do-not-save-duplicates t)
@@ -304,6 +326,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   )
 
 (use-package view
+  :ensure nil
   :bind (:map view-mode-map
               (("g" . goto-line)
                ("j" . next-line)
