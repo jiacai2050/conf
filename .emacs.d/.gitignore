@@ -3,7 +3,7 @@
 /cider-history
 /elpa/
 /ido.last
-/backups
+/.backups
 /auto-save-list
 /projectile-bookmarks.eld
 .mc-lists.el
@@ -23,3 +23,4 @@ flycheck*
 .helm-chronos-recent-timers
 logview-cache.extmap
 .places
+/.url

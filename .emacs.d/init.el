@@ -26,10 +26,6 @@
   '(;; makes handling lisp expressions much, much easier
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
     paredit
-    ;; Enhances M-x to allow easier execution of commands. Provides
-    ;; a filterable list of possible commands in the minibuffer
-    ;; http://www.emacswiki.org/emacs/Smex
-    ;; smex
 
     ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
     slime
@@ -66,13 +62,6 @@
 ;; Customization
 ;;;;
 (setq custom-file (concat user-emacs-directory ".custom.el"))
-
-;; https://github.com/DarwinAwardWinner/ido-completing-read-plus/issues/35#issuecomment-36456031
-;; (defvar ido-cur-item nil)
-;; (defvar ido-default-item nil)
-;; (defvar ido-cur-list nil)
-;; (defvar predicate nil)
-;; (defvar inherit-input-method nil)
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.

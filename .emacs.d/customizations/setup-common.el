@@ -22,7 +22,9 @@
   :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io t
-        lsp-eldoc-render-all t)
+        lsp-eldoc-render-all t
+        lsp-rust-server 'rust-analyzer
+        )
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)

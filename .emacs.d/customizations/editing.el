@@ -1,6 +1,10 @@
 ;; Customizations relating to editing a buffer.
 
 (setq column-number-mode t)
+(electric-indent-mode)
+(setq kill-do-not-save-duplicates t)
+;; https://stackoverflow.com/a/24639415/2163429
+(setenv "LANG" "en_US.UTF-8")
 ;; Don't use hard tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -8,7 +12,17 @@
 ;; put all backups in ~/.emacs.d/backups. More info:
 ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
-                                               "backups"))))
+                                               ".backups")))
+      version-control t
+      kept-new-versions 2
+      kept-old-versions 1
+      backup-by-copying-when-linked t
+      vc-make-backup-files t
+      delete-old-versions t)
+
+;; auto save in original file
+;; (auto-save-visited-mode +1)
+
 ;; When you visit a file, point goes to the last place where it
 ;; was when you previously visited the same file.
 ;; http://www.emacswiki.org/emacs/SavePlace
@@ -62,11 +76,6 @@
   (global-set-key (kbd "C-M-r") 'isearch-backward)
   )
 
-
-(electric-indent-mode)
-(setq kill-do-not-save-duplicates t)
-;; https://stackoverflow.com/a/24639415/2163429
-(setenv "LANG" "en_US.UTF-8")
 
 ;; 以下为第三方插件配置
 
