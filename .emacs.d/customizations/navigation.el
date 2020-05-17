@@ -66,6 +66,7 @@
 ;; you've typed in
 ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
 (use-package ido
+  :ensure nil
   :config
   ;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
   (setq ido-enable-flex-matching t
@@ -97,6 +98,10 @@
 ;; (use-package flx-ido
 ;;   :requires ido
 ;;   :config (flx-ido-mode))
+
+(use-package ido-completing-read+
+  :requires ido
+  :config (ido-ubiquitous-mode 1))
 
 (use-package ido-vertical-mode
   :requires ido

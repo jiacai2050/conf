@@ -5,9 +5,11 @@
                    go-mode rust-mode) . smartparens-mode))
 
 (use-package lsp-mode
+  :load-path "~/.emacs.d/vendor/lsp-mode"
   :hook ((go-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
          ;; (sh-mode . lsp-deferred)
          ;; (js2-mode . lsp-deferred)
          )
@@ -24,11 +26,13 @@
   (setq lsp-log-io t
         lsp-eldoc-render-all t
         lsp-rust-server 'rust-analyzer
+        lsp-prefer-capf t
         )
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
-              ("M-n" . lsp-find-references)))
+              ("M-n" . lsp-find-references)
+              ("C-c M-n" . lsp-rust-analyzer-expand-macro)))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -43,12 +47,11 @@
               ("C-c l" . lsp-ui-imenu))
   )
 
-(use-package company-lsp
-  :commands company-lsp
-  :config
-  (add-hook 'lsp-mode-hook (lambda ()
-                             (push 'company-lsp company-backends))))
-
+;; (use-package company-lsp
+;;   :commands company-lsp
+;;   :config
+;;   (add-hook 'lsp-mode-hook (lambda ()
+;;                              (push 'company-lsp company-backends))))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

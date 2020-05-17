@@ -13,3 +13,9 @@
 [submodule ".emacs.d/vendor/aweshell"]
 	path = .emacs.d/vendor/aweshell
 	url = https://github.com/manateelazycat/aweshell.git
+[submodule ".emacs.d/vendor/lsp-mode"]
+	path = .emacs.d/vendor/lsp-mode
+	url = https://gitee.com/liujiacai/lsp-mode.git
+[submodule ".emacs.d/vendor/pbcopy"]
+	path = .emacs.d/vendor/pbcopy
+	url = https://github.com/emacsfodder/pbcopy.el.git

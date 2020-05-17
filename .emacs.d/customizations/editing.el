@@ -343,6 +343,19 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
                ("n" . next-logical-line)
                ("p" . previous-logical-line))))
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+(when (eq system-type 'darwin)
+  (use-package pbcopy
+    :load-path "~/.emacs.d/vendor/pbcopy"
+    :config (turn-on-pbcopy)))
+
 ;; https://github.com/doublep/logview
 ;; (use-package logview
 ;;   :hook (logview-mode . read-only-mode)

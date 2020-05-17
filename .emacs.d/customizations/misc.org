@@ -50,7 +50,8 @@ opam install tuareg merlin utop
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
-         ("C-c g b" . magit-blame)))
+         ("C-c g b" . magit-blame))
+  :config (setq magit-completing-read-function 'magit-ido-completing-read))
 
 (use-package git-link
   :bind (("C-c g l" . git-link)

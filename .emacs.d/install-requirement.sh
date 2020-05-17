@@ -42,3 +42,4 @@ cargo +nightly install racer
 
 # misc
 brew install terminal-notifier
+brew install multimarkdown
