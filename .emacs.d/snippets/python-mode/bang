@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: bang
+# key: !
+# --
+#!/usr/bin/env python
+# coding: utf-8
+
+$0

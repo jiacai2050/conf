@@ -20,6 +20,13 @@
       vc-make-backup-files t
       delete-old-versions t)
 
+(use-package executable
+  :ensure nil
+  :config
+  (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+  (setq executable-prefix-env t))
+
+
 ;; auto save in original file
 ;; (auto-save-visited-mode +1)
 
@@ -59,22 +66,23 @@
   :ensure nil
   :config (global-so-long-mode 1))
 
-(use-package isearch
-  :ensure nil
-  :bind (:map isearch-mode-map
-              ([remap isearch-delete-char] . isearch-del-char))
-  :custom
-  (isearch-lazy-count t)
-  (lazy-count-prefix-format "%s/%s ")
-  (lazy-highlight-cleanup nil)
-  :config
-  ;; Interactive search key bindings. By default, C-s runs
-  ;; isearch-forward, so this swaps the bindings.
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-  )
+;; use ivy instead
+;; (use-package isearch
+;;   :ensure nil
+;;   :bind (:map isearch-mode-map
+;;               ([remap isearch-delete-char] . isearch-del-char))
+;;   :custom
+;;   (isearch-lazy-count t)
+;;   (lazy-count-prefix-format "%s/%s ")
+;;   (lazy-highlight-cleanup nil)
+;;   :config
+;;   ;; Interactive search key bindings. By default, C-s runs
+;;   ;; isearch-forward, so this swaps the bindings.
+;;   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+;;   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+;;   (global-set-key (kbd "C-M-s") 'isearch-forward)
+;;   (global-set-key (kbd "C-M-r") 'isearch-backward)
+;;   )
 
 
 ;; 以下为第三方插件配置

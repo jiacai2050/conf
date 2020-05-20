@@ -35,12 +35,12 @@
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
   :config
-  (projectile-mode)
+  (projectile-mode +1)
   ;; (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
   ;; (projectile-register-project-type 'rust '("Cargo.toml"))
 
   (setq projectile-switch-project-action #'projectile-find-file-dwim
-        projectile-completion-system 'ido
+        projectile-completion-system 'ivy
         ;; projectile-enable-caching t
         projectile-project-root-files-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
@@ -59,73 +59,38 @@
          ("C-c s w" . sr-speedbar-select-window)
          ("C-c s r" . sr-speedbar-refresh-toggle)))
 
-;; ido-mode allows you to more easily navigate choices. For example,
-;; when you want to switch buffers, ido presents you with a list
-;; of buffers in the the mini-buffer. As you start to type a buffer's
-;; name, ido will narrow down the list of buffers to match the text
-;; you've typed in
-;; http://www.emacswiki.org/emacs/InteractivelyDoThings
-(use-package ido
-  :ensure nil
+;; counsel ivy swiper
+(use-package counsel
+  :ensure t
   :config
-  ;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
-  (setq ido-enable-flex-matching t
-        ido-use-filename-at-point nil
-        ido-auto-merge-work-directories-length -1
-        ido-use-virtual-buffers t
-        ido-everywhere t
+  (ivy-mode +1)
+  ;; (setq enable-recursive-minibuffers t)
+  
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "(%d/%d) "
+        ivy-initial-inputs-alist nil
+        ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
+                                (t . ivy--regex-plus)
+                                )
         )
-  (ido-mode t)
-  (defun my/ido-recentf-open ()
-    "Use `ido-completing-read' to find a recent file."
+
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-s") 'swiper-isearch)
+  (global-set-key (kbd "C-r") 'swiper-isearch-backward)
+  (global-set-key (kbd "C-c g g") 'counsel-git-grep)
+
+
+  (defun my/recentf-open ()
     (interactive)
-    (let ((file (ido-completing-read "Find recent file: " (mapcar 'abbreviate-file-name recentf-list))))
+    (let ((file (ivy-read "Find recent file: " (mapcar 'abbreviate-file-name recentf-list))))
       (if (find-file file)
           (message "Opening file %s" (abbreviate-file-name file))
         (message "Aborting"))))
 
-  (global-set-key (kbd "C-x f") 'my/ido-recentf-open)
-  )
-
-;; (use-package ido-hacks
-;;   :requires ido
-;;   :config (ido-hacks-mode))
-
-;; (use-package ido-ubiquitous
-;;   :requires ido
-;;   :config (ido-ubiquitous-mode))
-
-;; (use-package flx-ido
-;;   :requires ido
-;;   :config (flx-ido-mode))
-
-(use-package ido-completing-read+
-  :requires ido
-  :config (ido-ubiquitous-mode 1))
-
-(use-package ido-vertical-mode
-  :requires ido
-  :config
-  (ido-vertical-mode)
-  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right
-        ido-vertical-show-count t
-        ido-vertical-disable-if-short nil)
-  (set-face-attribute 'ido-vertical-first-match-face nil
-                      :background nil
-                      :foreground "orange")
-  (set-face-attribute 'ido-vertical-only-match-face nil
-                      :background nil
-                      :foreground nil)
-  (set-face-attribute 'ido-vertical-match-face nil
-                      :foreground nil)
-  )
-
-(use-package smex
-  :requires ido
-  :config
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (setq smex-save-file (concat user-emacs-directory ".smex-items"))
+  (global-set-key (kbd "C-x f") 'my/recentf-open)
+  ;; (global-set-key (kbd "C-x f") 'counsel-recentf)
   )
 
 ;; Shows a list of buffers

@@ -1,0 +1,57 @@
+;; ido-mode allows you to more easily navigate choices. For example,
+;; when you want to switch buffers, ido presents you with a list
+;; of buffers in the the mini-buffer. As you start to type a buffer's
+;; name, ido will narrow down the list of buffers to match the text
+;; you've typed in
+;; http://www.emacswiki.org/emacs/InteractivelyDoThings
+(use-package ido
+  :ensure nil
+  :config
+  ;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
+  (setq ido-enable-flex-matching t
+        ido-use-filename-at-point nil
+        ido-auto-merge-work-directories-length -1
+        ido-use-virtual-buffers t
+        ido-everywhere t
+        )
+  (ido-mode t)
+  (defun my/ido-recentf-open ()
+    "Use `ido-completing-read' to find a recent file."
+    (interactive)
+    (let ((file (ido-completing-read "Find recent file: " (mapcar 'abbreviate-file-name recentf-list))))
+      (if (find-file file)
+          (message "Opening file %s" (abbreviate-file-name file))
+        (message "Aborting"))))
+
+  (global-set-key (kbd "C-x f") 'my/ido-recentf-open)
+  )
+
+(use-package ido-completing-read+
+  :requires ido
+  :config (ido-ubiquitous-mode 1))
+
+(use-package ido-vertical-mode
+  :requires ido
+  :config
+  (ido-vertical-mode)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right
+        ido-vertical-show-count t
+        ido-vertical-disable-if-short nil)
+  (set-face-attribute 'ido-vertical-first-match-face nil
+                      :background nil
+                      :foreground "orange")
+  (set-face-attribute 'ido-vertical-only-match-face nil
+                      :background nil
+                      :foreground nil)
+  (set-face-attribute 'ido-vertical-match-face nil
+                      :foreground nil)
+  )
+
+(use-package smex
+  :requires ido
+  :config
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex)
+  (setq smex-save-file (concat user-emacs-directory ".smex-items"))
+  )
+

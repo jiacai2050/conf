@@ -1,0 +1,42 @@
+
+(use-package nox
+  ;; :load-path "~/.emacs.d/vendor/nox"
+  :load-path "~/code/misc/nox"
+  :config
+  (dolist (hook (list
+                 'js-mode-hook
+                 'rust-mode-hook
+                 'python-mode-hook
+                 'ruby-mode-hook
+                 'java-mode-hook
+                 'sh-mode-hook
+                 'php-mode-hook
+                 'c-mode-common-hook
+                 'c-mode-hook
+                 'c++-mode-hook
+                 'go-mode-hook
+                 ))
+    (add-hook hook '(lambda () (nox-ensure))))
+  (add-to-list 'nox-server-programs '(rust-mode . ("rust-analyzer")))
+  )
+
+(use-package eglot
+  :config
+  (dolist (hook (list
+                 'js-mode-hook
+                 'rust-mode-hook
+                 'python-mode-hook
+                 'ruby-mode-hook
+                 'java-mode-hook
+                 'sh-mode-hook
+                 'php-mode-hook
+                 'c-mode-common-hook
+                 'c-mode-hook
+                 'c++-mode-hook
+                 'go-mode-hook
+                 ))
+    (add-hook hook '(lambda () (eglot-ensure))))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+  (setq eglot-auto-display-help-buffer t)
+  (setq eglot-put-doc-in-help-buffer t)
+  )
