@@ -1,1 +1,8 @@
+- global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
 
+* 使用的 mode
+- [[https://github.com/abo-abo/swiper][ivy]], a completion system.
+- [[https://github.com/bbatsov/projectile][projectile]], navigate between files in a project
+- [[https://magit.vc/][magit]] for git integration
+- [[https://company-mode.github.io/][company]], code completion
+- [[https://github.com/justbur/emacs-which-key][which-key]],

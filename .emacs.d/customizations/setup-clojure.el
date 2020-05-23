@@ -2,22 +2,15 @@
 ;; Clojure
 ;;;;
 
+(use-package flycheck-clj-kondo
+  )
+
 (use-package clojure-mode
+  :after flycheck-clj-kondo
   :mode ("\\.clj$" "\\.cljs$" "\\.cljc$" "\\.edn$" "\\.cljx$")
   :config
+  (require 'flycheck-clj-kondo)
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  ;; syntax hilighting for midje
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (setq inferior-lisp-program "lein repl")
-              (font-lock-add-keywords
-               nil
-               '(("(\\(facts?\\)"
-                  (1 font-lock-keyword-face))
-                 ("(\\(background?\\)"
-                  (1 font-lock-keyword-face))))
-              (define-clojure-indent (fact 1))
-              (define-clojure-indent (facts 1))))
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2)
@@ -31,10 +24,8 @@
     (rfn 2)
     (let-routes 1)
     (context 2))
-  ;; https://stackoverflow.com/a/20940456/2163429
-  (defun my/toggle-clojure-indent-style ()
-    (interactive)
-    (setq clojure-defun-style-default-indent (not clojure-defun-style-default-indent)))
+  ;; clojure-mode override ace-jump-mode
+  (define-key clojure-mode-map (kbd "C-c SPC") #'ace-jump-mode)
   )
 
 (use-package clojure-mode-extra-font-locking
@@ -48,7 +39,7 @@
 
 (use-package cider
   :after clojure-mode
-  :pin melpa-stable
+  :hook (clojure-mode . cider-mode)
   :config
   (progn
     ;; https://docs.cider.mx/cider/0.23/repl/configuration.html#_set_ns_in_repl
@@ -60,7 +51,6 @@
     (setq cider-repl-wrap-history t)
     ;; (setq cider-default-cljs-repl 'figwheel)
     (add-hook 'cider-repl-mode-hook 'paredit-mode)
-    (add-hook 'cider-mode-hook #'eldoc-mode)
 
     ;; these help me out with the way I usually develop web apps
     (defun cider-start-http-server ()
@@ -92,9 +82,18 @@
         (set-variable 'cider-lein-parameters "repl :headless")))
 
     )
+  (defun my/browse-current-ns ()
+    (interactive)
+    (cider-browse-ns (cider-current-ns)))
+
   :bind (("C-c M-RET" . cider-macroexpand-1)
-         ("C-c C-v" . cider-start-http-server)
-         ("C-M-r" . cider-ns-refresh)
-         ("C-c u" . cider-user-ns)))
+         ("C-c c s" . cider-start-http-server)
+         ("C-c c r" . cider-ns-refresh)
+         ("C-c c u" . cider-user-ns)
+         ("C-c l" . my/browse-current-ns)
+         :map cider-inspector-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
+         ))
 
 ;;; setup-clojure ends here

@@ -26,6 +26,7 @@
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   (setq executable-prefix-env t))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; auto save in original file
 ;; (auto-save-visited-mode +1)
@@ -124,11 +125,12 @@
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil
         company-backends '(company-dabbrev-code
-                           ;; company-capf
                            (company-gtags company-etags
                                           company-keywords)
                            company-files
-                           company-dabbrev))
+                           company-capf
+                           company-dabbrev
+                           ))
 
   :bind (:map company-active-map
               ("C-n" . company-select-next)
@@ -363,6 +365,15 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   (use-package pbcopy
     :load-path "~/.emacs.d/vendor/pbcopy"
     :config (turn-on-pbcopy)))
+
+(use-package smart-input-source
+  :config
+  (setq smart-input-source-english-input-source "com.apple.keylayout.US"
+        smart-input-source-other-input-source "com.apple.inputmethod.SCIM.ITABC")
+
+  (add-hook 'text-mode-hook #'smart-input-source-mode)
+
+  (add-hook 'prog-mode-hook #'smart-input-source-mode))
 
 ;; https://github.com/doublep/logview
 ;; (use-package logview

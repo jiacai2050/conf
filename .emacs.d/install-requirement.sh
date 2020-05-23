@@ -40,6 +40,9 @@ rustup toolchain add nightly
 rustup component add rust-src
 cargo +nightly install racer
 
+# clojure
+brew install borkdude/brew/clj-kondo
+
 # misc
 brew install terminal-notifier
 brew install multimarkdown

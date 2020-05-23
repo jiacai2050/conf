@@ -47,12 +47,6 @@
               ("C-c l" . lsp-ui-imenu))
   )
 
-;; (use-package company-lsp
-;;   :commands company-lsp
-;;   :config
-;;   (add-hook 'lsp-mode-hook (lambda ()
-;;                              (push 'company-lsp company-backends))))
-
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
   :config
