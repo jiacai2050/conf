@@ -8,17 +8,33 @@
 ;; Don't use hard tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-;; Emacs can automatically create backup files. This tells Emacs to
-;; put all backups in ~/.emacs.d/backups. More info:
-;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
-(setq backup-directory-alist `(("." . ,(concat user-emacs-directory
-                                               ".backups")))
-      version-control t
-      kept-new-versions 2
-      kept-old-versions 1
-      backup-by-copying-when-linked t
-      vc-make-backup-files t
-      delete-old-versions t)
+
+(use-package files
+  :ensure nil
+  :config
+  ;; Emacs can automatically create backup files. This tells Emacs to
+  ;; put all backups in ~/.emacs.d/backups. More info:
+  ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
+  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
+                                                 ".backups")))
+        version-control t
+        kept-new-versions 2
+        kept-old-versions 1
+        backup-by-copying-when-linked t
+        vc-make-backup-files t
+        delete-old-versions t)
+
+
+  ;; auto save in original file
+  ;; (auto-save-visited-mode +1)
+  (setq auto-save-default t
+        auto-save-timeout 10
+        auto-save-interval 200
+        auto-save-visited-interval 5)
+  ;; don't forget the slash at the end of your string
+  ;; https://emacs.stackexchange.com/a/17214/16450
+  (setq auto-save-file-name-transforms
+        `((".*" ,(concat user-emacs-directory ".autosaves/") t))))
 
 (use-package executable
   :ensure nil
@@ -27,10 +43,6 @@
   (setq executable-prefix-env t))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; auto save in original file
-;; (auto-save-visited-mode +1)
-
 ;; When you visit a file, point goes to the last place where it
 ;; was when you previously visited the same file.
 ;; http://www.emacswiki.org/emacs/SavePlace

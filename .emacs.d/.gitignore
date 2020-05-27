@@ -6,6 +6,7 @@ smex-items
 /ido.last
 /.backups
 /auto-save-list
+/.autosaves
 /projectile-bookmarks.eld
 .mc-lists.el
 /project-explorer-cache/
