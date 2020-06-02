@@ -302,10 +302,12 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
+	<key>NSWindow Frame NSColorPanel</key>
+	<string>40 83 224 275 0 0 2560 1417 </string>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>443 -48 799 448 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>40 0 1640 1027 0 0 1680 1027 </string>
+	<string>40 0 1634 1027 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>225 58 650 477 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -1060,18 +1062,7 @@
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
-			<array>
-				<dict>
-					<key>action</key>
-					<string>PasswordTrigger</string>
-					<key>parameter</key>
-					<string>alibaba</string>
-					<key>partial</key>
-					<false/>
-					<key>regex</key>
-					<string>password for chenxiang</string>
-				</dict>
-			</array>
+			<array/>
 			<key>Unicode Normalization</key>
 			<integer>0</integer>
 			<key>Unlimited Scrollback</key>
@@ -2557,7 +2548,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>606380976.22761798</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>16</integer>
+	<integer>19</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>598790387.49352801</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
@@ -3304,16 +3295,16 @@
 	</dict>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>t = </string>
+		<string>http_requests_counter</string>
+		<string>curl</string>
+		<string>tenant22</string>
+		<string>error</string>
+		<string>node = </string>
+		<string>1c204ce2a16d</string>
+		<string>tenantsn</string>
 		<string>query shard</string>
 		<string>delta</string>
-		<string>log_level</string>
-		<string>PROM_QUERY_LOOKBACK_DELTA</string>
-		<string>params</string>
-		<string>read</string>
-		<string>right</string>
-		<string>rayon_demo2</string>
-		<string>passwork</string>
-		<string>passs</string>
 	</array>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>598286489.94576895</real>

@@ -7,8 +7,11 @@
                        [vvvvalvalval/scope-capture "0.3.2"]
                        [spieden/spyscope "0.1.7"]
                        ;; https://github.com/Raynes/fs
-                       [me.raynes/fs "1.4.6"]]
-        :injections [(require 'spyscope.core)]
+                       [me.raynes/fs "1.4.6"]
+                       ;; https://github.com/magnars/java-time-literals
+                       [java-time-literals "2018-04-06"]]
+        :injections [(require 'spyscope.core)
+                     (require 'java-time-literals.core)]
 
         :shorthand {. {pp clojure.pprint/pprint
                        source clojure.repl/source

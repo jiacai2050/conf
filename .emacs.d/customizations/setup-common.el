@@ -23,10 +23,11 @@
   :commands (lsp lsp-deferred)
   :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
-  (setq lsp-log-io t
+  (setq lsp-log-io nil
         lsp-eldoc-render-all t
         lsp-rust-server 'rust-analyzer
         lsp-prefer-capf t
+        lsp-auto-configure t
         )
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map

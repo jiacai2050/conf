@@ -129,18 +129,15 @@
   :init (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
-        company-idle-delay .3
+        company-minimum-prefix-length 2
+        company-idle-delay .2
         company-begin-commands '(self-insert-command)
         company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-dabbrev-downcase nil
-        company-dabbrev-ignore-case nil
-        company-backends '(company-dabbrev-code
+        company-backends '((company-capf company-dabbrev-code company-files)
                            (company-gtags company-etags
                                           company-keywords)
-                           company-files
-                           company-capf
                            company-dabbrev
                            ))
 
