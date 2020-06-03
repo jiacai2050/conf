@@ -65,11 +65,11 @@
   :config
   (ivy-mode +1)
   ;; (setq enable-recursive-minibuffers t)
-  
   (setq ivy-use-virtual-buffers t
         ivy-count-format "(%d/%d) "
         ivy-initial-inputs-alist nil
         ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
+                                (my/recentf-open . ivy--regex-fuzzy)
                                 (t . ivy--regex-plus)
                                 )
         )

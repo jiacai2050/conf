@@ -9,10 +9,10 @@
 	url = https://github.com/emacsmirror/protobuf-mode
 [submodule ".emacs.d/vendor/magit"]
 	path = .emacs.d/vendor/magit
-	url = git@github.com:magit/magit.git
+	url = https://gitee.com/liujiacai/magit.git
 [submodule ".emacs.d/vendor/aweshell"]
 	path = .emacs.d/vendor/aweshell
-	url = https://github.com/manateelazycat/aweshell.git
+	url = https://gitee.com/liujiacai/aweshell.git
 [submodule ".emacs.d/vendor/lsp-mode"]
 	path = .emacs.d/vendor/lsp-mode
 	url = https://gitee.com/liujiacai/lsp-mode.git
