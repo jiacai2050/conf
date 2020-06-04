@@ -5,9 +5,8 @@
 (use-package go-mode
   ;; :load-path "~/.emacs.d/vendor/go-mode"
   :mode ("\\.go\\'" . go-mode)
-  :ensure-system-package
-  ((goimports . "go get -u golang.org/x/tools/cmd/goimports")
-   (godef . "go get -u github.com/rogpeppe/godef"))
+  ;; :ensure-system-package
+  ;; ((goimports . "go get -u golang.org/x/tools/cmd/goimports"))
   :init
   (setq gofmt-command "goimports"
         indent-tabs-mode t)
@@ -20,17 +19,17 @@
               ("C-c C-k" . godoc)
               ("M-." . godef-jump)))
 
-(use-package go-errcheck
-  :after go-mode
-  :ensure-system-package (errcheck . "go get -u github.com/kisielk/errcheck")
-  :bind (:map go-mode-map
-              ("C-c C-e" . go-errcheck)))
+;; (use-package go-errcheck
+;;   :after go-mode
+;;   :ensure-system-package (errcheck . "go get -u github.com/kisielk/errcheck")
+;;   :bind (:map go-mode-map
+;;               ("C-c C-e" . go-errcheck)))
 
-(use-package go-imenu
-  :ensure-system-package (go-outline . "go get -u github.com/lukehoban/go-outline")
-  :after go-mode
-  :config
-  (add-hook 'go-mode-hook 'go-imenu-setup))
+;; (use-package go-imenu
+;;   :ensure-system-package (go-outline . "go get -u github.com/lukehoban/go-outline")
+;;   :after go-mode
+;;   :config
+;;   (add-hook 'go-mode-hook 'go-imenu-setup))
 
 (use-package gotest
   :after go-mode

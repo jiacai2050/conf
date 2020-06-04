@@ -59,6 +59,12 @@
          ("C-c s w" . sr-speedbar-select-window)
          ("C-c s r" . sr-speedbar-refresh-toggle)))
 
+(use-package smex
+  :requires ido
+  :config
+  (smex-initialize)
+  (setq smex-save-file (concat user-emacs-directory ".smex-items")))
+
 ;; counsel ivy swiper
 (use-package counsel
   :ensure t

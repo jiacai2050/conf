@@ -18,6 +18,7 @@ install_emacs() {
 install_java() {
   brew cask install adoptopenjdk8 intellij-idea-ce
   brew install jenv maven clojure leiningen
+  brew install borkdude/brew/clj-kondo
   jenv enable-plugin export
 }
 install_cpp() {
@@ -37,9 +38,24 @@ install_ocaml() {
   brew install opam ocaml
   # https://opam.ocaml.org/doc/Install.html
   # opam init
+  # opam install tuareg merlin utop
+
 }
 install_go() {
-  brew install go golangci/tap/golangci-lint
+  brew install go
+  go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.27.0
+  go get -u golang.org/x/tools/cmd/goimports
+  go get golang.org/x/tools/gopls@latest
+}
+
+install_rust() {
+  rustup toolchain add nightly
+  rustup component add rust-src
+  # cargo +nightly install racer
+}
+
+install_misc() {
+  brew install terminal-notifier multimarkdown
 }
 
 install_ss() {
