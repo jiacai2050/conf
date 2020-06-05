@@ -12,8 +12,9 @@ link_dotfiles_if_necessary () {
 set -x
 install_emacs() {
   # https://github.com/d12frosted/homebrew-emacs-plus
-  brew tap d12frosted/emacs-plus
-  brew install emacs-plus --without-spacemacs-icon
+  # brew tap d12frosted/emacs-plus
+  # brew install emacs-plus --without-spacemacs-icon
+  echo "build from source instead"
 }
 install_java() {
   brew cask install adoptopenjdk8 intellij-idea-ce
@@ -55,7 +56,12 @@ install_rust() {
 }
 
 install_misc() {
-  brew install terminal-notifier multimarkdown
+  brew install terminal-notifier
+}
+
+install_md() {
+  npm install -g vmd
+  brew install multimarkdown
 }
 
 install_ss() {

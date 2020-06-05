@@ -3,9 +3,12 @@
 
 (setq js-indent-level 2)
 
+(use-package js-mode
+  :ensure nil
+  :mode ("\\.json\\'" . js-mode))
+
 (use-package js2-mode
   :init
-  (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
   :mode ("\\.js\\'" . js2-mode))
 
 (use-package tagedit

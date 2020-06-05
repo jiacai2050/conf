@@ -4,7 +4,7 @@ dotfiles
 > Good tools are prerequisite to the successful execution of a job.
 > 工欲善其事，必先利其器。
 
-### submodule 更新方式
+## Submodule 更新方式
 
 - https://stackoverflow.com/a/914090/2163429
 
@@ -19,7 +19,19 @@ git submodule update --init --recursive --remote
 git submodule update --init
 ```
 
-### magit
+## Emacs
+
+``` shell
+brew install mailutils libxml2
+git clone https://gitee.com/mirrors/emacs.git
+
+./autogen.sh
+./configure --with-mailutils
+export CPATH=`xcrun --show-sdk-path`/usr/include:`xcrun --show-sdk-path`/usr/include/libxml2
+make
+```
+
+### Magit
 
 通过源码编译 magit 时可能遇到
 

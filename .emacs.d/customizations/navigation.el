@@ -78,6 +78,7 @@
                                 (my/recentf-open . ivy--regex-fuzzy)
                                 (t . ivy--regex-plus)
                                 )
+        (setq ivy-extra-directories ())
         )
 
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
@@ -86,7 +87,6 @@
   (global-set-key (kbd "C-s") 'swiper-isearch)
   (global-set-key (kbd "C-r") 'swiper-isearch-backward)
   (global-set-key (kbd "C-c g g") 'counsel-git-grep)
-
 
   (defun my/recentf-open ()
     (interactive)
