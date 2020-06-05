@@ -67,7 +67,9 @@
 
 ;; counsel ivy swiper
 (use-package counsel
-  :ensure t
+  :bind (:map ivy-minibuffer-map
+              ("RET" . ivy-alt-done)
+              ("C-j" . ivy-done))
   :config
   (ivy-mode +1)
   ;; (setq enable-recursive-minibuffers t)
@@ -78,7 +80,7 @@
                                 (my/recentf-open . ivy--regex-fuzzy)
                                 (t . ivy--regex-plus)
                                 )
-        (setq ivy-extra-directories ())
+        ivy-extra-directories ()
         )
 
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
