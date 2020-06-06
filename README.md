@@ -31,6 +31,16 @@ export CPATH=`xcrun --show-sdk-path`/usr/include:`xcrun --show-sdk-path`/usr/inc
 make
 ```
 
+### Debug
+
+使用 Emacs 过程中，如果遇到报错，可以通过下面配置打印出报错的堆栈
+```
+(toggle-debug-on-quit)
+(toggle-debug-on-error)
+
+(setq debug-on-message "free variable") ;; debug for specific error message
+```
+
 ### Magit
 
 通过源码编译 magit 时可能遇到

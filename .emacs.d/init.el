@@ -4,7 +4,6 @@
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                         ;; ("melpa-stable2" . "https://stable.melpa.org/packages/")
                          ("marmalada" . "http://elpa.emacs-china.org/marmalade/")))
 
 
@@ -23,23 +22,9 @@
 ;; manually with M-x package-install
 ;; Add in your own as you wish:
 (defvar my-packages
-  '(;; makes handling lisp expressions much, much easier
-    ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-    paredit
-
-    ;; https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
-    slime
-
-    markdown-mode
+  '(
     use-package
     use-package-ensure-system-package
-
-    ;; colorful parenthesis matching
-    rainbow-delimiters
-    evil-numbers
-    ;; super convenient for cut & paste
-    browse-kill-ring
-    kill-ring-search
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user
@@ -57,6 +42,16 @@
   (when (not (package-installed-p p))
     (package-install p)))
 (setq use-package-always-ensure t)
+
+(defun my/map-key (key)
+  "Map KEY from escape sequence \"\e[emacs-KEY\."
+  (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
+
+(defun my/global-map-and-set-key (key command &optional prefix suffix)
+  "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
+PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
+   (my/map-key key)
+   (global-set-key (kbd (concat prefix key suffix)) command))
 
 ;;;;
 ;; Customization

@@ -1,8 +1,17 @@
+;; makes handling lisp expressions much, much easier
+;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
+
+(use-package paredit)
+
 (use-package smartparens
-  :config (require 'smartparens-config)
-  :hook ((c++-mode c-mode python-mode
-                   ruby-mode js2-mode tuareg-mode
-                   go-mode rust-mode) . smartparens-mode))
+     :config (require 'smartparens-config)
+     :hook ((c++-mode c-mode python-mode
+                      ruby-mode js2-mode tuareg-mode
+                      go-mode rust-mode) . smartparens-mode))
+
+(use-package flycheck
+  ;; :pin melpa-stable
+  :init (global-flycheck-mode))
 
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"

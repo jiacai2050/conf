@@ -47,10 +47,18 @@ opam install tuareg merlin utop
 * Git
 - https://magit.vc/manual/magit/Getting-started.html#Getting-started
 #+begin_src emacs-lisp
+;; magit dependencies
+(use-package magit-popup)
+(use-package with-editor)
+(use-package dash)
+(use-package transient)
+(use-package ghub)
+
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
+  :after (with-editor transient dash magit-popup ghub)
   :bind (("C-x g" . magit-status)
-         ("C-c g b" . magit-blame))
+         ("C-c g b" . magit-blame-addition))
   ;; :config (setq magit-completing-read-function 'magit-ido-completing-read)
 )
 

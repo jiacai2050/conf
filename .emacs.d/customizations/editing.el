@@ -9,6 +9,23 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
+;; Highlights matching parenthesis
+(show-paren-mode 1)
+;; This is useful for working with camel-case tokens, like names of
+;; Java classes (e.g. JavaClassName)
+(global-subword-mode)
+;; Key binding to use "hippie expand" for text autocompletion
+;; http://www.emacswiki.org/emacs/HippieExpand
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;; Lisp-friendly hippie expand
+(setq hippie-expand-try-functions-list
+      '(try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+
 (use-package files
   :ensure nil
   :config
@@ -54,23 +71,6 @@
   (setq save-place-file (concat user-emacs-directory ".places"))
   )
 
-;; Highlights matching parenthesis
-(show-paren-mode 1)
-;; This is useful for working with camel-case tokens, like names of
-;; Java classes (e.g. JavaClassName)
-(global-subword-mode)
-;; Key binding to use "hippie expand" for text autocompletion
-;; http://www.emacswiki.org/emacs/HippieExpand
-(global-set-key (kbd "M-/") 'hippie-expand)
-
-;; Lisp-friendly hippie expand
-(setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-lisp-symbol-partially
-        try-complete-lisp-symbol))
-
 (use-package autorevert
   :ensure nil
   :hook (after-init . global-auto-revert-mode))
@@ -79,51 +79,16 @@
   :ensure nil
   :config (global-so-long-mode 1))
 
-;; use ivy instead
-;; (use-package isearch
-;;   :ensure nil
-;;   :bind (:map isearch-mode-map
-;;               ([remap isearch-delete-char] . isearch-del-char))
-;;   :custom
-;;   (isearch-lazy-count t)
-;;   (lazy-count-prefix-format "%s/%s ")
-;;   (lazy-highlight-cleanup nil)
-;;   :config
-;;   ;; Interactive search key bindings. By default, C-s runs
-;;   ;; isearch-forward, so this swaps the bindings.
-;;   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-;;   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-;;   (global-set-key (kbd "C-M-s") 'isearch-forward)
-;;   (global-set-key (kbd "C-M-r") 'isearch-backward)
-;;   )
-
+(use-package view
+  :ensure nil
+  :bind (:map view-mode-map
+              (("g" . goto-line)
+               ("j" . next-line)
+               ("k" . previous-line)
+               ("n" . next-logical-line)
+               ("p" . previous-logical-line))))
 
 ;; 以下为第三方插件配置
-
-;; yay rainbows!
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-;; use 2 spaces for tabs
-(defun die-tabs ()
-  (interactive)
-  (set-variable 'tab-width 2)
-  (mark-whole-buffer)
-  (untabify (region-beginning) (region-end))
-  (keyboard-quit))
-
-;; fix weird os x kill error
-(defun ns-get-pasteboard ()
-  "Returns the value of the pasteboard, or nil for unsupported formats."
-  (condition-case nil
-      (ns-get-selection-internal 'CLIPBOARD)
-    (quit nil)))
-
-(use-package kill-ring-search
-  :config (global-set-key "\M-\C-y" 'kill-ring-search))
-(use-package browse-kill-ring
-  :config
-  (browse-kill-ring-default-keybindings))
 
 (use-package company
   :init (global-company-mode)
@@ -145,6 +110,87 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ("M-i" . company-complete-selection)))
+
+(use-package multiple-cursors
+  :bind (("C-c c l" . mc/edit-lines)
+         ("C-c c e" . mc/edit-ends-of-lines)
+         ("C-c c a" . mc/edit-beginnings-of-lines)
+         ("C-c c g" . mc/mark-all-like-this)
+         ("C-c c r" . set-rectangular-region-anchor))
+  ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
+  ;; doesn't work in GUI
+  ;; :config
+  ;; (define-key mc/keymap (kbd "<return>") nil)
+  )
+
+;; yay rainbows!
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings))
+
+(use-package expand-region)
+
+(use-package ace-jump-mode
+  :config (setq ace-jump-mode-scope 'window)
+  :bind (("C-c SPC" . ace-jump-mode)
+         ("C-x SPC" . ace-jump-mode-pop-mark)))
+
+(use-package persistent-scratch
+  :config
+  (setq persistent-scratch-autosave-interval 5)
+  (setq persistent-scratch-save-file
+        (concat user-emacs-directory
+                (if (display-graphic-p)
+                    ".persistent-scratch_gui"
+                  ".persistent-scratch_terminal")))
+  (ignore-errors
+    (persistent-scratch-setup-default)))
+
+(use-package yaml-mode
+  :mode "\\.yml\\|ymal\\'")
+
+(use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1)
+  :config
+  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :ensure t)
+
+(use-package iedit
+  :config
+  (my/global-map-and-set-key "C-;" 'iedit-mode))
+
+(use-package symbol-overlay
+  :config (setq symbol-overlay-scope t)
+  :bind (("M-i" . symbol-overlay-put)))
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+(when (eq system-type 'darwin)
+  (use-package pbcopy
+    :load-path "~/.emacs.d/vendor/pbcopy"
+    :config (turn-on-pbcopy)))
+
+;; use 2 spaces for tabs
+(defun my/die-tabs ()
+  (interactive)
+  (set-variable 'tab-width 2)
+  (mark-whole-buffer)
+  (untabify (region-beginning) (region-end))
+  (keyboard-quit))
 
 ;; 以下为自定义函数
 (defun my/rename-this-buffer-and-file ()
@@ -251,48 +297,6 @@
       (message "Deleted file %s" filename)
       (kill-buffer))))
 
-(global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
-(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
-(global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
-(global-set-key (kbd "C-c i t") 'my/insert-today)
-(global-set-key (kbd "<f5>") 'my/zoom-in)
-(global-set-key (kbd "<f6>") 'my/zoom-out)
-(global-set-key (kbd "<f12>") 'view-mode)
-(global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
-(global-set-key (kbd "C-c h u") 'my/url-decode-region)
-(global-set-key (kbd "C-c h s") 'my/storage-size->human)
-(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-
-(use-package multiple-cursors
-  :bind (("C-c c l" . mc/edit-lines)
-         ("C-c c e" . mc/edit-ends-of-lines)
-         ("C-c c a" . mc/edit-beginnings-of-lines)
-         ("C-c c g" . mc/mark-all-like-this)
-         ("C-c c r" . set-rectangular-region-anchor)
-         )
-  ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
-  ;; :config
-  ;; (define-key mc/keymap (kbd "<return>") nil)
-  )
-
-(use-package expand-region)
-(use-package ace-jump-mode
-  :config (setq ace-jump-mode-scope 'window)
-  :bind (("C-c SPC" . ace-jump-mode)
-         ("C-x SPC" . ace-jump-mode-pop-mark)
-         ))
-
-(defun my/map-key (key)
-  "Map KEY from escape sequence \"\e[emacs-KEY\."
-  (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
-
-(defun my/global-map-and-set-key (key command &optional prefix suffix)
-  "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
-PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
-   (my/map-key key)
-   (global-set-key (kbd (concat prefix key suffix)) command))
-
 (defun my/eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
@@ -303,6 +307,22 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(use-package evil-numbers
+  :bind (("C-c +" . evil-numbers/inc-at-pt)
+         ("C-c -" . evil-numbers/dec-at-pt)))
+
+(global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
+(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
+(global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
+(global-set-key (kbd "C-c i t") 'my/insert-today)
+(global-set-key (kbd "<f5>") 'my/zoom-in)
+(global-set-key (kbd "<f6>") 'my/zoom-out)
+(global-set-key (kbd "<f12>") 'view-mode)
+(global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
+(global-set-key (kbd "C-c h u") 'my/url-decode-region)
+(global-set-key (kbd "C-c h s") 'my/storage-size->human)
+(global-set-key (kbd "C-c j") 'json-pretty-print)
+
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429
 (my/global-map-and-set-key "C-=" 'er/expand-region)
@@ -310,79 +330,14 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
 (my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
 (my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c j") 'json-pretty-print)
 
-;; (desktop-save-mode 1)
-;; (setq history-length 250)
-;; (require 'minimal-session-saver)
-;; (minimal-session-saver-install-aliases)
-;; (setq minimal-session-saver-store-on-exit t)
-(use-package persistent-scratch
-  :config
-  (setq persistent-scratch-autosave-interval 5)
-  (setq persistent-scratch-save-file
-        (concat user-emacs-directory
-                (if (display-graphic-p) ".persistent-scratch_gui" ".persistent-scratch_terminal")))
-  (ignore-errors
-    (persistent-scratch-setup-default)))
+;; (use-package smart-input-source
+;;   :config
+;;   (setq smart-input-source-english-input-source "com.apple.keylayout.US"
+;;         smart-input-source-other-input-source "com.apple.inputmethod.SCIM.ITABC")
 
-(use-package yaml-mode
-  :mode "\\.yml\\|ymal\\'")
-
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-
-(use-package yasnippet
-  :ensure t
-  :init
-  (yas-global-mode 1)
-  :config
-  (add-to-list 'yas-snippet-dirs (locate-user-emacs-file "snippets")))
-
-(use-package yasnippet-snippets
-  :after yasnippet
-  :ensure t)
-
-(use-package iedit
-  :config
-  (my/global-map-and-set-key "C-;" 'iedit-mode))
-
-(use-package symbol-overlay
-  :config (setq symbol-overlay-scope t)
-  :bind (("M-i" . symbol-overlay-put))
-  )
-
-(use-package view
-  :ensure nil
-  :bind (:map view-mode-map
-              (("g" . goto-line)
-               ("j" . next-line)
-               ("k" . previous-line)
-               ("n" . next-logical-line)
-               ("p" . previous-logical-line))))
-
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
-
-(when (eq system-type 'darwin)
-  (use-package pbcopy
-    :load-path "~/.emacs.d/vendor/pbcopy"
-    :config (turn-on-pbcopy)))
-
-(use-package smart-input-source
-  :config
-  (setq smart-input-source-english-input-source "com.apple.keylayout.US"
-        smart-input-source-other-input-source "com.apple.inputmethod.SCIM.ITABC")
-
-  (add-hook 'text-mode-hook #'smart-input-source-mode)
-
-  (add-hook 'prog-mode-hook #'smart-input-source-mode))
+;;   (add-hook 'text-mode-hook #'smart-input-source-mode)
+;;   (add-hook 'prog-mode-hook #'smart-input-source-mode))
 
 ;; https://github.com/doublep/logview
 ;; (use-package logview
