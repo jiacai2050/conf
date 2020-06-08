@@ -2,14 +2,12 @@
 ;; Clojure
 ;;;;
 
-(use-package flycheck-clj-kondo
-  )
+(use-package flycheck-clj-kondo)
 
 (use-package clojure-mode
   :after flycheck-clj-kondo
-  :mode ("\\.clj$" "\\.cljs$" "\\.cljc$" "\\.edn$" "\\.cljx$")
+  :mode ("\\.clj$" "\\.cljc$" "\\.edn$" "\\.cljx$")
   :config
-  (require 'flycheck-clj-kondo)
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
   (define-clojure-indent
     (defroutes 'defun)

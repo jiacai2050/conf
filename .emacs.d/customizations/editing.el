@@ -184,6 +184,8 @@
     :load-path "~/.emacs.d/vendor/pbcopy"
     :config (turn-on-pbcopy)))
 
+(use-package carbon-now-sh)
+
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
   (interactive)

@@ -75,6 +75,9 @@
   :config
   ;; (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
   ;; (projectile-register-project-type 'rust '("Cargo.toml"))
+  (defun my/ignore-git-project (project-root)
+    (file-exists-p (expand-file-name ".git" project-root)))
+
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
@@ -82,6 +85,7 @@
                                                    projectile-root-top-down-recurring
                                                    projectile-root-bottom-up
                                                    projectile-root-local)
+        projectile-ignored-project-function #'my/ignore-git-project
         )
   (projectile-mode +1)
   )
