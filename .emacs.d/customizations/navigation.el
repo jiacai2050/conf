@@ -75,9 +75,6 @@
   :config
   ;; (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
   ;; (projectile-register-project-type 'rust '("Cargo.toml"))
-  (defun my/ignore-git-project (project-root)
-    (file-exists-p (expand-file-name ".git" project-root)))
-
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
@@ -85,8 +82,8 @@
                                                    projectile-root-top-down-recurring
                                                    projectile-root-bottom-up
                                                    projectile-root-local)
-        projectile-ignored-project-function #'my/ignore-git-project
-        )
+        projectile-ignored-project-function (lambda (project-root)
+                                              (file-exists-p (expand-file-name ".git" project-root))))
   (projectile-mode +1)
   )
 
@@ -110,3 +107,21 @@
   :bind (("<f11>" . sr-speedbar-toggle)
          ("C-c s w" . sr-speedbar-select-window)
          ("C-c s r" . sr-speedbar-refresh-toggle)))
+
+;; Customization
+(defun my/switch-to-metadata-file ()
+  (interactive)
+  (let ((basename (pcase major-mode
+                    ('go-mode "go.mod")
+                    ('rust-mode "Cargo.toml")
+                    ('clojure-mode "project.clj")
+                    ('java-mode "pom.xml")
+                    (mode nil))))
+
+    (if basename
+        (let ((metadata-dir (locate-dominating-file buffer-file-name basename)))
+          (when metadata-dir
+            (find-file (concat metadata-dir basename))))
+      (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
+
+(global-set-key (kbd "C-c b") 'my/switch-to-metadata-file)
