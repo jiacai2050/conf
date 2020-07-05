@@ -33,16 +33,19 @@
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
         lsp-eldoc-render-all nil
-        lsp-rust-server 'rust-analyzer
         lsp-prefer-capf t
         lsp-auto-configure t
+        ;; lsp-signature-render-documentation nil
+        lsp-rust-server 'rust-analyzer
+        lsp-gopls-hover-kind "NoDocumentation"
+        lsp-gopls-use-placeholders t
         )
+
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)
               ("C-c M-n" . lsp-rust-analyzer-expand-macro)))
-
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
