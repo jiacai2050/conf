@@ -26,3 +26,4 @@ flycheck*
 logview-cache.extmap
 .places
 /.url
+/.cask

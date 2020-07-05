@@ -281,7 +281,7 @@
 	dWxs0g0ODxJaTlMub2JqZWN0c1YkY2xhc3OiEBGAAoAKgA3TFA0OFRkdV05TLmtleXOj
 	FhcYgAOABIAFoxobHIAGgAeACIAJWklkZW50aWZpZXJVV2lkdGhWSGlkZGVuUTAjQGjA
 	AAAAAAAI0iUmJyhaJGNsYXNzbmFtZVgkY2xhc3Nlc1xOU0RpY3Rpb25hcnmiJylYTlNP
-	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0BzsZ2yLQ5W0iUmNzhe
+	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0B0oZ2yLQ5W0iUmNzhe
 	TlNNdXRhYmxlQXJyYXmjNzkpV05TQXJyYXkACAARABoAJAApADIANwBJAEwAUgBUAGMA
 	aQBuAHkAgACDAIUAhwCJAJAAmACcAJ4AoACiAKYAqACqAKwArgC5AL8AxgDIANEA0gDX
 	AOIA6wD4APsBBAELAQ8BEQETARUBGQEbAR0BHwEhASMBLAExAUABRAAAAAAAAAIBAAAA
@@ -307,7 +307,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>443 -48 799 448 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>40 0 1634 1027 0 0 1680 1027 </string>
+	<string>40 0 1640 1027 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>225 58 650 477 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -978,7 +978,7 @@
 					<key>notes</key>
 					<string>Paths</string>
 					<key>precision</key>
-					<string>normal</string>
+					<string>very_high</string>
 					<key>regex</key>
 					<string>\~?/?([[:letter:][:number:]._-]+/+)+[[:letter:][:number:]._-]+/?</string>
 				</dict>
@@ -986,7 +986,7 @@
 					<key>notes</key>
 					<string>Quoted string</string>
 					<key>precision</key>
-					<string>normal</string>
+					<string>very_high</string>
 					<key>regex</key>
 					<string>@?"(?:[^"\\]|\\.)*"</string>
 				</dict>
@@ -1036,7 +1036,7 @@
 					<key>notes</key>
 					<string>SSH URL</string>
 					<key>precision</key>
-					<string>very_high</string>
+					<string>normal</string>
 					<key>regex</key>
 					<string>\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
 				</dict>
@@ -1044,7 +1044,7 @@
 					<key>notes</key>
 					<string>Telnet URL</string>
 					<key>precision</key>
-					<string>very_high</string>
+					<string>normal</string>
 					<key>regex</key>
 					<string>\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
 				</dict>
@@ -2539,16 +2539,16 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {2560, 1440}}</string>
+		<string>{{0, 0}, {1680, 1050}}</string>
 		<key>topLeft</key>
-		<string>{269, 595}</string>
+		<string>{608, 630}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>844751B1-CD3C-4649-B5F0-7CBC13EA6214</string>
 	<key>NoSyncLastTipTime</key>
 	<real>606380976.22761798</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>19</integer>
+	<integer>20</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>598790387.49352801</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
@@ -3295,16 +3295,16 @@
 	</dict>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>whole</string>
+		<string>datafile</string>
+		<string>0x7f9d1c820010</string>
+		<string>sudo docker rm -f benchsudo docker rm -f bench</string>
+		<string>gcls</string>
+		<string>i18n</string>
+		<string>delta</string>
 		<string>t = </string>
 		<string>http_requests_counter</string>
 		<string>curl</string>
-		<string>tenant22</string>
-		<string>error</string>
-		<string>node = </string>
-		<string>1c204ce2a16d</string>
-		<string>tenantsn</string>
-		<string>query shard</string>
-		<string>delta</string>
 	</array>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>598286489.94576895</real>

@@ -26,7 +26,8 @@
   :bind (:map org-mode-map
               ("C-c SPC" . ace-jump-mode)
               ("C-c s" . org-table-sort-lines)
-              ("C-c C-c" . org-toggle-inline-images))
+              ("C-c C-c" . org-toggle-inline-images)
+              ("C-c l" . org-store-link))
   :init
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450

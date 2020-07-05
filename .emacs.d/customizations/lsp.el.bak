@@ -40,3 +40,18 @@
   (setq eglot-auto-display-help-buffer t)
   (setq eglot-put-doc-in-help-buffer t)
   )
+
+
+;; (use-package lsp-ui
+;;   :after lsp-mode
+;;   :commands lsp-ui-mode
+;;   :config
+;;   (setq lsp-ui-doc-enable nil
+;;         lsp-ui-doc-position 'top
+;;         lsp-ui-doc-max-width 80
+;;         lsp-ui-sideline-show-symbol nil
+;;         lsp-ui-sideline-show-hover nil
+;;         lsp-ui-sideline-ignore-duplicate t)
+;;   :bind (:map lsp-ui-mode-map
+;;               ("C-c l" . lsp-ui-imenu))
+;;   )

@@ -6,3 +6,15 @@
 - [[https://magit.vc/][magit]] for git integration
 - [[https://company-mode.github.io/][company]], code completion
 - [[https://github.com/justbur/emacs-which-key][which-key]],
+
+* patch
+vendor 内 package 上游的 bug，可以通过 patch 在不同机器上同步：
+#+begin_src bash
+cd ~/.emacs.d/vendor/lsp-mode
+# 把当前的修改（unstage）重定向到 patch 文件
+# 如果是 stage 的，diff 后加上 --cache
+git diff > ~/.emacs.d/lsp-rust.patch
+# 在另一台机器上
+cd ~/.emacs.d/vendor/lsp-mode
+git apply  ~/.emacs.d/lsp-rust.patch
+#+end_src

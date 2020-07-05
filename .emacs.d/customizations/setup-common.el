@@ -32,7 +32,7 @@
   :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
-        lsp-eldoc-render-all t
+        lsp-eldoc-render-all nil
         lsp-rust-server 'rust-analyzer
         lsp-prefer-capf t
         lsp-auto-configure t
@@ -43,18 +43,6 @@
               ("M-n" . lsp-find-references)
               ("C-c M-n" . lsp-rust-analyzer-expand-macro)))
 
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-doc-enable nil
-        lsp-ui-doc-position 'top
-        lsp-ui-doc-max-width 80
-        lsp-ui-sideline-show-symbol nil
-        lsp-ui-sideline-show-hover nil
-        lsp-ui-sideline-ignore-duplicate t)
-  :bind (:map lsp-ui-mode-map
-              ("C-c l" . lsp-ui-imenu))
-  )
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

@@ -83,7 +83,9 @@
                                                    projectile-root-bottom-up
                                                    projectile-root-local)
         projectile-ignored-project-function (lambda (project-root)
-                                              (file-exists-p (expand-file-name ".git" project-root))))
+                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg"))
+                                                (when (string-match-p deny project-root)
+                                                  (cl-return t)))))
   (projectile-mode +1)
   )
 
