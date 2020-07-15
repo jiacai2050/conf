@@ -39,6 +39,7 @@
         lsp-rust-server 'rust-analyzer
         lsp-gopls-hover-kind "NoDocumentation"
         lsp-gopls-use-placeholders t
+        lsp-diagnostic-package :none
         )
 
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)

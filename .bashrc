@@ -42,6 +42,23 @@ alias gc='git clone '
 # alias e='emacsclient -t -a ""'
 alias tailf='tail -F '
 
+# https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+# append and reload the history after each command
+PROMPT_COMMAND="history -a; history -n"
+
+# ignore certain commands from the history
+HISTIGNORE="ls:ll:cd:pwd:bg:fg:history:cd.:cd..:cd...:e"
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=100000
+HISTFILESIZE=10000000
+
 # export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 # export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
 export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
@@ -59,4 +76,3 @@ export PATH=$PATH:$GOPATH/bin
 # REPL
 alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
-
