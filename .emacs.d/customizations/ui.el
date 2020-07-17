@@ -89,7 +89,7 @@
                 (pcase elem
                   (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
                    "")
-                  (t elem)))
+                  (_ elem)))
               mode-line-modes))
 
 ;; https://stackoverflow.com/a/2718543/2163429
