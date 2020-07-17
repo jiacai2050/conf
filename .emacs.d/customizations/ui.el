@@ -81,14 +81,23 @@
 (global-display-line-numbers-mode 1)
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
 (display-time-mode 1)
-(setq display-time-format "%a %H:%M %d-%B")
+(setq display-time-format "[%H:%M %a, %d/%m]")
+;; remove minor mode from mode-line
+;; https://emacs.stackexchange.com/a/41135
+(setq mode-line-modes
+      (mapcar (lambda (elem)
+                (pcase elem
+                  (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
+                   "")
+                  (t elem)))
+              mode-line-modes))
 
 ;; https://stackoverflow.com/a/2718543/2163429
 (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
                   '(region ((t (:background "blue")))))
 
 
-;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424  
+;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424
 ;; (custom-set-faces
 ;;  '(company-preview
 ;;    ((t (:foreground "darkgray" :underline t))))
@@ -104,4 +113,3 @@
 ;;  '(company-tooltip-common-selection
 ;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
 ;;     (t (:inherit company-tooltip-selection)))))
-
