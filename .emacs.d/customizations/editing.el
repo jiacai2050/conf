@@ -134,13 +134,14 @@
 (use-package expand-region)
 
 (use-package ace-jump-mode
-  :after conf-mode
   :config (setq ace-jump-mode-scope 'window)
   :bind (("C-c SPC" . ace-jump-mode)
-         ("C-x SPC" . ace-jump-mode-pop-mark)
-         ;; overwrite C-c spc in conf-mode
-         :map conf-mode-map
-         ("C-c SPC" . ace-jump-mode)))
+         ("C-x SPC" . ace-jump-mode-pop-mark)))
+
+(use-package conf-mode
+  :ensure nil
+  :config
+  (define-key conf-mode-map "\C-c " nil))
 
 (use-package persistent-scratch
   :config

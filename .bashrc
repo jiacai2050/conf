@@ -23,7 +23,7 @@ function proxy_on() {
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.33.10,.alipay-inc.com"
     # export http_proxy="http://127.0.0.1:8118"
     export http_proxy="socks5://127.0.0.1:1080"
-     export http_proxy="socks5://127.0.0.1:13659"
+    export http_proxy="socks5://127.0.0.1:13659"
     export https_proxy=$http_proxy
     export all_proxy=$http_proxy
     echo -e "已开启代理"

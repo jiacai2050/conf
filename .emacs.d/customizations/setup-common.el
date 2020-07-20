@@ -13,6 +13,7 @@
   ;; :pin melpa-stable
   :init (global-flycheck-mode))
 
+
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"
   :hook ((go-mode . lsp-deferred)
@@ -29,6 +30,7 @@
    ;; (bash-language-server . "npm install -g bash-language-server")
    )
   :commands (lsp lsp-deferred)
+  :init (setq lsp-keymap-prefix "C-c l")
   :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
@@ -39,14 +41,14 @@
         lsp-rust-server 'rust-analyzer
         lsp-gopls-hover-kind "NoDocumentation"
         lsp-gopls-use-placeholders t
-        lsp-diagnostic-package :none
-        )
-
+        lsp-diagnostic-package :none)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)
-              ("C-c M-n" . lsp-rust-analyzer-expand-macro)))
+              ("C-c M-n" . lsp-rust-analyzer-expand-macro)
+              ("C-c u" . lsp-execute-code-action)
+              ("C-c d" . lsp-describe-thing-at-point)))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

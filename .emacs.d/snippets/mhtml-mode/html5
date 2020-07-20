@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: html
+# key: <h
+# --
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>$1</title>
+  <meta name="description" content="$2">
+  <meta name="author" content="Jiacai Liu">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+  <script src="js/scripts.js"></script>
+  $3
+</body>
+</html>
