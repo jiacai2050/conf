@@ -35,13 +35,20 @@
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
         lsp-eldoc-render-all nil
+        ;; disable auto configure
+        lsp-auto-configure nil
         lsp-prefer-capf t
-        lsp-auto-configure t
+        lsp-auto-configure nil
         ;; lsp-signature-render-documentation nil
         lsp-rust-server 'rust-analyzer
+        lsp-rust-analyzer-cargo-watch-enable nil
         lsp-gopls-hover-kind "NoDocumentation"
         lsp-gopls-use-placeholders t
         lsp-diagnostic-package :none)
+  (seq-do (lambda (package)
+              ;; loading client is slow and `lsp' can be called repeatedly
+              (unless (featurep package) (require package nil t)))
+          lsp-client-packages)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
