@@ -41,6 +41,8 @@ alias cd...='cd ../../..'
 alias gc='git clone '
 # alias e='emacsclient -t -a ""'
 alias tailf='tail -F '
+alias tf='tail -F '
+alias t='tail '
 
 # https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
 # don't put duplicate lines or lines starting with space in the history.

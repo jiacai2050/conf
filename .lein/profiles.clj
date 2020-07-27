@@ -9,9 +9,21 @@
                        ;; https://github.com/Raynes/fs
                        [me.raynes/fs "1.4.6"]
                        ;; https://github.com/magnars/java-time-literals
-                       [java-time-literals "2018-04-06"]]
+                       [java-time-literals "2018-04-06"]
+                       [clj-kondo "2020.06.21"]]
         :injections [(require 'spyscope.core)
                      (require 'java-time-literals.core)]
+
+        :aliases {"lint" ["eastwood"]
+                  "lint2" ["run" "-m" "clj-kondo.main" "--lint" "src"]}
+        ;; :ultra {:repl false}
+        :repositories [["tencent" "https://mirrors.cloud.tencent.com/nexus/repository/maven-public"]]
+        :plugin-repositories ^:replace [["tsing-clojars-pl" "https://mirrors.tuna.tsinghua.edu.cn/clojars"
+                                         "hw-central-pl" "https://mirrors.huaweicloud.com/repository/maven/"]]
+        :mirrors {"central" {:name "hw-central"
+                             :url "https://mirrors.huaweicloud.com/repository/maven/"}
+                  #"clojars" {:name "tsinghua-clojars"
+                              :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}}
 
         :shorthand {. {pp clojure.pprint/pprint
                        source clojure.repl/source
@@ -68,13 +80,4 @@
                        ^:lazy letsc sc.api/letsc
                        ^:lazy defsc sc.api/defsc
                        ^:lazy ep-repl sc.repl/ep-repl
-                       }}
-        :aliases {"lint" ["eastwood"]}
-        ;; :ultra {:repl false}
-        :repositories [["tencent" "https://mirrors.cloud.tencent.com/nexus/repository/maven-public"]]
-        :plugin-repositories ^:replace [["tsing-clojars-pl" "https://mirrors.tuna.tsinghua.edu.cn/clojars"
-                                         "hw-central-pl" "https://mirrors.huaweicloud.com/repository/maven/"]]
-        :mirrors {"central" {:name "hw-central"
-                             :url "https://mirrors.huaweicloud.com/repository/maven/"}
-                  #"clojars" {:name "tsinghua-clojars"
-                              :url "https://mirrors.tuna.tsinghua.edu.cn/clojars"}}}}
+                       }}}}

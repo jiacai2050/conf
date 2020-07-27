@@ -71,6 +71,15 @@
              (figwheel-sidecar.repl-api/start-figwheel!)
              (figwheel-sidecar.repl-api/cljs-repl)")
         (cider-repl-return)))
+
+    (defun my/cider-node-repl ()
+      (interactive)
+      (save-some-buffers)
+      (with-current-buffer (cider-current-repl)
+        (goto-char (point-max))
+        (insert "(do (require 'cljs.repl.node) (cider.piggieback/cljs-repl (cljs.repl.node/repl-env)))")
+        (cider-repl-return)))
+
     (defun my/start-cider-repl-with-profile (profile)
       (interactive "sEnter profile name: ")
       (letrec ((lein-params (concat "with-profile +" profile " repl :headless")))
