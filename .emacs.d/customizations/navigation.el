@@ -45,7 +45,7 @@
                                 (my/recentf-open . ivy--regex-fuzzy)
                                 (t . ivy--regex-plus)
                                 )
-        ivy-extra-directories ())
+        ivy-extra-directories '("./"))
 
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume)
