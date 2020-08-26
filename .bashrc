@@ -9,6 +9,9 @@ export LC_ALL=en_US.UTF-8
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 #export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
 export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
@@ -52,7 +55,7 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 # append and reload the history after each command
-PROMPT_COMMAND="history -a; history -n"
+PROMPT_COMMAND="history -a"
 
 # ignore certain commands from the history
 HISTIGNORE="ls:ll:cd:pwd:bg:fg:history:cd.:cd..:cd...:e"
