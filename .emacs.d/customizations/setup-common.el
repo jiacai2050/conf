@@ -31,20 +31,38 @@
    ;; (bash-language-server . "npm install -g bash-language-server")
    )
   :commands (lsp lsp-deferred)
-  :init (setq lsp-keymap-prefix "C-c l")
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+
+  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
+  (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
+  (-let* (((&hash "value") contents)
+          (groups (--partition-by (s-blank? it) (s-lines value)))
+          (sig_group (if (s-equals? "```rust" (car (-fourth-item groups)))
+                         (-fourth-item groups)
+                       (car groups)))
+          (sig (--> sig_group
+                    (--drop-while (s-equals? "```rust" it) it)
+                    (--take-while (not (s-equals? "```" it)) it)
+                    (s-join "" it))))
+    (lsp--render-element (concat "```rust\n" sig "\n```"))))
+
+  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740/files#diff-e196a72bcbed4c56a4d30daf13708f64R725
   :config
+  (require 'lsp-modeline)
+  (require 'lsp-completion)
+  (require 'lsp-diagnostics)
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
         lsp-eldoc-render-all nil
-        lsp-prefer-capf t
-        ;; lsp-signature-render-documentation nil
+        lsp-completion-provider t
+        lsp-signature-render-documentation nil
         lsp-rust-server 'rust-analyzer
         lsp-rust-analyzer-cargo-watch-enable nil
         lsp-gopls-hover-kind "NoDocumentation"
         lsp-gopls-use-placeholders t
-        lsp-diagnostic-package :none)
-  (push "[/\\\\]vendor$" lsp-file-watch-ignored)
-  (push 'lsp-modeline lsp-client-packages)
+        lsp-diagnostics-provider :none)
+    (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)
