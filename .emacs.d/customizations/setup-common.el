@@ -16,6 +16,7 @@
 
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"
+  ;; :load-path "~/code/misc/lsp-mode"
   :hook ((go-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred)
@@ -43,12 +44,20 @@
         lsp-gopls-use-placeholders t
         lsp-diagnostic-package :none)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
+  (push 'lsp-modeline lsp-client-packages)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)
               ("C-c M-n" . lsp-rust-analyzer-expand-macro)
               ("C-c u" . lsp-execute-code-action)
               ("C-c d" . lsp-describe-thing-at-point)))
+
+(use-package lsp-treemacs
+  :load-path "~/.emacs.d/vendor/lsp-treemacs"
+  :bind (("C-c t" . treemacs)
+         :map lsp-mode-map
+              ("C-c C-u" . lsp-treemacs-symbols))
+  :after lsp-mode)
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
