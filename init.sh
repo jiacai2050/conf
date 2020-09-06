@@ -107,6 +107,7 @@ case $1 in
     link_dotfiles_if_necessary ".pip"
     link_dotfiles_if_necessary ".npmrc"
     link_dotfiles_if_necessary ".cargo"
+    link_dotfiles_if_necessary ".zazurc.json"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
