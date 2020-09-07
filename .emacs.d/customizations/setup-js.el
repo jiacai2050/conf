@@ -3,9 +3,11 @@
 
 (setq js-indent-level 2)
 
-(use-package js-mode
-  :ensure nil
-  :mode ("\\.json\\'" . js-mode))
+;; (use-package js-mode
+;;   :ensure nil)
+
+(use-package json-mode
+  :mode ("\\.json\\'" . json-mode))
 
 (use-package js2-mode
   :init
