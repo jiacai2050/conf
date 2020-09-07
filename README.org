@@ -20,3 +20,20 @@ git submodule update --init --recursive --remote
 # 更新到指定 commit
 git submodule update --init
 #+end_src
+
+** Zazu
+- http://zazuapp.org/download/
+*** Encode/Decode
+原有仓库已经 404，幸好网上有 fork 的版本，我自己也 fork 了份。在
+- https://github.com/jiacai2050/zazu-encode-decode
+#+begin_src bash
+cp zazu-encode-decode/src/* ~/.zazu/plugins/tinytacoteam/zazu-template/src/
+
+# package.json
+  "dependencies": {
+    "html-entities": "^1.2.0"
+  }
+
+# 更新 zazu.json
+
+#+end_src

@@ -7,7 +7,6 @@
     "tinytacoteam/zazu-file-finder",
     "tinytacoteam/zazu-template",
     "tinytacoteam/zazu-system",
-    "tinytacoteam/zazu-package-manager",
     {
       "name": "tinytacoteam/zazu-clipboard",
       "variables": {
@@ -35,12 +34,34 @@
     {
       "name": "tinytacoteam/zazu-fallback",
       "variables": {
-        "rootSearches": ["google", "bd", "duck", "wiki"],
+        "rootSearches": [
+          "g",
+          "bd",
+          "duck",
+          "tw",
+          "v2ex",
+          "wiki"
+        ],
         "prefixSearches": {
           "bd": {
-            "icon": "fa-search",
+            "icon": "assets/baidu.png",
             "name": "Baidu",
             "url": "https://www.baidu.com/s?ie=utf-8&wd="
+          },
+          "tw": {
+            "icon": "assets/twitter.png",
+            "name": "Twitter",
+            "url": "https://twitter.com/search?q="
+          },
+          "v2ex": {
+            "icon": "https://v2ex.com/static/img/icon_rayps_64.png",
+            "name": "V2EX",
+            "url": "https://www.google.com/search?q=site:v2ex.com "
+          },
+          "g": {
+            "icon": "assets/google.png",
+            "name": "Google",
+            "url": "https://www.google.com/search?q="
           }
         }
       }

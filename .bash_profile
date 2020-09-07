@@ -82,3 +82,6 @@ export GRADLE_HOME=/usr/local/opt/gradle/libexec
 
 alias bs='brew services'
 export TZ='Asia/Shanghai'
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
