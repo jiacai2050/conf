@@ -9,9 +9,9 @@
   (setq rust-format-on-save t)
   )
 
-(use-package flycheck-rust
-  :after rust-mode
-  :config (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+;; (use-package flycheck-rust
+;;   :after rust-mode
+;;   :config (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 
 ;; use lsp-mode instead
 ;; (use-package racer
@@ -32,4 +32,3 @@
 
 (provide 'setup-rust)
 ;;; setup-rust.el ends here
-

@@ -11,8 +11,10 @@
 
 (use-package flycheck
   ;; :pin melpa-stable
-  :init (global-flycheck-mode))
-
+  :init (global-flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc rust-cargo rust rust-clippy))
+  )
 
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"

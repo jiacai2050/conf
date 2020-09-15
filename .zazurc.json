@@ -2,6 +2,8 @@
   "hotkey": "alt+cmd+space",
   "theme": "tinytacoteam/zazu-light-theme",
   "displayOn": "detect",
+  "debug": false,
+  "disableAnalytics": true,
   "plugins": [
     "tinytacoteam/zazu-calculator",
     "tinytacoteam/zazu-file-finder",
@@ -12,7 +14,7 @@
       "variables": {
         "ClipboardKey": "cmd+alt+b",
         "ignoreImages": true,
-        "size": 1000
+        "size": 150
       }
     },
     {

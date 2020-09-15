@@ -26,8 +26,20 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
+;; https://emacs.stackexchange.com/a/7889/16450
+;; (defvar buffer-last-save-time nil "The last change time")
+;; (make-variable-buffer-local 'buffer-last-save-time)
+(defun my/last-save-time ()
+  (interactive)
+  (message "%s"
+           (format-time-string "Last update %F %T"
+                               (visited-file-modtime))
+           ;; (buffer-name)
+           ))
+
 (use-package files
   :ensure nil
+  :bind ("C-c f t" . my/last-save-time)
   :config
   ;; Emacs can automatically create backup files. This tells Emacs to
   ;; put all backups in ~/.emacs.d/backups. More info:
@@ -40,7 +52,6 @@
         backup-by-copying-when-linked t
         vc-make-backup-files t
         delete-old-versions t)
-
 
   ;; auto save in original file
   ;; (auto-save-visited-mode +1)

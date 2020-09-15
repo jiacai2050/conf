@@ -1,7 +1,9 @@
 {:user {:plugins [[lein-try "0.4.3"]
                   [com.gfredericks/lein-shorthand "0.4.1"]
                   ;; [venantius/ultra "0.6.0"]
-                  [jonase/eastwood "0.3.5"]]
+                  [jonase/eastwood "0.3.5"]
+                  [lein-ancient "0.6.15"]
+                  ]
 
         :dependencies [[alembic "0.3.2"]
                        [vvvvalvalval/scope-capture "0.3.2"]
