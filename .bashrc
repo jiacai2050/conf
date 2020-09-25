@@ -67,7 +67,7 @@ HISTFILESIZE=10000000
 # export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 # export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
 export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
-export PATH=$PATH:$HOME/.cargo/bin:$GOPATH/bin
+export PATH=$PATH:$HOME/.cargo/bin
 if command_exists rustc; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
@@ -81,3 +81,6 @@ export PATH=$PATH:$GOPATH/bin
 # REPL
 alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
+
+# misc
+export PATH=$PATH:$HOME/.cask/bin

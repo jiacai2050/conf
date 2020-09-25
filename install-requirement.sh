@@ -19,3 +19,9 @@ sudo tlmgr install capt-of
 sudo tlmgr install cjk
 
 npm install jsonlint -g
+
+go get golang.org/x/tools/gopls@latest
+
+# project management tool for Emacs
+# brew install cask
+curl -fsSL https://gitee.com/liujiacai/cask/raw/master/go | python
