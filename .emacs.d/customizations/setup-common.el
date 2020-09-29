@@ -14,6 +14,7 @@
   :init (global-flycheck-mode)
   :config
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc rust-cargo rust rust-clippy))
+  (setq flycheck-python-flake8-executable "flake8")
   )
 
 (use-package lsp-mode

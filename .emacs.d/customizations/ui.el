@@ -66,13 +66,18 @@
 ;; (load-theme 'dracula t)
 ;; (load-theme 'hc-zenburn t)
 ;; (load-theme 'tomorrow-night-bright t)
-(load-theme 'wombat t)
+(unless (display-graphic-p)
+  (load-theme 'wombat t)
+  ;; https://stackoverflow.com/a/2718543/2163429
+  (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
+                    '(region ((t (:background "blue")))))
+  (set-cursor-color "green")
+  (global-hl-line-mode 1)
+  )
 
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
 (setq-default cursor-type 't)
-(set-cursor-color "green")
-(global-hl-line-mode 1)
 
 ;; Show line numbers
 ;; (global-linum-mode)
@@ -91,11 +96,6 @@
                    "")
                   (_ elem)))
               mode-line-modes))
-
-;; https://stackoverflow.com/a/2718543/2163429
-(custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
-                  '(region ((t (:background "blue")))))
-
 
 ;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424
 ;; (custom-set-faces
