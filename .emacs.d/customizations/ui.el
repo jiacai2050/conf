@@ -36,23 +36,23 @@
 
 ;; These settings relate to how emacs interacts with your operating system
 (setq ;; makes killing/yanking interact with the clipboard
-      x-select-enable-clipboard t
+ x-select-enable-clipboard t
 
-      ;; I'm actually not sure what this does but it's recommended?
-      x-select-enable-primary t
+ ;; I'm actually not sure what this does but it's recommended?
+ x-select-enable-primary t
 
-      ;; Save clipboard strings into kill ring before replacing them.
-      ;; When one selects something in another program to paste it into Emacs,
-      ;; but kills something in Emacs before actually pasting it,
-      ;; this selection is gone unless this variable is non-nil
-      save-interprogram-paste-before-kill t
+ ;; Save clipboard strings into kill ring before replacing them.
+ ;; When one selects something in another program to paste it into Emacs,
+ ;; but kills something in Emacs before actually pasting it,
+ ;; this selection is gone unless this variable is non-nil
+ save-interprogram-paste-before-kill t
 
-      ;; Shows all options when running apropos. For more info,
-      ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Apropos.html
-      apropos-do-all t
+ ;; Shows all options when running apropos. For more info,
+ ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Apropos.html
+ apropos-do-all t
 
-      ;; Mouse yank commands yank at point instead of at click.
-      mouse-yank-at-point t)
+ ;; Mouse yank commands yank at point instead of at click.
+ mouse-yank-at-point t)
 
 ;; full path in title bar
 (setq-default frame-title-format "%b (%f)")
@@ -66,7 +66,9 @@
 ;; (load-theme 'dracula t)
 ;; (load-theme 'hc-zenburn t)
 ;; (load-theme 'tomorrow-night-bright t)
-(unless (display-graphic-p)
+
+(defun dark-theme-config ()
+  ;; (and (display-graphic-p) nil)
   (load-theme 'wombat t)
   ;; https://stackoverflow.com/a/2718543/2163429
   (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
@@ -75,14 +77,13 @@
   (global-hl-line-mode 1)
   )
 
+(unless (string= (getenv "MY_THEME") "light")
+  (dark-theme-config))
+
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
 (setq-default cursor-type 't)
 
-;; Show line numbers
-;; (global-linum-mode)
-;; (set-face-foreground 'linum "#888")
-;; (setq linum-format "%d ")
 (global-display-line-numbers-mode 1)
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
 (display-time-mode 1)
@@ -96,20 +97,3 @@
                    "")
                   (_ elem)))
               mode-line-modes))
-
-;; company https://github.com/company-mode/company-mode/issues/380#issuecomment-309732424
-;; (custom-set-faces
-;;  '(company-preview
-;;    ((t (:foreground "darkgray" :underline t))))
-;;  '(company-preview-common
-;;    ((t (:inherit company-preview))))
-;;  '(company-tooltip
-;;    ((t (:background "lightgray" :foreground "black"))))
-;;  '(company-tooltip-selection
-;;    ((t (:background "steelblue" :foreground "white"))))
-;;  '(company-tooltip-common
-;;    ((((type x)) (:inherit company-tooltip :weight bold))
-;;     (t (:inherit company-tooltip))))
-;;  '(company-tooltip-common-selection
-;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
-;;     (t (:inherit company-tooltip-selection)))))

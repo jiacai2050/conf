@@ -349,6 +349,19 @@
 (my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
 (my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
 
+;; bridge to go-playground and rust-playground
+(defun my/playground-exec ()
+  (interactive)
+  (cond ((rust-playground-get-snippet-basedir)
+         (rust-playground-mode)
+         (rust-playground-exec))
+        ((string-match-p (file-truename go-playground-basedir) (file-truename (buffer-file-name)))
+         (go-playground-mode)
+         (go-playground-exec))))
+
+(my/global-map-and-set-key "C-R" 'my/playground-exec)
+(global-set-key (kbd "<C-return>") 'my/playground-exec)
+
 ;; (use-package smart-input-source
 ;;   :config
 ;;   (setq smart-input-source-english-input-source "com.apple.keylayout.US"

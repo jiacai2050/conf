@@ -17,9 +17,14 @@ filetype plugin indent on
 " let g:syntastic_check_on_wq = 0
 " }}} https://github.com/scrooloose/syntastic
 
+if $MY_THEME == 'light'
+   set bg=light
+else
+   set bg=dark
+endif
+
 set pastetoggle=<F2>
 "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
-set bg=dark
 set nocompatible
 set backspace=indent,eol,start
 

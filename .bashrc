@@ -6,7 +6,6 @@
 [ -r ~/.devrc ] && source ~/.devrc
 
 export LC_ALL=en_US.UTF-8
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 #export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
 export VISUAL=vim
@@ -14,7 +13,20 @@ export EDITOR="$VISUAL"
 
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
-export PS1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
+
+export MY_THEME="${MY_THEME:-light}"
+function switch_theme_config() {
+  dark_ps1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
+  light_ps1="\n[\u@\H] \t \w \n${all_proxy}\$(__git_ps1)$ "
+  if [[ $MY_THEME == "light" ]];then
+    export PS1="$light_ps1"
+  else
+    export PS1="$dark_ps1"
+    export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+  fi
+}
+
+switch_theme_config
 
 function proxy_off(){
     unset all_proxy
@@ -70,6 +82,9 @@ export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
 export PATH=$PATH:$HOME/.cargo/bin
 if command_exists rustc; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+fi
+if command_exists sccache; then
+  export RUSTC_WRAPPER=sccache
 fi
 
 # go

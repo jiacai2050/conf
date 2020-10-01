@@ -93,15 +93,3 @@
   :bind (:map prog-mode-map
               ("C-c o" . my/toggle-fold))
   )
-
-;; bridge to go-playground and rust-playground
-(defun my/playground-exec ()
-  (interactive)
-  (cond ((rust-playground-get-snippet-basedir)
-         (rust-playground-mode)
-         (rust-playground-exec))
-        ((string-match-p (file-truename go-playground-basedir) (file-truename (buffer-file-name)))
-         (go-playground-mode)
-         (go-playground-exec))))
-
-(my/global-map-and-set-key "C-R" 'my/playground-exec)
