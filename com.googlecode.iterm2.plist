@@ -943,7 +943,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>580 546 799 448 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>40 0 1880 1177 0 0 1920 1177 </string>
+	<string>40 6 1880 1171 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>225 58 650 477 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -1555,7 +1555,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Menlo-Regular 15</string>
+			<string>Menlo-Regular 16</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
@@ -3029,7 +3029,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Hack-Regular 15</string>
+			<string>Hack-Regular 16</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
@@ -4055,7 +4055,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>606380976.22761798</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>34</integer>
+	<integer>36</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -4814,16 +4814,16 @@
 	</dict>
 	<key>NoSyncSearchHistory2</key>
 	<array>
+		<string>cargo</string>
+		<string>master</string>
 		<string>second</string>
 		<string>mode</string>
 		<string>query.go</string>
 		<string>enable</string>
-		<string>master</string>
 		<string>disable</string>
 		<string>config</string>
 		<string>path</string>
 		<string>antmon_dev</string>
-		<string>antmod</string>
 	</array>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>598286489.94576895</real>

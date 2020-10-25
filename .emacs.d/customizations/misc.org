@@ -82,10 +82,9 @@ opam install tuareg merlin utop
     (add-to-list 'git-link-commit-remote-alist
                  '("gitee\\.com" git-link-commit-github))
     (add-to-list 'git-link-remote-alist
-                 '("alipay\\.com" git-link-github))
+                 '("alipay\\(-inc\\)?\\.com" git-link-github))
     (add-to-list 'git-link-commit-remote-alist
-                 '("alipay\\.com" git-link-commit-github)))
-  )
+                 '("alipay\\(-inc\\)?\\.com" git-link-commit-github))))
 
 (use-package git-timemachine
   :bind (("C-c g t" . git-timemachine-toggle)))

@@ -11,10 +11,11 @@
                        ;; https://github.com/Raynes/fs
                        [me.raynes/fs "1.4.6"]
                        ;; https://github.com/magnars/java-time-literals
-                       [java-time-literals "2018-04-06"]
+                       ;; [java-time-literals "2018-04-06"]
                        [clj-kondo "2020.06.21"]]
         :injections [(require 'spyscope.core)
-                     (require 'java-time-literals.core)]
+                     ;; (require 'java-time-literals.core)
+                     ]
 
         :aliases {"lint" ["eastwood"]
                   "lint2" ["run" "-m" "clj-kondo.main" "--lint" "src"]}

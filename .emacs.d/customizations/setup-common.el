@@ -93,3 +93,11 @@
   :bind (:map prog-mode-map
               ("C-c o" . my/toggle-fold))
   )
+
+(use-package ggtags
+  :hook ((c-mode c++-mode java-mode) . ggtags-mode))
+
+(use-package eldoc
+  :ensure nil
+  :init
+  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
