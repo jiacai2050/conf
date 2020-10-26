@@ -99,16 +99,34 @@
 (use-package ag
   :ensure-system-package (ag . "brew install the_silver_searcher"))
 
-(use-package sr-speedbar
+;; prefer treemacs over this
+;; (use-package sr-speedbar
+;;   :config
+;;   (setq speedbar-show-unknown-files t ;; show all files
+;;         speedbar-use-images nil       ;; use text for buttons
+;;         sr-speedbar-right-side nil    ;; put on left side
+;;         sr-speedbar-width 30
+;;         )
+;;   :bind (("<f11>" . sr-speedbar-toggle)
+;;          ("C-c s w" . sr-speedbar-select-window)
+;;          ("C-c s r" . sr-speedbar-refresh-toggle)))
+
+(use-package treemacs
+  :bind (("C-c t" . treemacs)
+         ("<f11>" . treemacs)
+         ("M-0" . treemacs-select-window))
   :config
-  (setq speedbar-show-unknown-files t ;; show all files
-        speedbar-use-images nil       ;; use text for buttons
-        sr-speedbar-right-side nil    ;; put on left side
-        sr-speedbar-width 30
-        )
-  :bind (("<f11>" . sr-speedbar-toggle)
-         ("C-c s w" . sr-speedbar-select-window)
-         ("C-c s r" . sr-speedbar-refresh-toggle)))
+  (progn
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)))
+
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
 
 ;; Customization
 (defun my/switch-to-metadata-file ()

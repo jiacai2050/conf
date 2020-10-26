@@ -75,10 +75,9 @@
 
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"
-  :bind (("C-c t" . treemacs)
-         :map lsp-mode-map
-              ("C-c C-u" . lsp-treemacs-symbols))
-  :after lsp-mode)
+  :after treemacs lsp-mode
+  :bind (:map lsp-mode-map
+              ("C-c C-u" . lsp-treemacs-symbols)))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
