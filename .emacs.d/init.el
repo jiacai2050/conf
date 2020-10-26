@@ -7,7 +7,9 @@
                          ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
 
 ;; add cask dependencies
-(add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-mode/.cask/%s/elpa" emacs-version)))
+(let ((cask-bootstrap-emacs-version (format "%s.%s" emacs-major-version emacs-minor-version)))
+  (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-mode/.cask/%s/elpa" cask-bootstrap-emacs-version)))
+  (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-treemacs/.cask/%s/elpa" cask-bootstrap-emacs-version))))
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
