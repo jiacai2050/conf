@@ -111,23 +111,6 @@
 ;;          ("C-c s w" . sr-speedbar-select-window)
 ;;          ("C-c s r" . sr-speedbar-refresh-toggle)))
 
-(use-package treemacs
-  :bind (("C-c t" . treemacs)
-         ("<f11>" . treemacs)
-         ("M-0" . treemacs-select-window))
-  :config
-  (progn
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)))
-
-(use-package treemacs-magit
-  :after treemacs magit
-  :ensure t)
-
-(use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
-
 ;; Customization
 (defun my/switch-to-metadata-file ()
   (interactive)

@@ -17,6 +17,54 @@
   (setq flycheck-python-flake8-executable "flake8")
   )
 
+;; magit dependencies
+(use-package magit-popup)
+(use-package with-editor)
+(use-package dash)
+(use-package transient)
+(use-package ghub)
+
+(use-package magit
+  :load-path "~/.emacs.d/vendor/magit/lisp"
+  :after (with-editor transient dash magit-popup ghub)
+  :bind (("C-x g" . magit-status)
+         ("C-c g b" . magit-blame-addition))
+  ;; :config (setq magit-completing-read-function 'magit-ido-completing-read)
+)
+
+(use-package git-link
+  :bind (("C-c g l" . git-link)
+         ("C-c g c" . my/git-link-commit)
+         ("C-c g h" . git-link-homepage))
+  :config
+  (progn
+    (defun my/git-link-commit (remote start end)
+      (interactive (let* ((remote (git-link--select-remote))
+                          (region (when (or buffer-file-name (git-link--using-magit-blob-mode))
+                                    (git-link--get-region))))
+                     (list remote (car region) (cadr region))))
+      (setq git-link-use-commit t)
+      (git-link remote start end)
+      (setq git-link-use-commit nil))
+    (setq git-link-open-in-browser t)
+    (add-to-list 'git-link-remote-alist
+                 '("gitee\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+                 '("gitee\\.com" git-link-commit-github))
+    (add-to-list 'git-link-remote-alist
+                 '("alipay\\(-inc\\)?\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+                 '("alipay\\(-inc\\)?\\.com" git-link-commit-github))))
+
+(use-package git-timemachine
+  :bind (("C-c g t" . git-timemachine-toggle)))
+
+;; (use-package magithub
+;;   :after magit
+;;   :config
+;;   (magithub-feature-autoinject t)
+;;   (setq magithub-clone-default-directory "~/codes/git"))
+
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"
   ;; :load-path "~/code/misc/lsp-mode"
@@ -73,11 +121,23 @@
               ("C-c u" . lsp-execute-code-action)
               ("C-c d" . lsp-describe-thing-at-point)))
 
+(use-package treemacs
+  :bind (("C-c t" . treemacs)
+         ("<f11>" . treemacs)
+         ("M-0" . treemacs-select-window))
+  :config
+  (progn
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)))
+
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"
-  :after treemacs lsp-mode
   :bind (:map lsp-mode-map
               ("C-c C-u" . lsp-treemacs-symbols)))
+
+(use-package treemacs-magit)
+
+(use-package treemacs-projectile)
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)
