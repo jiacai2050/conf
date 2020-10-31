@@ -160,3 +160,16 @@
   :ensure nil
   :init
   (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
+
+;; bridge to go-playground and rust-playground
+(defun my/playground-exec ()
+  (interactive)
+  (cond ((rust-playground-get-snippet-basedir)
+         (rust-playground-mode)
+         (rust-playground-exec))
+        ((string-match-p (file-truename go-playground-basedir) (file-truename (buffer-file-name)))
+         (go-playground-mode)
+         (go-playground-exec))))
+
+(my/global-map-and-set-key "C-R" 'my/playground-exec)
+(global-set-key (kbd "<C-return>") 'my/playground-exec)

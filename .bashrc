@@ -98,4 +98,4 @@ alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 
 # misc
-export PATH=$PATH:$HOME/.cask/bin
+export PATH=$PATH:$HOME/.cask/bin:/Applications/Postgres.app/Contents/Versions/latest/bin

@@ -53,6 +53,7 @@
   (global-set-key (kbd "C-s") 'swiper-isearch)
   (global-set-key (kbd "C-r") 'swiper-isearch-backward)
   (global-set-key (kbd "C-c g g") 'counsel-git-grep)
+  (global-set-key (kbd "C-c g f") 'counsel-git)
 
   (defun my/recentf-open ()
     (interactive)
