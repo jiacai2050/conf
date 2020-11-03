@@ -31,6 +31,9 @@
 ;; Shows a list of buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;; move window by shift + up/down/left/right key
+(windmove-default-keybindings)
+
 ;; Third party package
 
 ;; counsel ivy swiper

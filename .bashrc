@@ -17,7 +17,7 @@ export LANG=en_US.UTF-8
 export MY_THEME="${MY_THEME:-light}"
 function switch_theme_config() {
   dark_ps1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
-  light_ps1="\n[\u@\H] \t \w \n${all_proxy}\$(__git_ps1)$ "
+  light_ps1="\n[\u@\H] \t \w \n\${all_proxy}\$(__git_ps1)$ "
   if [[ $MY_THEME == "light" ]];then
     export PS1="$light_ps1"
   else
@@ -98,4 +98,5 @@ alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 
 # misc
-export PATH=$PATH:$HOME/.cask/bin:/Applications/Postgres.app/Contents/Versions/latest/bin
+export PATH=$PATH:$HOME/.cask/bin
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
