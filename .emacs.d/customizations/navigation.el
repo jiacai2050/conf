@@ -55,8 +55,8 @@
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-s") 'swiper-isearch)
   (global-set-key (kbd "C-r") 'swiper-isearch-backward)
-  (global-set-key (kbd "C-c g g") 'counsel-git-grep)
-  (global-set-key (kbd "C-c g f") 'counsel-git)
+  (global-set-key (kbd "C-c f f") 'counsel-git-grep)
+  (global-set-key (kbd "C-c f s") 'counsel-git)
 
   (defun my/recentf-open ()
     (interactive)

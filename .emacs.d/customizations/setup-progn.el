@@ -107,6 +107,7 @@
   (setq lsp-log-io nil
         lsp-eldoc-render-all nil
         lsp-completion-provider t
+        ;; lsp-completion-enable nil
         lsp-signature-render-documentation nil
         lsp-rust-server 'rust-analyzer
         lsp-rust-analyzer-cargo-watch-enable nil
@@ -130,10 +131,10 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 
-(use-package lsp-treemacs
-  :load-path "~/.emacs.d/vendor/lsp-treemacs"
-  :bind (:map lsp-mode-map
-              ("C-c C-u" . lsp-treemacs-symbols)))
+;; (use-package lsp-treemacs
+;;   :load-path "~/.emacs.d/vendor/lsp-treemacs"
+;;   :bind (:map lsp-mode-map
+;;               ("C-c C-u" . lsp-treemacs-symbols)))
 
 (use-package treemacs-magit)
 

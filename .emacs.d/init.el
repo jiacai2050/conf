@@ -96,7 +96,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (load "setup-rust.el")
 
 ;; settings for all langauage
-(load "setup-common.el")
+(load "setup-progn.el")
 (org-babel-load-file "~/.emacs.d/customizations/misc.org")
 
 ;; end

@@ -5,8 +5,11 @@
   (setq rust-playground-basedir (expand-file-name "~/code/rust/playground")))
 
 (use-package rust-mode
+  :hook ((rust-mode . my/rust-lsp))
   :config
   (setq rust-format-on-save t)
+  (defun my/rust-lsp ()
+    (setq-local lsp-completion-enable nil))
   )
 
 ;; (use-package flycheck-rust

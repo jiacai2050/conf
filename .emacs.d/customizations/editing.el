@@ -108,7 +108,7 @@
         company-minimum-prefix-length 2
         company-idle-delay .2
         company-begin-commands '(self-insert-command)
-        company-echo-delay 0
+        ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
         company-backends '((company-capf company-dabbrev-code company-files)
@@ -121,6 +121,10 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ("M-i" . company-complete-selection)))
+
+(use-package company-tabnine
+  :config
+  (add-to-list 'company-backends #'company-tabnine))
 
 (use-package multiple-cursors
   :bind (("C-c c l" . mc/edit-lines)

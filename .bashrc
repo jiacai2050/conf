@@ -76,13 +76,15 @@ HISTIGNORE="ls:ll:cd:pwd:bg:fg:history:cd.:cd..:cd...:e"
 HISTSIZE=100000
 HISTFILESIZE=10000000
 
-# export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
-# export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+# export RUSTUP_DIST_ROOT="https://static.rust-lang.org/dist"
+# export RUSTUP_DIST_SERVER="https://static.rust-lang.org"
 export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
+export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
+export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export PATH=$PATH:$HOME/.cargo/bin
-if command_exists rustc; then
-  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-fi
+# if command_exists rustc; then
+#   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
+# fi
 if command_exists sccache; then
   export RUSTC_WRAPPER=sccache
 fi
