@@ -39,10 +39,6 @@ opam install tuareg merlin utop
 (use-package protobuf-mode
   :load-path "~/.emacs.d/vendor/protobuf-mode"
   :mode ("\\.proto\\'" . protobuf-mode))
-
-(use-package vmd-mode
-  :load-path  "~/.emacs.d/vendor/vmd-mode"
-  :ensure-system-package (vmd . "npm install -g vmd"))
 #+END_SRC
 * Git
 - https://magit.vc/manual/magit/Getting-started.html#Getting-started

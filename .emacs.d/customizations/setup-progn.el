@@ -97,12 +97,7 @@
                     (--take-while (not (s-equals? "```" it)) it)
                     (s-join "" it))))
     (lsp--render-element (concat "```rust\n" sig "\n```"))))
-
-  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740/files#diff-e196a72bcbed4c56a4d30daf13708f64R725
   :config
-  (require 'lsp-modeline)
-  (require 'lsp-completion)
-  (require 'lsp-diagnostics)
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
         lsp-eldoc-render-all nil
@@ -120,7 +115,7 @@
               ("M-n" . lsp-find-references)
               ("C-c M-n" . lsp-rust-analyzer-expand-macro)
               ("C-c u" . lsp-execute-code-action)
-              ("C-c d" . lsp-describe-thing-at-point)))
+              ("C-c d p" . lsp-describe-thing-at-point)))
 
 (use-package treemacs
   :bind (("C-c t" . treemacs)
@@ -131,10 +126,9 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 
-;; (use-package lsp-treemacs
-;;   :load-path "~/.emacs.d/vendor/lsp-treemacs"
-;;   :bind (:map lsp-mode-map
-;;               ("C-c C-u" . lsp-treemacs-symbols)))
+(use-package lsp-treemacs
+  :bind (:map lsp-mode-map
+              ("C-c C-u" . lsp-treemacs-symbols)))
 
 (use-package treemacs-magit)
 

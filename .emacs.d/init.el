@@ -4,13 +4,15 @@
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-                         ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
+                         ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/"))
+      help-enable-completion-autoload nil
+      load-prefer-newer t
+      )
 
 ;; add cask dependencies
-(let ((cask-bootstrap-emacs-version (format "%s.%s" emacs-major-version emacs-minor-version)))
-  (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-mode/.cask/%s/elpa" cask-bootstrap-emacs-version)))
-  (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-treemacs/.cask/%s/elpa" cask-bootstrap-emacs-version)))
-  )
+;; (let ((cask-bootstrap-emacs-version (format "%s.%s" emacs-major-version emacs-minor-version)))
+;;   (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-mode/.cask/%s/elpa" cask-bootstrap-emacs-version)))
+;;   )
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
@@ -100,3 +102,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (org-babel-load-file "~/.emacs.d/customizations/misc.org")
 
 ;; end
+
+(when (display-graphic-p)
+  (set-frame-font "Hack-15" nil t)
+  )

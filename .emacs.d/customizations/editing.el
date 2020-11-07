@@ -99,6 +99,11 @@
                ("n" . next-logical-line)
                ("p" . previous-logical-line))))
 
+(use-package conf-mode
+  :ensure nil
+  :config
+  (define-key conf-mode-map "\C-c " nil))
+
 ;; 以下为第三方插件配置
 
 (use-package company
@@ -111,9 +116,8 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-backends '((company-capf company-dabbrev-code company-files)
-                           (company-gtags company-etags
-                                          company-keywords)
+        company-backends '((company-tabnine company-capf company-dabbrev-code)
+                           (company-gtags company-etags company-keywords)
                            company-dabbrev
                            ))
 
@@ -123,8 +127,9 @@
               ("M-i" . company-complete-selection)))
 
 (use-package company-tabnine
-  :config
-  (add-to-list 'company-backends #'company-tabnine))
+  ;; :config
+  ;; (add-to-list 'company-backends #'company-tabnine)
+  )
 
 (use-package multiple-cursors
   :bind (("C-c c l" . mc/edit-lines)
@@ -152,11 +157,6 @@
   :config (setq ace-jump-mode-scope 'window)
   :bind (("C-c SPC" . ace-jump-mode)
          ("C-x SPC" . ace-jump-mode-pop-mark)))
-
-(use-package conf-mode
-  :ensure nil
-  :config
-  (define-key conf-mode-map "\C-c " nil))
 
 (use-package persistent-scratch
   :config
@@ -192,12 +192,14 @@
   :bind (("M-i" . symbol-overlay-put)))
 
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
+(use-package vmd-mode
+  :ensure-system-package (vmd . "npm install -g vmd"))
 
 (when (eq system-type 'darwin)
   (use-package pbcopy
@@ -343,11 +345,19 @@
           (kill-new n))
       (message "Not visit a file"))))
 
+(defun my/diff-buffer-with-file ()
+  "Compare the current modified buffer with the saved version."
+  (interactive)
+  (let ((diff-switches "-u")) ;; unified diff
+    (diff-buffer-with-file (current-buffer))
+    (other-window 1)))
+
 (global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
-(global-set-key (kbd "C-c c i") 'my/filepath)
+(global-set-key (kbd "C-c f p") 'my/filepath)
+(global-set-key (kbd "C-c d f") 'my/diff-buffer-with-file)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "<f12>") 'view-mode)

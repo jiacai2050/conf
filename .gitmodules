@@ -1,6 +1,3 @@
-[submodule "vmd-mode"]
-	path = .emacs.d/vendor/vmd-mode
-	url = https://github.com/blak3mill3r/vmd-mode
 [submodule "restclient"]
 	path = .emacs.d/vendor/restclient
 	url = https://github.com/pashky/restclient.el
@@ -19,6 +16,3 @@
 [submodule ".emacs.d/vendor/pbcopy"]
 	path = .emacs.d/vendor/pbcopy
 	url = https://github.com/emacsfodder/pbcopy.el.git
-[submodule ".emacs.d/vendor/lsp-treemacs"]
-	path = .emacs.d/vendor/lsp-treemacs
-	url = https://gitee.com/liujiacai/lsp-treemacs.git

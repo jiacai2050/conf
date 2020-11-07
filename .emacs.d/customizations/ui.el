@@ -83,7 +83,6 @@
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
 (setq-default cursor-type 't)
-
 (global-display-line-numbers-mode 1)
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
 (display-time-mode 1)

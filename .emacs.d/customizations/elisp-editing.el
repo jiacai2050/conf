@@ -14,6 +14,15 @@
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
+(use-package elisp-mode
+  :ensure nil
+  :hook ((emacs-lisp-mode . my/elisp-company))
+  :config
+  (defun my/elisp-company ()
+    (setq-local company-backends
+                '((company-elisp company-dabbrev-code))))
+  )
+
 (require 'ielm)
 
 (defun ielm/clear-repl ()
