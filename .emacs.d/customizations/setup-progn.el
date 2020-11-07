@@ -117,22 +117,9 @@
               ("C-c u" . lsp-execute-code-action)
               ("C-c d p" . lsp-describe-thing-at-point)))
 
-(use-package treemacs
-  :bind (("C-c t" . treemacs)
-         ("<f11>" . treemacs)
-         ("M-0" . treemacs-select-window))
-  :config
-  (progn
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)))
-
 (use-package lsp-treemacs
   :bind (:map lsp-mode-map
               ("C-c C-u" . lsp-treemacs-symbols)))
-
-(use-package treemacs-magit)
-
-(use-package treemacs-projectile)
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

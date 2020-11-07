@@ -1,7 +1,3 @@
-;; These customizations make it easier for you to navigate files,
-;; switch buffers, and choose options from the minibuffer.
-
-
 ;; "When several buffers visit identically-named files,
 ;; Emacs must give the buffers distinct names. The usual method
 ;; for making buffer names unique adds ‘<2>’, ‘<3>’, etc. to the end
@@ -33,6 +29,13 @@
 
 ;; move window by shift + up/down/left/right key
 (windmove-default-keybindings)
+
+(defun my/other-window-backward ()
+  "Goto previous window"
+  (interactive)
+  (other-window -1))
+
+(global-set-key (kbd "\C-x p") 'my/other-window-backward)
 
 ;; Third party package
 
@@ -114,6 +117,19 @@
 ;;   :bind (("<f11>" . sr-speedbar-toggle)
 ;;          ("C-c s w" . sr-speedbar-select-window)
 ;;          ("C-c s r" . sr-speedbar-refresh-toggle)))
+
+(use-package treemacs
+  :bind (("C-c t" . treemacs)
+         ("<f11>" . treemacs)
+         ("M-0" . treemacs-select-window))
+  :config
+  (progn
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)))
+
+(use-package treemacs-magit)
+
+(use-package treemacs-projectile)
 
 ;; Customization
 (defun my/switch-to-metadata-file ()

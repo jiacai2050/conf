@@ -86,6 +86,14 @@
   :ensure nil
   :hook (after-init . global-auto-revert-mode))
 
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
+(use-package winner-mode
+  :ensure nil
+  :hook (after-init . winner-mode))
+
 (use-package so-long
   :ensure nil
   :config (global-so-long-mode 1))
