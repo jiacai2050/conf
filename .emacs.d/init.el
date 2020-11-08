@@ -5,8 +5,9 @@
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
                          ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/"))
-      help-enable-completion-autoload nil
+      ;; help-enable-completion-autoload nil
       load-prefer-newer t
+      source-directory (expand-file-name "~/code/misc/emacs")
       )
 
 ;; add cask dependencies
@@ -101,8 +102,5 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (load "setup-progn.el")
 (org-babel-load-file "~/.emacs.d/customizations/misc.org")
 
+(load custom-file)
 ;; end
-
-(when (display-graphic-p)
-  (set-frame-font "Hack-15" nil t)
-  )

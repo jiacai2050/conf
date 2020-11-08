@@ -16,11 +16,36 @@
 
 (use-package elisp-mode
   :ensure nil
-  :hook ((emacs-lisp-mode . my/elisp-company))
+  :hook ((emacs-lisp-mode . my/elisp-company)
+         (lisp-interaction-mode . my/elisp-company))
+  :bind (:map emacs-lisp-mode-map
+              ("C-c M-n" . macrostep-expand)
+              ("C-c RET" . my/elisp-macroexpand)
+         :map lisp-interaction-mode-map
+              ("C-c M-n" . macrostep-expand)
+              ("C-c RET" . my/elisp-macroexpand))
   :config
   (defun my/elisp-company ()
     (setq-local company-backends
                 '((company-elisp company-dabbrev-code))))
+
+  (defun my/elisp-macroexpand ()
+    (interactive)
+    (let* ((start (point))
+           (exp (read (current-buffer)))
+           ;; Compute it before, since it may signal errors.
+           (new (macroexpand-1 exp)))
+      (if (equal exp new)
+          (message "Not a macro call, nothing to expand")
+        (with-current-buffer (get-buffer-create "*elisp-macroexpand*")
+          (let ((bf (current-buffer)))
+            (view-mode -1)
+            (erase-buffer)
+            (pp new bf)
+            (switch-to-buffer-other-window bf)
+            (forward-line -100)
+            (emacs-lisp-mode)
+            (view-mode 1))))))
   )
 
 (require 'ielm)

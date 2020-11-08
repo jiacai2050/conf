@@ -96,3 +96,7 @@
                    "")
                   (_ elem)))
               mode-line-modes))
+
+(when (display-graphic-p)
+  (set-frame-font "Hack-15" nil t)
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized)))

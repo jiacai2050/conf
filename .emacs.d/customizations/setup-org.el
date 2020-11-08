@@ -101,11 +101,19 @@
   (setq org-download-annotate-function (lambda (link) "")))
 
 ;; https://emacs-china.org/t/topic/440
-(use-package cnfonts
-  :config
-  (when (display-graphic-p)
-    (cnfonts-enable)
-    (setq cnfonts-profiles
-          '("program" "org-mode" "read-book"))
-    (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
-    (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize)))
+;; (use-package cnfonts
+;;   :config
+;;   (when (display-graphic-p)
+;;     (cnfonts-enable)
+;;     (setq cnfonts-profiles
+;;           '("program" "org-mode" "read-book"))
+;;     (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
+;;     (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize)))
+
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(org-table ((t (:family "M+ 1m")))))
+;; (set-face-attribute 'org-table nil :family "Inconsolata")
