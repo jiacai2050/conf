@@ -5,6 +5,7 @@ DOTFILES_HOME=$(cd `dirname $0`; pwd)
 command_exists () {
   type "$1" &> /dev/null ;
 }
+
 link_dotfiles_if_necessary () {
   [ -e "$HOME/$1" ] || ln -s "$DOTFILES_HOME/$1" "$HOME/$1"
 }
@@ -27,7 +28,7 @@ install_cpp() {
   brew install global
 }
 install_python() {
-  brew install pyenv  pyenv-virtualenvwrapper pyenv-virtualenv
+  brew install pyenv pyenv-virtualenvwrapper pyenv-virtualenv
 }
 install_node() {
   brew install nvm
@@ -81,7 +82,7 @@ EOF
 }
 
 install_dbgui() {
-  brew cask install sequel-pro robo-3t
+  brew cask install sequel-pro robo-3t Postgres postico # mysql mongodb postgresql
 }
 
 install_vm() {
@@ -92,7 +93,7 @@ install_vm() {
 }
 
 install_life() {
-  brew cask install Itsycal iterm2 tmux firefox google-chrome chromium  licecap the-unarchiver
+  brew cask install Itsycal iterm2 tmux firefox google-chrome chromium licecap the-unarchiver microsoft-edge
 }
 case $1 in
   "link")

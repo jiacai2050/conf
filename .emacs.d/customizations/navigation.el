@@ -127,8 +127,6 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 
-(use-package treemacs-magit)
-
 (use-package treemacs-projectile)
 
 ;; Customization

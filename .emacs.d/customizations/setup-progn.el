@@ -1,6 +1,13 @@
+(use-package sql
+  :ensure nil
+  :hook ((sql-interactive-mode . my/sql-company))
+  :config
+  (defun my/sql-company ()
+    (setq-local company-minimum-prefix-length 3))
+  )
+
 ;; makes handling lisp expressions much, much easier
 ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-
 (use-package paredit)
 
 (use-package smartparens
@@ -26,7 +33,6 @@
 
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
-  :after (with-editor transient dash magit-popup ghub)
   :bind (("C-x g" . magit-status)
          ("C-c g b" . magit-blame-addition))
   ;; :config (setq magit-completing-read-function 'magit-ido-completing-read)
