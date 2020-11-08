@@ -24,6 +24,10 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
 
+(when (display-graphic-p)
+  (set-frame-font "Hack-15" nil t)
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
+
 ;; increase font size for better readability
 ;; (set-face-attribute 'default nil :height 140)
 
@@ -63,12 +67,10 @@
 ;; no bell
 (setq ring-bell-function 'ignore)
 
-;; (load-theme 'dracula t)
-;; (load-theme 'hc-zenburn t)
-;; (load-theme 'tomorrow-night-bright t)
+(use-package solarized
+  :defer t)
 
-(defun dark-theme-config ()
-  ;; (and (display-graphic-p) nil)
+(defun my/dark-theme-config ()
   (load-theme 'wombat t)
   ;; https://stackoverflow.com/a/2718543/2163429
   (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
@@ -77,8 +79,16 @@
   (global-hl-line-mode 1)
   )
 
-(unless (string= (getenv "MY_THEME") "light")
-  (dark-theme-config))
+(defun my/light-theme-config ()
+  (if (display-graphic-p)
+      (load-theme 'solarized-light t)
+    (progn
+      (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "grey"))))
+                        '(region ((t (:background "grey"))))))))
+
+(if (string= (getenv "MY_THEME") "light")
+    (my/light-theme-config)
+  (my/dark-theme-config))
 
 ;; No cursor blinking, it's distracting
 (blink-cursor-mode 0)
@@ -96,7 +106,3 @@
                    "")
                   (_ elem)))
               mode-line-modes))
-
-(when (display-graphic-p)
-  (set-frame-font "Hack-15" nil t)
-  (add-to-list 'initial-frame-alist '(fullscreen . maximized)))

@@ -3,7 +3,9 @@
   :hook ((sql-interactive-mode . my/sql-company))
   :config
   (defun my/sql-company ()
-    (setq-local company-minimum-prefix-length 3))
+    (setq-local company-minimum-prefix-length 3)
+    (setq-local company-backends
+                '((company-dabbrev-code company-dabbrev company-tabnine))))
   )
 
 ;; makes handling lisp expressions much, much easier

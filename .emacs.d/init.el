@@ -70,6 +70,10 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 ;; below, Emacs knows where to look for the corresponding file.
 (add-to-list 'load-path "~/.emacs.d/customizations")
 
+;; These customizations change the way emacs looks and disable/enable
+;; some user interface elements
+(load "ui.el")
+
 ;; Sets up exec-path-from-shell so that Emacs will use the correct
 ;; environment variables
 (load "shell-integration.el")
@@ -83,10 +87,6 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 ;; For editing lisps
 (load "elisp-editing.el")
-
-;; These customizations change the way emacs looks and disable/enable
-;; some user interface elements
-(load "ui.el")
 
 ;; Langauage-specific
 (load "setup-org.el")
@@ -102,5 +102,5 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (load "setup-progn.el")
 (org-babel-load-file "~/.emacs.d/customizations/misc.org")
 
-(load custom-file)
+;; (load custom-file)
 ;; end
