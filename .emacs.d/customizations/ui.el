@@ -70,15 +70,27 @@
 (use-package solarized-theme
   :defer t)
 
+(use-package all-the-icons
+  :defer t)
+
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook)
+
+  (defun my/goto-dashboard ()
+    (interactive)
+    (switch-to-buffer-other-window (get-buffer "*dashboard*")))
+
+  (global-set-key (kbd "C-c d d") 'my/goto-dashboard)
+
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
         dashboard-projects-backend 'projectile
-        dashboard-items '((projects . 10)
-                          (recents . 15)
+        dashboard-items '((projects . 5)
+                          (recents . 10)
                           (bookmarks . 5)
                           )
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
         dashboard-center-content t
         dashboard-startup-banner 'logo))
 

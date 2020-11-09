@@ -14,13 +14,23 @@
 ;; recently edited files when you first start emacs
 (use-package recentf
   :ensure nil
-  :init
+  :config
   (setq recentf-save-file (concat my/ignore-directory "recentf")
         recentf-max-menu-items 40
         recentf-max-saved-items 150)
-  (add-to-list 'recentf-exclude (expand-file-name "~/\\.emacs\\.d/elpa/.*"))
+  (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
+  (add-to-list 'recentf-exclude "\\.emacs\\.d/ignore/.*")
+  (add-to-list 'recentf-exclude "gh/dotfiles/\\.emacs\\.d/")
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
+  (add-to-list 'recentf-exclude "/Applications/.*")
   (recentf-mode +1)
+  )
+
+(use-package bookmark
+  :ensure nil
+  :config
+  (setq bookmark-default-file (concat my/ignore-directory "bookmarks")
+        bookmark-save-flag t)
   )
 
 ;; https://stackoverflow.com/a/950553/2163429
@@ -63,6 +73,7 @@
   (global-set-key (kbd "C-r") 'swiper-isearch-backward)
   (global-set-key (kbd "C-c f f") 'counsel-git-grep)
   (global-set-key (kbd "C-c f s") 'counsel-git)
+  (global-set-key (kbd "C-c b") 'counsel-bookmark)
 
   (defun my/recentf-open ()
     (interactive)
@@ -132,6 +143,10 @@
     (treemacs-filewatch-mode t)))
 
 (use-package treemacs-projectile)
+(use-package treemacs-all-the-icons
+  :config
+  (treemacs-load-theme "all-the-icons")
+  )
 
 ;; Customization
 (defun my/switch-to-metadata-file ()
@@ -149,4 +164,4 @@
             (find-file (concat metadata-dir basename))))
       (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
 
-(global-set-key (kbd "C-c b") 'my/switch-to-metadata-file)
+(global-set-key (kbd "C-c m") 'my/switch-to-metadata-file)
