@@ -99,6 +99,8 @@
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld"
+                                                         my/ignore-directory)
         projectile-project-root-files-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
                                                    projectile-root-bottom-up
@@ -111,7 +113,6 @@
   )
 
 (use-package smex
-  :requires ido
   :config
   (smex-initialize)
   (setq smex-save-file (concat my/ignore-directory "smex-items")))

@@ -34,7 +34,10 @@ opam install tuareg merlin utop
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
   :load-path "~/.emacs.d/vendor/restclient"
-  :mode ("\\.api\\'" . restclient-mode))
+  :mode ("\\.api\\'" . restclient-mode)
+  :config
+  (setq url-configuration-directory (expand-file-name "url"
+                                                      my/ignore-directory)))
 
 (use-package protobuf-mode
   :load-path "~/.emacs.d/vendor/protobuf-mode"

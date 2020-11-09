@@ -25,7 +25,8 @@
   :config
   (when (display-graphic-p)
     (setq aweshell-use-exec-path-from-shell nil))
-  (setq aweshell-auto-suggestion-p nil)
+  (setq aweshell-auto-suggestion-p nil
+        eshell-directory-name (concat my/ignore-directory "eshell/"))
   (setq eshell-prompt-function
         (lambda ()
           (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
@@ -49,4 +50,3 @@
                                 (concat ":" (number-to-string unpushed))))
                             ")"))
                   (if (= (user-uid) 0) "# " "$ ")))))
-

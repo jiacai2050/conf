@@ -30,7 +30,9 @@
 (use-package magit-popup)
 (use-package with-editor)
 (use-package dash)
-(use-package transient)
+(use-package transient
+  :config
+  (setq transient-history-file (expand-file-name "transient/history.el" my/ignore-directory)))
 (use-package ghub)
 
 (use-package magit
