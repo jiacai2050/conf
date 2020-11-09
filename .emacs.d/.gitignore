@@ -28,3 +28,5 @@ logview-cache.extmap
 /.url
 /.cask
 /.cache
+/ignore/
+!/ignore/.gitkeep

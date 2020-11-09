@@ -67,8 +67,20 @@
 ;; no bell
 (setq ring-bell-function 'ignore)
 
-(use-package solarized
+(use-package solarized-theme
   :defer t)
+
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
+        dashboard-projects-backend 'projectile
+        dashboard-items '((projects . 10)
+                          (recents . 15)
+                          (bookmarks . 5)
+                          )
+        dashboard-center-content t
+        dashboard-startup-banner 'logo))
 
 (defun my/dark-theme-config ()
   (load-theme 'wombat t)
@@ -81,10 +93,13 @@
 
 (defun my/light-theme-config ()
   (if (display-graphic-p)
-      (load-theme 'solarized-light t)
+      (progn
+        ;; (load-theme 'solarized-light t)
+        )
     (progn
-      (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "grey"))))
-                        '(region ((t (:background "grey"))))))))
+      ;; (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
+      ;;                   '(region ((t (:background "Light Salmon")))))
+      )))
 
 (if (string= (getenv "MY_THEME") "light")
     (my/light-theme-config)

@@ -44,8 +44,8 @@
   ;; Emacs can automatically create backup files. This tells Emacs to
   ;; put all backups in ~/.emacs.d/backups. More info:
   ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
-  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
-                                                 ".backups")))
+  (setq backup-directory-alist `(("." . ,(concat my/ignore-directory
+                                                 "backups")))
         version-control t
         kept-new-versions 2
         kept-old-versions 1
@@ -62,7 +62,7 @@
   ;; don't forget the slash at the end of your string
   ;; https://emacs.stackexchange.com/a/17214/16450
   (setq auto-save-file-name-transforms
-        `((".*" ,(concat user-emacs-directory ".autosaves/") t))))
+        `((".*" ,(concat my/ignore-directory "autosaves/") t))))
 
 (use-package executable
   :ensure nil
@@ -79,7 +79,7 @@
   :config
   (save-place-mode +1)
   (setq-default save-place t)
-  (setq save-place-file (concat user-emacs-directory ".places"))
+  (setq save-place-file (concat my/ignore-directory "places"))
   )
 
 (use-package autorevert
@@ -147,7 +147,8 @@
          ("C-c c r" . set-rectangular-region-anchor))
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
-  ;; :config
+  :config
+  (setq mc/list-file (concat my/ignore-directory "mc-lists.el"))
   ;; (define-key mc/keymap (kbd "<return>") nil)
   )
 
@@ -170,10 +171,10 @@
   :config
   (setq persistent-scratch-autosave-interval 5)
   (setq persistent-scratch-save-file
-        (concat user-emacs-directory
+        (concat my/ignore-directory
                 (if (display-graphic-p)
-                    ".persistent-scratch_gui"
-                  ".persistent-scratch_terminal")))
+                    "persistent-scratch_gui"
+                  "persistent-scratch_terminal")))
   (ignore-errors
     (persistent-scratch-setup-default)))
 

@@ -64,7 +64,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 ;;;;
 ;; Customization
 ;;;;
-(setq custom-file (concat user-emacs-directory ".custom.el"))
+(setq my/ignore-directory (concat user-emacs-directory "ignore/"))
+(setq custom-file (concat my/ignore-directory ".custom.el"))
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.

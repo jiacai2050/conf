@@ -46,12 +46,3 @@
   (set-face-attribute 'ido-vertical-match-face nil
                       :foreground nil)
   )
-
-(use-package smex
-  :requires ido
-  :config
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (setq smex-save-file (concat user-emacs-directory ".smex-items"))
-  )
-

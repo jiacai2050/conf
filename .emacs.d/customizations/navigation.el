@@ -15,9 +15,11 @@
 (use-package recentf
   :ensure nil
   :init
-  (setq recentf-save-file (concat user-emacs-directory ".recentf")
+  (setq recentf-save-file (concat my/ignore-directory "recentf")
         recentf-max-menu-items 40
         recentf-max-saved-items 150)
+  (add-to-list 'recentf-exclude (expand-file-name "~/\\.emacs\\.d/elpa/.*"))
+  (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
   (recentf-mode +1)
   )
 
@@ -101,7 +103,7 @@
   :requires ido
   :config
   (smex-initialize)
-  (setq smex-save-file (concat user-emacs-directory ".smex-items")))
+  (setq smex-save-file (concat my/ignore-directory "smex-items")))
 
 
 (use-package ag
@@ -125,6 +127,7 @@
          ("M-0" . treemacs-select-window))
   :config
   (progn
+    (setq treemacs-persist-file (concat my/ignore-directory "treemacs-persist"))
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 

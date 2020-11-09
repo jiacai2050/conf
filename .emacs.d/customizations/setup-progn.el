@@ -110,6 +110,7 @@
   :config
   ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
+        lsp-session-file (concat my/ignore-directory "lsp-session-v1")
         lsp-eldoc-render-all nil
         lsp-completion-provider t
         ;; lsp-completion-enable nil

@@ -46,7 +46,7 @@ opam install tuareg merlin utop
 #+BEGIN_SRC emacs-lisp
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq url-configuration-directory (locate-user-emacs-file "data/url/"))
+(setq url-configuration-directory (concat my/ignore-directory "data/url/"))
 
 (setq datetime-timezone "Asia/Shanghai")
 
