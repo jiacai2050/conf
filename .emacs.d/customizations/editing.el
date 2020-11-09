@@ -220,6 +220,16 @@
   :bind (("C-c +" . evil-numbers/inc-at-pt)
          ("C-c -" . evil-numbers/dec-at-pt)))
 
+(use-package go-translate
+  :bind (("C-c f y" . go-translate))
+  :config
+  (setq go-translate-base-url "https://translate.google.cn"
+        go-translate-extra-directions '(("zh-CN" . "en") ("en" . "zh-CN"))
+        go-translate-local-language "auto"
+        go-translate-target-language "auto"
+        go-translate-buffer-follow-p t)
+  )
+
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
   (interactive)
