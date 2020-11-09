@@ -79,10 +79,11 @@
 
   (defun my/goto-dashboard ()
     (interactive)
-    (switch-to-buffer-other-window (get-buffer "*dashboard*")))
+    (switch-to-buffer (get-buffer "*dashboard*")))
 
   (global-set-key (kbd "C-c d d") 'my/goto-dashboard)
-
+  (global-set-key (kbd "<f10>") 'my/goto-dashboard)
+  (add-hook 'dashboard-mode-hook 'hl-line-mode)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
         dashboard-projects-backend 'projectile
         dashboard-items '((projects . 5)

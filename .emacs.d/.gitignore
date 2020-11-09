@@ -1,5 +1,5 @@
 customizations/misc.el
 /ignore/
-!/ignore/.gitkeep
+!/ignore/autosaves/.gitkeep
 /.cask
 /elpa

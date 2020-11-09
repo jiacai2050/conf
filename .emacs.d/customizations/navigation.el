@@ -106,7 +106,7 @@
                                                    projectile-root-bottom-up
                                                    projectile-root-local)
         projectile-ignored-project-function (lambda (project-root)
-                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg"))
+                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor"))
                                                 (when (string-match-p deny project-root)
                                                   (cl-return t)))))
   (projectile-mode +1)
@@ -114,8 +114,8 @@
 
 (use-package smex
   :config
-  (smex-initialize)
-  (setq smex-save-file (concat my/ignore-directory "smex-items")))
+  (setq smex-save-file (expand-file-name "smex-items" my/ignore-directory))
+  (smex-initialize))
 
 
 (use-package ag
