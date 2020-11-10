@@ -23,6 +23,7 @@
   (add-to-list 'recentf-exclude "gh/dotfiles/\\.emacs\\.d/")
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
   (add-to-list 'recentf-exclude "/Applications/.*")
+  (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
   (recentf-mode +1)
   )
 
@@ -71,24 +72,18 @@
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-s") 'swiper-isearch)
   (global-set-key (kbd "C-r") 'swiper-isearch-backward)
-  (global-set-key (kbd "C-c f f") 'counsel-git-grep)
-  (global-set-key (kbd "C-c f s") 'counsel-git)
+  (global-set-key (kbd "C-c s s") 'counsel-git-grep)
+  (global-set-key (kbd "C-c s f") 'counsel-git)
+  (global-set-key (kbd "C-c s a") 'counsel-ag)
   (global-set-key (kbd "C-c b") 'counsel-bookmark)
-
-  (defun my/recentf-open ()
-    (interactive)
-    (let ((file (ivy-read "Find recent file: " (mapcar 'abbreviate-file-name recentf-list))))
-      (if (find-file file)
-          (message "Opening file %s" (abbreviate-file-name file))
-        (message "Aborting"))))
-
-  ;; (global-set-key (kbd "C-x f") 'counsel-recentf)
-  (global-set-key (kbd "C-x f") 'my/recentf-open)
-
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "C-x f") 'counsel-recentf)
   ;; :bind (:map ivy-minibuffer-map
   ;;             ("RET" . ivy-alt-done))
   )
 
+(use-package all-the-icons-ivy
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 
 ;; projectile everywhere!
 (use-package projectile
@@ -136,7 +131,10 @@
 (use-package treemacs
   :bind (("C-c t" . treemacs)
          ("<f11>" . treemacs)
-         ("M-0" . treemacs-select-window))
+         ("M-0" . treemacs-select-window)
+         :map treemacs-mode-map
+         ("j" . treemacs-next-line)
+         ("k" . treemacs-previous-line))
   :config
   (progn
     (setq treemacs-persist-file (concat my/ignore-directory "treemacs-persist"))
@@ -146,8 +144,12 @@
 (use-package treemacs-projectile)
 (use-package treemacs-all-the-icons
   :config
-  (treemacs-load-theme "all-the-icons")
-  )
+  (treemacs-load-theme "all-the-icons"))
+
+(use-package all-the-icons-dired
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  (add-hook 'dired-mode-hook 'hl-line-mode))
 
 ;; Customization
 (defun my/switch-to-metadata-file ()
