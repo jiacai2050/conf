@@ -147,9 +147,8 @@
          ("C-c c r" . set-rectangular-region-anchor))
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
-  :config
-  (setq mc/list-file (concat my/ignore-directory "mc-lists.el"))
-  ;; (define-key mc/keymap (kbd "<return>") nil)
+  :custom
+  (mc/list-file (expand-file-name "mc-lists.el" user-emacs-directory))
   )
 
 ;; yay rainbows!

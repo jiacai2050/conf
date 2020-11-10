@@ -64,46 +64,54 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 ;;;;
 ;; Customization
 ;;;;
-(setq my/ignore-directory (concat user-emacs-directory "ignore/"))
-(setq custom-file (concat my/ignore-directory ".custom.el")
-      auto-save-list-file-prefix (concat my/ignore-directory "auto-save-list/saves-")
-      type-break-file-name (concat my/ignore-directory "type-break"))
+(setq my/ignore-directory (file-name-as-directory (expand-file-name "ignore" user-emacs-directory)))
+(setq custom-file (expand-file-name "custom.el" my/ignore-directory)
+      auto-save-list-file-prefix (cond ((eq system-type 'ms-dos)
+	                                    ;; MS-DOS cannot have initial dot, and allows only 8.3 names
+	                                    (expand-file-name "auto-save.list/_s" my/ignore-directory))
+	                                   (t
+	                                    (expand-file-name "auto-save-list/.saves-" my/ignore-directory)))
+      type-break-file-name (expand-file-name "type-break" my/ignore-directory)
+
+
+      )
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
-(add-to-list 'load-path "~/.emacs.d/customizations")
+(let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))
+  (add-to-list 'load-path custom-conf-path)
 
-;; These customizations change the way emacs looks and disable/enable
-;; some user interface elements
-(load "ui.el")
+  ;; These customizations change the way emacs looks and disable/enable
+  ;; some user interface elements
+  (load "ui.el")
 
-;; Sets up exec-path-from-shell so that Emacs will use the correct
-;; environment variables
-(load "shell-integration.el")
+  ;; Sets up exec-path-from-shell so that Emacs will use the correct
+  ;; environment variables
+  (load "shell-integration.el")
 
-;; These customizations make editing a bit nicer.
-(load "editing.el")
+  ;; These customizations make editing a bit nicer.
+  (load "editing.el")
 
-;; These customizations make it easier for you to navigate files,
-;; switch buffers, and choose options from the minibuffer.
-(load "navigation.el")
+  ;; These customizations make it easier for you to navigate files,
+  ;; switch buffers, and choose options from the minibuffer.
+  (load "navigation.el")
 
-;; For editing lisps
-(load "elisp-editing.el")
+  ;; For editing lisps
+  (load "elisp-editing.el")
 
-;; Langauage-specific
-(load "setup-org.el")
-(load "setup-clojure.el")
-(load "setup-js.el")
-(load "setup-common-lisp.el")
-(load "setup-ruby.el")
-(load "setup-python.el")
-(load "setup-go.el")
-(load "setup-rust.el")
+  ;; Langauage-specific
+  (load "setup-org.el")
+  (load "setup-clojure.el")
+  (load "setup-js.el")
+  (load "setup-common-lisp.el")
+  (load "setup-ruby.el")
+  (load "setup-python.el")
+  (load "setup-go.el")
+  (load "setup-rust.el")
 
-;; settings for all langauage
-(load "setup-progn.el")
-(org-babel-load-file "~/.emacs.d/customizations/misc.org")
+  ;; settings for all langauage
+  (load "setup-progn.el")
+  (org-babel-load-file (expand-file-name "misc.org" custom-conf-path)))
 
 ;; (load custom-file)
 ;; end
