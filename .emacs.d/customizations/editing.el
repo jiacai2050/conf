@@ -230,6 +230,21 @@
         go-translate-buffer-follow-p t)
   )
 
+(use-package evil
+  :bind (:map evil-normal-state-map
+              ("SPC" . evil-scroll-page-down)
+              ("DEL" . evil-scroll-page-up)
+              ("C-e" . evil-end-of-line)
+              ("C-y" . yank)
+              ("C-f" . forward-char)
+              :map evil-insert-state-map
+              ("C-y" . yank)
+              ("C-w" . kill-region)
+              ("C-e" . evil-end-of-line)
+              ("C-a" . evil-digit-argument-or-evil-beginning-of-line)
+              ("C-n" . evil-next-line)
+              ("C-p" . evil-previous-line)))
+
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
   (interactive)
