@@ -231,19 +231,33 @@
   )
 
 (use-package evil
-  :bind (:map evil-normal-state-map
-              ("SPC" . evil-scroll-page-down)
-              ("DEL" . evil-scroll-page-up)
-              ("C-e" . evil-end-of-line)
-              ("C-y" . yank)
-              ("C-f" . forward-char)
-              :map evil-insert-state-map
-              ("C-y" . yank)
-              ("C-w" . kill-region)
-              ("C-e" . evil-end-of-line)
-              ("C-a" . evil-digit-argument-or-evil-beginning-of-line)
-              ("C-n" . evil-next-line)
-              ("C-p" . evil-previous-line)))
+  :hook (evil-mode . my/evil-keymap)
+  :init
+  (defun my/evil-keymap ()
+    (progn
+      (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-page-down)
+      (define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-page-up)
+      (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
+      (define-key evil-normal-state-map (kbd "C-y") 'yank)
+      (define-key evil-normal-state-map (kbd "C-f") 'forward-char)
+      (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+      (define-key evil-normal-state-map (kbd "M-,") 'xref-pop-marker-stack)
+      (define-key evil-normal-state-map (kbd "<RET>") 'xref-goto-xref)
+      (define-key evil-normal-state-map (kbd "q") 'quit-window)
+      (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
+      (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
+
+    (progn
+      (define-key evil-insert-state-map (kbd "C-y") 'yank)
+      (define-key evil-insert-state-map (kbd "C-w") 'kill-region)
+      (define-key evil-insert-state-map (kbd "C-e") 'end-of-visual-line)
+      (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-visual-line)
+      (define-key evil-insert-state-map (kbd "C-n") 'evil-next-line)
+      (define-key evil-insert-state-map (kbd "C-p") 'evil-previous-line)))
+
+  :config
+  (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
+  )
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()

@@ -6,7 +6,10 @@
         kill-region
         paredit-backward
         paredit-forward
+        paredit-forward-delete
+        paredit-forward-slurp-sexp
         paredit-newline
+        paredit-open-round
         ))
 
 (setq mc/cmds-to-run-once
