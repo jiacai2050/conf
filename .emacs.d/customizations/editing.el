@@ -236,14 +236,15 @@
   :init
   (defun my/evil-keymap ()
     (progn
-      (define-key evil-normal-state-map (kbd "<SPC>") 'evil-scroll-page-down)
+      (define-key evil-normal-state-map (kbd "SPC") 'evil-scroll-page-down)
       (define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-page-up)
+      (define-key evil-normal-state-map (kbd "TAB") 'indent-for-tab-command)
       (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
       (define-key evil-normal-state-map (kbd "C-y") 'yank)
       (define-key evil-normal-state-map (kbd "C-f") 'forward-char)
       (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
       (define-key evil-normal-state-map (kbd "M-,") 'xref-pop-marker-stack)
-      (define-key evil-normal-state-map (kbd "<RET>") 'xref-goto-xref)
+      (define-key evil-normal-state-map (kbd "RET") 'xref-goto-xref)
       (define-key evil-normal-state-map (kbd "q") 'quit-window)
       (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
       (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
