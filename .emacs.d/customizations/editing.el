@@ -231,7 +231,8 @@
   )
 
 (use-package evil
-  :hook (evil-mode . my/evil-keymap)
+  :hook ((evil-mode . my/evil-keymap)
+         (after-init . evil-mode))
   :init
   (defun my/evil-keymap ()
     (progn
@@ -252,12 +253,18 @@
       (define-key evil-insert-state-map (kbd "C-w") 'kill-region)
       (define-key evil-insert-state-map (kbd "C-e") 'end-of-visual-line)
       (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-visual-line)
-      (define-key evil-insert-state-map (kbd "C-n") 'evil-next-line)
-      (define-key evil-insert-state-map (kbd "C-p") 'evil-previous-line)))
+      (define-key evil-insert-state-map (kbd "C-k") 'kill-visual-line)
+      (define-key evil-insert-state-map (kbd "C-n") 'next-line)
+      (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
   (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
   )
+
+(use-package wgrep
+  :config
+  (setq wgrep-auto-save-buffer t
+        wgrep-enable-key "r"))
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
