@@ -72,8 +72,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 	                                   (t
 	                                    (expand-file-name "auto-save-list/.saves-" my/ignore-directory)))
       type-break-file-name (expand-file-name "type-break" my/ignore-directory)
-
-
+      eshell-directory-name (expand-file-name "eshell/" my/ignore-directory)
       )
 
 ;; Add a directory to our load path so that when you `load` things

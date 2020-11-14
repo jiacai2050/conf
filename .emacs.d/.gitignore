@@ -1,5 +1,9 @@
 customizations/misc.el
-/ignore/
-!/ignore/autosaves/.gitkeep
 /.cask
 /elpa
+
+# https://stackoverflow.com/a/987162/2163429
+/ignore/*
+!/ignore/autosaves
+/ignore/autosaves/*
+!ignore/autosaves/*.gitkeep

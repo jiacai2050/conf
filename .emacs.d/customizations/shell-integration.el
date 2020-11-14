@@ -25,8 +25,9 @@
   :config
   (when (display-graphic-p)
     (setq aweshell-use-exec-path-from-shell nil))
-  (setq aweshell-auto-suggestion-p nil
-        eshell-directory-name (concat my/ignore-directory "eshell/"))
+  (setq aweshell-auto-suggestion-p nil)
+  (setq-local company-backends '(company-capf)
+              pcomplete-cycle-completions nil)
   (setq eshell-prompt-function
         (lambda ()
           (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
@@ -39,7 +40,7 @@
                   " "
                   (abbreviate-file-name (eshell/pwd))
 
-                  "]\n"
+                  "] "
                   (when (epe-git-p)
                     (concat "("
                             (epe-git-branch)
@@ -49,4 +50,5 @@
                               (unless (= unpushed 0)
                                 (concat ":" (number-to-string unpushed))))
                             ")"))
-                  (if (= (user-uid) 0) "# " "$ ")))))
+                  (if (= (user-uid) 0) "# " "$ ")
+                  "\n"))))

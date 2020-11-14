@@ -1,11 +1,3 @@
-blob-store
-compile-cache
-dev
-storage
 .node-gyp
 .npm
-.emacs.d/magithub/
-tramp
-projectile.cache
 .vim/.netrwhist
-*temp

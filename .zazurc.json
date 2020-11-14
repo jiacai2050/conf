@@ -47,7 +47,7 @@
         ],
         "prefixSearches": {
           "bd": {
-            "icon": "assets/baidu.png",
+            "icon": "https://gitee.com/liujiacai/ss-pac/raw/master/static/baidu.png",
             "name": "Baidu",
             "url": "https://www.baidu.com/s?ie=utf-8&wd="
           },

@@ -245,6 +245,7 @@
       (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
       (define-key evil-normal-state-map (kbd "C-y") 'yank)
       (define-key evil-normal-state-map (kbd "C-f") 'forward-char)
+      (define-key evil-normal-state-map (kbd "C-d") 'delete-char)
       (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
       (define-key evil-normal-state-map (kbd "M-,") 'xref-pop-marker-stack)
       (define-key evil-normal-state-map (kbd "RET") 'xref-goto-xref)
@@ -259,6 +260,7 @@
       (define-key evil-insert-state-map (kbd "C-e") 'end-of-visual-line)
       (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-visual-line)
       (define-key evil-insert-state-map (kbd "C-k") 'kill-visual-line)
+      (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
       (define-key evil-insert-state-map (kbd "C-n") 'next-line)
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 

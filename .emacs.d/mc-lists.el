@@ -3,10 +3,13 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        beginning-of-visual-line
         evil-delete-backward-char-and-join
         evil-insert
         kill-region
         magit-status
+        org-metaright
+        org-self-insert-command
         paredit-backward
         paredit-forward
         paredit-forward-delete
