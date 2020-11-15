@@ -4,6 +4,8 @@
 (setq mc/cmds-to-run-for-all
       '(
         beginning-of-visual-line
+        end-of-visual-line
+        eval-print-last-sexp
         evil-delete-backward-char-and-join
         evil-insert
         kill-region
@@ -16,6 +18,8 @@
         paredit-forward-slurp-sexp
         paredit-newline
         paredit-open-round
+        yaml-electric-backspace
+        yaml-electric-bar-and-angle
         ))
 
 (setq mc/cmds-to-run-once

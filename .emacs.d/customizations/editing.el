@@ -266,6 +266,7 @@
 
   :config
   (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
+  (add-to-list 'evil-emacs-state-modes 'treemacs-mode)
   )
 
 (use-package wgrep
