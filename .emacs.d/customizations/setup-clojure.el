@@ -8,7 +8,6 @@
   :after flycheck-clj-kondo
   :mode ("\\.clj$" "\\.cljc$" "\\.edn$" "\\.cljx$")
   :config
-  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
   (define-clojure-indent
     (defroutes 'defun)
     (GET 2)
@@ -48,7 +47,7 @@
     (setq cider-repl-history-file "~/.emacs.d/cider-history")
     (setq cider-repl-wrap-history t)
     ;; (setq cider-default-cljs-repl 'figwheel)
-    (add-hook 'cider-repl-mode-hook 'paredit-mode)
+    (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
     ;; these help me out with the way I usually develop web apps
     (defun cider-start-http-server ()

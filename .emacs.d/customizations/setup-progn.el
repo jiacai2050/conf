@@ -8,15 +8,10 @@
                 '((company-dabbrev-code company-dabbrev company-tabnine))))
   )
 
-;; makes handling lisp expressions much, much easier
-;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
-(use-package paredit)
-
 (use-package smartparens
-     :config (require 'smartparens-config)
-     :hook ((c++-mode c-mode python-mode
-                      ruby-mode js2-mode tuareg-mode
-                      go-mode rust-mode) . smartparens-mode))
+  :config (require 'smartparens-config)
+  :hook (prog-mode . smartparens-mode)
+  :custom (sp-base-key-bindings 'paredit))
 
 (use-package flycheck
   ;; :pin melpa-stable

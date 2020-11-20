@@ -112,9 +112,6 @@
   :config
   (define-key conf-mode-map "\C-c " nil))
 
-(global-set-key (kbd "M-;") 'comment-line)
-(global-set-key (kbd "C-x C-;") 'comment-dwim)
-
 ;; 以下为第三方插件配置
 
 (use-package company
@@ -249,7 +246,7 @@
       (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
       (define-key evil-normal-state-map (kbd "M-,") 'xref-pop-marker-stack)
       (define-key evil-normal-state-map (kbd "RET") 'xref-goto-xref)
-      (define-key evil-normal-state-map (kbd "M-;") 'comment-line)
+      (define-key evil-normal-state-map (kbd "M-;") 'comment-dwim)
       (define-key evil-normal-state-map (kbd "q") 'quit-window)
       (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
       (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
@@ -379,7 +376,7 @@
 
 (defun my/delete-file-and-buffer (buffername)
   "Delete the file visited by the buffer named BUFFERNAME."
-  (interactive "b")
+  (interactive "bDelete file")
   (let* ((buffer (get-buffer buffername))
          (filename (buffer-file-name buffer)))
     (when filename
