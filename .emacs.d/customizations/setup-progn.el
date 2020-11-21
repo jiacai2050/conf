@@ -11,7 +11,11 @@
 (use-package smartparens
   :config (require 'smartparens-config)
   :hook (prog-mode . smartparens-mode)
-  :custom (sp-base-key-bindings 'paredit))
+  :custom (sp-base-key-bindings 'paredit)
+  :bind (:map smartparens-mode-map
+              ("M-(" . sp-wrap-round)
+              ("M-[" . sp-wrap-square)
+              ("M-{" . sp-wrap-curly)))
 
 (use-package flycheck
   ;; :pin melpa-stable

@@ -112,6 +112,13 @@
   :config
   (define-key conf-mode-map "\C-c " nil))
 
+(use-package dired-mode
+  :ensure nil
+  :bind (:map dired-mode-map
+              ("e" . dired-toggle-read-only)
+              ("j" . dired-next-line)
+              ("k" . dired-previous-line)))
+
 ;; 以下为第三方插件配置
 
 (use-package company
@@ -144,7 +151,9 @@
          ("C-c c e" . mc/edit-ends-of-lines)
          ("C-c c a" . mc/edit-beginnings-of-lines)
          ("C-c c g" . mc/mark-all-like-this)
-         ("C-c c r" . set-rectangular-region-anchor))
+         ("C-c c r" . set-rectangular-region-anchor)
+         ("C-." . mc/mark-next-like-this)
+         ("C-," . mc/mark-previous-like-this))
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
   :custom
@@ -209,11 +218,6 @@
 (use-package vmd-mode
   :ensure-system-package (vmd . "npm install -g vmd"))
 
-(when (eq system-type 'darwin)
-  (use-package pbcopy
-    :load-path "~/.emacs.d/vendor/pbcopy"
-    :config (turn-on-pbcopy)))
-
 (use-package carbon-now-sh)
 
 (use-package evil-numbers
@@ -248,8 +252,8 @@
       (define-key evil-normal-state-map (kbd "RET") 'xref-goto-xref)
       (define-key evil-normal-state-map (kbd "M-;") 'comment-dwim)
       (define-key evil-normal-state-map (kbd "q") 'quit-window)
-      (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
-      (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
+      (define-key evil-normal-state-map (kbd "C-M-b") 'sp-backward-sexp)
+      (define-key evil-normal-state-map (kbd "C-M-f") 'sp-forward-sexp))
 
     (progn
       (define-key evil-insert-state-map (kbd "C-y") 'yank)
@@ -262,14 +266,16 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
-  (add-to-list 'evil-emacs-state-modes 'treemacs-mode)
+  (dolist (m '(dashboard-mode treemacs-mode dired-mode))
+    (add-to-list 'evil-emacs-state-modes m))
+  (dolist (m '(wdired-mode))
+    (add-to-list 'evil-normal-state-modes m))
   )
 
 (use-package wgrep
   :config
   (setq wgrep-auto-save-buffer t
-        wgrep-enable-key "r"))
+        wgrep-enable-key "e"))
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
@@ -431,7 +437,6 @@
 (my/global-map-and-set-key "C--" 'er/contract-region)
 (my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
 (my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
-(my/global-map-and-set-key "C-c C->" 'mc/mark-all-like-this)
 
 ;; (use-package smart-input-source
 ;;   :config
