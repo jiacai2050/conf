@@ -8,6 +8,7 @@
         eval-print-last-sexp
         evil-delete-backward-char-and-join
         evil-insert
+        evil-normal-state
         kill-region
         magit-status
         org-metaright
@@ -18,6 +19,10 @@
         paredit-forward-slurp-sexp
         paredit-newline
         paredit-open-round
+        sp-backward-delete-char
+        sp-forward-sexp
+        sp-kill-region
+        sp-splice-sexp
         yaml-electric-backspace
         yaml-electric-bar-and-angle
         ))

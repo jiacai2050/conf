@@ -8,7 +8,28 @@
       ;; help-enable-completion-autoload nil
       load-prefer-newer t
       source-directory (expand-file-name "~/code/misc/emacs")
+      garbage-collection-messages t
       )
+
+;; http://akrl.sdf.org/
+(defmacro my/operation-time (&rest body)
+  "Measure and return the time it takes evaluating BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (float-time (time-since time))))
+
+;; Set garbage collection threshold to 1GB.
+(setq gc-cons-threshold #x40000000)
+
+;; When idle for 30s run the GC no matter what.
+(defvar my/gc-timer
+  (run-with-idle-timer 30 t
+                       (lambda ()
+                         (let ((inhibit-read-only t)
+                               (gc-msg (format "Garbage Collector has run for %.06fsec"
+                                               (my/operation-time (garbage-collect)))))
+                           (with-current-buffer "*Messages*"
+	                         (insert gc-msg "\n"))))))
 
 ;; add cask dependencies
 ;; (let ((cask-bootstrap-emacs-version (format "%s.%s" emacs-major-version emacs-minor-version)))

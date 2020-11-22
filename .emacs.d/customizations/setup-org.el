@@ -29,7 +29,6 @@
   :bind (:map org-mode-map
               ("C-c SPC" . ace-jump-mode)
               ("C-c s" . org-table-sort-lines)
-              ("C-c i" . org-toggle-inline-images)
               ("C-c l" . org-store-link))
   :init
   ;; https://orgmode.org/worg/org-contrib/babel/languages.html
@@ -50,6 +49,7 @@
         org-startup-indented t
         org-image-actual-width nil
         org-export-with-sub-superscripts nil
+        org-hide-emphasis-markers t
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t)
   ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429

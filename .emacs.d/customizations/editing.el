@@ -47,9 +47,10 @@
   (setq backup-directory-alist `(("." . ,(concat my/ignore-directory
                                                  "backups")))
         version-control t
-        kept-new-versions 2
-        kept-old-versions 1
+        kept-new-versions 5
+        kept-old-versions 3
         backup-by-copying-when-linked t
+        backup-by-copying t
         vc-make-backup-files t
         delete-old-versions t)
 
@@ -109,10 +110,11 @@
 
 (use-package conf-mode
   :ensure nil
+  :mode (("\\.gitconfig\\'" . conf-mode))
   :config
   (define-key conf-mode-map "\C-c " nil))
 
-(use-package dired-mode
+(use-package dired
   :ensure nil
   :bind (:map dired-mode-map
               ("e" . dired-toggle-read-only)
@@ -252,8 +254,8 @@
       (define-key evil-normal-state-map (kbd "RET") 'xref-goto-xref)
       (define-key evil-normal-state-map (kbd "M-;") 'comment-dwim)
       (define-key evil-normal-state-map (kbd "q") 'quit-window)
-      (define-key evil-normal-state-map (kbd "C-M-b") 'sp-backward-sexp)
-      (define-key evil-normal-state-map (kbd "C-M-f") 'sp-forward-sexp))
+      (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
+      (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
 
     (progn
       (define-key evil-insert-state-map (kbd "C-y") 'yank)

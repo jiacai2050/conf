@@ -74,7 +74,15 @@
 (defun my/light-theme-config ()
   (if (display-graphic-p)
       (progn
-        ;; (load-theme 'solarized-light t)
+        ;; https://github.com/DarwinAwardWinner/dotemacs#dont-use-ns_selection_fg_color-and-ns_selection_bg_color
+        (when (and (equal (face-attribute 'region :distant-foreground)
+                          "ns_selection_fg_color")
+                   (equal (face-attribute 'region :background)
+                          "ns_selection_bg_color"))
+          (set-face-attribute
+           'region nil
+           :distant-foreground 'unspecified
+           :background "#BAD6FC"))
         )
     (progn
       ;; (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))

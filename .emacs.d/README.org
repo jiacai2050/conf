@@ -17,6 +17,12 @@ make
 
 (setq debug-on-message "free variable") ;; debug for specific error message
 #+end_src
+如果是 C 代码的部分出问题，可以通过
+
+#+begin_src bash
+kill -SIGUSR2 ${pid}
+#+end_src
+- https://emacs.stackexchange.com/questions/506/debugging-a-frozen-emacs
 
 * Built-in mode
 - global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
