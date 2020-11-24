@@ -4,10 +4,12 @@
 (setq mc/cmds-to-run-for-all
       '(
         beginning-of-visual-line
+        electric-newline-and-maybe-indent
         end-of-visual-line
         eval-print-last-sexp
         evil-delete-backward-char-and-join
         evil-insert
+        evil-next-line
         evil-normal-state
         kill-region
         magit-status

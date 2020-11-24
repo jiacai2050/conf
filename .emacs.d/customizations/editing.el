@@ -264,11 +264,12 @@
       (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-visual-line)
       (define-key evil-insert-state-map (kbd "C-k") 'kill-visual-line)
       (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
+      (define-key evil-insert-state-map (kbd "C-v") 'scroll-up-command)
       (define-key evil-insert-state-map (kbd "C-n") 'next-line)
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode treemacs-mode dired-mode))
+  (dolist (m '(dashboard-mode treemacs-mode dired-mode git-rebase-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
