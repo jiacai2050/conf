@@ -23,6 +23,7 @@
         paredit-open-round
         sp-backward-delete-char
         sp-forward-sexp
+        sp-forward-slurp-sexp
         sp-kill-region
         sp-splice-sexp
         yaml-electric-backspace
