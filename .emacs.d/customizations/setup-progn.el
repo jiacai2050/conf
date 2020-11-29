@@ -140,15 +140,15 @@
 
 (use-package lsp-java
   :hook (java-mode . lsp-deferred)
+  :custom
+  (dap-breakpoints-file (expand-file-name "dap-breakpoints" my/ignore-directory))
+  (lsp-java-workspace-dir (expand-file-name "workspace" my/ignore-directory))
+  (dap-java-test-runner (expand-file-name "eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar" my/ignore-directory))
+  ;; 0.57.0 is the last version support jdk8. https://github.com/emacs-lsp/lsp-java/issues/249
+  ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
+  (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
   :init
-  (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/"
-        lsp-java-workspace-dir (expand-file-name "workspace" my/ignore-directory)
-        dap-java-test-runner (expand-file-name "eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar" my/ignore-directory)
-        ;; jdk8 isn't supported in latest version
-        ;; https://github.com/emacs-lsp/lsp-java/issues/249
-        ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
-        lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
-  )
+  (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/"))
 
 (use-package lsp-treemacs
   :bind (:map lsp-mode-map

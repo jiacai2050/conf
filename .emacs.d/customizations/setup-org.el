@@ -49,7 +49,7 @@
         org-startup-indented t
         org-image-actual-width nil
         org-export-with-sub-superscripts nil
-        org-hide-emphasis-markers t
+        org-hide-emphasis-markers nil
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t)
   ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429

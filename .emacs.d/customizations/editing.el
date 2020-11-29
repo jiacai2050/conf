@@ -239,6 +239,7 @@
 (use-package evil
   :hook ((evil-mode . my/evil-keymap)
          (after-init . evil-mode))
+  :custom ((evil-respect-visual-line-mode t))
   :init
   (defun my/evil-keymap ()
     (progn

@@ -12,9 +12,13 @@
         evil-next-line
         evil-normal-state
         kill-region
+        kill-visual-line
         magit-status
+        markdown-outdent-or-delete
         org-metaright
+        org-return-indent
         org-self-insert-command
+        org-yank
         paredit-backward
         paredit-forward
         paredit-forward-delete
@@ -22,6 +26,7 @@
         paredit-newline
         paredit-open-round
         sp-backward-delete-char
+        sp-delete-char
         sp-forward-sexp
         sp-kill-region
         sp-splice-sexp
@@ -31,5 +36,6 @@
 
 (setq mc/cmds-to-run-once
       '(
+        counsel-M-x
         iedit-switch-to-mc-mode
         ))
