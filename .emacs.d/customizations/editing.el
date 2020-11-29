@@ -127,9 +127,10 @@
   :init (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
-        company-minimum-prefix-length 2
-        company-idle-delay .2
+        company-minimum-prefix-length 3
+        company-idle-delay .3
         company-begin-commands '(self-insert-command)
+        company-dabbrev-downcase nil
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
@@ -144,6 +145,7 @@
               ("M-i" . company-complete-selection)))
 
 (use-package company-tabnine
+  :custom ((company-tabnine-always-trigger nil))
   ;; :config
   ;; (add-to-list 'company-backends #'company-tabnine)
   )
