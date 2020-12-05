@@ -272,7 +272,7 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode treemacs-mode dired-mode git-rebase-mode))
+  (dolist (m '(dashboard-mode treemacs-mode dired-mode git-rebase-mode easy-hugo-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
@@ -309,10 +309,15 @@
                (set-buffer-modified-p nil)
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
 
-(defvar my/iso-8601-format "%Y-%m-%dT%H:%M:%S%z")
+(defun my/iso-8601-date-string ()
+  (concat
+   (format-time-string "%Y-%m-%dT%T")
+   ((lambda (x) (concat (substring x 0 3) ":" (substring x 3 5)))
+    (format-time-string "%z"))))
+
 (defun my/insert-current-date-time ()
   (interactive)
-  (insert (format-time-string my/iso-8601-format (current-time))))
+  (insert (my/iso-8601-date-string)))
 
 (defun my/insert-today ()
   (interactive)
