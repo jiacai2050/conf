@@ -46,6 +46,8 @@
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
          ("C-c g b" . magit-blame-addition))
+  :custom (magit-diff-refine-hunk 'all)
+
   ;; :config (setq magit-completing-read-function 'magit-ido-completing-read)
 )
 

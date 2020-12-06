@@ -121,6 +121,11 @@
               ("j" . dired-next-line)
               ("k" . dired-previous-line)))
 
+(use-package flyspell
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode))
+  )
+
 ;; 以下为第三方插件配置
 
 (use-package company
@@ -259,6 +264,8 @@
       (define-key evil-normal-state-map (kbd "q") 'quit-window)
       (define-key evil-normal-state-map (kbd "C-M-b") 'backward-sexp)
       (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
+
+    (define-key evil-motion-state-map (kbd "SPC") 'evil-scroll-page-down)
 
     (progn
       (define-key evil-insert-state-map (kbd "C-y") 'yank)
