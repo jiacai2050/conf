@@ -17,7 +17,9 @@
   (progn
     (require 'smartparens-config)
     (define-key smartparens-mode-map (kbd "C-M-b") 'backward-sexp)
-    (define-key smartparens-mode-map (kbd "C-M-f") 'forward-sexp))
+    (define-key smartparens-mode-map (kbd "C-M-f") 'forward-sexp)
+    (dolist (m '(org-mode org-agenda-mode)) ;; keybindings conflict
+      (add-to-list 'sp-ignore-modes-list m)))
   :bind (:map smartparens-mode-map
               ("C-M-f" . forward-sexp)
               ("C-M-b" . backward-sexp)
