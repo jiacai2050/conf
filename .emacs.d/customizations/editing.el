@@ -139,7 +139,7 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-backends '((company-tabnine company-capf company-dabbrev-code)
+        company-backends '((company-capf company-dabbrev-code)
                            (company-gtags company-etags company-keywords)
                            company-dabbrev
                            ))
@@ -316,11 +316,11 @@
                (set-buffer-modified-p nil)
                (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
 
-(defun my/iso-8601-date-string ()
+(defun my/iso-8601-date-string (&optional datetime)
   (concat
-   (format-time-string "%Y-%m-%dT%T")
+   (format-time-string "%Y-%m-%dT%T" datetime)
    ((lambda (x) (concat (substring x 0 3) ":" (substring x 3 5)))
-    (format-time-string "%z"))))
+    (format-time-string "%z" datetime))))
 
 (defun my/insert-current-date-time ()
   (interactive)
@@ -344,8 +344,7 @@
           ;; (kill-region (mark) (point))
           (end-of-line)
           (newline-and-indent)
-          (insert (format-time-string my/iso-8601-format
-                                      (seconds-to-time fixed-ts))))
+          (insert (my/iso-8601-date-string (seconds-to-time fixed-ts))))
       (deactivate-mark))))
 
 (defun my/zoom-in ()

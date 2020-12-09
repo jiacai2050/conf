@@ -26,6 +26,7 @@
         paredit-newline
         paredit-open-round
         sp-backward-delete-char
+        sp-backward-kill-word
         sp-delete-char
         sp-forward-sexp
         sp-forward-slurp-sexp
