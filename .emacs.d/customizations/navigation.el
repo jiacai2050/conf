@@ -89,6 +89,17 @@
   ;;             ("RET" . ivy-alt-done))
   )
 
+(use-package ivy-avy
+  :custom (avy-all-windows nil)
+  :bind (("C-x SPC" . avy-goto-char)
+         ("C-c l" . avy-goto-line)
+         ("C-C SPC" . avy-goto-word-1)))
+
+;; (use-package ace-jump-mode
+;;   :config (setq ace-jump-mode-scope 'window)
+;;   :bind (("C-c SPC" . ace-jump-mode)
+;;          ("C-x SPC" . ace-jump-mode-pop-mark)))
+
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 

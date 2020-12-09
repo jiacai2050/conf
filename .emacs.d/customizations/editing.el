@@ -179,11 +179,6 @@
 
 (use-package expand-region)
 
-(use-package ace-jump-mode
-  :config (setq ace-jump-mode-scope 'window)
-  :bind (("C-c SPC" . ace-jump-mode)
-         ("C-x SPC" . ace-jump-mode-pop-mark)))
-
 (use-package persistent-scratch
   :config
   (setq persistent-scratch-autosave-interval 5)
