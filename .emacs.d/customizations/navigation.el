@@ -92,7 +92,7 @@
 (use-package ivy-avy
   :custom (avy-all-windows nil)
   :bind (("C-x SPC" . avy-goto-char)
-         ("C-c l" . avy-goto-line)
+         ("C-c C-l" . avy-goto-line)
          ("C-C SPC" . avy-goto-word-1)))
 
 ;; (use-package ace-jump-mode

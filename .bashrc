@@ -85,9 +85,9 @@ export PATH=$PATH:$HOME/.cargo/bin
 # if command_exists rustc; then
 #   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
 # fi
-if command_exists sccache; then
-  export RUSTC_WRAPPER=sccache
-fi
+# if command_exists sccache; then
+#   export RUSTC_WRAPPER=sccache
+# fi
 
 # go
 export GOPATH="$HOME/code/go"

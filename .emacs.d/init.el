@@ -119,6 +119,9 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   ;; For editing lisps
   (load "elisp-editing.el")
 
+  ;; settings for all langauage
+  (load "setup-progn.el")
+
   ;; Langauage-specific
   (load "setup-org.el")
   (load "setup-clojure.el")
@@ -129,8 +132,6 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   (load "setup-go.el")
   (load "setup-rust.el")
 
-  ;; settings for all langauage
-  (load "setup-progn.el")
   (org-babel-load-file (expand-file-name "misc.org" custom-conf-path)))
 
 ;; (load custom-file)

@@ -1,3 +1,6 @@
+(use-package compile
+  :custom (compilation-scroll-output t))
+
 (use-package sql
   :ensure nil
   :hook ((sql-interactive-mode . my/sql-company))
@@ -8,6 +11,7 @@
                 '((company-dabbrev-code company-dabbrev company-tabnine))))
   )
 
+;; third party extensions
 (use-package smartparens
   :init (defun my/sp-setup ()
           (smartparens-global-strict-mode 1))

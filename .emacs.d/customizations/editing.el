@@ -121,10 +121,10 @@
               ("j" . dired-next-line)
               ("k" . dired-previous-line)))
 
-(use-package flyspell
-  :hook ((text-mode . flyspell-mode)
-         (prog-mode . flyspell-prog-mode))
-  )
+;; (use-package flyspell
+;;   :hook ((text-mode . flyspell-mode)
+;;          (prog-mode . flyspell-prog-mode))
+;;   )
 
 ;; 以下为第三方插件配置
 
