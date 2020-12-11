@@ -247,7 +247,6 @@
     (progn
       (define-key evil-normal-state-map (kbd "SPC") 'evil-scroll-page-down)
       (define-key evil-normal-state-map (kbd "DEL") 'evil-scroll-page-up)
-      (define-key evil-normal-state-map (kbd "TAB") 'indent-for-tab-command)
       (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
       (define-key evil-normal-state-map (kbd "C-y") 'yank)
       (define-key evil-normal-state-map (kbd "C-f") 'forward-char)

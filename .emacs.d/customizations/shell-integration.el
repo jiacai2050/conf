@@ -17,7 +17,6 @@
        '("GOPROXY" "GOPATH"))
       (exec-path-from-shell-initialize))))
 
-
 (use-package aweshell
   :load-path "~/.emacs.d/vendor/aweshell"
   :bind (("<f8>" . aweshell-dedicated-toggle)

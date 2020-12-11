@@ -66,27 +66,23 @@
                                 (t . ivy--regex-plus)
                                 )
         ivy-extra-directories '("./"))
-  (defun my/counsel-git-grep ()
-    (interactive)
-    (counsel-git-grep (current-word)))
 
-  (defun my/counsel-ag ()
-    (interactive)
-    (counsel-ag (current-word)))
 
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-s") 'swiper-isearch)
-  (global-set-key (kbd "C-r") 'swiper-isearch-backward)
-  (global-set-key (kbd "C-c s s") 'my/counsel-git-grep)
-  (global-set-key (kbd "C-c s f") 'counsel-git)
-  (global-set-key (kbd "C-c s a") 'my/counsel-ag)
-  (global-set-key (kbd "C-c b") 'counsel-bookmark)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "C-x f") 'counsel-recentf)
-  ;; :bind (:map ivy-minibuffer-map
-  ;;             ("RET" . ivy-alt-done))
+  :bind (("M-y" . counsel-yank-pop)
+         ("C-c C-r" . ivy-resume)
+         ("<f6>" . ivy-resume)
+         ("M-x" . counsel-M-x)
+         ("C-s" . swiper-isearch)
+         ("C-r" . swiper-isearch-backward)
+         ("C-c s a" . counsel-ag)
+         ("C-c s s" . counsel-rg)
+         ("C-c s f" . counsel-git)
+         ("C-c s g" . counsel-git-grep)
+         ("C-c b" . counsel-bookmark)
+         ("C-x C-f" . counsel-find-file)
+         ("C-x f" . counsel-recentf)
+         :map ivy-minibuffer-map
+         ("RET" . ivy-alt-done))
   )
 
 (use-package ivy-avy
@@ -94,6 +90,11 @@
   :bind (("C-x SPC" . avy-goto-char)
          ("C-c C-l" . avy-goto-line)
          ("C-C SPC" . avy-goto-word-1)))
+
+(use-package ivy-hydra
+  :config
+
+  )
 
 ;; (use-package ace-jump-mode
 ;;   :config (setq ace-jump-mode-scope 'window)

@@ -53,11 +53,6 @@ opam install tuareg merlin utop
 
 (setq datetime-timezone "Asia/Shanghai")
 
-(global-set-key (kbd "C-u") 'scroll-down-command)
-(global-set-key (kbd "C-i") 'scroll-up-command)
-;; emacs-plus 26.3 bind tab to scroll-up-command, hack it back
-(global-set-key (kbd "TAB") 'indent-for-tab-command)
-
 ;; shell scripts
 (setq-default sh-basic-offset 2)
 (setq-default sh-indentation 2)
@@ -107,10 +102,7 @@ https://gist.github.com/bravosierrasierra/59d6d0c1ddff46a1b87b18738cecf8a2"
   :commands (easy-hugo-with-env)
   :init
   (defun my/hugo-newpost (slug title tags categories)
-    (interactive "sSlug:
-sTitle:
-sTags:
-sCategories: ")
+    (interactive "sSlug: \nsTitle: \nsTags: \nsCategories: ")
     (easy-hugo-with-env
      (let* ((now (current-time))
 		    (basename (concat (format-time-string "%Y-%m-%d-" now)
@@ -121,12 +113,8 @@ sCategories: ")
          (error "%s already exists!" filename))
 	   (find-file filename)
 	   (insert
-	    (format "#+TITLE: %s
-#+DATE: %s
-#+TAGS[]: %s
-#+CATEGORIES[]: %s
-
-" title (my/iso-8601-date-string) tags categories))
+	    (format "#+TITLE: %s\n#+DATE: %s\n#+TAGS[]: %s\n#+CATEGORIES[]: %s\n"
+                title (my/iso-8601-date-string) tags categories))
 	   (goto-char (point-max))
 	   (save-buffer))))
   :bind (("C-c c h".  easy-hugo)

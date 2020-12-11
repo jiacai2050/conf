@@ -11,6 +11,7 @@
         evil-insert
         evil-next-line
         evil-normal-state
+        forward-sexp
         kill-region
         kill-visual-line
         magit-status

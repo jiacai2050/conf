@@ -5,6 +5,13 @@
 # 自己程序中的相关配置
 [ -r ~/.devrc ] && source ~/.devrc
 
+# brew install bash-completion
+# https://computingforgeeks.com/how-to-fix-get-comp-words-by-ref-command-not-found/
+bash_comp_sh="/usr/local/etc/profile.d/bash_completion.sh"
+[[ -r "$bash_comp_sh" ]] && . "$bash_comp_sh"
+# Bash completion has been installed to:
+# /usr/local/etc/bash_completion.d
+
 export LC_ALL=en_US.UTF-8
 #export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
@@ -82,12 +89,6 @@ export RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
 export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup"
 export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static"
 export PATH=$PATH:$HOME/.cargo/bin
-# if command_exists rustc; then
-#   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/library"
-# fi
-# if command_exists sccache; then
-#   export RUSTC_WRAPPER=sccache
-# fi
 
 # go
 export GOPATH="$HOME/code/go"
