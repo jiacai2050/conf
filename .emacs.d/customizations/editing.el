@@ -139,7 +139,7 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-backends '((company-capf company-dabbrev-code)
+        company-backends '((company-tabnine company-capf company-dabbrev-code)
                            (company-gtags company-etags company-keywords)
                            company-dabbrev
                            ))
@@ -428,19 +428,28 @@
     (diff-buffer-with-file (current-buffer))
     (other-window 1)))
 
+(defun my/derived-modes (mode)
+  "Return a list of the ancestor modes that MODE is derived from."
+  (interactive (list major-mode))
+  (defun iter (mode)
+    (and mode
+         (cons mode
+               (iter (get mode 'derived-mode-parent)))))
+  (message "%s" (iter mode)))
+
 (global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
 (global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
 (global-set-key (kbd "C-c f p") 'my/filepath)
-(global-set-key (kbd "C-c d f") 'my/diff-buffer-with-file)
+(global-set-key (kbd "C-c f d") 'my/diff-buffer-with-file)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "<f12>") 'view-mode)
 (global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
 (global-set-key (kbd "C-c h u") 'my/url-decode-region)
 (global-set-key (kbd "C-c h s") 'my/storage-size->human)
-(global-set-key (kbd "C-c j") 'json-pretty-print)
+(global-set-key (kbd "C-c f j") 'json-pretty-print)
 
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429
