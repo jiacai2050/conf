@@ -49,7 +49,6 @@ opam install tuareg merlin utop
 #+BEGIN_SRC emacs-lisp
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq url-configuration-directory (concat my/ignore-directory "data/url/"))
 
 (setq datetime-timezone "Asia/Shanghai")
 
@@ -131,11 +130,13 @@ https://gist.github.com/bravosierrasierra/59d6d0c1ddff46a1b87b18738cecf8a2"
 (defun my/google-search ()
   "Googles a query or region if any."
   (interactive)
-  (browse-url
-   (concat
-    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
-    (if mark-active
-        (buffer-substring (region-beginning) (region-end))
-      (read-string "Google: ")))))
+  (ivy-read "Google: " (list (if mark-active
+                                 (buffer-substring (region-beginning) (region-end))
+                                 (symbol-at-point)))
+            :action (lambda (q)
+                      (browse-url
+                       (concat
+                        "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" q)))))
+
 
 #+END_SRC

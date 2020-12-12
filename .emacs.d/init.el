@@ -94,6 +94,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
       type-break-file-name (expand-file-name "type-break" my/ignore-directory)
       eshell-directory-name (expand-file-name "eshell/" my/ignore-directory)
       gamegrid-user-score-file-directory (expand-file-name "games/" my/ignore-directory)
+      url-configuration-directory (expand-file-name "data/url/" my/ignore-directory)
+      request-storage-directory (expand-file-name "request" my/ignore-directory)
       )
 
 ;; Add a directory to our load path so that when you `load` things

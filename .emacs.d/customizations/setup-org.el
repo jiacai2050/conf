@@ -26,8 +26,7 @@
   :after org)
 
 (use-package org
-  :bind (("C-c c c" . org-capture)
-         :map org-mode-map
+  :bind (:map org-mode-map
          ("C-c SPC" . ace-jump-mode)
          ("C-c s" . org-table-sort-lines)
          ("C-c l" . org-store-link))

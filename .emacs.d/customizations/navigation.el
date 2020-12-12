@@ -49,14 +49,14 @@
   (interactive)
   (other-window -1))
 
-(global-set-key (kbd "\C-x p") 'my/other-window-backward)
+(global-set-key (kbd "\C-x i") 'my/other-window-backward)
 
 ;; Third party package
 
 ;; counsel ivy swiper
 (use-package counsel
-  :config
-  (ivy-mode +1)
+  :init
+  (ivy-mode 1)
   ;; (setq enable-recursive-minibuffers t)
   (setq ivy-use-virtual-buffers t
         ivy-count-format "(%d/%d) "
@@ -70,6 +70,7 @@
 
   :bind (("M-y" . counsel-yank-pop)
          ("C-c C-r" . ivy-resume)
+         ("C-c C-o" . counsel-org-capture)
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
          ("C-s" . swiper-isearch)
@@ -86,20 +87,13 @@
   )
 
 (use-package ivy-avy
-  :custom (avy-all-windows nil)
+  :custom ((avy-all-windows nil)
+           (avy-keys (number-sequence ?a ?z)))
   :bind (("C-x SPC" . avy-goto-char)
          ("C-c C-l" . avy-goto-line)
          ("C-C SPC" . avy-goto-word-1)))
 
-(use-package ivy-hydra
-  :config
-
-  )
-
-;; (use-package ace-jump-mode
-;;   :config (setq ace-jump-mode-scope 'window)
-;;   :bind (("C-c SPC" . ace-jump-mode)
-;;          ("C-x SPC" . ace-jump-mode-pop-mark)))
+(use-package ivy-hydra)
 
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
@@ -108,8 +102,6 @@
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
   :config
-  ;; (projectile-register-project-type 'go '("Gopkg.toml" "go.mod"))
-  ;; (projectile-register-project-type 'rust '("Cargo.toml"))
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
@@ -120,11 +112,9 @@
                                                    projectile-root-bottom-up
                                                    projectile-root-local)
         projectile-ignored-project-function (lambda (project-root)
-                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor"))
+                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor" ".emacs.d/ignore" ".emacs.d/elpa"))
                                                 (when (string-match-p deny project-root)
-                                                  (cl-return t)))))
-  (projectile-mode +1)
-  )
+                                                  (cl-return t))))))
 
 (use-package smex
   :config
@@ -149,7 +139,7 @@
 
 (use-package treemacs
   :bind (("C-c t" . treemacs)
-         ("<f11>" . treemacs)
+         ("<f12>" . treemacs)
          ("M-0" . treemacs-select-window)
          :map treemacs-mode-map
          ("j" . treemacs-next-line)

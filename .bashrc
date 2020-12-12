@@ -8,7 +8,7 @@
 # brew install bash-completion
 # https://computingforgeeks.com/how-to-fix-get-comp-words-by-ref-command-not-found/
 bash_comp_sh="/usr/local/etc/profile.d/bash_completion.sh"
-[[ -r "$bash_comp_sh" ]] && . "$bash_comp_sh"
+# [ -r "$bash_comp_sh" ] && . "$bash_comp_sh"
 # Bash completion has been installed to:
 # /usr/local/etc/bash_completion.d
 
@@ -101,5 +101,5 @@ alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 
 # misc
-export PATH=$PATH:$HOME/.cask/bin
+export PATH=$HOME/bin:$PATH:$HOME/.cask/bin
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin

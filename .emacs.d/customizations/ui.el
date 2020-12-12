@@ -16,18 +16,6 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
-;; Color Themes
-;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
-;; for a great explanation of emacs color themes.
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
-;; for a more technical explanation.
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'load-path "~/.emacs.d/themes")
-
-(when (display-graphic-p)
-  (set-frame-font "Hack-15" nil t)
-  (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
-
 ;; full path in title bar
 (setq-default frame-title-format "%b (%f)")
 
@@ -37,6 +25,57 @@
 ;; no bell
 (setq ring-bell-function 'ignore)
 
+;; Color Themes
+;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
+;; for a great explanation of emacs color themes.
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
+;; for a more technical explanation.
+(use-package custom
+  :ensure nil
+  :config
+  ;; disable other themes before loading new one
+  (defadvice load-theme (before theme-dont-propagate activate)
+    "Disable theme before loading new one."
+    (mapc #'disable-theme custom-enabled-themes))
+
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  (add-to-list 'load-path "~/.emacs.d/themes"))
+
+(use-package frame
+  :ensure nil
+  :config
+  ;; No cursor blinking, it's distracting
+  (blink-cursor-mode 0)
+  (when (display-graphic-p)
+    (set-frame-font "Hack-15" nil t)
+    (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
+
+  (setq-default cursor-type 't))
+
+;; (global-display-line-numbers-mode 1)
+(use-package display-line-numbers
+  :ensure nil
+  :hook ((prog-mode text-mode) . display-line-numbers-mode))
+
+(use-package time
+  :ensure nil
+  :config
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
+  (display-time-mode 1)
+  (setq display-time-format "[%H:%M %a, %d/%m]"))
+
+
+;; remove minor mode from mode-line
+;; https://emacs.stackexchange.com/a/41135
+(setq mode-line-modes
+      (mapcar (lambda (elem)
+                (pcase elem
+                  (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
+                   "")
+                  (_ elem)))
+              mode-line-modes))
+
+;; third party packages
 (use-package all-the-icons
   :defer t)
 
@@ -49,18 +88,21 @@
     (switch-to-buffer (get-buffer "*dashboard*")))
 
   (global-set-key (kbd "C-c d d") 'my/goto-dashboard)
-  (global-set-key (kbd "<f10>") 'my/goto-dashboard)
+  (global-set-key (kbd "<f11>") 'my/goto-dashboard)
   (add-hook 'dashboard-mode-hook 'hl-line-mode)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
         dashboard-projects-backend 'projectile
-        dashboard-items '((projects . 5)
-                          (recents . 10)
-                          (bookmarks . 5)
+        dashboard-items '((recents . 10)
+                          (projects . 8)
+                          (bookmarks . 10)
                           )
         dashboard-set-heading-icons t
         dashboard-set-file-icons t
         dashboard-center-content t
         dashboard-startup-banner 'logo))
+
+(use-package gruvbox-theme
+  :defer t)
 
 (defun my/dark-theme-config ()
   (load-theme 'wombat t)
@@ -74,6 +116,7 @@
 (defun my/light-theme-config ()
   (if (display-graphic-p)
       (progn
+        (load-theme 'gruvbox-light-soft t)
         ;; https://github.com/DarwinAwardWinner/dotemacs#dont-use-ns_selection_fg_color-and-ns_selection_bg_color
         (when (and (equal (face-attribute 'region :distant-foreground)
                           "ns_selection_fg_color")
@@ -92,20 +135,3 @@
 (if (string= (getenv "MY_THEME") "light")
     (my/light-theme-config)
   (my/dark-theme-config))
-
-;; No cursor blinking, it's distracting
-(blink-cursor-mode 0)
-(setq-default cursor-type 't)
-(global-display-line-numbers-mode 1)
-;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
-(display-time-mode 1)
-(setq display-time-format "[%H:%M %a, %d/%m]")
-;; remove minor mode from mode-line
-;; https://emacs.stackexchange.com/a/41135
-(setq mode-line-modes
-      (mapcar (lambda (elem)
-                (pcase elem
-                  (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
-                   "")
-                  (_ elem)))
-              mode-line-modes))
