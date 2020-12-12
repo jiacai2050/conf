@@ -1,7 +1,3 @@
-
-;; this is required when symlink project outside GOPATH into it
-(setq vc-follow-symlinks nil)
-
 (use-package go-mode
   ;; :load-path "~/.emacs.d/vendor/go-mode"
   :mode ("\\.go\\'" . go-mode)

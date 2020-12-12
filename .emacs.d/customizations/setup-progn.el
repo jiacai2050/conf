@@ -40,22 +40,26 @@
   )
 
 ;; magit dependencies
-(use-package magit-popup)
-(use-package with-editor)
-(use-package dash)
+(use-package with-editor
+  :defer t)
+(use-package dash
+  :defer t)
 (use-package transient
+  :defer t
   :config
   (setq transient-history-file (expand-file-name "transient/history.el" my/ignore-directory)))
-(use-package ghub)
 
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
          ("C-c g b" . magit-blame-addition))
-  :custom (magit-diff-refine-hunk 'all)
-
-  ;; :config (setq magit-completing-read-function 'magit-ido-completing-read)
-)
+  :config
+  (transient-bind-q-to-quit)
+  :custom ((magit-diff-refine-hunk 'all)
+           ;; https://emacs.stackexchange.com/a/3696/16450
+           (find-file-visit-truename t)
+           ;; https://emacs.stackexchange.com/a/52002/16450
+           (transient-display-buffer-action '(display-buffer-below-selected))))
 
 (use-package git-link
   :bind (("C-c g l" . git-link)
@@ -138,7 +142,7 @@
         lsp-gopls-hover-kind "NoDocumentation"
         lsp-gopls-use-placeholders t
         lsp-diagnostics-provider :none)
-    (push "[/\\\\]vendor$" lsp-file-watch-ignored)
+  (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)
