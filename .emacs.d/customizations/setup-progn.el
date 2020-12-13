@@ -96,7 +96,6 @@
 
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"
-  ;; :load-path "~/code/misc/lsp-mode"
   :hook ((go-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred)
@@ -163,6 +162,7 @@
   (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/"))
 
 (use-package lsp-treemacs
+  :load-path "~/.emacs.d/vendor/lsp-treemacs"
   :bind (:map lsp-mode-map
               ("C-c C-u" . lsp-treemacs-symbols)))
 

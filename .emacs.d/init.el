@@ -10,6 +10,11 @@
       source-directory (expand-file-name "~/code/misc/emacs")
       )
 
+;; add cask dependencies
+(dolist (cask-dep '("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-treemacs"))
+  (let ((dep-dir (format "%s/.cask/%s.%s/elpa" cask-dep emacs-major-version emacs-minor-version)))
+    (add-to-list 'package-directory-list dep-dir)))
+
 ;; http://akrl.sdf.org/
 (defmacro my/operation-time (&rest body)
   "Measure and return the time it takes evaluating BODY."
@@ -18,7 +23,9 @@
      (float-time (time-since time))))
 
 ;; Set garbage collection threshold to 1GB.
-(setq gc-cons-threshold #x40000000)
+(setq gc-cons-threshold #x40000000
+      ;; 1mb
+      read-process-output-max (* 1024 1024))
 
 ;; When idle for 30s run the GC no matter what.
 (defvar my/gc-timer
@@ -29,11 +36,6 @@
                                                (my/operation-time (garbage-collect)))))
                            (with-current-buffer "*Messages*"
 	                         (insert gc-msg "\n"))))))
-
-;; add cask dependencies
-;; (let ((cask-bootstrap-emacs-version (format "%s.%s" emacs-major-version emacs-minor-version)))
-;;   (add-to-list 'package-directory-list (expand-file-name (format "~/.emacs.d/vendor/lsp-mode/.cask/%s/elpa" cask-bootstrap-emacs-version)))
-;;   )
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
