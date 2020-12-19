@@ -34,9 +34,9 @@
   :ensure nil
   :config
   ;; disable other themes before loading new one
-  (defadvice load-theme (before theme-dont-propagate activate)
-    "Disable theme before loading new one."
-    (mapc #'disable-theme custom-enabled-themes))
+  (defun my/disable-previous-theme (theme &optional _ _)
+    (mapc 'disable-theme custom-enabled-themes))
+  (advice-add 'load-theme :before 'my/disable-previous-theme)
 
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
   (add-to-list 'load-path "~/.emacs.d/themes"))

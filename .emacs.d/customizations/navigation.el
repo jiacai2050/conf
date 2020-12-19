@@ -20,7 +20,6 @@
         recentf-max-saved-items 150)
   (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
   (add-to-list 'recentf-exclude "\\.emacs\\.d/ignore/.*")
-  (add-to-list 'recentf-exclude "gh/dotfiles/\\.emacs\\.d/")
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
   (add-to-list 'recentf-exclude "/Applications/.*")
   (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
@@ -62,9 +61,8 @@
         ivy-count-format "(%d/%d) "
         ivy-initial-inputs-alist nil
         ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
-                                ;; (my/recentf-open . ivy--regex-fuzzy)
-                                (t . ivy--regex-plus)
-                                )
+                                (t . ivy--regex-plus))
+        ivy-height 15
         ivy-extra-directories '("./"))
 
 
@@ -77,12 +75,10 @@
          ("C-r" . swiper-isearch-backward)
          ("C-c s f" . counsel-git)
          ("C-c s s" . counsel-git-grep)
-         ("C-c j" . counsel-rg)
+         ("C-c s a" . counsel-rg)
          ("C-c b" . counsel-bookmark)
          ("C-x C-f" . counsel-find-file)
-         ("C-x f" . counsel-recentf)
-         :map ivy-minibuffer-map
-         ("RET" . ivy-alt-done))
+         ("C-x f" . counsel-recentf))
   )
 
 (use-package ivy-avy
@@ -93,6 +89,9 @@
          ("C-C SPC" . avy-goto-word-1)))
 
 (use-package ivy-hydra)
+
+(use-package window-numbering
+  :init (window-numbering-mode 1))
 
 (use-package all-the-icons-ivy
   :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
@@ -146,6 +145,7 @@
   :config
   (progn
     (setq treemacs-persist-file (concat my/ignore-directory "treemacs-persist"))
+    (evil-make-overriding-map treemacs-mode-map 'normal)
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 

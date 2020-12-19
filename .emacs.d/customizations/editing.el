@@ -161,8 +161,7 @@
          ("C-c c a" . mc/edit-beginnings-of-lines)
          ("C-c c g" . mc/mark-all-like-this)
          ("C-c c r" . set-rectangular-region-anchor)
-         ("C-." . mc/mark-next-like-this)
-         ("C-," . mc/mark-previous-like-this))
+         ("C-." . mc/mark-next-like-this))
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
   :custom
@@ -232,9 +231,9 @@
   :bind (("C-c f y" . go-translate))
   :config
   (setq go-translate-base-url "https://translate.google.cn"
-        go-translate-extra-directions '(("zh-CN" . "en") ("en" . "zh-CN"))
-        go-translate-local-language "auto"
-        go-translate-target-language "auto"
+        go-translate-extra-directions '(("en" . "zh-CN"))
+        go-translate-target-language "zh-CN"
+        go-translate-local-language "en"
         go-translate-buffer-follow-p t)
   )
 
@@ -273,10 +272,55 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode treemacs-mode dired-mode git-rebase-mode easy-hugo-mode))
+  (dolist (m '(dashboard-mode dired-mode git-rebase-mode easy-hugo-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
+  )
+
+(use-package evil-leader
+  :init (global-evil-leader-mode)
+  :custom ((evil-leader/leader ",")
+           (evil-leader/in-all-states t))
+  :config
+  (evil-leader/set-key
+    "p" 'compile
+    "f" 'counsel-find-file
+    "r" 'counsel-recentf
+    "b" 'switch-to-buffer
+    "k" 'kill-buffer
+    "j j" 'counsel-git-grep
+    "j f" 'counsel-git
+    "j r" 'counsel-rg
+    "d" 'magit-file-dispatch
+    "s" 'save-buffer
+    "SPC" 'avy-goto-word-1
+
+    "0" 'select-window-0
+    "1" 'select-window-1
+    "2" 'select-window-2
+    "3" 'select-window-3
+    "4" 'select-window-4
+    "5" 'select-window-5
+    "6" 'select-window-6
+    "7" 'select-window-7
+    "8" 'select-window-8
+    "9" 'select-window-9
+    ))
+
+(use-package keyfreq
+  :init (progn
+          (keyfreq-mode 1)
+          (keyfreq-autosave-mode 1))
+  :custom ((keyfreq-file (expand-file-name "keyfreq" my/ignore-directory))
+           (keyfreq-file-lock (expand-file-name "keyfreq.lock" my/ignore-directory)))
+  :config
+  (setq keyfreq-excluded-commands
+        '(self-insert-command
+          forward-char
+          backward-char
+          previous-line
+          next-line))
   )
 
 (use-package wgrep

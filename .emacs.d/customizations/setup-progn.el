@@ -52,7 +52,8 @@
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
-         ("C-c g b" . magit-blame-addition))
+         ("C-c j b" . magit-blame-addition)
+         ("C-c j f" . magit-file-dispatch))
   :config
   (transient-bind-q-to-quit)
   :custom ((magit-diff-refine-hunk 'all)
@@ -62,9 +63,9 @@
            (transient-display-buffer-action '(display-buffer-below-selected))))
 
 (use-package git-link
-  :bind (("C-c g l" . git-link)
-         ("C-c g c" . my/git-link-commit)
-         ("C-c g h" . git-link-homepage))
+  :bind (("C-c j l" . git-link)
+         ("C-c j c" . my/git-link-commit)
+         ("C-c j h" . git-link-homepage))
   :config
   (progn
     (defun my/git-link-commit (remote start end)
@@ -86,7 +87,13 @@
                  '("alipay\\(-inc\\)?\\.com" git-link-commit-github))))
 
 (use-package git-timemachine
-  :bind (("C-c g t" . git-timemachine-toggle)))
+  :bind (("C-c j t" . git-timemachine-toggle))
+  :hook ((git-timemachine-mode . display-line-numbers-mode)
+         (git-timemachine-mode . evil-normalize-keymaps))
+  :config
+  ;; https://github.com/emacs-evil/evil/issues/511
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  )
 
 ;; (use-package magithub
 ;;   :after magit

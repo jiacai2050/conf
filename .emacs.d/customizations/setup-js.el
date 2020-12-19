@@ -10,10 +10,6 @@
 (use-package json-mode
   :mode ("\\.json\\'" . json-mode))
 
-(use-package js2-mode
-  :init
-  :mode ("\\.js\\'" . js2-mode))
-
 (use-package tagedit
   :config
   (tagedit-add-paredit-like-keybindings)
