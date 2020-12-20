@@ -9,14 +9,15 @@
 ;; environment variables from the user's shell.
 ;; https://github.com/purcell/exec-path-from-shell
 
-(when (memq window-system '(mac ns x))
+(when (and (memq window-system '(mac ns x))
+           (display-graphic-p))
   ;; emacs run inside terminal will inherit env from shell
-  (when (display-graphic-p)
-    (use-package exec-path-from-shell
-      :config
-      (exec-path-from-shell-copy-envs
-       '("GOPROXY" "GOPATH"))
-      (exec-path-from-shell-initialize))))
+  (use-package exec-path-from-shell
+    :custom ((exec-path-from-shell-arguments '("-l"))
+             (exec-path-from-shell-variables '("GOPROXY" "GOPATH" "PATH")))
+    :config
+    (exec-path-from-shell-initialize))
+  )
 
 (use-package aweshell
   :load-path "~/.emacs.d/vendor/aweshell"

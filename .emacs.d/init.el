@@ -19,32 +19,13 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-;; The packages you want installed. You can also install these
-;; manually with M-x package-install
-;; Add in your own as you wish:
-(defvar my-packages
-  '(
-    use-package
-    use-package-ensure-system-package
-    ))
-
-;; On OS X, an Emacs instance started from the graphical user
-;; interface will have a different environment than a shell in a
-;; terminal window, because OS X does not run a shell during the
-;; login. Obviously this will lead to unexpected results when
-;; calling external utilities like make from Emacs.
-;; This library works around this problem by copying important
-;; environment variables from the user's shell.
-;; https://github.com/purcell/exec-path-from-shell
-(when (eq system-type 'darwin)
-  (add-to-list 'my-packages 'exec-path-from-shell))
-
-(dolist (p my-packages)
+(dolist (p '(use-package use-package-ensure-system-package))
   (when (not (package-installed-p p))
     (package-install p)))
 
 (eval-when-compile
   (require 'use-package)
+  (setq use-package-verbose t)
   (setq use-package-always-ensure t))
 
 (defun my/map-key (key)

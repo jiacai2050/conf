@@ -20,6 +20,7 @@
   (add-hook 'ruby-mode-hook (lambda ()
                               (push 'company-robe company-backends))))
 
-(use-package ruby-end)
+(use-package ruby-end
+  :defer t)
 
 (use-package inf-ruby)
