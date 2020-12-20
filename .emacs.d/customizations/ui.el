@@ -30,6 +30,11 @@
   :config
   ;; No cursor blinking, it's distracting
   (blink-cursor-mode 0)
+
+  (when (display-graphic-p)
+    (add-to-list 'default-frame-alist '(font . "Hack-15"))
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
   (setq-default cursor-type 't))
 
 ;; (global-display-line-numbers-mode 1)

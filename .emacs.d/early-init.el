@@ -14,15 +14,15 @@
              (equal (file-name-nondirectory f) "site-lisp"))
     (add-to-list 'package-directory-list (expand-file-name "elpa" f))))
 
-(setq default-frame-alist '((fullscreen . maximized)
-                            (tool-bar-lines . -1)
-                            (menu-bar-lines . -1)
-                            (font . "Hack-15")
+(setq default-frame-alist '((tool-bar-lines . 0)
+                            (menu-bar-lines . 0)
                             (vertical-scroll-bars)))
 
 (setq gc-cons-threshold most-positive-fixnum
       ;; 1mb
       read-process-output-max (* 1024 1024)
+      ;; copy from doom-emacs
+      frame-inhibit-implied-resize t
       load-prefer-newer t
       source-directory (expand-file-name "~/code/misc/emacs")
       )
