@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (defun my/python-shell-send-buffer ()
   "Wrap python-shell-send-buffer, with send-main is true."
   (interactive)

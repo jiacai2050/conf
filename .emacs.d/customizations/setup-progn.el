@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (use-package compile
   :custom (compilation-scroll-output t))
 
@@ -119,7 +121,6 @@
   :commands (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
-
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
   (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
     (-let* (((&hash "value") contents)

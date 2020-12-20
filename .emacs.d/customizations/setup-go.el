@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (use-package go-mode
   ;; :load-path "~/.emacs.d/vendor/go-mode"
   :mode ("\\.go\\'" . go-mode)

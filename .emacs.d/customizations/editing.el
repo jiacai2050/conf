@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; Customizations relating to editing a buffer.
 
 (setq column-number-mode t)
@@ -119,7 +121,11 @@
   :bind (:map dired-mode-map
               ("e" . dired-toggle-read-only)
               ("j" . dired-next-line)
-              ("k" . dired-previous-line)))
+              ("k" . dired-previous-line)
+              ("SPC" . evil-scroll-page-down)
+              ("DEL" . evil-scroll-page-up))
+  :config
+  (evil-make-overriding-map dired-mode-map 'normal))
 
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
@@ -272,7 +278,7 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode dired-mode git-rebase-mode easy-hugo-mode))
+  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
@@ -284,9 +290,9 @@
            (evil-leader/in-all-states t))
   :config
   (evil-leader/set-key
-    "p" 'compile
-    "f" 'counsel-find-file
-    "r" 'counsel-recentf
+    "c" 'compile
+    "e" 'counsel-find-file
+    "f" 'counsel-recentf
     "b" 'switch-to-buffer
     "k" 'kill-buffer
     "j j" 'counsel-git-grep

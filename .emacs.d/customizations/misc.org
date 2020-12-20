@@ -1,3 +1,9 @@
+* Set lexical binding
+- https://www.gnu.org/software/emacs/manual/html_node/elisp/Using-Lexical-Binding.html#Using-Lexical-Binding
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t; -*-
+#+end_src
+
 * Languages
 ** Ocaml
 - https://github.com/ocaml/merlin/wiki/emacs-from-scratch

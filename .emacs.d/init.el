@@ -1,41 +1,12 @@
-;; Define package repositories
+;;; -*- lexical-binding: t; -*-
+
 (require 'package)
 
 (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
                          ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/"))
-      ;; help-enable-completion-autoload nil
-      load-prefer-newer t
-      source-directory (expand-file-name "~/code/misc/emacs")
       )
-
-;; add cask dependencies
-(dolist (cask-dep '("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-treemacs"))
-  (let ((dep-dir (format "%s/.cask/%s.%s/elpa" cask-dep emacs-major-version emacs-minor-version)))
-    (add-to-list 'package-directory-list dep-dir)))
-
-;; http://akrl.sdf.org/
-(defmacro my/operation-time (&rest body)
-  "Measure and return the time it takes evaluating BODY."
-  `(let ((time (current-time)))
-     ,@body
-     (float-time (time-since time))))
-
-;; Set garbage collection threshold to 1GB.
-(setq gc-cons-threshold #x40000000
-      ;; 1mb
-      read-process-output-max (* 1024 1024))
-
-;; When idle for 30s run the GC no matter what.
-(defvar my/gc-timer
-  (run-with-idle-timer 30 t
-                       (lambda ()
-                         (let ((inhibit-read-only t)
-                               (gc-msg (format "Garbage Collector has run for %.06fsec"
-                                               (my/operation-time (garbage-collect)))))
-                           (with-current-buffer "*Messages*"
-	                         (insert gc-msg "\n"))))))
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
@@ -71,7 +42,10 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-(setq use-package-always-ensure t)
+
+(eval-when-compile
+  (require 'use-package)
+  (setq use-package-always-ensure t))
 
 (defun my/map-key (key)
   "Map KEY from escape sequence \"\e[emacs-KEY\."
@@ -86,7 +60,6 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 ;;;;
 ;; Customization
 ;;;;
-(setq my/ignore-directory (file-name-as-directory (expand-file-name "ignore" user-emacs-directory)))
 (setq custom-file (expand-file-name "custom.el" my/ignore-directory)
       auto-save-list-file-prefix (cond ((eq system-type 'ms-dos)
 	                                    ;; MS-DOS cannot have initial dot, and allows only 8.3 names
