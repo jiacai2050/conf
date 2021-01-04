@@ -29,9 +29,9 @@
 
 (use-package org
   :bind (:map org-mode-map
-         ("C-c SPC" . ace-jump-mode)
-         ("C-c s" . org-table-sort-lines)
-         ("C-c l" . org-store-link))
+              ("C-c SPC" . avy-goto-word-1)
+              ("C-c s" . org-table-sort-lines)
+              ("C-c l" . org-store-link))
   :custom (org-default-notes-file (expand-file-name "~/Documents/notes.org"))
   :init
   ;; https://orgmode.org/worg/org-contrib/babel/languages.html

@@ -16,6 +16,7 @@
         kill-visual-line
         magit-status
         markdown-outdent-or-delete
+        org-delete-char
         org-metaright
         org-return-indent
         org-self-insert-command

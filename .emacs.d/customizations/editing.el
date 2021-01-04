@@ -240,7 +240,8 @@
         go-translate-extra-directions '(("en" . "zh-CN"))
         go-translate-target-language "zh-CN"
         go-translate-local-language "en"
-        go-translate-buffer-follow-p t)
+        go-translate-buffer-follow-p t
+        go-translate-token-current (cons 430675 2721866130))
   )
 
 (use-package evil
@@ -265,6 +266,8 @@
       (define-key evil-normal-state-map (kbd "C-M-f") 'forward-sexp))
 
     (define-key evil-motion-state-map (kbd "SPC") 'evil-scroll-page-down)
+    (define-key evil-motion-state-map (kbd "C-e") 'end-of-visual-line)
+    (define-key evil-motion-state-map (kbd "C-a") 'beginning-of-visual-line)
 
     (progn
       (define-key evil-insert-state-map (kbd "C-y") 'yank)

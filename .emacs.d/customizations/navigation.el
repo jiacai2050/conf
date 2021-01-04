@@ -70,7 +70,6 @@
 
   :bind (("M-y" . counsel-yank-pop)
          ("C-c C-r" . ivy-resume)
-         ("C-c C-p" . counsel-org-capture)
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
          ("C-s" . swiper-isearch)

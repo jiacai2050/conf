@@ -11,7 +11,7 @@
   (setq rust-format-on-save t)
   (defun my/rust-lsp ()
     (setq-local lsp-completion-enable nil
-                compile-command "cargo build")
+                compile-command "cargo check")
     ))
 
 ;; (use-package flycheck-rust
