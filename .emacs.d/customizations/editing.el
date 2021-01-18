@@ -225,7 +225,7 @@
   :init (setq markdown-command "multimarkdown"))
 
 (use-package vmd-mode
-  :ensure-system-package (vmd . "npm install -g vmd"))
+  )
 
 (use-package carbon-now-sh)
 
@@ -294,15 +294,20 @@
   :config
   (evil-leader/set-key
     "c" 'compile
-    "e" 'counsel-find-file
-    "f" 'counsel-recentf
-    "b" 'switch-to-buffer
+    "o" 'counsel-find-file
+    "r" 'counsel-recentf
+    "f" 'counsel-git
+    "s" 'counsel-git-grep
+    "b" 'counsel-switch-buffer
     "k" 'kill-buffer
-    "j j" 'counsel-git-grep
-    "j f" 'counsel-git
-    "j r" 'counsel-rg
+    "g s" 'counsel-git-grep
+    "g f" 'counsel-git
+    "g r" 'counsel-rg
+    "g g" 'magit-status
+    "p f" 'projectile-find-file
+    "p s" 'projectile-ripgrep
+    "p p" 'projectile-switch-project
     "d" 'magit-file-dispatch
-    "s" 'save-buffer
     "SPC" 'avy-goto-word-1
 
     "0" 'select-window-0

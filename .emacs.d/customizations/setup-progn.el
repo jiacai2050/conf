@@ -171,8 +171,14 @@
 
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"
+  :config
+  (defun my/toggle-treemacs-symbols ()
+    (interactive)
+    (if-let (buf (get-buffer lsp-treemacs-symbols-buffer-name))
+        (kill-buffer buf)
+      (lsp-treemacs-symbols)))
   :bind (:map lsp-mode-map
-              ("C-c C-u" . lsp-treemacs-symbols)))
+              ("C-c C-u" . my/toggle-treemacs-symbols)))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

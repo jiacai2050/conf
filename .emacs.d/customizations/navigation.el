@@ -121,8 +121,9 @@
   (smex-initialize))
 
 
-(use-package ag
-  :ensure-system-package (ag . "brew install the_silver_searcher"))
+(use-package rg
+  :defer t
+  :ensure-system-package (rg . "brew install ripgrep"))
 
 ;; prefer treemacs over this
 ;; (use-package sr-speedbar

@@ -30,7 +30,6 @@
 (use-package org
   :bind (:map org-mode-map
               ("C-c SPC" . avy-goto-word-1)
-              ("C-c s" . org-table-sort-lines)
               ("C-c l" . org-store-link))
   :custom (org-default-notes-file (expand-file-name "~/Documents/notes.org"))
   :init
