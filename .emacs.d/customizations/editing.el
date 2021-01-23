@@ -184,6 +184,14 @@
 
 (use-package expand-region)
 
+(use-package undo-tree
+  :init (global-undo-tree-mode)
+  :bind (:map undo-tree-visualizer-mode-map
+              (("j" . undo-tree-visualize-redo)
+               ("k" . undo-tree-visualize-undo)
+               ("h" . undo-tree-visualize-switch-branch-left)
+               ("l" . undo-tree-visualize-switch-branch-right))))
+
 (use-package persistent-scratch
   :config
   (setq persistent-scratch-autosave-interval 5)
@@ -224,8 +232,7 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(use-package vmd-mode
-  )
+(use-package vmd-mode)
 
 (use-package carbon-now-sh)
 
@@ -281,7 +288,7 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode))
+  (dolist (m '(dashboard-mode undo-tree-mode git-rebase-mode easy-hugo-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))

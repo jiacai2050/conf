@@ -54,6 +54,7 @@
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
+         ("C-c g" . magit-file-dispatch)
          ("C-c j b" . magit-blame-addition)
          ("C-c j f" . magit-file-dispatch))
   :config
