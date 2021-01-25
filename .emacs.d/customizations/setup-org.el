@@ -18,16 +18,13 @@
       (make-directory pub-dir)))
   (apply orig-fun extension subtreep pub-dir nil))
 
-(use-package ox-gfm
-  :after org)
-
-(use-package htmlize
-  :after org)
-
-(use-package ob-http
-  :after org)
+(use-package ox-gfm)
+(use-package htmlize)
+(use-package ob-http)
+(use-package ob-sql-mode)
 
 (use-package org
+  :ensure nil
   :bind (:map org-mode-map
               ("C-c SPC" . avy-goto-word-1)
               ("C-c l" . org-store-link))
@@ -42,6 +39,7 @@
      (makefile . t)
      (http . t)
      (clojure . t)
+     (sql . t)
      (emacs-lisp . t)))
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
@@ -53,7 +51,8 @@
         org-export-with-sub-superscripts nil
         org-hide-emphasis-markers nil
         ;; terminal emacs can't display those lovely images :-(
-        org-startup-with-inline-images t)
+        org-startup-with-inline-images t
+        org-confirm-babel-evaluate nil)
   ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
   (require 'ox-md nil t)
   (require 'org-tempo)

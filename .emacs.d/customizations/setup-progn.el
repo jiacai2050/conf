@@ -14,6 +14,8 @@
   )
 
 ;; third party extensions
+(use-package sql-indent)
+
 (use-package smartparens
   :init (defun my/sp-setup ()
           (smartparens-global-strict-mode 1))
