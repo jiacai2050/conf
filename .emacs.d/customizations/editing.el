@@ -289,7 +289,7 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode undo-tree-mode git-rebase-mode easy-hugo-mode))
+  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
