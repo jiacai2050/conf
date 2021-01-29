@@ -65,13 +65,13 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 (let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))
   (add-to-list 'load-path custom-conf-path)
 
-  ;; These customizations change the way emacs looks and disable/enable
-  ;; some user interface elements
-  (load "ui.el")
-
   ;; Sets up exec-path-from-shell so that Emacs will use the correct
   ;; environment variables
   (load "shell-integration.el")
+
+  ;; These customizations change the way emacs looks and disable/enable
+  ;; some user interface elements
+  (load "ui.el")
 
   ;; These customizations make editing a bit nicer.
   (load "editing.el")

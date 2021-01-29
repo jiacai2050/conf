@@ -14,7 +14,7 @@
   ;; emacs run inside terminal will inherit env from shell
   (use-package exec-path-from-shell
     :custom ((exec-path-from-shell-arguments '("-l"))
-             (exec-path-from-shell-variables '("GOPROXY" "GOPATH" "PATH")))
+             (exec-path-from-shell-variables '("GOPROXY" "GOPATH" "PATH" "MY_THEME")))
     :config
     (exec-path-from-shell-initialize))
   )
