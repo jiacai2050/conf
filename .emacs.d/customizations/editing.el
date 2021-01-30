@@ -350,6 +350,9 @@
   (setq wgrep-auto-save-buffer t
         wgrep-enable-key "e"))
 
+(use-package tiny
+  :bind (("C-c C-;" . tiny-expand)))
+
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
   (interactive)
@@ -392,20 +395,26 @@
 
 (defun my/timestamp->human-date ()
   (interactive)
-  (when (not mark-active)
-    ;; require https://github.com/magnars/expand-region.el
-    (er/mark-word))
-  (letrec ((timestamp-str (buffer-substring (mark) (point)))
-           (timestamp-int (string-to-number timestamp-str)))
-    (if (> timestamp-int 0)
-        (let ((fixed-ts (if (> timestamp-int (expt 10 11)) ;; 大于 10^11 为微秒，转为秒
-                            (/ timestamp-int 1000)
-                          timestamp-int)))
-          ;; (kill-region (mark) (point))
-          (end-of-line)
-          (newline-and-indent)
-          (insert (my/iso-8601-date-string (seconds-to-time fixed-ts))))
-      (deactivate-mark))))
+  (unless mark-active
+    (set-mark (line-beginning-position))
+    (line-end-position))
+  (letrec ((date-string (buffer-substring (mark) (point)))
+           (body (if (iso8601-valid-p date-string)
+                     ;; date -> ts
+                     (format-time-string "%s" (parse-iso8601-time-string date-string))
+                   ;; ts -> date
+                   (let ((timestamp-int (string-to-number date-string)))
+                     (thread-last
+                         (if (> timestamp-int (expt 10 11)) ;; 大于 10^11 为微秒，转为秒
+                             (/ timestamp-int 1000)
+                           timestamp-int)
+                       (seconds-to-time)
+                       (my/iso-8601-date-string))))))
+    (unless (string-empty-p body)
+      (end-of-line)
+      (newline-and-indent)
+      (insert body))
+    (deactivate-mark)))
 
 (defun my/zoom-in ()
   "Increase font size by 10 points"
@@ -441,7 +450,7 @@
 (defun my/storage-size->human ()
   "Divide by 1024 for human"
   (interactive)
-  (when (not mark-active)
+  (unless mark-active
     ;; require https://github.com/magnars/expand-region.el
     (er/mark-word))
   (letrec ((raw-size (string-to-number (buffer-substring (mark) (point)))))
@@ -512,10 +521,9 @@
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
 (global-set-key (kbd "<f12>") 'view-mode)
-(global-set-key (kbd "C-c h t") 'my/timestamp->human-date)
-(global-set-key (kbd "C-c h u") 'my/url-decode-region)
-(global-set-key (kbd "C-c h s") 'my/storage-size->human)
-(global-set-key (kbd "C-c f j") 'json-pretty-print)
+(global-set-key (kbd "C-c C-d") 'my/timestamp->human-date)
+(global-set-key (kbd "C-c s h") 'my/storage-size->human)
+(global-set-key (kbd "C-c C-j") 'json-pretty-print)
 
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429

@@ -215,5 +215,7 @@
          (go-playground-mode)
          (go-playground-exec))))
 
+;; for terminal
 (my/global-map-and-set-key "C-R" 'my/playground-exec)
+;; for GUI
 (global-set-key (kbd "<C-return>") 'my/playground-exec)
