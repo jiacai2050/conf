@@ -64,3 +64,10 @@ PATH=/usr/local/opt/texinfo/bin:$PATH make
 #+begin_src
 make build all
 #+end_src
+
+* Python
+- https://github.com/palantir/python-language-server
+#+begin_src bash
+pip install 'python-language-server[all]'
+#+end_src
+- =C-c C-s= pyenv-mode-set
