@@ -437,16 +437,6 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
-(defun my/filepath ()
-  "copy buffer's full path to kill ring"
-  (interactive)
-  (let ((n (buffer-file-name)))
-    (if n
-        (progn
-          (message "File path is %s" n)
-          (kill-new n))
-      (message "Not visit a file"))))
-
 (defun my/diff-buffer-with-file ()
   "Compare the current modified buffer with the saved version."
   (interactive)
@@ -463,16 +453,10 @@
                (iter (get mode 'derived-mode-parent)))))
   (message "%s" (iter mode)))
 
-(global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
-(global-set-key (kbd "C-c f p") 'my/filepath)
-(global-set-key (kbd "C-c f d") 'my/diff-buffer-with-file)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
-(global-set-key (kbd "C-c C-d") 'my/timestamp->human-date)
-(global-set-key (kbd "C-c s h") 'my/storage-size->human)
-(global-set-key (kbd "C-c C-j") 'json-pretty-print)
 
 ;; 需要配合 iTerm2 进行 key mapping
 ;; https://stackoverflow.com/a/40222318/2163429

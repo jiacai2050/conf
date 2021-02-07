@@ -73,11 +73,7 @@
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
          ("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward)
-         ("C-c s a" . counsel-rg)
-         ("C-c b" . counsel-bookmark)
-         ("C-x C-f" . counsel-find-file)
-         ("C-x f" . counsel-recentf))
+         ("C-r" . swiper-isearch-backward))
   )
 
 (use-package ivy-avy
@@ -91,33 +87,29 @@
   :config
   (defhydra hydra-prog-menu (:color pink :hint nil)
     "
-^Git^             ^LSP^              ^Search^        ^Human^
-^^^^^^-----------------------------------------------------------------              (__)
-_p_: dispatch    _t_: thing-at-pos  _s_: search       _d_: datetime ts               (oo)
-_c_: lk-commit   _x_: quick-fix     _f_: grep file    _v_: volume              /------\\/
-_h_: lk-home     _e_: expandmacro   _r_: rg           _j_: json               / |    ||
-_l_: lk-git      ^ ^                ^ ^                                      * /\\---/\\
+^Git^             ^LSP^                ^Human^
+^^^^^^---------------------------------------------------              (__)
+_p_: dispatch    _t_: thing-at-pos     _d_: datetime ts               (oo)
+_c_: lk-commit   _x_: quick-fix        _v_: volume              /------\\/
+_h_: lk-home     _e_: expandmacro      _j_: json               / |    ||
+_l_: lk-git      ^ ^                                          * /\\---/\\
+_s_: status
 "
     ("p" magit-file-dispatch :exit t)
     ("c" my/git-link-commit :exit t)
     ("h" git-link-homepage :exit t)
     ("l" git-link :exit t)
+    ("s" magit-status :exit t)
 
     ("t" lsp-describe-thing-at-point :exit t)
     ("x" lsp-execute-code-action :exit t)
     ("e" lsp-rust-analyzer-expand-macro :exit t)
-
-    ("s" counsel-git-grep)
-    ("f" counsel-git)
-    ("r" counsel-rg)
 
     ("d" my/timestamp->human-date)
     ("v" my/storage-size->human)
     ("j" my/format-json :exit t)
 
     ("q" nil))
-  (global-set-key (kbd "C-c j") 'hydra-prog-menu/body)
-
   (defhydra hydra-multiple-cursors (:hint nil)
     "
  Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
@@ -143,7 +135,6 @@ _l_: lk-git      ^ ^                ^ ^                                      * /
     ("<down-mouse-1>" ignore)
     ("<drag-mouse-1>" ignore)
     ("q" nil))
-  (global-set-key (kbd "C-c c") 'hydra-multiple-cursors/body)
   )
 
 (use-package window-numbering
@@ -220,18 +211,25 @@ _l_: lk-git      ^ ^                ^ ^                                      * /
   (require 'matcha-me)
   (evil-leader/set-key
     "c" 'compile
+    "s" 'swiper-isearch
     "r" 'counsel-recentf
-    "o" 'counsel-find-file
-    "f" 'counsel-git
-    "s" 'counsel-git-grep
-    "b" 'counsel-switch-buffer
+    "f" 'counsel-find-file
+    "b" 'counsel-bookmark
+    "w" 'counsel-switch-buffer
+
+    "o" 'counsel-git
+    "a" 'counsel-git-grep
     "k" 'kill-buffer
-    "j" 'matcha-magit
-    "p" 'matcha-projectile
-    "v" 'matcha-vc-dir
-    "m" 'matcha-me-space
-    "F" 'matcha-me-files
+    "d" 'my/delete-file-and-buffer
+    "j" 'hydra-prog-menu/body
+    "m" 'hydra-multiple-cursors/body
     "SPC" 'avy-goto-word-1
+
+    "," 'matcha-me-space
+    "p" 'matcha-projectile
+    "g" 'matcha-magit
+    "v" 'matcha-vc-dir
+    "x" 'matcha-me-files
 
     "0" 'select-window-0
     "1" 'select-window-1
