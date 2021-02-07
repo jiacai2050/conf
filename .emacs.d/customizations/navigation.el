@@ -180,18 +180,6 @@ _l_: lk-git      ^ ^                ^ ^                                      * /
   :defer t
   :ensure-system-package (rg . "brew install ripgrep"))
 
-;; prefer treemacs over this
-;; (use-package sr-speedbar
-;;   :config
-;;   (setq speedbar-show-unknown-files t ;; show all files
-;;         speedbar-use-images nil       ;; use text for buttons
-;;         sr-speedbar-right-side nil    ;; put on left side
-;;         sr-speedbar-width 30
-;;         )
-;;   :bind (("<f11>" . sr-speedbar-toggle)
-;;          ("C-c s w" . sr-speedbar-select-window)
-;;          ("C-c s r" . sr-speedbar-refresh-toggle)))
-
 (use-package treemacs
   :bind (("C-c t" . treemacs)
          ("<f12>" . treemacs)
@@ -217,6 +205,41 @@ _l_: lk-git      ^ ^                ^ ^                                      * /
   (add-hook 'dired-mode-hook 'hl-line-mode))
 
 ;; Customization
+
+(use-package matcha
+  :load-path "~/code/misc/matcha"
+  :ensure nil
+  :config
+  (matcha-setup))
+
+(use-package evil-leader
+  :init (global-evil-leader-mode)
+  :custom ((evil-leader/leader ",")
+           (evil-leader/in-all-states t))
+  :config
+  (require 'matcha-me)
+  (evil-leader/set-key
+    "c" 'compile
+    "r" 'counsel-recentf
+    "o" 'counsel-find-file
+    "f" 'counsel-git
+    "s" 'counsel-git-grep
+    "b" 'counsel-switch-buffer
+    "k" 'kill-buffer
+    "j" 'matcha-magit
+    "p" 'matcha-projectile
+    "v" 'matcha-vc-dir
+    "m" 'matcha-me-space
+    "F" 'matcha-me-files
+    "SPC" 'avy-goto-word-1
+
+    "0" 'select-window-0
+    "1" 'select-window-1
+    "2" 'select-window-2
+    "3" 'select-window-3
+    "4" 'select-window-4
+    ))
+
 (defun my/switch-to-metadata-file ()
   (interactive)
   (let ((basename (pcase major-mode
@@ -232,4 +255,80 @@ _l_: lk-git      ^ ^                ^ ^                                      * /
             (find-file (concat metadata-dir basename))))
       (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
 
-(global-set-key (kbd "C-c m") 'my/switch-to-metadata-file)
+;; matcha-helper https://github.com/jojojames/.emacs.d/blob/8414ea5253/config/jn-functions.el
+(defun j-open-terminal ()
+  "Open system terminal."
+  (interactive)
+  (cond
+   (MAC-P
+    (shell-command
+     ;; open -a Terminal doesn't allow us to open a particular directory unless
+     ;; We use --args AND -n, but -n opens an entirely new Terminal application
+     ;; instance on every call, not just a new window. Using the
+     ;; bundle here always opens the given directory in a new window.
+     (concat "open -b com.apple.terminal " default-directory) nil nil))
+   (WINDOWS-P
+    ;; https://stackoverflow.com/questions/13505113/how-to-open-the-native-cmd-exe-window-in-emacs
+    (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
+      (set-process-query-on-exit-flag proc nil)))
+   (t
+    (message "Implement `j-open-terminal' for this OS!"))))
+
+(use-package reveal-in-osx-finder)
+(use-package emr)
+
+(defun j-explorer-finder ()
+  "Opens up file explorer based on operating system."
+  (interactive)
+  (cond
+   ((and MAC-P
+         (fboundp #'reveal-in-osx-finder))
+    (reveal-in-osx-finder))
+   ((and WINDOWS-P
+         (fboundp #'explorer))
+    (explorer))
+   (LINUX-P
+    (if (executable-find "gio")
+        (progn
+          (shell-command (format "gio open %s" default-directory))
+          (message (format "Opened %s in file browser!" default-directory)))
+      (message "On platform Linux but executable gio not found!")))
+   (t
+    (message "Implement `explorer-finder' for this OS!"))))
+
+(defun toggle-window-split ()
+  "Toggles window split."
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+(defun rotate-windows-helper (x d)
+  "Rotates windows."
+  (if (equal (cdr x) nil) (set-window-buffer (car x) d)
+    (set-window-buffer (car x) (window-buffer (cadr x)))
+    (rotate-windows-helper (cdr x) d)))
+
+(defun rotate-windows ()
+  (interactive)
+  (rotate-windows-helper (window-list) (window-buffer (car (window-list))))
+  (select-window (car (last (window-list)))))

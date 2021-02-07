@@ -60,6 +60,19 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
       request-storage-directory (expand-file-name "request" my/ignore-directory)
       )
 
+(defconst MAC-P      (eq system-type 'darwin))
+(defconst LINUX-P    (eq system-type 'gnu/linux))
+(defconst WINDOWS-P  (memq system-type '(cygwin windows-nt ms-dos)))
+(defconst BSD-P      (eq system-type 'berkeley-unix))
+(defconst YT-P       (string-equal "jameshn" (getenv "USER")))
+(defconst DESKTOP-P  (or
+                      WINDOWS-P
+                      (string-match-p "cpro.roa" (system-name))
+                      ;; Check width of monitor.
+                      (> (cadddr (assoc 'geometry
+                                        (frame-monitor-attributes)))
+                         4400)))
+
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.
 (let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))

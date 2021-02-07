@@ -123,9 +123,7 @@
               ("j" . dired-next-line)
               ("k" . dired-previous-line)
               ("SPC" . evil-scroll-page-down)
-              ("DEL" . evil-scroll-page-up))
-  :config
-  (evil-make-overriding-map dired-mode-map 'normal))
+              ("DEL" . evil-scroll-page-up)))
 
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
@@ -250,6 +248,7 @@
          (after-init . evil-mode))
   :custom ((evil-respect-visual-line-mode t)
            (evil-move-beyond-eol t))
+  :commands (evil-make-overriding-map)
   :init
   (defun my/evil-keymap ()
     (progn
@@ -287,42 +286,10 @@
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
+
+  (require 'dired)
+  (evil-make-overriding-map dired-mode-map 'normal)
   )
-
-(use-package evil-leader
-  :init (global-evil-leader-mode)
-  :custom ((evil-leader/leader ",")
-           (evil-leader/in-all-states t))
-  :config
-  (evil-leader/set-key
-    "c" 'compile
-    "o" 'counsel-find-file
-    "r" 'counsel-recentf
-    "f" 'counsel-git
-    "s" 'counsel-git-grep
-    "b" 'counsel-switch-buffer
-    "k" 'kill-buffer
-    "g s" 'counsel-git-grep
-    "g f" 'counsel-git
-    "g r" 'counsel-rg
-    "g g" 'magit-status
-    "p f" 'projectile-find-file
-    "p s" 'projectile-ripgrep
-    "p p" 'projectile-switch-project
-    "d" 'magit-file-dispatch
-    "SPC" 'avy-goto-word-1
-
-    "0" 'select-window-0
-    "1" 'select-window-1
-    "2" 'select-window-2
-    "3" 'select-window-3
-    "4" 'select-window-4
-    "5" 'select-window-5
-    "6" 'select-window-6
-    "7" 'select-window-7
-    "8" 'select-window-8
-    "9" 'select-window-9
-    ))
 
 (use-package keyfreq
   :init (progn
@@ -356,23 +323,6 @@
   (keyboard-quit))
 
 ;; 以下为自定义函数
-(defun my/rename-this-buffer-and-file ()
-  "Renames current buffer and file it is visiting."
-  (interactive)
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (error "Buffer '%s' is not visiting a file!" name)
-      (let ((new-name (read-file-name "New name: " filename)))
-        (cond ((get-buffer new-name)
-               (error "A buffer named '%s' already exists!" new-name))
-              (t
-               (rename-file filename new-name 1)
-               (rename-buffer new-name)
-               (set-visited-file-name new-name)
-               (set-buffer-modified-p nil)
-               (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
-
 (defun my/iso-8601-date-string (&optional datetime)
   (concat
    (format-time-string "%Y-%m-%dT%T" datetime)
@@ -514,7 +464,6 @@
   (message "%s" (iter mode)))
 
 (global-set-key (kbd "C-c k") 'my/delete-file-and-buffer)
-(global-set-key (kbd "C-c r") 'my/rename-this-buffer-and-file)
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
 (global-set-key (kbd "C-c f p") 'my/filepath)

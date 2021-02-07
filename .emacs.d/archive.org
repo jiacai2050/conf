@@ -1,0 +1,14 @@
+* sr-speedbar
+#+begin_src elisp
+(use-package sr-speedbar
+  :config
+  (setq speedbar-show-unknown-files t ;; show all files
+        speedbar-use-images nil       ;; use text for buttons
+        sr-speedbar-right-side nil    ;; put on left side
+        sr-speedbar-width 30
+        )
+  :bind (("<f11>" . sr-speedbar-toggle)
+         ("C-c s w" . sr-speedbar-select-window)
+         ("C-c s r" . sr-speedbar-refresh-toggle)))
+
+#+end_src
