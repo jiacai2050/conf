@@ -74,8 +74,6 @@
          ("M-x" . counsel-M-x)
          ("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)
-         ("C-c s f" . counsel-git)
-         ("C-c s s" . counsel-git-grep)
          ("C-c s a" . counsel-rg)
          ("C-c b" . counsel-bookmark)
          ("C-x C-f" . counsel-find-file)
@@ -89,7 +87,64 @@
          ("C-c C-l" . avy-goto-line)
          ("C-C SPC" . avy-goto-word-1)))
 
-(use-package ivy-hydra)
+(use-package ivy-hydra
+  :config
+  (defhydra hydra-prog-menu (:color pink :hint nil)
+    "
+^Git^             ^LSP^              ^Search^        ^Human^
+^^^^^^-----------------------------------------------------------------              (__)
+_p_: dispatch    _t_: thing-at-pos  _s_: search       _d_: datetime ts               (oo)
+_c_: lk-commit   _x_: quick-fix     _f_: grep file    _v_: volume              /------\\/
+_h_: lk-home     _e_: expandmacro   _r_: rg           _j_: json               / |    ||
+_l_: lk-git      ^ ^                ^ ^                                      * /\\---/\\
+"
+    ("p" magit-file-dispatch :exit t)
+    ("c" my/git-link-commit :exit t)
+    ("h" git-link-homepage :exit t)
+    ("l" git-link :exit t)
+
+    ("t" lsp-describe-thing-at-point :exit t)
+    ("x" lsp-execute-code-action :exit t)
+    ("e" lsp-rust-analyzer-expand-macro :exit t)
+
+    ("s" counsel-git-grep)
+    ("f" counsel-git)
+    ("r" counsel-rg)
+
+    ("d" my/timestamp->human-date)
+    ("v" my/storage-size->human)
+    ("j" my/format-json :exit t)
+
+    ("q" nil))
+  (global-set-key (kbd "C-c j") 'hydra-prog-menu/body)
+
+  (defhydra hydra-multiple-cursors (:hint nil)
+    "
+ Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+------------------------------------------------------------------
+ [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+ [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+ [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search      [_q_] Quit
+ [_|_] Align with input CHAR       [Click] Cursor at point"
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("|" mc/vertical-align)
+    ("s" mc/mark-all-in-region-regexp :exit t)
+    ("0" mc/insert-numbers :exit t)
+    ("A" mc/insert-letters :exit t)
+    ("<mouse-1>" mc/add-cursor-on-click)
+    ;; Help with click recognition in this hydra
+    ("<down-mouse-1>" ignore)
+    ("<drag-mouse-1>" ignore)
+    ("q" nil))
+  (global-set-key (kbd "C-c c") 'hydra-multiple-cursors/body)
+  )
 
 (use-package window-numbering
   :init (window-numbering-mode 1))
@@ -105,10 +160,10 @@
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld"
-                                                         my/ignore-directory)
+                                                        my/ignore-directory)
         projectile-project-root-files-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
-                                                   projectile-root-bottom-up
+                                                 projectile-root-bottom-up
                                                    projectile-root-local)
         projectile-ignored-project-function (lambda (project-root)
                                               (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor" ".emacs.d/ignore" ".emacs.d/elpa"))

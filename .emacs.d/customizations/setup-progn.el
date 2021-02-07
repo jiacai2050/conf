@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
 (use-package compile
+  :ensure nil
   :custom (compilation-scroll-output t))
 
 (use-package sql
@@ -12,6 +13,11 @@
     (setq-local company-backends
                 '((company-dabbrev-code company-dabbrev company-tabnine))))
   )
+
+(use-package vc
+  :ensure nil
+  :config
+  (define-key ctl-x-map "j" 'vc-prefix-map))
 
 ;; third party extensions
 (use-package sql-indent)
@@ -55,9 +61,7 @@
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
-         ("C-c g" . magit-file-dispatch)
-         ("C-c j b" . magit-blame-addition)
-         ("C-c j f" . magit-file-dispatch))
+         ("C-c g" . magit-file-dispatch))
   :config
   (transient-bind-q-to-quit)
   :custom ((magit-diff-refine-hunk 'all)
@@ -67,9 +71,6 @@
            (transient-display-buffer-action '(display-buffer-below-selected))))
 
 (use-package git-link
-  :bind (("C-c j l" . git-link)
-         ("C-c j c" . my/git-link-commit)
-         ("C-c j h" . git-link-homepage))
   :config
   (progn
     (defun my/git-link-commit (remote start end)
@@ -91,7 +92,8 @@
                  '("alipay\\(-inc\\)?\\.com" git-link-commit-github))))
 
 (use-package git-timemachine
-  :bind (("C-c j t" . git-timemachine-toggle))
+  :bind (:map vc-prefix-map
+              ("t" . git-timemachine))
   :hook ((git-timemachine-mode . display-line-numbers-mode)
          (git-timemachine-mode . evil-normalize-keymaps))
   :config
@@ -154,10 +156,7 @@
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
-              ("M-n" . lsp-find-references)
-              ("C-c M-n" . lsp-rust-analyzer-expand-macro)
-              ("C-c u" . lsp-execute-code-action)
-              ("C-c d p" . lsp-describe-thing-at-point)))
+              ("M-n" . lsp-find-references)))
 
 (use-package lsp-java
   :hook (java-mode . lsp-deferred)

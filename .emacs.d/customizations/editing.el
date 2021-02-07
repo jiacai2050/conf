@@ -162,12 +162,6 @@
   )
 
 (use-package multiple-cursors
-  :bind (("C-c c l" . mc/edit-lines)
-         ("C-c c e" . mc/edit-ends-of-lines)
-         ("C-c c a" . mc/edit-beginnings-of-lines)
-         ("C-c c g" . mc/mark-all-like-this)
-         ("C-c c r" . set-rectangular-region-anchor)
-         ("C-." . mc/mark-next-like-this))
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
   :custom
@@ -460,11 +454,18 @@
     (insert (format "%f" raw-size))
     (deactivate-mark)))
 
-(defun my/reformat-xml ()
+(defun my/format-xml ()
   (interactive)
   (save-excursion
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
+
+(defun my/format-json ()
+  (interactive)
+  (save-excursion
+    (if mark-active
+        (json-pretty-print (mark) (point))
+      (json-pretty-print-buffer))))
 
 (defun my/delete-file-and-buffer (buffername)
   "Delete the file visited by the buffer named BUFFERNAME."
@@ -520,7 +521,6 @@
 (global-set-key (kbd "C-c f d") 'my/diff-buffer-with-file)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
-(global-set-key (kbd "<f12>") 'view-mode)
 (global-set-key (kbd "C-c C-d") 'my/timestamp->human-date)
 (global-set-key (kbd "C-c s h") 'my/storage-size->human)
 (global-set-key (kbd "C-c C-j") 'json-pretty-print)
@@ -529,8 +529,6 @@
 ;; https://stackoverflow.com/a/40222318/2163429
 (my/global-map-and-set-key "C-=" 'er/expand-region)
 (my/global-map-and-set-key "C--" 'er/contract-region)
-(my/global-map-and-set-key "C->" 'mc/mark-next-like-this)
-(my/global-map-and-set-key "C-<" 'mc/mark-previous-like-this)
 
 ;; (use-package smart-input-source
 ;;   :config

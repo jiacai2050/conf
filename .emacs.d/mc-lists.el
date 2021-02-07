@@ -42,4 +42,7 @@
       '(
         counsel-M-x
         iedit-switch-to-mc-mode
+        hydra-multiple-cursors/mc/edit-lines-and-exit
+        hydra-multiple-cursors/mc/mark-next-like-this
+        hydra-multiple-cursors/mc/mark-previous-like-this
         ))
