@@ -40,7 +40,6 @@
 
 ;; Shows a list of buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(setq default-directory "~/")
 
 ;; move window by shift + up/down/left/right key
 (windmove-default-keybindings)
@@ -72,6 +71,8 @@
          ("C-c C-r" . ivy-resume)
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
+         ("C-x f" . counsel-recentf)
+         ("C-x C-f" . counsel-find-file)
          ("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward))
   )
@@ -87,19 +88,27 @@
   :config
   (defhydra hydra-prog-menu (:color pink :hint nil)
     "
-^Git^             ^LSP^                ^Human^
-^^^^^^---------------------------------------------------              (__)
-_p_: dispatch    _t_: thing-at-pos     _d_: datetime ts               (oo)
-_c_: lk-commit   _x_: quick-fix        _v_: volume              /------\\/
-_h_: lk-home     _e_: expandmacro      _j_: json               / |    ||
-_l_: lk-git      ^ ^                                          * /\\---/\\
-_s_: status
+^Edit^               ^LSP^                ^Human^
+^^^^^^----------------------------------------------------              (__)
+_r_: query-replace  _t_: thing-at-pos     _d_: datetime<->ts            (oo)
+_c_: lk-commit      _x_: quick-fix        _v_: volume              /------\\/
+_h_: lk-home        _e_: expandmacro      _j_: json               / |    ||
+_g_: lk-git         ^ ^                   ^ ^                    * /\\---/\\
+_o_: insert today
+_i_: insert iso8601
+_f_: fanyi
+_=_: +
+_-_: -
 "
-    ("p" magit-file-dispatch :exit t)
+    ("r" query-replace :exit t)
     ("c" my/git-link-commit :exit t)
     ("h" git-link-homepage :exit t)
-    ("l" git-link :exit t)
-    ("s" magit-status :exit t)
+    ("g" git-link :exit t)
+    ("o" my/insert-today :exit t)
+    ("i" my/insert-current-date-time :exit t)
+    ("f" go-translate :exit t)
+    ("=" evil-numbers/inc-at-pt)
+    ("-" evil-numbers/dec-at-pt)
 
     ("t" lsp-describe-thing-at-point :exit t)
     ("x" lsp-execute-code-action :exit t)
@@ -198,7 +207,7 @@ _s_: status
 ;; Customization
 
 (use-package matcha
-  :load-path "~/code/misc/matcha"
+  :load-path "~/.emacs.d/vendor/matcha"
   :ensure nil
   :config
   (matcha-setup))
@@ -293,6 +302,13 @@ _s_: status
       (message "On platform Linux but executable gio not found!")))
    (t
     (message "Implement `explorer-finder' for this OS!"))))
+
+(defun j-resize-window ()
+  "Resize window to fit contents."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (let ((fit-window-to-buffer-horizontally t))
+      (fit-window-to-buffer))))
 
 (defun toggle-window-split ()
   "Toggles window split."

@@ -41,7 +41,6 @@
 
 (use-package files
   :ensure nil
-  :bind ("C-c f t" . my/last-save-time)
   :config
   ;; Emacs can automatically create backup files. This tells Emacs to
   ;; put all backups in ~/.emacs.d/backups. More info:
@@ -155,13 +154,12 @@
 
 (use-package company-tabnine
   :custom ((company-tabnine-always-trigger nil))
-  ;; :config
-  ;; (add-to-list 'company-backends #'company-tabnine)
   )
 
 (use-package multiple-cursors
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
+  :bind (("C-." . mc/mark-next-like-this))
   :custom
   (mc/list-file (expand-file-name "mc-lists.el" user-emacs-directory))
   )
@@ -224,16 +222,13 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(use-package vmd-mode)
+(use-package vmd-mode
+  :defer t)
 
-(use-package carbon-now-sh)
-
-(use-package evil-numbers
-  :bind (("C-c +" . evil-numbers/inc-at-pt)
-         ("C-c -" . evil-numbers/dec-at-pt)))
+(use-package carbon-now-sh
+  :defer t)
 
 (use-package go-translate
-  :bind (("C-c f y" . go-translate))
   :config
   (setq go-translate-base-url "https://translate.google.cn"
         go-translate-extra-directions '(("en" . "zh-CN"))
@@ -242,6 +237,9 @@
         go-translate-buffer-follow-p t
         go-translate-token-current (cons 430675 2721866130))
   )
+
+(use-package evil-numbers
+  :defer t)
 
 (use-package evil
   :hook ((evil-mode . my/evil-keymap)

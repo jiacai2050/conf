@@ -8,9 +8,12 @@
         end-of-visual-line
         eval-print-last-sexp
         evil-delete-backward-char-and-join
+        evil-delete-char
         evil-insert
         evil-next-line
         evil-normal-state
+        evil-paste-pop
+        evil-scroll-page-down
         forward-sexp
         kill-region
         kill-visual-line
@@ -41,8 +44,9 @@
 (setq mc/cmds-to-run-once
       '(
         counsel-M-x
-        iedit-switch-to-mc-mode
         hydra-multiple-cursors/mc/edit-lines-and-exit
+        hydra-multiple-cursors/mc/mark-all-like-this-and-exit
         hydra-multiple-cursors/mc/mark-next-like-this
         hydra-multiple-cursors/mc/mark-previous-like-this
+        iedit-switch-to-mc-mode
         ))
