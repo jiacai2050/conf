@@ -310,7 +310,13 @@
         wgrep-enable-key "e"))
 
 (use-package tiny
-  :bind (("C-c C-;" . tiny-expand)))
+  :bind (("C-c ;" . tiny-expand)))
+
+(use-package separedit
+  :bind (:map prog-mode-map
+			  (("C-c '" . separedit)))
+  :config
+  (add-hook 'separedit-buffer-creation-hook #'auto-fill-mode))
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()

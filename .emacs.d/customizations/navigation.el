@@ -71,7 +71,7 @@
          ("C-c C-r" . ivy-resume)
          ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
-         ("C-x f" . counsel-recentf)
+         ("C-x f" . counsel-switch-buffer)
          ("C-x C-f" . counsel-find-file)
          ("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward))
@@ -221,10 +221,9 @@ _-_: -
   (evil-leader/set-key
     "c" 'compile
     "s" 'swiper-isearch
-    "r" 'counsel-recentf
     "f" 'counsel-find-file
     "b" 'counsel-bookmark
-    "w" 'counsel-switch-buffer
+    "r" 'counsel-switch-buffer
 
     "o" 'counsel-git
     "a" 'counsel-git-grep
@@ -233,6 +232,7 @@ _-_: -
     "j" 'hydra-prog-menu/body
     "m" 'hydra-multiple-cursors/body
     "SPC" 'avy-goto-word-1
+    "e" 'tiny-expand
 
     "," 'matcha-me-space
     "p" 'matcha-projectile
