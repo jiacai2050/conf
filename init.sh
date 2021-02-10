@@ -97,6 +97,7 @@ install_life() {
 }
 case $1 in
   "link")
+    link_dotfiles_if_necessary ".macosrc"
     link_dotfiles_if_necessary ".bashrc"
     link_dotfiles_if_necessary ".bash_profile"
     link_dotfiles_if_necessary ".emacs.d"

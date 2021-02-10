@@ -1,3 +1,4 @@
+[ -r ~/.macosrc ] && source ~/.macosrc
 # 别名相关配置
 [ -r ~/.aliasrc ] && source ~/.aliasrc
 # PATH 相关配置
@@ -20,20 +21,6 @@ export EDITOR="$VISUAL"
 
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
-
-export MY_THEME="${MY_THEME:-light}"
-function switch_theme_config() {
-  dark_ps1="\n\e[1;37m[\e[m\e[1;35m\u\e[m\e[1;36m@\e[m\e[1;37m\h\e[m \e[1;33m\t\e[m \w\e[m\e[1;37m]\e[m\e[1;36m\e[m\n\${all_proxy}\$(__git_ps1)$ "
-  light_ps1="\n[\u@\H] \t \w \n\${all_proxy}\$(__git_ps1)$ "
-  if [[ $MY_THEME == "light" ]];then
-    export PS1="$light_ps1"
-  else
-    export PS1="$dark_ps1"
-    export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-  fi
-}
-
-switch_theme_config
 
 function proxy_off(){
     unset all_proxy

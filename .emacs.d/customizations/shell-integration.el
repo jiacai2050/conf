@@ -19,6 +19,15 @@
     (exec-path-from-shell-initialize))
   )
 
+(use-package company-native-complete
+  :init
+  (defun my/set-shell-backends ()
+	(setq-local company-backends '(company-native-complete)))
+  :hook ((shell-mode . my/set-shell-backends))
+  :config
+  (native-complete-setup-bash)
+)
+
 (use-package aweshell
   :load-path "~/.emacs.d/vendor/aweshell"
   :bind (("<f8>" . aweshell-dedicated-toggle)

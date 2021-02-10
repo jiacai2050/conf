@@ -215,6 +215,7 @@ _-_: -
 (use-package evil-leader
   :init (global-evil-leader-mode)
   :custom ((evil-leader/leader ",")
+           (evil-leader/no-prefix-mode-rx '("magit-.*-mode"))
            (evil-leader/in-all-states t))
   :config
   (require 'matcha-me)
@@ -224,6 +225,7 @@ _-_: -
     "f" 'counsel-find-file
     "b" 'counsel-bookmark
     "r" 'counsel-switch-buffer
+    "l" 'shell
 
     "o" 'counsel-git
     "a" 'counsel-git-grep
