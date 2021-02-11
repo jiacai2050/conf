@@ -42,10 +42,9 @@
               ("M-{" . sp-wrap-curly)))
 
 (use-package flycheck
-  ;; :pin melpa-stable
   :init (global-flycheck-mode)
   :config
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc rust-cargo rust rust-clippy))
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp rust-cargo rust rust-clippy))
   )
 
 ;; magit dependencies
@@ -101,29 +100,12 @@
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   )
 
-;; (use-package magithub
-;;   :after magit
-;;   :config
-;;   (magithub-feature-autoinject t)
-;;   (setq magithub-clone-default-directory "~/codes/git"))
-
 (use-package lsp-mode
   :load-path "~/.emacs.d/vendor/lsp-mode"
-  :hook ((go-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
-         (python-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)
-         ;; (sh-mode . lsp-deferred)
-         ;; (js2-mode . lsp-deferred)
-         )
-  :ensure-system-package
-  ((gopls . "go get golang.org/x/tools/gopls@latest")
-   (pyls . "pip install 'python-language-server[all]'")
-   ;; (typescript-language-server . "npm install -g typescript-language-server")
-   ;; (bash-language-server . "npm install -g bash-language-server")
-   )
-  :commands (lsp lsp-deferred)
   :init
+  (defun my/lsp-before-save ()
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
   (setq lsp-keymap-prefix "C-c l")
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
   (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
@@ -138,9 +120,23 @@
                       (--take-while (not (s-equals? "```" it)) it)
                       (s-join "" it))))
       ;; (message "sig = [%s]" sig)
-      (lsp--render-element (concat "```rust\n" sig "\n```"))))
+      (lsp--render-element (concat "```rust\n" sig "\n```")))) 
+  :hook ((go-mode . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         (lsp-mode . my/lsp-before-save)
+         ;; (sh-mode . lsp-deferred)
+         ;; (js2-mode . lsp-deferred)
+         )
+  :ensure-system-package
+  ((gopls . "go get golang.org/x/tools/gopls@latest")
+   (pyls . "pip install 'python-language-server[all]'")
+   ;; (typescript-language-server . "npm install -g typescript-language-server")
+   ;; (bash-language-server . "npm install -g bash-language-server")
+   )
+  :commands (lsp lsp-deferred)
   :config
-  ;; (add-hook 'before-save-hook 'lsp-format-buffer)
   (setq lsp-log-io nil
         lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory)
         lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory)

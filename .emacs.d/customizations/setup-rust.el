@@ -8,7 +8,6 @@
 (use-package rust-mode
   :hook ((rust-mode . my/rust-lsp))
   :config
-  (setq rust-format-on-save t)
   (defun my/rust-lsp ()
     (setq-local lsp-completion-enable nil
                 compile-command "cargo check --tests")

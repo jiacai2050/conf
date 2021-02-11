@@ -1,3 +1,4 @@
 .node-gyp
 .npm
 .vim/.netrwhist
+.config/configstore

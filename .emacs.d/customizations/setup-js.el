@@ -2,15 +2,17 @@
 
 ;;; javascript / html
 
+(use-package js
+  :ensure nil
+  :custom ((js-indent-level 2)))
 
-(setq js-indent-level 2)
-(setq css-indent-offset 2)
-
-;; (use-package js-mode
-;;   :ensure nil)
-
-(use-package json-mode
-  :mode ("\\.json\\'" . json-mode))
+(use-package json
+  :ensure nil
+  :init (defun my/json-before-save()
+          (add-hook 'before-save-hook 'json-pretty-print-buffer nil t))
+  :mode (("\\.jshintrc" . json-mode))
+  :hook (json-mode . my/json-before-save)
+  )
 
 (use-package tagedit
   :config

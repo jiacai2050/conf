@@ -1,0 +1,13 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 10
+  },
+  "rules": {
+    "eqeqeq": "warn",
+    "strict": "global"
+  }
+}

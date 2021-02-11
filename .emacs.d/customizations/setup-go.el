@@ -6,9 +6,6 @@
   :init
   (setq gofmt-command "goimports"
         indent-tabs-mode t)
-  ;; use lsp-format-buffer instead
-  :config
-  (add-hook 'before-save-hook 'gofmt-before-save)
   :bind (:map go-mode-map
               ("M-." . godef-jump)))
 
