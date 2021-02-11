@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILES_HOME=$(cd `dirname $0`; pwd)
+DOTFILES_HOME=$(cd `dirname "$0"`; pwd)
 
 command_exists () {
   type "$1" &> /dev/null ;
@@ -111,6 +111,7 @@ case $1 in
     link_dotfiles_if_necessary ".cargo"
     link_dotfiles_if_necessary ".zazurc.json"
     link_dotfiles_if_necessary ".gdbinit"
+    link_dotfiles_if_necessary ".config"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git
@@ -121,6 +122,6 @@ case $1 in
     ;;
   *)
     CMD=install_$1
-    declare -F $CMD && $CMD || echo "$CMD not exists!"
+    declare -F "$CMD" && $CMD || echo "$CMD not exists!"
     ;;
 esac

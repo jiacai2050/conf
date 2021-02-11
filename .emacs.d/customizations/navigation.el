@@ -93,7 +93,7 @@
 _r_: query-replace  _t_: thing-at-pos     _d_: datetime<->ts            (oo)
 _c_: lk-commit      _x_: quick-fix        _v_: volume              /------\\/
 _h_: lk-home        _e_: expandmacro      _j_: json               / |    ||
-_g_: lk-git         ^ ^                   ^ ^                    * /\\---/\\
+_g_: lk-git         _l_: list errors      ^ ^                    * /\\---/\\
 _o_: insert today
 _i_: insert iso8601
 _f_: fanyi
@@ -113,6 +113,7 @@ _-_: -
     ("t" lsp-describe-thing-at-point :exit t)
     ("x" lsp-execute-code-action :exit t)
     ("e" lsp-rust-analyzer-expand-macro :exit t)
+    ("l" flycheck-list-errors :exit t)
 
     ("d" my/timestamp->human-date)
     ("v" my/storage-size->human)

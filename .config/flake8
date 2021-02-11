@@ -1,0 +1,16 @@
+[flake8]
+# https://pep257.readthedocs.io/en/latest/error_codes.html
+ignore =
+    # 1 blank line required before class docstring
+    D203,
+    # bare except
+    E722
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    old,
+    build,
+    dist
+max-complexity = 10
+max-line-length = 120
