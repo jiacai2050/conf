@@ -35,7 +35,20 @@ function install_shellcheck() {
 }
 command_exists shellcheck || install_shellcheck
 
+function install_staticcheck() {
+  version="2020.2.1"
+  curl -Lo /tmp/staticcheck.tar.gz "https://github.com/dominikh/go-tools/releases/download/${version}/staticcheck_darwin_amd64.tar.gz"
+  pushd /tmp
+  tar xf /tmp/staticcheck.tar.gz
+  cp "/tmp/staticcheck/staticcheck" /usr/local/bin/
+  staticcheck --version
+  popd
+}
+
+command_exists staticcheck || install_staticcheck
 # LSP
 command_exists gopls || go get golang.org/x/tools/gopls@latest
 # https://github.com/palantir/python-language-server
 command_exists pyls || pip install 'python-language-server[all]'
+command_exists goimports || go get -u golang.org/x/tools/cmd/goimports
+command_exists gorename || go get -u golang.org/x/tools/cmd/gorename

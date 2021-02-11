@@ -23,3 +23,18 @@ sudo tlmgr install capt-of
 # PDF 导出时，需要 cjk 包，然后需要配置org-latex-packages-alist，具体参考 setup-org.el
 sudo tlmgr install cjk
 #+end_src
+* Go
+#+begin_src elisp
+(use-package go-errcheck
+  :after go-mode
+  :ensure-system-package (errcheck . "go get -u github.com/kisielk/errcheck")
+  :bind (:map go-mode-map
+              ("C-c C-e" . go-errcheck)))
+
+(use-package go-imenu
+  :ensure-system-package (go-outline . "go get -u github.com/lukehoban/go-outline")
+  :after go-mode
+  :config
+  (add-hook 'go-mode-hook 'go-imenu-setup))
+
+#+end_src
