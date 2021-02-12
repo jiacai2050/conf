@@ -50,5 +50,10 @@ command_exists staticcheck || install_staticcheck
 command_exists gopls || go get golang.org/x/tools/gopls@latest
 # https://github.com/palantir/python-language-server
 command_exists pyls || pip install 'python-language-server[all]'
+# https://github.com/theia-ide/typescript-language-server
+command_exists typescript-language-server || npm i -g typescript-language-server; npm i -g typescript
+
+
+# Golang
 command_exists goimports || go get -u golang.org/x/tools/cmd/goimports
 command_exists gorename || go get -u golang.org/x/tools/cmd/gorename
