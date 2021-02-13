@@ -52,15 +52,22 @@
 
 ;; remove minor mode from mode-line
 ;; https://emacs.stackexchange.com/a/41135
-(setq mode-line-modes
-      (mapcar (lambda (elem)
-                (pcase elem
-                  (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
-                   "")
-                  (_ elem)))
-              mode-line-modes))
+(let ((my/minor-mode-alist '((flycheck-mode flycheck-mode-line))))
+  (setq mode-line-modes
+        (mapcar (lambda (elem)
+                  (pcase elem
+                    (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
+                     `(:propertize ("" ,my/minor-mode-alist)
+			                       mouse-face mode-line-highlight
+			                       local-map ,mode-line-minor-mode-keymap)
+                     )
+                    (_ elem)))
+                mode-line-modes)
+        ))
+
 
 ;; third party packages
+
 (use-package all-the-icons
   :defer t)
 
@@ -71,8 +78,6 @@
   (defun my/goto-dashboard ()
     (interactive)
     (switch-to-buffer (get-buffer "*dashboard*")))
-
-  (global-set-key (kbd "C-c d d") 'my/goto-dashboard)
   (global-set-key (kbd "<f11>") 'my/goto-dashboard)
   (add-hook 'dashboard-mode-hook 'hl-line-mode)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))

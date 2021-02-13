@@ -44,6 +44,8 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   (let ((enable-local-variables :all))
     (hack-dir-local-variables-non-file-buffer)))
 
+(defmacro comment (&rest body)
+  nil)
 ;;;;
 ;; Customization
 ;;;;

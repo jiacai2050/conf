@@ -105,7 +105,10 @@
   :init
   (defun my/lsp-before-save ()
     (add-hook 'before-save-hook 'lsp-format-buffer nil t))
-
+  (defun my/lsp-js ()
+    "Enable LSP for JavaScript, but not for JSON"
+    (when (eq 'js-mode major-mode)
+      (lsp-deferred)))
   (setq lsp-keymap-prefix "C-c l")
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
   (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
@@ -124,7 +127,7 @@
   :hook ((go-mode . lsp-deferred)
          (rust-mode . lsp-deferred)
          (python-mode . lsp-deferred)
-         (js-mode . lsp-deferred)
+         (js-mode .  my/lsp-js)
          (lsp-mode . lsp-enable-which-key-integration)
          (lsp-mode . my/lsp-before-save)
          )
