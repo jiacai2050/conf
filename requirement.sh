@@ -14,8 +14,6 @@ command_exists sbcl || brew install sbcl
 # Preview markdown files in a separate window, the same as on GitHub.
 command_exists vmd || npm install -g vmd
 
-command_exists jsonlint || npm install jsonlint -g
-
 # project management tool for Emacs
 # brew install cask
 command_exists cask || curl -fsSL https://gitee.com/liujiacai/cask/raw/master/go | python
@@ -46,6 +44,7 @@ function install_staticcheck() {
 }
 
 command_exists staticcheck || install_staticcheck
+command_exists eslint || npm install -g eslint
 # LSP
 command_exists gopls || go get golang.org/x/tools/gopls@latest
 # https://github.com/palantir/python-language-server

@@ -8,6 +8,12 @@
   },
   "rules": {
     "eqeqeq": "warn",
-    "strict": "global"
-  }
+    "curly": "warn",
+    "no-loss-of-precision": "warn",
+    "no-template-curly-in-string": "error",
+    "require-atomic-updates": "error",
+    "dot-location": "warn",
+    "semi": "warn"
+  },
+  "extends": "eslint:recommended"
 }

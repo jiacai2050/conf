@@ -24,6 +24,7 @@
   (defun my/set-shell-backends ()
 	(setq-local company-backends '(company-native-complete)))
   :hook ((shell-mode . my/set-shell-backends))
+  :mode (("\\.macosrc" . sh-mode))
   :config
   (native-complete-setup-bash)
 )

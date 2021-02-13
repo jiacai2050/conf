@@ -44,11 +44,12 @@
 
 (use-package time
   :ensure nil
+  :custom ((display-time-format "[%H:%M %a, %d/%m]")
+           (display-time-use-mail-icon t))
   :config
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
   (display-time-mode 1)
-  (setq display-time-format "[%H:%M %a, %d/%m]"))
-
+)
 
 ;; remove minor mode from mode-line
 ;; https://emacs.stackexchange.com/a/41135

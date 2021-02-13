@@ -42,8 +42,10 @@
               ("M-{" . sp-wrap-curly)))
 
 (use-package flycheck
-  :init (global-flycheck-mode)
+  :custom ((flycheck-checker-error-threshold 20))
   :config
+  (global-flycheck-mode)
+  ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-jshint)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp rust-cargo rust rust-clippy))
   )
 
@@ -132,20 +134,22 @@
          (lsp-mode . my/lsp-before-save)
          )
   :commands (lsp lsp-deferred)
-  :custom ((lsp-disabled-clients '(json-ls eslint)))
+  :custom ((lsp-log-io nil)
+           (lsp-eldoc-render-all nil)
+           (lsp-completion-provider t)
+           (lsp-signature-render-documentation nil)
+           (lsp-rust-server 'rust-analyzer)
+           (lsp-rust-analyzer-cargo-watch-enable nil)
+           (lsp-go-hover-kind "NoDocumentation")
+           (lsp-go-use-placeholders t)
+           (lsp-diagnostics-provider :none)
+           (lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory))
+           (lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory))
+           (lsp-eslint-server-command `("node"
+                                        ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
+                                        "--stdio"
+                                        )))
   :config
-  (setq lsp-log-io nil
-        lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory)
-        lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory)
-        lsp-eldoc-render-all nil
-        lsp-completion-provider t
-        ;; lsp-completion-enable nil
-        lsp-signature-render-documentation nil
-        lsp-rust-server 'rust-analyzer
-        lsp-rust-analyzer-cargo-watch-enable nil
-        lsp-gopls-hover-kind "NoDocumentation"
-        lsp-gopls-use-placeholders t
-        lsp-diagnostics-provider :none)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)

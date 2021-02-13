@@ -37,10 +37,10 @@ if [[ -d $completion_dir && -r $completion_dir && -x $completion_dir ]];then
 fi
 
 # brew install nvm
-export NVM_DIR="$HOME/.nvm"
-export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+# export NVM_DIR="$HOME/.nvm"
+# export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
+# [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+# [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 # curl -sSL https://get.rvm.io | bash -s stable
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.

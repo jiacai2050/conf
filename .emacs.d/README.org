@@ -46,7 +46,7 @@ cd ~/.emacs.d/vendor/lsp-mode
 git apply  ~/.emacs.d/lsp-rust.patch
 #+end_src
 
-*  Magit
+* Magit
 通过源码编译 magit 时可能遇到
 
 #+begin_src bash
@@ -63,6 +63,10 @@ PATH=/usr/local/opt/texinfo/bin:$PATH make
 - https://emacs-lsp.github.io/lsp-mode/page/CHANGELOG/
 #+begin_src
 make build all
+#+end_src
+** 安装 server
+#+begin_src elisp
+M-x lsp-install-server RET eslint
 #+end_src
 
 * Python
