@@ -19,6 +19,26 @@
   :config
   (define-key ctl-x-map "j" 'vc-prefix-map))
 
+(use-package eldoc
+  :ensure nil
+  :init
+  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
+
+(use-package hideshow
+  :ensure nil
+  :hook (prog-mode . hs-minor-mode)
+  :config
+  (defun my/toggle-fold ()
+    (interactive)
+    (save-excursion
+      (end-of-line)
+      (if (hs-already-hidden-p)
+          (hs-show-block)
+        (hs-hide-block))))
+  :bind (:map prog-mode-map
+              ("C-c o" . my/toggle-fold))
+  )
+
 ;; third party extensions
 (use-package sql-indent)
 
@@ -49,25 +69,13 @@
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp rust-cargo rust rust-clippy))
   )
 
-;; magit dependencies
-(use-package with-editor
-  :defer t)
-(use-package dash
-  :defer t)
-(use-package transient
-  :config
-  (transient-bind-q-to-quit)
-  (setq transient-history-file (expand-file-name "transient/history.el" my/ignore-directory)))
-
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
          ("C-c g" . magit-file-dispatch))
   :custom ((magit-diff-refine-hunk 'all)
            ;; https://emacs.stackexchange.com/a/3696/16450
-           (find-file-visit-truename t)
-           ;; https://emacs.stackexchange.com/a/52002/16450
-           (transient-display-buffer-action '(display-buffer-below-selected))))
+           (find-file-visit-truename t)))
 
 (use-package git-link
   :config
@@ -101,7 +109,7 @@
   )
 
 (use-package lsp-mode
-  :load-path "~/.emacs.d/vendor/lsp-mode"
+  :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
   :init
   (defun my/lsp-before-save ()
     (add-hook 'before-save-hook 'lsp-format-buffer nil t))
@@ -141,6 +149,7 @@
            (lsp-go-hover-kind "NoDocumentation")
            (lsp-go-use-placeholders t)
            (lsp-diagnostics-provider :none)
+           (lsp-modeline-workspace-status-enable nil)
            (lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory))
            (lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory))
            (lsp-eslint-server-command `("node"
@@ -148,6 +157,7 @@
                                         "--stdio"
                                         )))
   :config
+  (require 'lsp-modeline)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
@@ -164,39 +174,21 @@
   :bind (:map lsp-mode-map
               ("C-c C-u" . my/toggle-treemacs-symbols)))
 
-(use-package lsp-java
-  :hook (java-mode . lsp-deferred)
-  :custom
-  (dap-breakpoints-file (expand-file-name "dap-breakpoints" my/ignore-directory))
-  (lsp-java-workspace-dir (expand-file-name "workspace" my/ignore-directory))
-  (dap-java-test-runner (expand-file-name "eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar" my/ignore-directory))
-  ;; 0.57.0 is the last version support jdk8. https://github.com/emacs-lsp/lsp-java/issues/249
-  ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
-  (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
-  :init
-  (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/"))
-
-(use-package hideshow
-  :hook (prog-mode . hs-minor-mode)
-  :config
-  (defun my/toggle-fold ()
-    (interactive)
-    (save-excursion
-      (end-of-line)
-      (if (hs-already-hidden-p)
-          (hs-show-block)
-        (hs-hide-block))))
-  :bind (:map prog-mode-map
-              ("C-c o" . my/toggle-fold))
-  )
+(comment
+ (use-package lsp-java
+   :hook (java-mode . lsp-deferred)
+   :custom
+   (dap-breakpoints-file (expand-file-name "dap-breakpoints" my/ignore-directory))
+   (lsp-java-workspace-dir (expand-file-name "workspace" my/ignore-directory))
+   (dap-java-test-runner (expand-file-name "eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar" my/ignore-directory))
+   ;; 0.57.0 is the last version support jdk8. https://github.com/emacs-lsp/lsp-java/issues/249
+   ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
+   (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
+   :init
+   (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/")))
 
 (use-package ggtags
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))
-
-(use-package eldoc
-  :ensure nil
-  :init
-  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
 
 ;; bridge to go-playground and rust-playground
 (defun my/playground-exec ()

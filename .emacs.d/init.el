@@ -44,8 +44,6 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
   (let ((enable-local-variables :all))
     (hack-dir-local-variables-non-file-buffer)))
 
-(defmacro comment (&rest body)
-  nil)
 ;;;;
 ;; Customization
 ;;;;
@@ -74,6 +72,32 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
                       (> (cadddr (assoc 'geometry
                                         (frame-monitor-attributes)))
                          4400)))
+
+;; magit dependencies
+(use-package with-editor
+  :defer t)
+(use-package dash
+  :defer t)
+(use-package transient
+  :custom (;; https://emacs.stackexchange.com/a/52002/16450
+           (transient-display-buffer-action '(display-buffer-below-selected)))
+  :config
+  (transient-bind-q-to-quit)
+  (setq transient-history-file (expand-file-name "transient/history.el" my/ignore-directory)))
+
+;; lsp-treemacs deps
+(use-package dash-functional
+  :defer t)
+(use-package f
+  :defer t)
+(use-package ht
+  :defer t)
+
+;; lsp-mode deps
+(use-package spinner
+  :defer t)
+(use-package lv
+  :defer t)
 
 ;; Add a directory to our load path so that when you `load` things
 ;; below, Emacs knows where to look for the corresponding file.

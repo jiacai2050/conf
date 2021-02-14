@@ -38,3 +38,31 @@ sudo tlmgr install cjk
   (add-hook 'go-mode-hook 'go-imenu-setup))
 
 #+end_src
+* Rust
+#+begin_src elisp
+(use-package flycheck-rust
+  :after rust-mode
+  :config (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+
+;; use lsp-mode instead
+(use-package racer
+  :after rust-mode
+  :if (executable-find "racer")
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode))
+  :bind (:map rust-mode-map
+              ("TAB" . company-indent-or-complete-common)))
+#+end_src
+* Remove cask deps
+#+begin_src elisp
+(defvar package-directory-list '())
+add cask dependencies
+(dolist (cask-dep '("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-treemacs"))
+  (let ((dep-dir (format "%s/.cask/%s.%s/elpa" cask-dep emacs-major-version emacs-minor-version)))
+    (add-to-list 'package-directory-list dep-dir)))
+
+(dolist (f load-path)
+  (when (and (stringp f)
+             (equal (file-name-nondirectory f) "site-lisp"))
+    (add-to-list 'package-directory-list (expand-file-name "elpa" f))))
+#+end_src

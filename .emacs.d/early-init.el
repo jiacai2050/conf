@@ -2,17 +2,9 @@
 
 (setq package-enable-at-startup nil)
 (defvar my/ignore-directory (file-name-as-directory (expand-file-name "ignore" user-emacs-directory)))
-(defvar package-directory-list '())
 
-;; add cask dependencies
-(dolist (cask-dep '("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-treemacs"))
-  (let ((dep-dir (format "%s/.cask/%s.%s/elpa" cask-dep emacs-major-version emacs-minor-version)))
-    (add-to-list 'package-directory-list dep-dir)))
-
-(dolist (f load-path)
-  (when (and (stringp f)
-             (equal (file-name-nondirectory f) "site-lisp"))
-    (add-to-list 'package-directory-list (expand-file-name "elpa" f))))
+(defmacro comment (&rest body)
+  nil)
 
 (setq default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)

@@ -97,12 +97,8 @@ _=_: +               ^ ^                   _g_: lk-git
 _-_: -               ^ ^                   _f_: fanyi
 "
     ("r" query-replace :exit t)
-    ("c" my/git-link-commit :exit t)
-    ("h" git-link-homepage :exit t)
-    ("g" git-link :exit t)
     ("t" my/insert-today :exit t)
     ("i" my/insert-current-date-time :exit t)
-    ("f" go-translate :exit t)
     ("=" evil-numbers/inc-at-pt)
     ("-" evil-numbers/dec-at-pt)
 
@@ -111,6 +107,10 @@ _-_: -               ^ ^                   _f_: fanyi
     ("j" my/format-json :exit t)
 
     ("l" shell :exit t)
+    ("c" my/git-link-commit :exit t)
+    ("h" git-link-homepage :exit t)
+    ("g" git-link :exit t)
+    ("f" go-translate :exit t)
 
     ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
@@ -175,8 +175,7 @@ _-_: -               ^ ^                   _f_: fanyi
   :ensure-system-package (rg . "brew install ripgrep"))
 
 (use-package treemacs
-  :bind (("C-c t" . treemacs)
-         ("<f12>" . treemacs)
+  :bind (("<f12>" . treemacs)
          ("M-0" . treemacs-select-window)
          :map treemacs-mode-map
          ("j" . treemacs-next-line)
@@ -217,10 +216,11 @@ _-_: -               ^ ^                   _f_: fanyi
      ["Other"
       ("t" "Desc thing" lsp-describe-thing-at-point)
       ("s" "Desc session" lsp-describe-session)
+      ("m" "Imenu" my/toggle-treemacs-symbols)
       ("f" "Quick fix" lsp-execute-code-action)
       ("l" "List error" flycheck-list-errors)]
      ["Rust"
-      ("e" "Macro expand" lsp-rust-analyzer-expand-macro)]])
+      ("e" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
 
   :custom ((evil-leader/leader ",")
            (evil-leader/no-prefix-mode-rx '("magit-.*-mode"))

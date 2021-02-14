@@ -343,9 +343,9 @@
 
 (defun my/timestamp->human-date ()
   (interactive)
-  (unless mark-active
+  (unless (region-active-p)
     (set-mark (line-beginning-position))
-    (line-end-position))
+    (goto-char (line-end-position)))
   (letrec ((date-string (buffer-substring (mark) (point)))
            (body (if (iso8601-valid-p date-string)
                      ;; date -> ts
