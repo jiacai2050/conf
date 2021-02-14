@@ -55,16 +55,14 @@
 (use-package dash
   :defer t)
 (use-package transient
-  :defer t
   :config
+  (transient-bind-q-to-quit)
   (setq transient-history-file (expand-file-name "transient/history.el" my/ignore-directory)))
 
 (use-package magit
   :load-path "~/.emacs.d/vendor/magit/lisp"
   :bind (("C-x g" . magit-status)
          ("C-c g" . magit-file-dispatch))
-  :config
-  (transient-bind-q-to-quit)
   :custom ((magit-diff-refine-hunk 'all)
            ;; https://emacs.stackexchange.com/a/3696/16450
            (find-file-visit-truename t)
@@ -155,6 +153,17 @@
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)))
 
+(use-package lsp-treemacs
+  :load-path "~/.emacs.d/vendor/lsp-treemacs"
+  :config
+  (defun my/toggle-treemacs-symbols ()
+    (interactive)
+    (if-let (buf (get-buffer lsp-treemacs-symbols-buffer-name))
+        (kill-buffer buf)
+      (lsp-treemacs-symbols)))
+  :bind (:map lsp-mode-map
+              ("C-c C-u" . my/toggle-treemacs-symbols)))
+
 (use-package lsp-java
   :hook (java-mode . lsp-deferred)
   :custom
@@ -166,17 +175,6 @@
   (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
   :init
   (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/"))
-
-(use-package lsp-treemacs
-  :load-path "~/.emacs.d/vendor/lsp-treemacs"
-  :config
-  (defun my/toggle-treemacs-symbols ()
-    (interactive)
-    (if-let (buf (get-buffer lsp-treemacs-symbols-buffer-name))
-        (kill-buffer buf)
-      (lsp-treemacs-symbols)))
-  :bind (:map lsp-mode-map
-              ("C-c C-u" . my/toggle-treemacs-symbols)))
 
 (use-package hideshow
   :hook (prog-mode . hs-minor-mode)

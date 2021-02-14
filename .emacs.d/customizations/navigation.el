@@ -88,36 +88,29 @@
   :config
   (defhydra hydra-prog-menu (:color pink :hint nil)
     "
-^Edit^               ^LSP^                ^Human^
-^^^^^^----------------------------------------------------              (__)
-_r_: query-replace  _t_: thing-at-pos     _d_: datetime<->ts            (oo)
-_c_: lk-commit      _x_: quick-fix        _v_: volume              /------\\/
-_h_: lk-home        _e_: expandmacro      _j_: json               / |    ||
-_g_: lk-git         _l_: list errors      ^ ^                    * /\\---/\\
-_o_: insert today
-_i_: insert iso8601
-_f_: fanyi
-_=_: +
-_-_: -
+^Edit^                ^Human^               ^System^
+^^^^^^----------------------------------------------------
+_r_: query-replace   _d_: datetime<->ts    _l_: shell
+_t_: insert today    _v_: volume           _c_: lk-commit
+_i_: insert iso8601  _j_: json             _h_: lk-home
+_=_: +               ^ ^                   _g_: lk-git
+_-_: -               ^ ^                   _f_: fanyi
 "
     ("r" query-replace :exit t)
     ("c" my/git-link-commit :exit t)
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
-    ("o" my/insert-today :exit t)
+    ("t" my/insert-today :exit t)
     ("i" my/insert-current-date-time :exit t)
     ("f" go-translate :exit t)
     ("=" evil-numbers/inc-at-pt)
     ("-" evil-numbers/dec-at-pt)
 
-    ("t" lsp-describe-thing-at-point :exit t)
-    ("x" lsp-execute-code-action :exit t)
-    ("e" lsp-rust-analyzer-expand-macro :exit t)
-    ("l" flycheck-list-errors :exit t)
-
     ("d" my/timestamp->human-date)
     ("v" my/storage-size->human)
     ("j" my/format-json :exit t)
+
+    ("l" shell :exit t)
 
     ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
@@ -209,12 +202,26 @@ _-_: -
 
 (use-package matcha
   :load-path "~/.emacs.d/vendor/matcha"
-  :ensure nil
   :config
   (matcha-setup))
 
 (use-package evil-leader
   :init (global-evil-leader-mode)
+  (define-transient-command my/lsp-command
+    "LSP"
+    [["Find"
+      ("d" "Definition" lsp-find-definition)
+      ("r" "References" lsp-treemacs-references)
+      ("i" "Implementations" lsp-treemacs-implementations)
+      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)]
+     ["Other"
+      ("t" "Desc thing" lsp-describe-thing-at-point)
+      ("s" "Desc session" lsp-describe-session)
+      ("f" "Quick fix" lsp-execute-code-action)
+      ("l" "List error" flycheck-list-errors)]
+     ["Rust"
+      ("e" "Macro expand" lsp-rust-analyzer-expand-macro)]])
+
   :custom ((evil-leader/leader ",")
            (evil-leader/no-prefix-mode-rx '("magit-.*-mode"))
            (evil-leader/in-all-states t))
@@ -226,7 +233,7 @@ _-_: -
     "f" 'counsel-find-file
     "b" 'counsel-bookmark
     "r" 'counsel-switch-buffer
-    "l" 'shell
+    "l" 'my/lsp-command
 
     "o" 'counsel-git
     "a" 'counsel-git-grep
