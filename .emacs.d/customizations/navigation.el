@@ -92,12 +92,13 @@ _t_: insert today    _v_: volume           _c_: lk-commit
 _i_: insert iso8601  _j_: json             _h_: lk-home
 _=_: +               ^ ^                   _g_: lk-git
 _-_: -               ^ ^                   _f_: fanyi
+^ ^                  ^ ^                   _e_: epa
 "
     ("r" query-replace :exit t)
     ("t" my/insert-today :exit t)
     ("i" my/insert-current-date-time :exit t)
-    ("=" evil-numbers/inc-at-pt)
-    ("-" evil-numbers/dec-at-pt)
+    ("=" er/expand-region)
+    ("-" er/contract-region)
 
     ("d" my/timestamp->human-date)
     ("v" my/storage-size->human)
@@ -108,6 +109,7 @@ _-_: -               ^ ^                   _f_: fanyi
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
     ("f" go-translate :exit t)
+    ("e" my/epa-command :exit t)
 
     ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
@@ -165,7 +167,6 @@ _-_: -               ^ ^                   _f_: fanyi
   :config
   (setq smex-save-file (expand-file-name "smex-items" my/ignore-directory))
   (smex-initialize))
-
 
 (use-package rg
   :defer t)

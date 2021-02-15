@@ -58,6 +58,9 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
       gamegrid-user-score-file-directory (expand-file-name "games/" my/ignore-directory)
       url-configuration-directory (expand-file-name "data/url/" my/ignore-directory)
       request-storage-directory (expand-file-name "request" my/ignore-directory)
+	  ;; https://github.com/emacscollective/no-littering/blob/master/no-littering.el
+      tramp-auto-save-directory (expand-file-name "tramp-auto-save/" my/ignore-directory)
+      tramp-persistency-file-name (expand-file-name "tramp-persistency.el" my/ignore-directory)
       )
 
 (defconst MAC-P      (eq system-type 'darwin))

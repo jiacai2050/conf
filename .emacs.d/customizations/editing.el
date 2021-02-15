@@ -132,9 +132,13 @@
   :ensure nil
   :custom ((password-cache-expiry (* 60 15)))
   :config
+  (defun my/sign-file (&optional initial-input initial-directory)
+    (interactive)
+    (when-let (f (counsel-find-file (or initial-input (buffer-name))
+                                    initial-directory))
+      (epa-sign-file f nil 'detached)))
+
   (transient-define-prefix my/epa-command ()
-    :transient-suffix     'transient--do-stay
-    :transient-non-suffix 'transient--do-warn
     [["Edit"
       ("f" "forward" widget-forward)
       ("b" "backward" widget-backward)
@@ -149,11 +153,11 @@
      ["File"
       ("d" "decrypt" epa-decrypt-file)
       ("v" "verify" epa-verify-file)
-      ("s" "sign" epa-sign-file)]])
-  (setq epa-file-encrypt-to "jiacai2050@gmail.com")
+      ("s" "sign" my/sign-file)]])
+  (setq epa-file-encrypt-to "jiacai2050@gmail.com"
+        epa-armor t)
   :bind (:map epa-key-list-mode-map
-              ("/" . my/epa-command))
-)
+              ("/" . my/epa-command)))
 
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
@@ -203,7 +207,12 @@
   :config
   (browse-kill-ring-default-keybindings))
 
-(use-package expand-region)
+(use-package expand-region
+  :config
+  ;; 需要配合 iTerm2 进行 key mapping
+  ;; https://stackoverflow.com/a/40222318/2163429
+  (my/global-map-and-set-key "C-=" 'er/expand-region)
+  (my/global-map-and-set-key "C--" 'er/contract-region))
 
 (use-package undo-tree
   :init (global-undo-tree-mode)
@@ -493,11 +502,6 @@
 (global-set-key (kbd "C-c i t") 'my/insert-today)
 (global-set-key (kbd "<f5>") 'my/zoom-in)
 (global-set-key (kbd "<f6>") 'my/zoom-out)
-
-;; 需要配合 iTerm2 进行 key mapping
-;; https://stackoverflow.com/a/40222318/2163429
-(my/global-map-and-set-key "C-=" 'er/expand-region)
-(my/global-map-and-set-key "C--" 'er/contract-region)
 
 ;; (use-package smart-input-source
 ;;   :config
