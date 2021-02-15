@@ -88,7 +88,6 @@
            :publishing-function org-publish-attachment))))
 
 (use-package org-download
-  :ensure-system-package (pngpaste . "brew install pngpaste")
   :bind (:map org-mode-map
               ("C-c v" . org-download-screenshot)
               ("C-c d" . org-download-delete))

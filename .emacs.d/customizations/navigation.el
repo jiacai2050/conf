@@ -57,16 +57,14 @@
 (use-package counsel
   :init
   (ivy-mode 1)
-  ;; (setq enable-recursive-minibuffers t)
-  (setq ivy-use-virtual-buffers t
-        ivy-count-format "(%d/%d) "
-        ivy-initial-inputs-alist nil
-        ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
-                                (t . ivy--regex-plus))
-        ivy-height 15
-        ivy-extra-directories '("./"))
-
-
+  (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
+                                (t . ivy--regex-plus)))
+  :custom ((ivy-use-virtual-buffers t)
+           (ivy-count-format "(%d/%d) ")
+           (ivy-initial-inputs-alist nil)
+           (ivy-height 15)
+           (ivy-extra-directories '("./"))
+           (counsel-switch-buffer-preview-virtual-buffers nil))
   :bind (("M-y" . counsel-yank-pop)
          ("C-c C-r" . ivy-resume)
          ("<f6>" . ivy-resume)
@@ -74,8 +72,7 @@
          ("C-x f" . counsel-switch-buffer)
          ("C-x C-f" . counsel-find-file)
          ("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward))
-  )
+         ("C-r" . swiper-isearch-backward)))
 
 (use-package ivy-avy
   :custom ((avy-all-windows nil)
@@ -171,8 +168,7 @@ _-_: -               ^ ^                   _f_: fanyi
 
 
 (use-package rg
-  :defer t
-  :ensure-system-package (rg . "brew install ripgrep"))
+  :defer t)
 
 (use-package treemacs
   :bind (("<f12>" . treemacs)
@@ -238,6 +234,7 @@ _-_: -               ^ ^                   _f_: fanyi
 
     "o" 'counsel-git
     "a" 'counsel-git-grep
+    "w" 'counsel-rg
     "k" 'kill-buffer
     "d" 'my/delete-file-and-buffer
     "j" 'hydra-prog-menu/body

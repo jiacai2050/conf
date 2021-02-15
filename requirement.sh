@@ -21,6 +21,9 @@ command_exists cask || curl -fsSL https://gitee.com/liujiacai/cask/raw/master/go
 # https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html
 command_exists ispell || brew install ispell
 
+command_exists rg || brew install ripgrep
+command_exists pngpaste || brew install pngpaste
+
 # flycheck
 function install_shellcheck() {
   scversion="v0.7.1" # or "v0.4.7", or "latest"
@@ -50,7 +53,7 @@ command_exists gopls || go get golang.org/x/tools/gopls@latest
 # https://github.com/palantir/python-language-server
 command_exists pyls || pip install 'python-language-server[all]'
 # https://github.com/theia-ide/typescript-language-server
-command_exists typescript-language-server || npm i -g typescript-language-server; npm i -g typescript
+command_exists typescript-language-server || $(npm i -g typescript-language-server && npm i -g typescript)
 
 
 # Golang
