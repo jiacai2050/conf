@@ -205,7 +205,8 @@ _-_: -               ^ ^                   _f_: fanyi
   (matcha-setup))
 
 (use-package evil-leader
-  :init (global-evil-leader-mode)
+  :init
+  (global-evil-leader-mode)
   (define-transient-command my/lsp-command
     "LSP"
     [["Find"

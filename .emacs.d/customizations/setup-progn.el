@@ -117,6 +117,12 @@
     "Enable LSP for JavaScript, but not for JSON"
     (when (eq 'js-mode major-mode)
       (lsp-deferred)))
+  (defun my/lsp-rust ()
+    (setq-local lsp-completion-enable nil
+                lsp-diagnostics-provider :flycheck)
+    (require 'lsp-diagnostics)
+    (lsp-diagnostics-mode)
+    (lsp-deferred))
   (setq lsp-keymap-prefix "C-c l")
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
   (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
@@ -133,12 +139,11 @@
       ;; (message "sig = [%s]" sig)
       (lsp--render-element (concat "```rust\n" sig "\n```"))))
   :hook ((go-mode . lsp-deferred)
-         (rust-mode . lsp-deferred)
+         (rust-mode . my/lsp-rust)
          (python-mode . lsp-deferred)
          (js-mode .  my/lsp-js)
          (lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . my/lsp-before-save)
-         )
+         (lsp-mode . my/lsp-before-save))
   :commands (lsp lsp-deferred)
   :custom ((lsp-log-io nil)
            (lsp-eldoc-render-all nil)
@@ -149,23 +154,25 @@
            (lsp-go-hover-kind "NoDocumentation")
            (lsp-go-use-placeholders t)
            (lsp-diagnostics-provider :none)
-           (lsp-modeline-workspace-status-enable nil)
+           (lsp-modeline-code-actions-enable nil)
+           (lsp-modeline-diagnostics-enable nil)
            (lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory))
            (lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory))
            (lsp-eslint-server-command `("node"
                                         ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
-                                        "--stdio"
-                                        )))
+                                        "--stdio")))
   :config
   (require 'lsp-modeline)
-  (push "[/\\\\]vendor$" lsp-file-watch-ignored)
+  (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
               ("M-n" . lsp-find-references)))
 
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"
-  :config
+  :commands (lsp-treemacs-symbols lsp-treemacs-references
+                                  lsp-treemacs-implementations lsp-treemacs-call-hierarchy)
+  :init
   (defun my/toggle-treemacs-symbols ()
     (interactive)
     (if-let (buf (get-buffer lsp-treemacs-symbols-buffer-name))

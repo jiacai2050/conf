@@ -6,13 +6,10 @@
   (setq rust-playground-basedir (expand-file-name "~/code/rust/playground")))
 
 (use-package rust-mode
-  :hook ((rust-mode . my/rust-lsp))
-  :mode (("\\.rs\\'" . rust-mode))
+  :hook (rust-mode . my/rust-compile)
   :config
-  (defun my/rust-lsp ()
-    (setq-local lsp-completion-enable nil
-                compile-command "cargo check --tests")
-    ))
+  (defun my/rust-compile ()
+    (setq-local compile-command "cargo check --tests")))
 
 (use-package cargo
   :hook ((rust-mode . cargo-minor-mode))
