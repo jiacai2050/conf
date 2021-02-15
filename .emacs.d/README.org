@@ -76,5 +76,8 @@ pip install 'python-language-server[all]'
 #+end_src
 - =C-c C-s= pyenv-mode-set
 
+* GPG
+- https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+
 * Misc
 - [[https://emacs.stackexchange.com/questions/33627/how-to-generate-and-activate-autoloads-for-local-packages][How to generate and activate autoloads for local packages?]]

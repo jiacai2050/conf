@@ -53,7 +53,7 @@ command_exists gopls || go get golang.org/x/tools/gopls@latest
 # https://github.com/palantir/python-language-server
 command_exists pyls || pip install 'python-language-server[all]'
 # https://github.com/theia-ide/typescript-language-server
-command_exists typescript-language-server || $(npm i -g typescript-language-server && npm i -g typescript)
+command_exists typescript-language-server || (npm i -g typescript-language-server && npm i -g typescript)
 
 
 # Golang

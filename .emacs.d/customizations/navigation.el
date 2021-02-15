@@ -207,8 +207,8 @@ _-_: -               ^ ^                   _f_: fanyi
     "LSP"
     [["Find"
       ("d" "Definition" lsp-find-definition)
-      ("r" "References" lsp-treemacs-references)
-      ("i" "Implementations" lsp-treemacs-implementations)
+      ("r" "References" lsp-find-references)
+      ("i" "Implementation" lsp-find-implementation)
       ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)]
      ["Other"
       ("t" "Desc thing" lsp-describe-thing-at-point)
@@ -220,10 +220,14 @@ _-_: -               ^ ^                   _f_: fanyi
       ("e" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
 
   :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit-.*-mode"))
+           (evil-leader/no-prefix-mode-rx '(".*"))
            (evil-leader/in-all-states t))
   :config
   (require 'matcha-me)
+  (defun my/insert-comma ()
+    (interactive)
+    (insert-char (char-from-name "COMMA")))
+
   (evil-leader/set-key
     "c" 'compile
     "s" 'swiper-isearch
@@ -248,6 +252,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "v" 'matcha-vc-dir
     "x" 'matcha-me-files
 
+    "." 'my/insert-comma
     "0" 'select-window-0
     "1" 'select-window-1
     "2" 'select-window-2

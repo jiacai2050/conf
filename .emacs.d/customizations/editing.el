@@ -124,6 +124,37 @@
               ("SPC" . evil-scroll-page-down)
               ("DEL" . evil-scroll-page-up)))
 
+(use-package auth-source
+  :ensure nil
+  :custom ((auth-sources '("~/.emacs.d/authinfo.gpg"))))
+
+(use-package epa
+  :ensure nil
+  :custom ((password-cache-expiry (* 60 15)))
+  :config
+  (transient-define-prefix my/epa-command ()
+    :transient-suffix     'transient--do-stay
+    :transient-non-suffix 'transient--do-warn
+    [["Edit"
+      ("f" "forward" widget-forward)
+      ("b" "backward" widget-backward)
+      ("e" "Exit" exit-recursive-edit)
+      ("a" "Abort" abort-recursive-edit)]
+     ["Keys"
+      ("m" "mark" epa-mark-key)
+      ("u" "unmark" epa-unmark-key)
+      ("r" "remove" epa-delete-keys)
+      ("i" "import" epa-import-keys)
+      ("o" "export" epa-export-keys)]
+     ["File"
+      ("d" "decrypt" epa-decrypt-file)
+      ("v" "verify" epa-verify-file)
+      ("s" "sign" epa-sign-file)]])
+  (setq epa-file-encrypt-to "jiacai2050@gmail.com")
+  :bind (:map epa-key-list-mode-map
+              ("/" . my/epa-command))
+)
+
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
 ;;          (prog-mode . flyspell-prog-mode))
@@ -280,7 +311,8 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode))
+  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode
+                              epa-key-list-mode epa-key-mode epa-info-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
