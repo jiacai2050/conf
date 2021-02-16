@@ -23,18 +23,7 @@ make
 kill -SIGUSR2 ${pid}
 #+end_src
 - https://emacs.stackexchange.com/questions/506/debugging-a-frozen-emacs
-
-* Built-in mode
-- global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
-
-* Third-party mode
-- [[https://github.com/abo-abo/swiper][ivy]], a completion system.
-- [[https://github.com/bbatsov/projectile][projectile]], navigate between files in a project
-- [[https://magit.vc/][magit]] for git integration
-- [[https://company-mode.github.io/][company]], code completion
-- [[https://github.com/justbur/emacs-which-key][which-key]],
-
-* patch
+** Patch
 vendor 内 package 上游的 bug，可以通过 patch 在不同机器上同步：
 #+begin_src bash
 cd ~/.emacs.d/vendor/lsp-mode
@@ -46,7 +35,17 @@ cd ~/.emacs.d/vendor/lsp-mode
 git apply  ~/.emacs.d/lsp-rust.patch
 #+end_src
 
-* Magit
+* Built-in mode
+- global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
+- [[https://emacs.stackexchange.com/questions/33627/how-to-generate-and-activate-autoloads-for-local-packages][How to generate and activate autoloads for local packages?]]
+* Third-party mode
+- [[https://github.com/abo-abo/swiper][ivy]], a completion system.
+- [[https://github.com/bbatsov/projectile][projectile]], navigate between files in a project
+- [[https://magit.vc/][magit]] for git integration
+- [[https://company-mode.github.io/][company]], code completion
+- [[https://github.com/justbur/emacs-which-key][which-key]],
+
+** Magit
 通过源码编译 magit 时可能遇到
 
 #+begin_src bash
@@ -58,26 +57,305 @@ PATH=/usr/local/opt/texinfo/bin:$PATH make
 #+end_src
 参考：https://github.com/jwiegley/use-package/issues/609
 
-* lsp-mode
+** lsp-mode
 - https://gitee.com/liujiacai/lsp-mode
 - https://emacs-lsp.github.io/lsp-mode/page/CHANGELOG/
 #+begin_src
 make build all
 #+end_src
-** 安装 server
+*** 安装 server
 #+begin_src elisp
 M-x lsp-install-server RET eslint
 #+end_src
 
-* Python
+** Python
 - https://github.com/palantir/python-language-server
 #+begin_src bash
 pip install 'python-language-server[all]'
 #+end_src
 - =C-c C-s= pyenv-mode-set
 
-* GPG
+** GPG
 - https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
 
-* Misc
-- [[https://emacs.stackexchange.com/questions/33627/how-to-generate-and-activate-autoloads-for-local-packages][How to generate and activate autoloads for local packages?]]
+* Archive
+** Sr-Speedbar
+#+begin_src elisp
+(use-package sr-speedbar
+  :config
+  (setq speedbar-show-unknown-files t ;; show all files
+        speedbar-use-images nil       ;; use text for buttons
+        sr-speedbar-right-side nil    ;; put on left side
+        sr-speedbar-width 30
+        )
+  :bind (("<f11>" . sr-speedbar-toggle)
+         ("C-c s w" . sr-speedbar-select-window)
+         ("C-c s r" . sr-speedbar-refresh-toggle)))
+
+#+end_src
+** Org
+#+begin_src bash
+# org 导出 pdf 中文支持
+brew cask install basictex
+sudo tlmgr update --self
+sudo tlmgr install wrapfig
+sudo tlmgr install capt-of
+# PDF 导出时，需要 cjk 包，然后需要配置org-latex-packages-alist，具体参考 setup-org.el
+sudo tlmgr install cjk
+#+end_src
+** Go
+#+begin_src elisp
+(use-package go-errcheck
+  :after go-mode
+  :ensure-system-package (errcheck . "go get -u github.com/kisielk/errcheck")
+  :bind (:map go-mode-map
+              ("C-c C-e" . go-errcheck)))
+
+(use-package go-imenu
+  :ensure-system-package (go-outline . "go get -u github.com/lukehoban/go-outline")
+  :after go-mode
+  :config
+  (add-hook 'go-mode-hook 'go-imenu-setup))
+
+#+end_src
+** Rust
+#+begin_src elisp
+(use-package flycheck-rust
+  :after rust-mode
+  :config (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+
+;; use lsp-mode instead
+(use-package racer
+  :after rust-mode
+  :if (executable-find "racer")
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode))
+  :bind (:map rust-mode-map
+              ("TAB" . company-indent-or-complete-common)))
+#+end_src
+** Remove cask deps
+#+begin_src elisp
+(defvar package-directory-list '())
+add cask dependencies
+(dolist (cask-dep '("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-treemacs"))
+  (let ((dep-dir (format "%s/.cask/%s.%s/elpa" cask-dep emacs-major-version emacs-minor-version)))
+    (add-to-list 'package-directory-list dep-dir)))
+
+(dolist (f load-path)
+  (when (and (stringp f)
+             (equal (file-name-nondirectory f) "site-lisp"))
+    (add-to-list 'package-directory-list (expand-file-name "elpa" f))))
+#+end_src
+** Ido
+#+begin_src elisp
+;; ido-mode allows you to more easily navigate choices. For example,
+;; when you want to switch buffers, ido presents you with a list
+;; of buffers in the the mini-buffer. As you start to type a buffer's
+;; name, ido will narrow down the list of buffers to match the text
+;; you've typed in
+;; http://www.emacswiki.org/emacs/InteractivelyDoThings
+(use-package ido
+  :ensure nil
+  :config
+  ;; This allows partial matches, e.g. "tl" will match "Tyrion Lannister"
+  (setq ido-enable-flex-matching t
+        ido-use-filename-at-point nil
+        ido-auto-merge-work-directories-length -1
+        ido-use-virtual-buffers t
+        ido-everywhere t
+        )
+  (ido-mode t)
+  (defun my/ido-recentf-open ()
+    "Use `ido-completing-read' to find a recent file."
+    (interactive)
+    (let ((file (ido-completing-read "Find recent file: " (mapcar 'abbreviate-file-name recentf-list))))
+      (if (find-file file)
+          (message "Opening file %s" (abbreviate-file-name file))
+        (message "Aborting"))))
+
+  (global-set-key (kbd "C-x f") 'my/ido-recentf-open)
+  )
+
+(use-package ido-completing-read+
+  :requires ido
+  :config (ido-ubiquitous-mode 1))
+
+(use-package ido-vertical-mode
+  :requires ido
+  :config
+  (ido-vertical-mode)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right
+        ido-vertical-show-count t
+        ido-vertical-disable-if-short nil)
+  (set-face-attribute 'ido-vertical-first-match-face nil
+                      :background nil
+                      :foreground "orange")
+  (set-face-attribute 'ido-vertical-only-match-face nil
+                      :background nil
+                      :foreground nil)
+  (set-face-attribute 'ido-vertical-match-face nil
+                      :foreground nil)
+  )
+#+end_src
+** LSP
+#+begin_src elisp
+(use-package nox
+  ;; :load-path "~/.emacs.d/vendor/nox"
+  :load-path "~/code/misc/nox"
+  :config
+  (dolist (hook (list
+                 'js-mode-hook
+                 'rust-mode-hook
+                 'python-mode-hook
+                 'ruby-mode-hook
+                 'java-mode-hook
+                 'sh-mode-hook
+                 'php-mode-hook
+                 'c-mode-common-hook
+                 'c-mode-hook
+                 'c++-mode-hook
+                 'go-mode-hook
+                 ))
+    (add-hook hook '(lambda () (nox-ensure))))
+  (add-to-list 'nox-server-programs '(rust-mode . ("rust-analyzer")))
+  )
+
+(use-package eglot
+  :config
+  (dolist (hook (list
+                 'js-mode-hook
+                 'rust-mode-hook
+                 'python-mode-hook
+                 'ruby-mode-hook
+                 'java-mode-hook
+                 'sh-mode-hook
+                 'php-mode-hook
+                 'c-mode-common-hook
+                 'c-mode-hook
+                 'c++-mode-hook
+                 'go-mode-hook
+                 ))
+    (add-hook hook '(lambda () (eglot-ensure))))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+  (setq eglot-auto-display-help-buffer t)
+  (setq eglot-put-doc-in-help-buffer t)
+  )
+
+(use-package lsp-ui
+  :after lsp-mode
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-doc-position 'top
+        lsp-ui-doc-max-width 80
+        lsp-ui-sideline-show-symbol nil
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-sideline-ignore-duplicate t)
+  :bind (:map lsp-ui-mode-map
+              ("C-c l" . lsp-ui-imenu))
+  )
+
+#+end_src
+** Helm
+#+begin_src elisp
+(defun my/helm-hide-minibuffer-maybe ()
+  "Hide minibuffer contents in a Helm session.
+   https://github.com/emacs-helm/helm/blob/353c84076d5489b6a4085537775992226f9d5156/helm.el#L4942"
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (helm-aif (and helm-display-header-line
+                     (helm-attr 'persistent-help))
+          (progn
+            (overlay-put ov 'display
+                         (truncate-string-to-width
+                          (substitute-command-keys
+                           (concat "\\<helm-map>\\[helm-execute-persistent-action]: "
+                                   (format "%s (keeping session)" it)))
+                          (- (window-width) 1)))
+            (overlay-put ov 'face 'helm-header))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color))))
+
+      (setq cursor-type nil))))
+
+(use-package helm
+  ;; :init
+  ;; (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  ;; (global-unset-key (kbd "C-x c"))
+  :pin melpa-stable
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+
+  (setq helm-split-window-in-side-p t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match    t
+        helm-M-x-fuzzy-match t
+        helm-etags-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match    t
+        ;; https://github.com/emacs-helm/helm/issues/1676
+        helm-move-to-line-cycle-in-source nil
+        helm-ff-file-name-history-use-recentf t
+        helm-echo-input-in-header-line t
+        helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+        helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 40
+        )
+
+
+  (add-hook 'helm-minibuffer-set-up-hook 'my/helm-hide-minibuffer-maybe)
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x i" . helm-imenu)
+         ("C-x f" . helm-recentf)
+         ("C-x b" . helm-buffers-list)
+         ("C-x w" . helm-toggle-resplit-and-swap-windows)
+         ;; ("C-SPC" . helm-dabbrev)
+         ;; ("M-y" . helm-show-kill-ring)
+         ))
+
+
+(use-package helm-ls-git
+  :after helm
+  :ensure t
+  :bind (("C-x C-d" . 'helm-browse-project)))
+
+(use-package helm-descbinds
+  :after helm
+  :config (helm-descbinds-mode))
+
+
+(use-package helm-projectile
+  :after (projectile helm)
+  ;; :bind ("C-c f" . helm-projectile-find-file)
+  :config
+  (helm-projectile-on)
+  (setq projectile-switch-project-action 'helm-projectile-find-file))
+
+;; https://github.com/senny/emacs.d/blob/83567797b14e483ae043b7fe57b3154ae9972b4c/init.el#L107
+(use-package helm-ag
+  :after helm-projectile
+  ;; :bind ("C-c g g" . helm-projectile-ag)
+  )
+
+(use-package helm-gtags
+  :config
+  (setq helm-gtags-ignore-case t
+        helm-gtags-auto-update t
+        helm-gtags-use-input-at-cursor t
+        helm-gtags-pulse-at-cursor t
+        helm-gtags-prefix-key "\C-cg"
+        helm-gtags-suggested-key-mapping t)
+  :bind (:map helm-gtags-mode-map
+              ("C-c g a" . helm-gtags-tags-in-this-function)
+              ("C-j" . helm-gtags-select)
+              ("M-." . helm-gtags-dwim)
+              ("M-," . helm-gtags-pop-stack)
+              ("C-c <" . helm-gtags-previous-history)
+              ("C-c >" . helm-gtags-next-history))
+  :hook ((dired-mode eshell-mode c-mode c++-mode asm-mode) . helm-gtags-mode))
+
+#+end_src

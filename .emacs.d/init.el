@@ -46,7 +46,8 @@
   (setq persistent-scratch-save-file (no-littering-expand-var-file-name
                                       (if (display-graphic-p)
                                           "scratch-gui.el"
-                                        "scratch-terminal.el"))))
+                                        "scratch-terminal.el"))
+        mc/list-file (no-littering-expand-etc-file-name "mc-lists.el")))
 
 ;; magit dependencies
 (use-package with-editor

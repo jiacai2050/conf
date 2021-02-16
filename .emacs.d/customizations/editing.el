@@ -173,16 +173,12 @@
               ("M-i" . company-complete-selection)))
 
 (use-package company-tabnine
-  :custom ((company-tabnine-always-trigger nil))
-  )
+  :custom ((company-tabnine-always-trigger nil)))
 
 (use-package multiple-cursors
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
   ;; doesn't work in GUI
-  :bind (("C-." . mc/mark-next-like-this))
-  :custom
-  (mc/list-file (expand-file-name "mc-lists.el" user-emacs-directory))
-  )
+  :bind (("C-." . mc/mark-next-like-this)))
 
 ;; yay rainbows!
 (use-package rainbow-delimiters
