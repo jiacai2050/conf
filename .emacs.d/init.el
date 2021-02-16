@@ -26,6 +26,9 @@
   (require 'use-package)
   (setq use-package-verbose t))
 
+;; Changes all yes/no questions to y/n type
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (defun my/reload-dir-locals-for-current-buffer ()
   "reload dir locals for the current buffer"
   (interactive)
@@ -37,13 +40,12 @@
 ;;;;
 (use-package no-littering
   :load-path "~/.emacs.d/vendor/no-littering"
-  :custom ((auto-save-file-name-transforms
-            ;; don't forget the slash at the end of your string
-            ;; https://emacs.stackexchange.com/a/17214/16450
-            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-           (custom-file (no-littering-expand-var-file-name "custom.el")))
   :config
-  (setq persistent-scratch-save-file (no-littering-expand-var-file-name
+  ;; don't forget the slash at the end of your string
+  ;; https://emacs.stackexchange.com/a/17214/16450
+  (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))
+        custom-file (no-littering-expand-var-file-name "custom.el")
+        persistent-scratch-save-file (no-littering-expand-var-file-name
                                       (if (display-graphic-p)
                                           "scratch-gui.el"
                                         "scratch-terminal.el"))
@@ -104,8 +106,8 @@
   (load "setup-org.el")
   (load "setup-clojure.el")
   (load "setup-js.el")
-  (load "setup-common-lisp.el")
-  (load "setup-ruby.el")
+  ;; (load "setup-common-lisp.el")
+  ;; (load "setup-ruby.el")
   (load "setup-python.el")
   (load "setup-go.el")
   (load "setup-rust.el")

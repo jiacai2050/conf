@@ -3,40 +3,39 @@
 #+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
 #+end_src
+* Calendar
+#+begin_src emacs-lisp
+(use-package cal-china
+  :ensure nil
+  :custom (;; (calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
+           ;; (calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+           (calendar-mark-holidays-flag t))
+  :config
+  (evil-make-overriding-map calendar-mode-map 'motion)
+  :bind (:map calendar-mode-map
+              ("h" . calendar-backward-day)
+              ("l" . calendar-forward-day)
+              ("k" . calendar-backward-week)
+              ("j" . calendar-forward-week)))
 
-* Languages
-** Ocaml
-- https://github.com/ocaml/merlin/wiki/emacs-from-scratch
-#+BEGIN_SRC shell
-opam install tuareg merlin utop
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (load "tuareg-site-file")
-    ;; (load "merlin")
-    (autoload 'merlin-mode "merlin" nil t nil)
-    (autoload 'utop "utop" "Toplevel for OCaml" t)
-    (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (setq tuareg-indent-align-with-first-arg t)
-    (setq tuareg-match-patterns-aligned t)
+(use-package cal-china-x
+  :config
+  (setq cal-china-x-important-holidays '((holiday-lunar 2 19 "家财生日")
+                                         (holiday-lunar 5 1 "家钰生日")
+                                         (holiday-lunar 6 29 "家辉生日")
+                                         (holiday-lunar 11 13 "万燕生日"))
+        cal-china-x-general-holidays (append cal-china-x-chinese-holidays
+                                             '((holiday-lunar 1 15 "元宵节")))
 
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    (setq utop-command "opam config exec -- utop -emacs")
-    ;; utop-minor cause merlin docstr didn't showup
-    ;; (add-hook 'tuareg-mode-hook 'utop-minor-mode)
-    ))
-#+END_SRC
+        calendar-holidays (append holiday-general-holidays holiday-local-holidays
+                                  holiday-other-holidays holiday-christian-holidays
+                                  holiday-solar-holidays
+                                  cal-china-x-important-holidays cal-china-x-general-holidays)))
 
-* Gpg
-- https://emacs.stackexchange.com/a/32554/16450
-#+BEGIN_SRC emacs-lisp
-  (setq epa-pinentry-mode 'loopback)
-  ;; (setq epa-file-encrypt-to "hello@liujiacai.net")
-#+END_SRC
-* Submodule
+(use-package calfw
+  :commands cfw:open-calendar-buffer)
+#+end_src
+* Others
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
   :load-path "~/.emacs.d/vendor/restclient"
@@ -45,28 +44,6 @@ opam install tuareg merlin utop
 (use-package protobuf-mode
   :load-path "~/.emacs.d/vendor/protobuf-mode"
   :mode ("\\.proto\\'" . protobuf-mode))
-#+END_SRC
-* Git
-- https://magit.vc/manual/magit/Getting-started.html#Getting-started
-* Others
-#+BEGIN_SRC emacs-lisp
-;; Changes all yes/no questions to y/n type
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(setq datetime-timezone "Asia/Shanghai")
-
-;; shell scripts
-(setq-default sh-basic-offset 2)
-(setq-default sh-indentation 2)
-
-;; No need for ~ files when editing
-(setq create-lockfiles nil)
-
-;; Go straight to scratch buffer on startup
-(setq inhibit-startup-message t)
-
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
-(setq enable-local-variables :safe)
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key

@@ -2,3 +2,4 @@
 .npm
 .vim/.netrwhist
 .config/configstore
+.DS_Store

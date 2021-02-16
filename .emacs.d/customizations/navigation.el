@@ -24,8 +24,17 @@
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
   (add-to-list 'recentf-exclude "/Applications/.*")
   (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
-  (recentf-mode +1)
-  )
+  (recentf-mode +1))
+
+(use-package dired
+  :ensure nil
+  :custom ((dired-listing-switches "-alh"))
+  :bind (:map dired-mode-map
+              ("e" . dired-toggle-read-only)
+              ("j" . dired-next-line)
+              ("k" . dired-previous-line)
+              ("SPC" . evil-scroll-page-down)
+              ("DEL" . evil-scroll-page-up)))
 
 ;; https://stackoverflow.com/a/950553/2163429
 (global-visual-line-mode)
@@ -229,7 +238,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "a" 'counsel-git-grep
     "w" 'counsel-rg
     "k" 'kill-buffer
-    "d" 'my/delete-file-and-buffer
+    "d" 'counsel-dired
     "j" 'hydra-prog-menu/body
     "m" 'hydra-multiple-cursors/body
     "SPC" 'avy-goto-word-1
@@ -247,6 +256,8 @@ _-_: -               ^ ^                   _f_: fanyi
     "2" 'select-window-2
     "3" 'select-window-3
     "4" 'select-window-4
+    "8" 'cfw:open-calendar-buffer
+    "9" 'calendar
     ))
 
 (defun my/switch-to-metadata-file ()

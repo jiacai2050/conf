@@ -10,6 +10,13 @@
       ;; copy from doom-emacs
       frame-inhibit-implied-resize t
       load-prefer-newer t
+      inhibit-startup-screen t
+      ;; No need for ~ files when editing
+      create-lockfiles nil
+
+      datetime-timezone "Asia/Shanghai"
+      ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
+      ;; enable-local-variables :safe
       source-directory (expand-file-name "~/code/misc/emacs"))
 
 (defmacro comment (&rest body)

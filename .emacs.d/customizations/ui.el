@@ -44,7 +44,7 @@
 
 (use-package time
   :ensure nil
-  :custom ((display-time-format "[%H:%M %a, %d/%m]")
+  :custom ((display-time-format "[%H:%M %a]")
            (display-time-use-mail-icon t))
   :config
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html

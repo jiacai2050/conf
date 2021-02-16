@@ -105,22 +105,15 @@
   :config
   (define-key conf-mode-map "\C-c " nil))
 
-(use-package dired
-  :ensure nil
-  :bind (:map dired-mode-map
-              ("e" . dired-toggle-read-only)
-              ("j" . dired-next-line)
-              ("k" . dired-previous-line)
-              ("SPC" . evil-scroll-page-down)
-              ("DEL" . evil-scroll-page-up)))
-
 (use-package auth-source
   :ensure nil
   :custom ((auth-sources '("~/.emacs.d/authinfo.gpg"))))
 
 (use-package epa
   :ensure nil
-  :custom ((password-cache-expiry (* 60 15)))
+  :custom (;; https://emacs.stackexchange.com/a/32554/16450
+           (epg-pinentry-mode 'loopback)
+           (password-cache-expiry (* 60 15)))
   :config
     ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
 
@@ -293,12 +286,12 @@
       (define-key evil-insert-state-map (kbd "C-p") 'previous-line)))
 
   :config
-  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode
+  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode dired-mode
+                              cfw:details-mode
                               epa-key-list-mode epa-key-mode epa-info-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
-
   (require 'dired)
   (evil-make-overriding-map dired-mode-map 'normal)
   )

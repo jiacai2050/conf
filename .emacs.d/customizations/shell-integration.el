@@ -27,7 +27,8 @@
   :mode (("\\.macosrc" . sh-mode))
   :config
   (native-complete-setup-bash)
-)
+  (setq-default sh-basic-offset 2)
+  )
 
 (use-package aweshell
   :load-path "~/.emacs.d/vendor/aweshell"
