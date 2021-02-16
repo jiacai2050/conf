@@ -36,6 +36,7 @@
 ;; Customization
 ;;;;
 (use-package no-littering
+  :load-path "~/.emacs.d/vendor/no-littering"
   :custom ((auto-save-file-name-transforms
             ;; don't forget the slash at the end of your string
             ;; https://emacs.stackexchange.com/a/17214/16450
@@ -44,8 +45,8 @@
   :config
   (setq persistent-scratch-save-file (no-littering-expand-var-file-name
                                       (if (display-graphic-p)
-                                          "persistent-scratch_gui"
-                                        "persistent-scratch_terminal"))))
+                                          "scratch-gui.el"
+                                        "scratch-terminal.el"))))
 
 ;; magit dependencies
 (use-package with-editor

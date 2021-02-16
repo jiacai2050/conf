@@ -192,7 +192,7 @@ _-_: -               ^ ^                   _f_: fanyi
 (use-package evil-leader
   :init
   (global-evil-leader-mode)
-  (define-transient-command my/lsp-command
+  (transient-define-prefix my/lsp-command
     "LSP"
     [["Find"
       ("d" "Definition" lsp-find-definition)
