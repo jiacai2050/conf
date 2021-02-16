@@ -251,6 +251,8 @@ _-_: -               ^ ^                   _f_: fanyi
     "x" 'matcha-me-files
 
     "." 'my/insert-comma
+    "h" 'my/major-mode-keymap
+
     "0" 'select-window-0
     "1" 'select-window-1
     "2" 'select-window-2

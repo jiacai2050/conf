@@ -47,7 +47,12 @@
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
-  :config (which-key-mode))
+  :config
+  (which-key-mode)
+  (defun my/major-mode-keymap ()
+    (interactive)
+    (which-key-show-full-keymap `,(intern (format "%s-map" major-mode))
+                                )))
 
 (use-package chronos
   :config
