@@ -156,8 +156,6 @@
            (lsp-diagnostics-provider :none)
            (lsp-modeline-code-actions-enable t)
            (lsp-modeline-diagnostics-enable nil)
-           (lsp-server-install-dir (expand-file-name "lsp-server" my/ignore-directory))
-           (lsp-session-file (expand-file-name "lsp-session-v1" my/ignore-directory))
            (lsp-eslint-server-command `("node"
                                         ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
                                         "--stdio")))
@@ -185,9 +183,6 @@
  (use-package lsp-java
    :hook (java-mode . lsp-deferred)
    :custom
-   (dap-breakpoints-file (expand-file-name "dap-breakpoints" my/ignore-directory))
-   (lsp-java-workspace-dir (expand-file-name "workspace" my/ignore-directory))
-   (dap-java-test-runner (expand-file-name "eclipse.jdt.ls/test-runner/junit-platform-console-standalone.jar" my/ignore-directory))
    ;; 0.57.0 is the last version support jdk8. https://github.com/emacs-lsp/lsp-java/issues/249
    ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
    (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")

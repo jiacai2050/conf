@@ -1,23 +1,19 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
-(setq package-enable-at-startup nil)
-(defvar my/ignore-directory (file-name-as-directory (expand-file-name "ignore" user-emacs-directory)))
-
-(defmacro comment (&rest body)
-  nil)
-
-(setq default-frame-alist '((tool-bar-lines . 0)
+(setq package-enable-at-startup nil
+      default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)
-                            (vertical-scroll-bars)))
-
-(setq gc-cons-threshold most-positive-fixnum
+                            (vertical-scroll-bars))
+      gc-cons-threshold most-positive-fixnum
       ;; 1mb
       read-process-output-max (* 1024 1024)
       ;; copy from doom-emacs
       frame-inhibit-implied-resize t
       load-prefer-newer t
-      source-directory (expand-file-name "~/code/misc/emacs")
-      )
+      source-directory (expand-file-name "~/code/misc/emacs"))
+
+(defmacro comment (&rest body)
+  nil)
 
 ;; http://akrl.sdf.org/
 (defmacro my/operation-time (&rest body)
@@ -35,3 +31,18 @@
                                                (my/operation-time (garbage-collect)))))
                            (with-current-buffer "*Messages*"
 	                         (insert gc-msg "\n"))))))
+
+(defun my/map-key (key)
+  "Map KEY from escape sequence \"\e[emacs-KEY\."
+  (define-key function-key-map (concat "\e[emacs-" key) (kbd key)))
+
+(defun my/global-map-and-set-key (key command &optional prefix suffix)
+  "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
+PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
+   (my/map-key key)
+   (global-set-key (kbd (concat prefix key suffix)) command))
+
+(defconst MAC-P      (eq system-type 'darwin))
+(defconst LINUX-P    (eq system-type 'gnu/linux))
+(defconst WINDOWS-P  (memq system-type '(cygwin windows-nt ms-dos)))
+(defconst BSD-P      (eq system-type 'berkeley-unix))

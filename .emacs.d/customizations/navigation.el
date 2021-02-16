@@ -17,8 +17,7 @@
 (use-package recentf
   :ensure nil
   :config
-  (setq recentf-save-file (concat my/ignore-directory "recentf")
-        recentf-max-menu-items 40
+  (setq recentf-max-menu-items 40
         recentf-max-saved-items 150)
   (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
   (add-to-list 'recentf-exclude "\\.emacs\\.d/ignore/.*")
@@ -26,13 +25,6 @@
   (add-to-list 'recentf-exclude "/Applications/.*")
   (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
   (recentf-mode +1)
-  )
-
-(use-package bookmark
-  :ensure nil
-  :config
-  (setq bookmark-default-file (concat my/ignore-directory "bookmarks")
-        bookmark-save-flag t)
   )
 
 ;; https://stackoverflow.com/a/950553/2163429
@@ -152,8 +144,6 @@ _-_: -               ^ ^                   _f_: fanyi
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
-        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld"
-                                                        my/ignore-directory)
         projectile-project-root-files-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
                                                  projectile-root-bottom-up
@@ -165,7 +155,6 @@ _-_: -               ^ ^                   _f_: fanyi
 
 (use-package smex
   :config
-  (setq smex-save-file (expand-file-name "smex-items" my/ignore-directory))
   (smex-initialize))
 
 (use-package rg
@@ -179,7 +168,6 @@ _-_: -               ^ ^                   _f_: fanyi
          ("k" . treemacs-previous-line))
   :config
   (progn
-    (setq treemacs-persist-file (concat my/ignore-directory "treemacs-persist"))
     (evil-make-overriding-map treemacs-mode-map 'normal)
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))

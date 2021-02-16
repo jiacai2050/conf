@@ -42,12 +42,7 @@
 (use-package files
   :ensure nil
   :config
-  ;; Emacs can automatically create backup files. This tells Emacs to
-  ;; put all backups in ~/.emacs.d/backups. More info:
-  ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Backup-Files.html
-  (setq backup-directory-alist `(("." . ,(concat my/ignore-directory
-                                                 "backups")))
-        version-control t
+  (setq version-control t
         kept-new-versions 5
         kept-old-versions 3
         backup-by-copying-when-linked t
@@ -60,11 +55,7 @@
   (setq auto-save-default t
         auto-save-timeout 10
         auto-save-interval 200
-        auto-save-visited-interval 5)
-  ;; don't forget the slash at the end of your string
-  ;; https://emacs.stackexchange.com/a/17214/16450
-  (setq auto-save-file-name-transforms
-        `((".*" ,(concat my/ignore-directory "autosaves/") t))))
+        auto-save-visited-interval 5))
 
 (use-package executable
   :ensure nil
@@ -81,7 +72,6 @@
   :config
   (save-place-mode +1)
   (setq-default save-place t)
-  (setq save-place-file (concat my/ignore-directory "places"))
   )
 
 (use-package autorevert
@@ -132,20 +122,19 @@
   :ensure nil
   :custom ((password-cache-expiry (* 60 15)))
   :config
+    ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
+
   (defun my/sign-file (&optional initial-input initial-directory)
     (interactive)
     (when-let (f (counsel-find-file (or initial-input (buffer-name))
                                     initial-directory))
-      (epa-sign-file f nil 'detached)))
+      (let ((epa-armor t))
+        (epa-sign-file f nil 'detached))))
 
   (transient-define-prefix my/epa-command ()
-    [["Edit"
-      ("f" "forward" widget-forward)
-      ("b" "backward" widget-backward)
-      ("e" "Exit" exit-recursive-edit)
-      ("a" "Abort" abort-recursive-edit)]
-     ["Keys"
-      ("m" "mark" epa-mark-key)
+    [["Keys"
+      ("l" "list public" epa-list-keys)
+      ("m" "list secret" epa-list-secret-keys)
       ("u" "unmark" epa-unmark-key)
       ("r" "remove" epa-delete-keys)
       ("i" "import" epa-import-keys)
@@ -153,11 +142,7 @@
      ["File"
       ("d" "decrypt" epa-decrypt-file)
       ("v" "verify" epa-verify-file)
-      ("s" "sign" my/sign-file)]])
-  (setq epa-file-encrypt-to "jiacai2050@gmail.com"
-        epa-armor t)
-  :bind (:map epa-key-list-mode-map
-              ("/" . my/epa-command)))
+      ("s" "sign" my/sign-file)]]))
 
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
@@ -225,11 +210,6 @@
 (use-package persistent-scratch
   :config
   (setq persistent-scratch-autosave-interval 5)
-  (setq persistent-scratch-save-file
-        (concat my/ignore-directory
-                (if (display-graphic-p)
-                    "persistent-scratch_gui"
-                  "persistent-scratch_terminal")))
   (ignore-errors
     (persistent-scratch-setup-default)))
 
@@ -334,8 +314,6 @@
   :init (progn
           (keyfreq-mode 1)
           (keyfreq-autosave-mode 1))
-  :custom ((keyfreq-file (expand-file-name "keyfreq" my/ignore-directory))
-           (keyfreq-file-lock (expand-file-name "keyfreq.lock" my/ignore-directory)))
   :config
   (setq keyfreq-excluded-commands
         '(self-insert-command

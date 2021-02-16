@@ -3,7 +3,7 @@ customizations/misc.el
 /elpa
 
 # https://stackoverflow.com/a/987162/2163429
-/ignore/*
-!/ignore/autosaves
-/ignore/autosaves/*
-!ignore/autosaves/*.gitkeep
+/var/*
+!/var/auto-save
+/var/auto-save/*
+!var/auto-save/*.gitkeep
