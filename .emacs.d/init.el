@@ -24,7 +24,8 @@
 
 (eval-when-compile
   (require 'use-package)
-  (setq use-package-verbose t))
+  (setq use-package-always-ensure t
+        use-package-verbose t))
 
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
