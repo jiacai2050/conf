@@ -77,6 +77,13 @@
            ;; https://emacs.stackexchange.com/a/3696/16450
            (find-file-visit-truename t)))
 
+(use-package forge
+  ;; 1. first setup USERNAME
+  ;; git config --global github.user USERNAME
+  ;; 2. token
+  ;; https://magit.vc/manual/ghub/Storing-a-Token.html#Storing-a-Token
+  :after magit)
+
 (use-package git-link
   :config
   (progn

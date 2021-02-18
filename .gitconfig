@@ -25,3 +25,5 @@
 # 	gpgsign = true
 [http]
 	postBuffer = 524288000
+[github]
+	user = jiacai2050
