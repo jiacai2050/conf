@@ -37,6 +37,7 @@
         sp-forward-sexp
         sp-forward-slurp-sexp
         sp-kill-region
+        sp-kill-word
         sp-splice-sexp
         yaml-electric-backspace
         yaml-electric-bar-and-angle

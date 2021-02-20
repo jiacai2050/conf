@@ -126,9 +126,7 @@
       (lsp-deferred)))
   (defun my/lsp-rust ()
     (setq-local lsp-completion-enable nil
-                lsp-diagnostics-provider :flycheck)
-    (require 'lsp-diagnostics)
-    (lsp-diagnostics-mode)
+                lsp-modeline-code-actions-enable nil)
     (lsp-deferred))
   (setq lsp-keymap-prefix "C-c l")
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
@@ -152,7 +150,7 @@
          (lsp-mode . lsp-enable-which-key-integration)
          (lsp-mode . my/lsp-before-save))
   :commands (lsp lsp-deferred)
-  :custom ((lsp-log-io t)
+  :custom ((lsp-log-io nil)
            (lsp-eldoc-render-all nil)
            (lsp-completion-provider t)
            (lsp-signature-render-documentation nil)
@@ -161,7 +159,6 @@
            (lsp-go-hover-kind "NoDocumentation")
            (lsp-go-use-placeholders t)
            (lsp-diagnostics-provider :none)
-           (lsp-modeline-code-actions-enable t)
            (lsp-modeline-diagnostics-enable nil)
            (lsp-eslint-server-command `("node"
                                         ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
