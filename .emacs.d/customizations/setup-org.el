@@ -41,6 +41,8 @@
      (http . t)
      (clojure . t)
      (sql . t)
+     (awk . t)
+     (sed . t)
      (emacs-lisp . t)))
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
