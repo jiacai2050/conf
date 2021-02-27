@@ -1,5 +1,6 @@
 [general]
 accounts = ljc
+# accounts = ljc, gmail
 pythonfile = ~/.config/offlineimap/pass.py
 
 [Account ljc]
@@ -13,11 +14,33 @@ maxage = 365
 [Repository LocalLJC]
 type = Maildir
 localfolders = ~/.mail/ljc
+nametrans = lambda folder: re.sub('^\[S\]', '&UXZO1mWHTvZZOQ-/', folder)
 
 [Repository RemoteLJC]
-sslcacertfile = /usr/local/etc/openssl/cert.pem
-folderfilter = lambda f: 'liujiacai' not in f and '&UXZO1mWHTvZZOQ-' != f
+nametrans = lambda folder: re.sub('^&UXZO1mWHTvZZOQ-\/', '[S]', folder)
+foldersort = mycmp
+sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
+folderfilter = lambda f: 'kK5O9l9SaGM' not in f and 'UXZO1mWHTvZZOQ' not in f
 type = IMAP
 remotehost = imap.exmail.qq.com
 remoteuser = hello@liujiacai.net
 remotepasseval = get_password_emacs("imap.exmail.qq.com", "hello@liujiacai.net", "993")
+
+[Account gmail]
+# proxy = SOCKS5:127.0.0.1:13659
+localrepository = LocalGmail
+remoterepository = RemoteGmail
+postsynchook = mu index
+autorefresh = 30
+quick = 10
+maxage = 365
+
+[Repository LocalGmail]
+type = Maildir
+localfolders = ~/.mail/gmail
+
+[Repository RemoteGmail]
+sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
+type = Gmail
+remoteuser = jiacai2050
+remotepasseval = get_password_emacs("imap.gmail.com", "jiacai2050", "993")

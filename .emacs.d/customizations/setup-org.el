@@ -103,20 +103,11 @@
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
 
-;; https://emacs-china.org/t/topic/440
-;; (use-package cnfonts
-;;   :config
-;;   (when (display-graphic-p)
-;;     (cnfonts-enable)
-;;     (setq cnfonts-profiles
-;;           '("program" "org-mode" "read-book"))
-;;     (global-set-key (kbd "<f5>") 'cnfonts-increase-fontsize)
-;;     (global-set-key (kbd "<f6>") 'cnfonts-decrease-fontsize)))
-
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(org-table ((t (:family "M+ 1m")))))
-;; (set-face-attribute 'org-table nil :family "Inconsolata")
+(use-package org-mime
+  :config
+  (add-hook 'message-send-hook 'org-mime-confirm-when-no-multipart)
+  (add-hook 'message-send-hook 'org-mime-htmlize)
+  (add-hook 'org-ctrl-c-ctrl-c-hook 'org-mime-org-buffer-htmlize t)
+  (define-key message-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
+  (setq org-mime-export-ascii 'utf-8
+        org-mime-export-options '(:section-numbers nil :with-author nil :with-toc nil)))

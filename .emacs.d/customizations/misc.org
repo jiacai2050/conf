@@ -6,6 +6,8 @@
 * Email
 - https://gist.github.com/dabrahams/3030332
 - http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
+- https://github.com/munen/emacs.d/#mu4e
+
 #+begin_src emacs-lisp
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
@@ -18,9 +20,29 @@
                      (mu4e-trash-folder . "/ljc/Junk")
                      (mu4e-refile-folder . "/ljc/Archive")
                      (mu4e-drafts-folder . "/ljc/Drafts")))
-		   ))
+		   )
+
+        user-mail-address "hello@liujiacai.net"
+        user-full-name "Jiacai Liu"
+        message-send-mail-function 'smtpmail-send-it
+        message-cite-style message-cite-style-gmail
+        mu4e-view-show-addresses t
+        mu4e-compose-dont-reply-to-self t
+        mu4e-confirm-quit nil
+        mu4e-headers-date-format "%+4Y-%m-%d"
+        mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
+        smtpmail-smtp-service 465
+        smtpmail-smtp-server "smtp.exmail.qq.com"
+        smtpmail-stream-type 'ssl)
+  (define-key mu4e-compose-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
+  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-fields :bcc)
   (add-to-list 'mu4e-bookmarks
                '("maildir:/INBOX" "INBOX" ?i)))
+
+(use-package mu4e-maildirs-extension
+  :config
+  (mu4e-maildirs-extension))
 #+end_src
 * Calendar
 #+begin_src emacs-lisp
