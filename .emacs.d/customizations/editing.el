@@ -107,7 +107,7 @@
 
 (use-package auth-source
   :ensure nil
-  :custom ((auth-sources '("~/.emacs.d/authinfo.gpg"))))
+  :custom ((auth-sources '("~/.config/authinfo.gpg"))))
 
 (use-package epa
   :ensure nil

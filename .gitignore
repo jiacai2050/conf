@@ -3,3 +3,4 @@
 .vim/.netrwhist
 .config/configstore
 .DS_Store
+*pyc

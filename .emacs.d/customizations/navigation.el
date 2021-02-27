@@ -88,7 +88,7 @@
     "
 ^Edit^                ^Human^               ^System^
 ^^^^^^----------------------------------------------------
-_r_: query-replace   _d_: datetime<->ts    _l_: shell
+_r_: query-replace   _d_: datetime<->ts    _s_: shell
 _t_: insert today    _v_: volume           _c_: lk-commit
 _i_: insert iso8601  _j_: json             _h_: lk-home
 _=_: +               ^ ^                   _g_: lk-git
@@ -105,7 +105,7 @@ _-_: -               ^ ^                   _f_: fanyi
     ("v" my/storage-size->human)
     ("j" my/format-json :exit t)
 
-    ("l" shell :exit t)
+    ("s" shell :exit t)
     ("c" my/git-link-commit :exit t)
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
@@ -201,6 +201,10 @@ _-_: -               ^ ^                   _f_: fanyi
 (use-package evil-leader
   :init
   (global-evil-leader-mode)
+  (defun my/exec-shell-on-buffer (shell-command-text)
+    (interactive "MShell command: ")
+    (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
+
   (transient-define-prefix my/lsp-command
     "LSP"
     [["Find"
@@ -216,7 +220,38 @@ _-_: -               ^ ^                   _f_: fanyi
       ("l" "List error" flycheck-list-errors)]
      ["Rust"
       ("e" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
-
+  (transient-define-prefix my/file-command
+    "Files"
+    [["Find"
+      ("f" "find-file" counsel-find-file)
+      ("g" "git" counsel-git)
+      ("p" "project" projectile-find-file)]
+     ["Current File"
+      ("s" "Save" save-buffer)
+      ("y" "Copy Filename" matcha-copy-current-filename-to-clipboard)
+      ("r" "Rename" matcha-rename-current-buffer-file)
+      ("k" "Delete" my/delete-file-and-buffer)
+      ("d" "Diff buffer" my/diff-buffer-with-file)
+      ("t" "Last update" my/last-save-time)
+      ("e" "Exec shell" my/exec-shell-on-buffer)]
+     ["Edit"
+      ("id" "insert date" my/insert-today)
+      ("it" "insert time" my/insert-current-date-time)
+      ]
+     ["All Files"
+      ("S" "Save All to SavedFile" matcha-save-files-to-saved-files-list)
+      ("O" "Open All from SavedFile" matcha-open-files-from-saved-files-list)
+      ("R" "Revert/Refresh All" matcha-revert-all-file-buffers)]])
+  (transient-define-prefix my/search-command
+    "Search"
+    [["Search"
+      ("s" "search" swiper-isearch)
+      ("g" "git" counsel-git-grep)
+      ("r" "rg" counsel-rg)
+      ("a" "avy-word" avy-goto-word-1)]
+     ["Replace"
+      ("f" "query-replace" query-replace)]
+     ])
   :custom ((evil-leader/leader ",")
            (evil-leader/no-prefix-mode-rx '(".*"))
            (evil-leader/in-all-states t))
@@ -228,30 +263,27 @@ _-_: -               ^ ^                   _f_: fanyi
 
   (evil-leader/set-key
     "c" 'compile
-    "s" 'swiper-isearch
-    "f" 'counsel-find-file
+    "s" 'my/search-command
+    "a" 'swiper-isearch
+    "f" 'my/file-command
     "b" 'counsel-bookmark
     "r" 'counsel-switch-buffer
     "l" 'my/lsp-command
+    "," 'my/insert-comma
+    "h" 'my/major-mode-keymap
 
-    "o" 'counsel-git
-    "a" 'counsel-git-grep
-    "w" 'counsel-rg
     "k" 'kill-buffer
     "d" 'counsel-dired
     "j" 'hydra-prog-menu/body
     "m" 'hydra-multiple-cursors/body
+    "u" 'mu4e
     "SPC" 'avy-goto-word-1
     "e" 'tiny-expand
 
-    "," 'matcha-me-space
+    "." 'matcha-me-space
     "p" 'matcha-projectile
     "g" 'matcha-magit
     "v" 'matcha-vc-dir
-    "x" 'matcha-me-files
-
-    "." 'my/insert-comma
-    "h" 'my/major-mode-keymap
 
     "0" 'select-window-0
     "1" 'select-window-1

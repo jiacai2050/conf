@@ -1,0 +1,23 @@
+[general]
+accounts = ljc
+pythonfile = ~/.config/offlineimap/pass.py
+
+[Account ljc]
+localrepository = LocalLJC
+remoterepository = RemoteLJC
+postsynchook = mu index
+autorefresh = 30
+quick = 10
+maxage = 365
+
+[Repository LocalLJC]
+type = Maildir
+localfolders = ~/.mail/ljc
+
+[Repository RemoteLJC]
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+folderfilter = lambda f: 'liujiacai' not in f and '&UXZO1mWHTvZZOQ-' != f
+type = IMAP
+remotehost = imap.exmail.qq.com
+remoteuser = hello@liujiacai.net
+remotepasseval = get_password_emacs("imap.exmail.qq.com", "hello@liujiacai.net", "993")

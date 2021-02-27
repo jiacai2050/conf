@@ -59,3 +59,8 @@ command_exists typescript-language-server || (npm i -g typescript-language-serve
 # Golang
 command_exists goimports || go get -u golang.org/x/tools/cmd/goimports
 command_exists gorename || go get -u golang.org/x/tools/cmd/gorename
+
+# Mail
+command_exists mu || brew install mu offlineimap
+mail_dir="$HOME/.mail/ljc"
+[ -d "${mail_dir}" ] || mkdir -p "${mail_dir}"
