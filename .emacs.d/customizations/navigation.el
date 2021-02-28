@@ -68,7 +68,6 @@
            (counsel-switch-buffer-preview-virtual-buffers nil))
   :bind (("M-y" . counsel-yank-pop)
          ("C-c C-r" . ivy-resume)
-         ("<f6>" . ivy-resume)
          ("M-x" . counsel-M-x)
          ("C-x f" . counsel-switch-buffer)
          ("C-x C-f" . counsel-find-file)

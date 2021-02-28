@@ -1,0 +1,30 @@
+* Feeds :elfeed:
+** Blogs :blog:
+*** https://feeds.feedburner.com/ruanyifeng
+*** https://www.raychase.net/feed
+*** [[https://juanignaciosl.github.io/feed.xml][Juan Ignacio]]
+*** https://feeds.feedburner.com/codinghorror?format=xml
+*** https://endler.dev/rss.xml  :rust:
+** Rust :rust:
+*** [[https://matklad.github.io/feed.xml][Matklad]]
+*** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher]]  :python:
+** Databases :db:
+*** https://blog.yugabyte.com/feed/
+*** https://www.cockroachlabs.com/blog/index.xml
+*** https://feeds.feedburner.com/martinkl?format=xml
+*** http://mysql.taobao.org/monthly/feed.xml
+*** https://blog.acolyer.org/feed/
+*** https://blog.dbi-services.com/author/franckpachot/feed
+** Golang :go:
+*** [[https://blog.golang.org/feed.atom][Go blog]]
+** Tech Blog :company:
+*** [[https://blogs.dropbox.com/tech/feed/][Dropbox]]
+*** [[https://engineering.linkedin.com/blog.rss.html][LinkedIn]]
+*** [[https://hacks.mozilla.org/feed/][Mozilla]]
+*** [[https://code.facebook.com/posts/rss/][Facebook]]
+*** [[http://tech.meituan.com/atom.xml][Meituan]]
+** Emacs :emacs:
+*** https://jherrlin.github.io/index.xml
+** News :news:
+*** [[https://lillianli.substack.com/feed/][Chinese Characteristics]]
+*** [[http://ithare.com/feed/][IT Hare]]

@@ -40,7 +40,7 @@
 ;; (global-display-line-numbers-mode 1)
 (use-package display-line-numbers
   :ensure nil
-  :hook ((prog-mode text-mode conf-mode) . display-line-numbers-mode))
+  :hook ((prog-mode text-mode conf-mode mu4e-view-mode elfeed-show-mode) . display-line-numbers-mode))
 
 (use-package time
   :ensure nil

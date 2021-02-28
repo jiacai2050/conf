@@ -111,30 +111,33 @@ dasf
 #+end_src
 
 * Feed
+- https://nullprogram.com/blog/2013/09/04/
+- https://noonker.github.io/posts/2020-04-22-elfeed/
 #+begin_src emacs-lisp
 (use-package elfeed
-  :custom (;; (elfeed-search-title-max-width 100)
-           ;; (elfeed-search-title-min-width 100)
-           (elfeed-use-curl t)
+  :custom ((elfeed-use-curl t)
+           (elfeed-db-directory "~/Documents/elfeed/db/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
-        elfeed-feeds '(("https://blog.yugabyte.com/feed/" db company)
-                       ("https://www.cockroachlabs.com/blog/index.xml" db company)
-                       ("https://feeds.feedburner.com/ruanyifeng" blog)
-                       ("https://www.raychase.net/feed" blog)
-                       ("https://jherrlin.github.io/index.xml" emacs)
-                       ("https://matklad.github.io/feed.xml" rust)
-                       ))
+        elfeed-feeds '())
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
   )
 
 (use-package elfeed-dashboard
-  :init
-  (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
   :config
+  (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
   ;; update feed counts on elfeed-quit
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+
+(use-package elfeed-org
+  :custom ((rmh-elfeed-org-files `(,(no-littering-expand-etc-file-name "elfeed-feeds.org"))))
+  :config
+  (defun my/load-org-feeds ()
+    (interactive)
+    (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
+  (advice-add 'elfeed-dashboard :before #'my/load-org-feeds)
+  (elfeed-org))
 #+end_src
 * Calendar
 #+begin_src emacs-lisp

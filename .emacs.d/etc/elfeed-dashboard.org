@@ -8,12 +8,14 @@
 
 * Bookmarks
 
- [u] Unread      ([[elfeed:+unread][   344]]/[[elfeed:][   347]])
- [d] Database    ([[elfeed:+unread +db][   306]]/[[elfeed:+db][   309]])
+ [u] Unread      ([[elfeed:+unread][   541]]/[[elfeed:][   545]])
+ [d] Database    ([[elfeed:+unread +db][   346]]/[[elfeed:+db][   349]])
+ [m] Company     ([[elfeed:+unread +company][   365]]/[[elfeed:+company][   368]])
+ [b] Blogs       ([[elfeed:+unread +blog][    84]]/[[elfeed:+blog][    85]])
  [e] Emacs       ([[elfeed:+unread +emacs][    12]]/[[elfeed:+emacs][    12]])
- [b] Blogs       ([[elfeed:+unread +blog][    16]]/[[elfeed:+blog][    16]])
- [m] Monitoring  ([[elfeed:+unread +monitoring][     0]]/[[elfeed:+monitoring][     0]])
- [n] News        ([[elfeed:+unread +news][     0]]/[[elfeed:+news][     0]])
+ [r] Rust        ([[elfeed:+unread +rust][    64]]/[[elfeed:+rust][    64]])
+ [o] Golang      ([[elfeed:+unread +go][    10]]/[[elfeed:+go][    10]])
+ [n] News        ([[elfeed:+unread +news][    10]]/[[elfeed:+news][    10]])
 
 * Configuration
   :PROPERTIES:
@@ -24,10 +26,12 @@
 
   #+STARTUP: showall showstars indent
   #+KEYMAP: u | elfeed-dashboard-query "+unread"
-  #+KEYMAP: e | elfeed-dashboard-query "+unread +emacs"
-  #+KEYMAP: b | elfeed-dashboard-query "+unread +blog"
-  #+KEYMAP: m | elfeed-dashboard-query "+unread +monitoring"
   #+KEYMAP: d | elfeed-dashboard-query "+unread +db"
+  #+KEYMAP: c | elfeed-dashboard-query "+unread +company"
+  #+KEYMAP: b | elfeed-dashboard-query "+unread +blog"
+  #+KEYMAP: e | elfeed-dashboard-query "+unread +emacs"
+  #+KEYMAP: r | elfeed-dashboard-query "+unread +rust"
+  #+KEYMAP: o | elfeed-dashboard-query "+unread +go"
   #+KEYMAP: n | elfeed-dashboard-query "+unread +news"
   #+KEYMAP: s | elfeed
   #+KEYMAP: g | elfeed-dashboard-update-links

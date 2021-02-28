@@ -465,8 +465,8 @@
 
 (global-set-key (kbd "C-c i d") 'my/insert-current-date-time)
 (global-set-key (kbd "C-c i t") 'my/insert-today)
-(global-set-key (kbd "<f5>") 'my/zoom-in)
-(global-set-key (kbd "<f6>") 'my/zoom-out)
+(global-set-key (kbd "<f6>") 'my/zoom-in)
+(global-set-key (kbd "<f5>") 'my/zoom-out)
 
 ;; (use-package smart-input-source
 ;;   :config
