@@ -102,12 +102,3 @@
                 org-download-screenshot-method "pngpaste %s"
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
-
-(use-package org-mime
-  :config
-  (add-hook 'message-send-hook 'org-mime-confirm-when-no-multipart)
-  (add-hook 'message-send-hook 'org-mime-htmlize)
-  (add-hook 'org-ctrl-c-ctrl-c-hook 'org-mime-org-buffer-htmlize t)
-  (define-key message-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
-  (setq org-mime-export-ascii 'utf-8
-        org-mime-export-options '(:section-numbers nil :with-author nil :with-toc nil)))

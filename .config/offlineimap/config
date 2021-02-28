@@ -1,13 +1,12 @@
 [general]
-accounts = ljc
-# accounts = ljc, gmail
+accounts = ljc, outlook
 pythonfile = ~/.config/offlineimap/pass.py
 
 [Account ljc]
 localrepository = LocalLJC
 remoterepository = RemoteLJC
-postsynchook = mu index
-autorefresh = 30
+# postsynchook = mu index
+# autorefresh = 30
 quick = 10
 maxage = 365
 
@@ -20,11 +19,29 @@ nametrans = lambda folder: re.sub('^\[S\]', '&UXZO1mWHTvZZOQ-/', folder)
 nametrans = lambda folder: re.sub('^&UXZO1mWHTvZZOQ-\/', '[S]', folder)
 foldersort = mycmp
 sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
-folderfilter = lambda f: 'kK5O9l9SaGM' not in f and 'UXZO1mWHTvZZOQ' not in f
+folderfilter = lambda f: 'kK5O9l9SaGM' not in f and '&UXZO1mWHTvZZOQ-' != f and 'liujiacai' not in f
 type = IMAP
 remotehost = imap.exmail.qq.com
 remoteuser = hello@liujiacai.net
 remotepasseval = get_password_emacs("imap.exmail.qq.com", "hello@liujiacai.net", "993")
+
+[Account outlook]
+localrepository = LocalOutlook
+remoterepository = RemoteOutlook
+quick = 10
+maxage = 365
+
+[Repository LocalOutlook]
+type = Maildir
+localfolders = ~/.mail/outlook
+
+[Repository RemoteOutlook]
+sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
+type = IMAP
+remotehost = outlook.office365.com
+remoteport = 993
+remoteuser = liujiacai@live.com
+remotepasseval = get_password_emacs("outlook.office365.com", "liujiacai@live.com", "993")
 
 [Account gmail]
 # proxy = SOCKS5:127.0.0.1:13659

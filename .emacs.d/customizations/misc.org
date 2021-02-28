@@ -7,42 +7,107 @@
 - https://gist.github.com/dabrahams/3030332
 - http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 - https://github.com/munen/emacs.d/#mu4e
+- https://jherrlin.github.io/posts/emacs-mu4e/
+#+begin_src bash
+mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
+#+end_src
 
+dasf
 #+begin_src emacs-lisp
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
   :config
   (setq mu4e-contexts
-		`( ,(make-mu4e-context
-			 :name "ljc"
-             :vars '((mu4e-sent-folder . "/ljc/Sent")
-                     (mu4e-trash-folder . "/ljc/Junk")
-                     (mu4e-refile-folder . "/ljc/Archive")
-                     (mu4e-drafts-folder . "/ljc/Drafts")))
-		   )
-
+		(list
+         (make-mu4e-context
+		  :name "ljc"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-prefix-p "/ljc" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/ljc/Sent Messages")
+                  (mu4e-trash-folder . "/ljc/Deleted Messages")
+                  (mu4e-refile-folder . "/ljc/Archive")
+                  (mu4e-drafts-folder . "/ljc/Drafts")
+                  (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
+                                             (:maildir "/ljc/Sent Messages" :key ?s)
+                                             (:maildir "/ljc/Deleted Messages" :key ?t)
+                                             (:maildir "/ljc/Drafts" :key ?d)
+                                             (:maildir "/ljc/Archive" :key ?a)))
+                  ))
+         (make-mu4e-context
+		  :name "outlook"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-prefix-p "/outlook" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/outlook/Sent")
+                  (mu4e-trash-folder . "/outlook/Deleted")
+                  (mu4e-refile-folder . "/outlook/Archive")
+                  (mu4e-drafts-folder . "/outlook/Drafts")
+                  (user-mail-address . "liujiacai@live.com")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-smtp-server . "smtp.office365.com")
+                  (smtpmail-stream-type . starttls)
+                  (mu4e-maildir-shortcuts . ((:maildir "/outlook/Inbox" :key ?i)
+                                             (:maildir "/outlook/Sent" :key ?s)
+                                             (:maildir "/outlook/Deleted" :key ?t)
+                                             (:maildir "/outlook/Drafts" :key ?d)
+                                             (:maildir "/outlook/Archive" :key ?a))))))
         user-mail-address "hello@liujiacai.net"
         user-full-name "Jiacai Liu"
+        smtpmail-smtp-service 465
+        smtpmail-smtp-server "smtp.exmail.qq.com"
+        smtpmail-stream-type 'ssl
         message-send-mail-function 'smtpmail-send-it
         message-cite-style message-cite-style-gmail
+        mml-secure-openpgp-signers '("D3026E5C08A0BAB4")
+        ;; mml-secure-openpgp-encrypt-to-self t
         mu4e-view-show-addresses t
+        mu4e-view-show-images t
+        mu4e-attachment-dir "~/Downloads"
+        mu4e-sent-messages-behavior 'delete
+        mu4e-compose-context-policy 'ask-if-none
         mu4e-compose-dont-reply-to-self t
         mu4e-confirm-quit nil
         mu4e-headers-date-format "%+4Y-%m-%d"
         mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
-        smtpmail-smtp-service 465
-        smtpmail-smtp-server "smtp.exmail.qq.com"
-        smtpmail-stream-type 'ssl)
+        mu4e-update-interval (* 15 60)
+        mu4e-get-mail-command "offlineimap -o"
+        mu4e-compose-format-flowed t)
   (define-key mu4e-compose-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
-  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-fields :bcc)
-  (add-to-list 'mu4e-bookmarks
-               '("maildir:/INBOX" "INBOX" ?i)))
+  (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
+                                       :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
+                                       :key ?i)))
 
 (use-package mu4e-maildirs-extension
   :config
   (mu4e-maildirs-extension))
+
+(use-package org-mime
+  :config
+  ;; (add-hook 'message-send-hook 'org-mime-confirm-when-no-multipart)
+  ;; (add-hook 'message-send-hook 'org-mime-htmlize)
+  (defun sign-or-encrypt-message ()
+    (let ((answer (read-from-minibuffer "Sign or encrypt?[s/e]: ")))
+      (cond
+       ((string-equal answer "s") (progn
+                                    (message "Signing message.")
+                                    (mml-secure-message-sign-pgpmime)))
+       ((string-equal answer "e") (progn
+                                    (message "Encrypt and signing message.")
+                                    (mml-secure-message-encrypt-pgpmime)))
+       (t (progn
+            (message "Dont signing or encrypting message.")
+            nil)))))
+
+  (add-hook 'message-send-hook 'sign-or-encrypt-message)
+  (add-hook 'org-ctrl-c-ctrl-c-hook 'org-mime-org-buffer-htmlize t)
+  (define-key message-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
+  (setq org-mime-export-ascii 'utf-8
+        org-mime-export-options '(:section-numbers nil :with-author nil :with-toc nil)))
+
 #+end_src
 * Calendar
 #+begin_src emacs-lisp
