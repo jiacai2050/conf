@@ -62,5 +62,5 @@ command_exists gorename || go get -u golang.org/x/tools/cmd/gorename
 
 # Mail
 command_exists mu || brew install mu offlineimap
-mail_dir="$HOME/.mail/ljc"
+mail_dir="$HOME/.mail/"
 [ -d "${mail_dir}" ] || mkdir -p "${mail_dir}"

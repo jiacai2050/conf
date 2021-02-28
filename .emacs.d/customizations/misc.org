@@ -13,12 +13,12 @@
 mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
 #+end_src
 
-dasf
 #+begin_src emacs-lisp
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
   :config
+  (require 'mu4e-contrib)
   (setq mu4e-contexts
 		(list
          (make-mu4e-context
@@ -71,6 +71,7 @@ dasf
         mu4e-compose-dont-reply-to-self t
         mu4e-confirm-quit nil
         mu4e-headers-date-format "%+4Y-%m-%d"
+        mu4e-view-date-format "%a %Y-%m-%d %T"
         mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
         mu4e-update-interval (* 15 60)
         mu4e-get-mail-command "offlineimap -o"
