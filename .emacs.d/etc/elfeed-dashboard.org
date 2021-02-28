@@ -1,0 +1,36 @@
+* Basics
+
+ [U] Update Elfeed
+ [s] Search
+ [E] Edit
+ [g] Refresh counts
+ [q] Kill dashboard
+
+* Bookmarks
+
+ [u] Unread      ([[elfeed:+unread][   344]]/[[elfeed:][   347]])
+ [d] Database    ([[elfeed:+unread +db][   306]]/[[elfeed:+db][   309]])
+ [e] Emacs       ([[elfeed:+unread +emacs][    12]]/[[elfeed:+emacs][    12]])
+ [b] Blogs       ([[elfeed:+unread +blog][    16]]/[[elfeed:+blog][    16]])
+ [m] Monitoring  ([[elfeed:+unread +monitoring][     0]]/[[elfeed:+monitoring][     0]])
+ [n] News        ([[elfeed:+unread +news][     0]]/[[elfeed:+news][     0]])
+
+* Configuration
+  :PROPERTIES:
+  :VISIBILITY: hideall
+  :END:
+
+  Press "E" to edit and M-x elfeed-dashboard-mode to go back
+
+  #+STARTUP: showall showstars indent
+  #+KEYMAP: u | elfeed-dashboard-query "+unread"
+  #+KEYMAP: e | elfeed-dashboard-query "+unread +emacs"
+  #+KEYMAP: b | elfeed-dashboard-query "+unread +blog"
+  #+KEYMAP: m | elfeed-dashboard-query "+unread +monitoring"
+  #+KEYMAP: d | elfeed-dashboard-query "+unread +db"
+  #+KEYMAP: n | elfeed-dashboard-query "+unread +news"
+  #+KEYMAP: s | elfeed
+  #+KEYMAP: g | elfeed-dashboard-update-links
+  #+KEYMAP: U | elfeed-dashboard-update
+  #+KEYMAP: E | elfeed-dashboard-edit
+  #+KEYMAP: q | kill-current-buffer

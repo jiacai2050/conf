@@ -288,7 +288,8 @@
   :config
   (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode dired-mode
                               cfw:details-mode
-                              epa-key-list-mode epa-key-mode epa-info-mode))
+                              epa-key-list-mode epa-key-mode epa-info-mode
+                              elfeed-dashboard-mode elfeed-search-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))

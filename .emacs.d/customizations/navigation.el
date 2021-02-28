@@ -277,6 +277,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "j" 'hydra-prog-menu/body
     "m" 'hydra-multiple-cursors/body
     "u" 'mu4e
+    "i" 'elfeed-dashboard
     "SPC" 'avy-goto-word-1
     "e" 'tiny-expand
 

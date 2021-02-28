@@ -109,6 +109,33 @@ dasf
         org-mime-export-options '(:section-numbers nil :with-author nil :with-toc nil)))
 
 #+end_src
+
+* Feed
+#+begin_src emacs-lisp
+(use-package elfeed
+  :custom (;; (elfeed-search-title-max-width 100)
+           ;; (elfeed-search-title-min-width 100)
+           (elfeed-use-curl t)
+           (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
+  :config
+  (setq elfeed-search-filter "@6-months-ago +unread #50"
+        elfeed-feeds '(("https://blog.yugabyte.com/feed/" db company)
+                       ("https://www.cockroachlabs.com/blog/index.xml" db company)
+                       ("https://feeds.feedburner.com/ruanyifeng" blog)
+                       ("https://www.raychase.net/feed" blog)
+                       ("https://jherrlin.github.io/index.xml" emacs)
+                       ("https://matklad.github.io/feed.xml" rust)
+                       ))
+  ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
+  )
+
+(use-package elfeed-dashboard
+  :init
+  (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
+  :config
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+#+end_src
 * Calendar
 #+begin_src emacs-lisp
 (use-package cal-china
