@@ -13,11 +13,10 @@ maxage = 365
 [Repository LocalLJC]
 type = Maildir
 localfolders = ~/.mail/ljc
-nametrans = lambda folder: re.sub('^\[S\]', '&UXZO1mWHTvZZOQ-/', folder)
+nametrans = lambda folder: re.sub('^=', '&UXZO1mWHTvZZOQ-/', folder)
 
 [Repository RemoteLJC]
-nametrans = lambda folder: re.sub('^&UXZO1mWHTvZZOQ-\/', '[S]', folder)
-foldersort = mycmp
+nametrans = lambda folder: re.sub('^&UXZO1mWHTvZZOQ-\/', '=', folder)
 sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
 folderfilter = lambda f: 'kK5O9l9SaGM' not in f and '&UXZO1mWHTvZZOQ-' != f and 'liujiacai' not in f
 type = IMAP
@@ -36,6 +35,7 @@ type = Maildir
 localfolders = ~/.mail/outlook
 
 [Repository RemoteOutlook]
+folderfilter = lambda f: '&W1hoYw-' != f
 sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
 type = IMAP
 remotehost = outlook.office365.com

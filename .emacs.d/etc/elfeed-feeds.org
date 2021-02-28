@@ -1,6 +1,6 @@
 * Feeds :elfeed:
 ** Blogs :blog:
-*** https://feeds.feedburner.com/ruanyifeng
+*** [[https://feeds.feedburner.com/ruanyifeng][阮一峰]]
 *** https://www.raychase.net/feed
 *** [[https://juanignaciosl.github.io/feed.xml][Juan Ignacio]]
 *** https://feeds.feedburner.com/codinghorror?format=xml
@@ -9,12 +9,12 @@
 *** [[https://matklad.github.io/feed.xml][Matklad]]
 *** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher]]  :python:
 ** Databases :db:
-*** https://blog.yugabyte.com/feed/
-*** https://www.cockroachlabs.com/blog/index.xml
-*** https://feeds.feedburner.com/martinkl?format=xml
+*** [[https://blog.yugabyte.com/feed/][YugaByteDB]]
+*** [[https://www.cockroachlabs.com/blog/index.xml][CockroachLabs]]
+*** [[https://feeds.feedburner.com/martinkl?format=xml][Martin Kleppmann]]
 *** http://mysql.taobao.org/monthly/feed.xml
-*** https://blog.acolyer.org/feed/
-*** https://blog.dbi-services.com/author/franckpachot/feed
+*** [[https://blog.acolyer.org/feed/][MorningPaper]]
+*** [[https://blog.dbi-services.com/author/franckpachot/feed][DBI Franck]]
 ** Golang :go:
 *** [[https://blog.golang.org/feed.atom][Go blog]]
 ** Tech Blog :company:

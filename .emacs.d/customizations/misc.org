@@ -8,6 +8,7 @@
 - http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 - https://github.com/munen/emacs.d/#mu4e
 - https://jherrlin.github.io/posts/emacs-mu4e/
+- http://pragmaticemacs.com/category/mu4e/
 #+begin_src bash
 mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
 #+end_src
