@@ -122,7 +122,9 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :custom ((elfeed-use-curl t)
            (elfeed-db-directory "~/Documents/elfeed/db/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
-  ;; :hook ((elfeed-show-mode . visual-fill-column-mode))
+  :hook ((elfeed-show-mode . visual-fill-column-mode))
+  :bind (:map elfeed-show-mode-map
+              ("h" . evil-backward-char))
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
@@ -130,6 +132,12 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         browse-url-generic-program "firefox"
         elfeed-feeds '())
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
+  (evil-make-overriding-map elfeed-show-mode-map 'motion)
+  (evil-make-overriding-map elfeed-search-mode-map 'motion)
+  (defun my/show-feed-images ()
+    (interactive)
+    (let ((shr-inhibit-images nil))
+      (elfeed-show-refresh)))
   )
 
 (use-package elfeed-dashboard

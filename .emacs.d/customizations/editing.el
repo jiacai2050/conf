@@ -289,10 +289,13 @@
   (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode dired-mode
                               cfw:details-mode
                               epa-key-list-mode epa-key-mode epa-info-mode
-                              elfeed-dashboard-mode elfeed-search-mode))
+                              elfeed-dashboard-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
+  (dolist (m '(elfeed-show-mode elfeed-search-mode))
+    (add-to-list 'evil-motion-state-modes m))
+
   (require 'dired)
   (evil-make-overriding-map dired-mode-map 'normal)
   )

@@ -51,9 +51,6 @@
   (display-time-mode 1)
 )
 
-;; https://stackoverflow.com/a/950553/2163429
-(global-visual-line-mode)
-
 ;; remove minor mode from mode-line
 ;; https://emacs.stackexchange.com/a/41135
 (let ((my/minor-mode-alist '((flycheck-mode flycheck-mode-line))))
@@ -76,7 +73,9 @@
 (use-package visual-fill-column
   :config
   (setq-default fill-column 120)
-  (global-visual-fill-column-mode)
+  ;; https://stackoverflow.com/a/950553/2163429
+  (global-visual-line-mode 1)
+  (global-visual-fill-column-mode 1)
   )
 
 (use-package all-the-icons
