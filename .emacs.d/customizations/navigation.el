@@ -36,9 +36,6 @@
               ("SPC" . evil-scroll-page-down)
               ("DEL" . evil-scroll-page-up)))
 
-;; https://stackoverflow.com/a/950553/2163429
-(global-visual-line-mode)
-
 ;; Shows a list of buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

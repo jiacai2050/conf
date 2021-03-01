@@ -122,6 +122,9 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
+        shr-inhibit-images t
+        browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "firefox"
         elfeed-feeds '())
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
   )
