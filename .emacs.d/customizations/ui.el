@@ -75,8 +75,9 @@
 ;; https://github.com/joostkremers/visual-fill-column
 (use-package visual-fill-column
   :config
-  (setq fill-column 80)
-  (global-visual-fill-column-mode))
+  (setq-default fill-column 120)
+  (global-visual-fill-column-mode)
+  )
 
 (use-package all-the-icons
   :defer t)

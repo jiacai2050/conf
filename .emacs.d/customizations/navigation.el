@@ -241,10 +241,10 @@ _-_: -               ^ ^                   _f_: fanyi
   (transient-define-prefix my/search-command
     "Search"
     [["Search"
-      ("s" "search" swiper-isearch)
-      ("g" "git" counsel-git-grep)
-      ("r" "rg" counsel-rg)
-      ("a" "avy-word" avy-goto-word-1)]
+      ("s" "Search" swiper-isearch)
+      ("a" "Agit" counsel-git-grep)
+      ("r" "Rg" counsel-rg)
+      ("v" "aVy-word" avy-goto-word-1)]
      ["Replace"
       ("f" "query-replace" query-replace)]
      ])

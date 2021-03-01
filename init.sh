@@ -112,6 +112,7 @@ case $1 in
     link_dotfiles_if_necessary ".zazurc.json"
     link_dotfiles_if_necessary ".gdbinit"
     link_dotfiles_if_necessary ".config"
+    link_dotfiles_if_necessary ".gnupg"
     # link_dotfiles_if_necessary ".jshintrc"
     link_dotfiles_if_necessary ".eslintrc.json"
     ;;

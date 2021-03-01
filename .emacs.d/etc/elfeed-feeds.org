@@ -5,6 +5,8 @@
 *** [[https://juanignaciosl.github.io/feed.xml][Juan Ignacio]]
 *** https://feeds.feedburner.com/codinghorror?format=xml
 *** https://endler.dev/rss.xml  :rust:
+*** [[https://medium.com/feed/@steve.yegge][Steve Yegge]]
+
 ** Rust :rust:
 *** [[https://matklad.github.io/feed.xml][Matklad]]
 *** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher]]  :python:
@@ -28,3 +30,4 @@
 ** News :news:
 *** [[https://lillianli.substack.com/feed/][Chinese Characteristics]]
 *** [[http://ithare.com/feed/][IT Hare]]
+*** [[https://hnrss.org/best][Hacker News: Best]]
