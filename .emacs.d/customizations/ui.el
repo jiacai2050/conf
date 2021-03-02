@@ -22,8 +22,9 @@
     (mapc 'disable-theme custom-enabled-themes))
   (advice-add 'load-theme :before 'my/disable-previous-theme)
 
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (add-to-list 'load-path "~/.emacs.d/themes"))
+  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  ;; (add-to-list 'load-path "~/.emacs.d/themes")
+  )
 
 (use-package frame
   :ensure nil

@@ -10,7 +10,7 @@
   :config
   (defun my/rust-compile ()
     (setq-local company-backends '(company-tabnine company-dabbrev-code)
-                compile-command "cargo check --tests")))
+                compile-command "cargo check --color never --tests")))
 
 (use-package cargo
   :hook ((rust-mode . cargo-minor-mode))

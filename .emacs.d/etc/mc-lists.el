@@ -5,6 +5,7 @@
       '(
         backward-sexp
         beginning-of-visual-line
+        default-indent-new-line
         electric-newline-and-maybe-indent
         end-of-visual-line
         eval-print-last-sexp

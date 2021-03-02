@@ -39,6 +39,11 @@
               ("C-c o" . my/toggle-fold))
   )
 
+(use-package newcomment
+  :ensure nil
+  :config
+  (setq-default comment-start "# "))
+
 ;; third party extensions
 (use-package sql-indent)
 

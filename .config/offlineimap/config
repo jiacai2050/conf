@@ -1,5 +1,6 @@
 [general]
-accounts = ljc, outlook
+# accounts = ljc, outlook
+accounts = ljc
 pythonfile = ~/.config/offlineimap/pass.py
 
 [Account ljc]
