@@ -41,6 +41,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                   (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
                                              (:maildir "/ljc/Sent Messages" :key ?s)
                                              (:maildir "/ljc/Drafts" :key ?D)
+                                             (:maildir "/ljc/Junk" :key ?j)
                                              (:maildir "/ljc/=pg-hackers" :key ?p)
                                              (:maildir "/ljc/=dev-news" :key ?d)
                                              (:maildir "/ljc/=GitHub" :key ?G)
@@ -102,9 +103,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :custom ((mu4e-maildirs-extension-custom-list
             '("/ljc/INBOX"
               "/ljc/Sent Messages"
-              "/ljc/Junk"
               "/ljc/Drafts"
-              "/ljc/Deleted Messages"
               "/ljc/=pg-hackers"
               "/ljc/=dev-news"
               "/ljc/=GitHub"
@@ -114,6 +113,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
               "/ljc/=mozilla"
               "/ljc/=openjdk"
               "/ljc/=prometheus-user"
+              "/ljc/Deleted Messages"
+              "/ljc/Junk"
 
 	          "/outlook/Inbox"
 	          "/outlook/Sent"
@@ -164,7 +165,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
   :hook ((elfeed-show-mode . visual-fill-column-mode))
   :bind (:map elfeed-show-mode-map
-              ("h" . evil-backward-char))
+         ("h" . evil-backward-char))
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
@@ -178,6 +179,22 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
     (interactive)
     (let ((shr-inhibit-images nil))
       (elfeed-show-refresh)))
+  ;;functions to support syncing .elfeed between machines
+  ;;makes sure elfeed reads index from disk before launching
+  (defun my/elfeed-open-db-and-load ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force))
+
+  ;;write to disk when quiting
+  (defun my/elfeed-close-db-and-save ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    ;; (quit-window)
+    )
   )
 
 (use-package elfeed-dashboard
