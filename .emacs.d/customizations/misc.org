@@ -19,6 +19,12 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
   :hook ((mu4e-view-mode . visual-fill-column-mode))
+  :bind (:map mu4e-view-mode-map
+         ("l" . mu4e-view-go-to-url)
+         ("0" . scroll-down-command)
+         ("9" . scroll-up-command)
+         :map mu4e-compose-mode-map
+         ("C-c '" . org-mime-edit-mail-in-org-mode))
   :config
   (require 'mu4e-contrib)
   (setq mu4e-contexts
@@ -34,13 +40,16 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                   (mu4e-drafts-folder . "/ljc/Drafts")
                   (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
                                              (:maildir "/ljc/Sent Messages" :key ?s)
-                                             (:maildir "/ljc/GitHub" :key ?g)
-                                             (:maildir "/ljc/golang" :key ?o)
-                                             (:maildir "/ljc/Mozilla" :key ?m)
-                                             (:maildir "/ljc/Drafts" :key ?d)
-                                             (:maildir "/ljc/pg-hackers" :key ?p)
-                                             (:maildir "/ljc/prometheus-user" :key ?P)
-                                             (:maildir "/ljc/Clojure" :key ?c)))
+                                             (:maildir "/ljc/Drafts" :key ?D)
+                                             (:maildir "/ljc/=pg-hackers" :key ?p)
+                                             (:maildir "/ljc/=dev-news" :key ?d)
+                                             (:maildir "/ljc/=GitHub" :key ?G)
+                                             (:maildir "/ljc/=golang" :key ?g)
+                                             (:maildir "/ljc/=clojure" :key ?c)
+                                             (:maildir "/ljc/=mozilla" :key ?m)
+                                             (:maildir "/ljc/=openjdk" :key ?o)
+                                             (:maildir "/ljc/=prometheus-user" :key ?P)
+                                             ))
                   ))
          (make-mu4e-context
 		  :name "outlook"
@@ -73,6 +82,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         mu4e-view-show-images t
         mu4e-attachment-dir "~/Downloads"
         mu4e-sent-messages-behavior 'delete
+        mu4e-context-policy 'pick-first
         mu4e-compose-context-policy 'ask-if-none
         mu4e-compose-dont-reply-to-self t
         mu4e-confirm-quit nil
@@ -82,14 +92,38 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         mu4e-update-interval (* 15 60)
         mu4e-get-mail-command "offlineimap -o"
         mu4e-compose-format-flowed t)
-  (define-key mu4e-compose-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
   (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-fields :bcc)
   (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
-                                       :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
-                                       :key ?i)))
+                                 :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
+                                 :key ?i)))
 
 (use-package mu4e-maildirs-extension
+  :custom ((mu4e-maildirs-extension-custom-list
+            '("/ljc/INBOX"
+              "/ljc/Sent Messages"
+              "/ljc/Junk"
+              "/ljc/Drafts"
+              "/ljc/Deleted Messages"
+              "/ljc/=pg-hackers"
+              "/ljc/=dev-news"
+              "/ljc/=GitHub"
+              "/ljc/=golang"
+              "/ljc/=clojure"
+              "/ljc/=mongodb-dev"
+              "/ljc/=mozilla"
+              "/ljc/=openjdk"
+              "/ljc/=prometheus-user"
+
+	          "/outlook/Inbox"
+	          "/outlook/Sent"
+	          "/outlook/Drafts"
+	          "/outlook/Archive"
+	          "/outlook/Deleted"
+	          "/outlook/Junk"
+	          "/outlook/Notes"
+	          "/outlook/Outbox"
+              )))
   :config
   (mu4e-maildirs-extension))
 
@@ -114,7 +148,9 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (add-hook 'org-ctrl-c-ctrl-c-hook 'org-mime-org-buffer-htmlize t)
   (define-key message-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
   (setq org-mime-export-ascii 'utf-8
-        org-mime-export-options '(:section-numbers nil :with-author nil :with-toc nil)))
+        org-mime-export-options '(:section-numbers nil
+                                  :with-author nil
+                                  :with-toc nil)))
 
 #+end_src
 
