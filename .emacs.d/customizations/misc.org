@@ -76,7 +76,10 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         smtpmail-smtp-server "smtp.exmail.qq.com"
         smtpmail-stream-type 'ssl
         message-send-mail-function 'smtpmail-send-it
-        message-cite-style message-cite-style-gmail
+        ;; https://emacs.stackexchange.com/a/45216/16450
+        message-citation-line-format "\nOn %A, %b %d, %Y at %R %z, %N wrote:\n"
+        message-citation-line-function 'message-insert-formatted-citation-line
+        ;; message-cite-style message-cite-style-gmail
         mml-secure-openpgp-signers '("D3026E5C08A0BAB4")
         ;; mml-secure-openpgp-encrypt-to-self t
         mu4e-view-show-addresses t
@@ -97,7 +100,9 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (add-to-list 'mu4e-view-fields :bcc)
   (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
                                  :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
-                                 :key ?i)))
+                                 :key ?i))
+
+  )
 
 (use-package mu4e-maildirs-extension
   :custom ((mu4e-maildirs-extension-custom-list
