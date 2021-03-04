@@ -257,6 +257,12 @@ _-_: -               ^ ^                   _f_: fanyi
     (interactive)
     (insert-char (char-from-name "COMMA")))
 
+  (defun my/toggle-evil-emacs-mode ()
+    (interactive)
+    (if (eq evil-state 'emacs)
+        (evil-exit-emacs-state)
+      (evil-emacs-state)))
+
   (evil-leader/set-key
     "c" 'compile
     "s" 'my/search-command
@@ -267,6 +273,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "l" 'my/lsp-command
     "," 'my/insert-comma
     "h" 'my/major-mode-keymap
+    "z" 'my/toggle-evil-emacs-mode
 
     "k" 'kill-buffer
     "d" 'counsel-dired

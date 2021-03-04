@@ -77,7 +77,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         smtpmail-stream-type 'ssl
         message-send-mail-function 'smtpmail-send-it
         ;; https://emacs.stackexchange.com/a/45216/16450
-        message-citation-line-format "\nOn %A, %b %d, %Y at %R %z, %N wrote:\n"
+        message-citation-line-format "\nOn %a, %b %d, %Y at %r %z, %N wrote:\n"
         message-citation-line-function 'message-insert-formatted-citation-line
         ;; message-cite-style message-cite-style-gmail
         mml-secure-openpgp-signers '("D3026E5C08A0BAB4")
