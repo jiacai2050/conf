@@ -201,6 +201,13 @@
 (use-package ggtags
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))
 
+(use-package graphviz-dot-mode
+  :hook (graphviz-dot-mode . my/graphviz-company)
+  :config
+  (defun my/graphviz-company ()
+    (add-to-list 'company-backends 'company-graphviz-dot-backend))
+  (setq graphviz-dot-indent-width 4))
+
 ;; bridge to go-playground and rust-playground
 (defun my/playground-exec ()
   (interactive)
