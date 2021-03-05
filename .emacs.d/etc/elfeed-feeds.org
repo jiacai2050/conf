@@ -25,6 +25,7 @@
 *** [[https://hacks.mozilla.org/feed/][Mozilla]]
 *** [[https://code.facebook.com/posts/rss/][Facebook]]
 *** [[http://tech.meituan.com/atom.xml][Meituan]]
+*** [[https://medium.com/feed/paypal-engineering][PayPal]]
 ** Emacs :emacs:
 *** https://jherrlin.github.io/index.xml
 ** News :news:
