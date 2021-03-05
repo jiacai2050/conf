@@ -170,7 +170,11 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
   :hook ((elfeed-show-mode . visual-fill-column-mode))
   :bind (:map elfeed-show-mode-map
-         ("h" . evil-backward-char))
+         ("h" . evil-backward-char)
+         ("8" . my/elfeed-toggle-star)
+         :map elfeed-search-mode-map
+         ("8" . my/elfeed-search-star)
+         ("*" . my/elfeed-search-unstar))
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
@@ -200,6 +204,39 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
     (elfeed-db-save)
     ;; (quit-window)
     )
+
+  (defun my/elfeed-toggle-star ()
+    (interactive)
+    (when elfeed-show-entry
+      (let ((tag (intern "starred")))
+        (if (elfeed-tagged-p tag elfeed-show-entry)
+            (elfeed-untag elfeed-show-entry tag)
+          (elfeed-tag elfeed-show-entry tag)))
+      (elfeed-show-refresh)))
+
+  (defun my/elfeed-search-star ()
+    (interactive)
+	(let ((tag (intern "starred"))
+          (entries (elfeed-search-selected)))
+	  (cl-loop for entry in entries do (elfeed-tag entry tag))
+	  (mapc #'elfeed-search-update-entry entries)
+	  (unless (use-region-p) (forward-line))))
+
+  (defun my/elfeed-search-unstar ()
+    "Remove starred tag from all selected entries."
+    (interactive)
+	(let ((tag (intern "starred"))
+          (entries (elfeed-search-selected)))
+	  (cl-loop for entry in entries do (elfeed-untag entry tag))
+	  (mapc #'elfeed-search-update-entry entries)
+	  (unless (use-region-p) (forward-line))))
+
+  ;; face for starred articles
+  (defface elfeed-search-starred-title-face
+    '((t :foreground "#f77"))
+    "Marks a starred Elfeed entry.")
+
+  (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist)
   )
 
 (use-package elfeed-dashboard

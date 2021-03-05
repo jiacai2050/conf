@@ -287,7 +287,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "." 'matcha-me-space
     "p" 'matcha-projectile
     "g" 'matcha-magit
-    "v" 'matcha-vc-dir
+    "v" 'counsel-org-capture
 
     "0" 'select-window-0
     "1" 'select-window-1
