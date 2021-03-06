@@ -403,4 +403,27 @@ opam install tuareg merlin utop
  ;; If there is more than one, they won't work right.
  '(org-table ((t (:family "M+ 1m")))))
 (set-face-attribute 'org-table nil :family "Inconsolata")
+
+  ;; #+LaTeX_HEADER: \usepackage{CJK}
+  ;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
+  (add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))
+
+  (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
+
+  (setq org-publish-project-alist
+        '(("org-notes"
+           :base-directory "~/study-note/"
+           :base-extension "org"
+           :publishing-directory "~/Documents/public_notes"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :headline-levels 4             ; Just the default for this project.
+           :auto-preamble t)
+
+          ("org-static"
+           :base-directory "~/study-note/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :publishing-directory "~/Documents/public_notes"
+           :recursive t
+           :publishing-function org-publish-attachment)))
 #+end_src

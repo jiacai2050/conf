@@ -26,9 +26,9 @@
 (use-package org
   :ensure nil
   :bind (:map org-mode-map
-              ("C-c SPC" . avy-goto-word-1)
-              ("C-c l" . org-store-link)
-              ("s-<return>" . org-table-copy-down))
+         ("C-c SPC" . avy-goto-word-1)
+         ("C-c l" . org-store-link)
+         ("s-<return>" . org-table-copy-down))
   :custom (org-default-notes-file (expand-file-name "~/Documents/notes.org"))
   :init
   ;; https://orgmode.org/worg/org-contrib/babel/languages.html
@@ -53,6 +53,10 @@
         org-image-actual-width nil
         org-export-with-sub-superscripts nil
         org-hide-emphasis-markers nil
+        org-capture-templates '(("t" "Task" entry (file+headline "~/Documents/notes.org" "Tasks") "* TODO %?\n  %u\n  %a")
+                                ;; "* %^{单词}\n%^{含义}"
+                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %?\n%a")
+                                )
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t
         org-confirm-babel-evaluate nil)
@@ -66,33 +70,13 @@
    '(org-level-4 ((t (:inherit outline-4 :height 1.0 :bold t))))
    '(org-level-5 ((t (:inherit outline-5 :height 1.0 :bold t))))
    )
-  ;; #+LaTeX_HEADER: \usepackage{CJK}
-  ;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
-  (add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))
+  )
 
-  (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
-
-  (setq org-publish-project-alist
-        '(("org-notes"
-           :base-directory "~/study-note/"
-           :base-extension "org"
-           :publishing-directory "~/Documents/public_notes"
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :headline-levels 4             ; Just the default for this project.
-           :auto-preamble t)
-
-          ("org-static"
-           :base-directory "~/study-note/"
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-           :publishing-directory "~/Documents/public_notes"
-           :recursive t
-           :publishing-function org-publish-attachment))))
 
 (use-package org-download
   :bind (:map org-mode-map
-              ("C-c v" . org-download-screenshot)
-              ("C-c d" . org-download-delete))
+         ("C-c v" . org-download-screenshot)
+         ("C-c d" . org-download-delete))
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
   (setq-default org-download-heading-lvl nil
