@@ -135,9 +135,13 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 
 (use-package org-mime
   :config
-  ;; (add-hook 'message-send-hook 'org-mime-confirm-when-no-multipart)
-  ;; (add-hook 'message-send-hook 'org-mime-htmlize)
-  (defun sign-or-encrypt-message ()
+
+  (defun my/org-mime-htmlize ()
+    (let ((answer (read-from-minibuffer "Org htmlize? [y/n]:")))
+      (when (string-equal "y" answer)
+          (org-mime-htmlize))))
+
+  (defun my/sign-or-encrypt-message ()
     (let ((answer (read-from-minibuffer "Sign or encrypt?[s/e]: ")))
       (cond
        ((string-equal answer "s") (progn
@@ -150,9 +154,12 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
             (message "Dont signing or encrypting message.")
             nil)))))
 
-  (add-hook 'message-send-hook 'sign-or-encrypt-message)
+  (defun my/send-message-hook ()
+    (my/org-mime-htmlize)
+    (my/sign-or-encrypt-message))
+
+  (add-hook 'message-send-hook 'my/send-message-hook)
   (add-hook 'org-ctrl-c-ctrl-c-hook 'org-mime-org-buffer-htmlize t)
-  (define-key message-mode-map (kbd "C-c '") 'org-mime-edit-mail-in-org-mode)
   (setq org-mime-export-ascii 'utf-8
         org-mime-export-options '(:section-numbers nil
                                   :with-author nil

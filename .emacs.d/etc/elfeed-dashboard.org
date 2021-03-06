@@ -9,14 +9,15 @@
 * Bookmarks
 
  [s] Starred     [[elfeed:+starred][1]]
- [u] Unread      ([[elfeed:+unread][   620]]/[[elfeed:][   698]])
+ [R] Recent      [[elfeed:-unread][0]]
+ [u] Unread      ([[elfeed:+unread][   621]]/[[elfeed:][   703]])
  [d] Database    ([[elfeed:+unread +db][   348]]/[[elfeed:+db][   365]])
  [c] Company     ([[elfeed:+unread +company][   363]]/[[elfeed:+company][   382]])
  [b] Blogs       ([[elfeed:+unread +blog][    73]]/[[elfeed:+blog][    93]])
  [e] Emacs       ([[elfeed:+unread +emacs][    12]]/[[elfeed:+emacs][    12]])
  [r] Rust        ([[elfeed:+unread +rust][    59]]/[[elfeed:+rust][    64]])
  [o] Golang      ([[elfeed:+unread +go][     9]]/[[elfeed:+go][    10]])
- [n] News        ([[elfeed:+unread +news][    93]]/[[elfeed:+news][   125]])
+ [n] News        ([[elfeed:+unread +news][    94]]/[[elfeed:+news][   130]])
 
 * Configuration
   :PROPERTIES:
@@ -27,6 +28,7 @@
 
   #+STARTUP: showall showstars indent
   #+KEYMAP: s | elfeed-dashboard-query "+starred"
+  #+KEYMAP: R | elfeed-dashboard-query "-unread"
   #+KEYMAP: u | elfeed-dashboard-query "+unread"
   #+KEYMAP: d | elfeed-dashboard-query "+unread +db"
   #+KEYMAP: c | elfeed-dashboard-query "+unread +company"
