@@ -55,7 +55,7 @@
         org-hide-emphasis-markers nil
         org-capture-templates '(("t" "Task" entry (file+headline "~/Documents/notes.org" "Tasks") "* TODO %?\n  %u\n  %a")
                                 ;; "* %^{单词}\n%^{含义}"
-                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %?\n%a")
+                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %i\n%?\n%a")
                                 )
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t
@@ -86,3 +86,5 @@
                 org-download-screenshot-method "pngpaste %s"
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
+
+(use-package org-sidebar)

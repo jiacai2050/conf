@@ -33,7 +33,7 @@
   (blink-cursor-mode 0)
 
   (when (display-graphic-p)
-    (add-to-list 'default-frame-alist '(font . "Hack-15"))
+    (add-to-list 'default-frame-alist '(font . "Hack-16"))
     (add-to-list 'default-frame-alist '(fullscreen . maximized)))
 
   (setq-default cursor-type 't))
@@ -41,7 +41,7 @@
 ;; (global-display-line-numbers-mode 1)
 (use-package display-line-numbers
   :ensure nil
-  :hook ((prog-mode text-mode conf-mode mu4e-view-mode elfeed-show-mode) . display-line-numbers-mode))
+  :hook ((eww-mode prog-mode text-mode conf-mode mu4e-view-mode elfeed-show-mode) . display-line-numbers-mode))
 
 (use-package time
   :ensure nil
@@ -67,13 +67,15 @@
                 mode-line-modes)
         ))
 
+(global-hl-line-mode 1)
 
 ;; third party packages
 
 ;; https://github.com/joostkremers/visual-fill-column
 (use-package visual-fill-column
+  :hook ((mu4e-view-mode elfeed-show-mode eww-mode) . visual-fill-column-mode)
   :config
-  (setq-default fill-column 120)
+  (setq-default fill-column 100)
   ;; https://stackoverflow.com/a/950553/2163429
   (global-visual-line-mode 1)
   (global-visual-fill-column-mode 1)
@@ -90,7 +92,7 @@
     (interactive)
     (switch-to-buffer (get-buffer "*dashboard*")))
   (global-set-key (kbd "<f11>") 'my/goto-dashboard)
-  (add-hook 'dashboard-mode-hook 'hl-line-mode)
+  ;; (add-hook 'dashboard-mode-hook 'hl-line-mode)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
         dashboard-projects-backend 'projectile
         dashboard-items '((recents . 10)
@@ -103,6 +105,9 @@
         dashboard-startup-banner 'logo))
 
 (use-package gruvbox-theme
+  :defer t)
+
+(use-package modus-themes
   :defer t)
 
 (defun my/dark-theme-config ()
@@ -133,6 +138,9 @@
       ;;                   '(region ((t (:background "Light Salmon")))))
       )))
 
-(if (string= (getenv "MY_THEME") "light")
-    (my/light-theme-config)
-  (my/dark-theme-config))
+(comment
+ (if (string= (getenv "MY_THEME") "light")
+     (my/light-theme-config)
+   (my/dark-theme-config)))
+
+(load-theme 'modus-operandi t)

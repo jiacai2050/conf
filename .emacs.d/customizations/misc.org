@@ -18,13 +18,17 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
-  :hook ((mu4e-view-mode . visual-fill-column-mode))
   :bind (:map mu4e-view-mode-map
          ("l" . mu4e-view-go-to-url)
          ("0" . scroll-down-command)
          ("9" . scroll-up-command)
          :map mu4e-compose-mode-map
          ("C-c '" . org-mime-edit-mail-in-org-mode))
+  :custom ((mu4e-headers-fields '((:human-date    .   12)
+                                  (:flags         .    6)
+                                  (:from-or-to    .   22)
+                                  (:thread-subject .  nil)))
+           (mu4e-hide-index-messages t))
   :config
   (require 'mu4e-contrib)
   (setq mu4e-contexts
@@ -175,18 +179,21 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :custom ((elfeed-use-curl t)
            (elfeed-db-directory "~/Documents/elfeed/db/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
-  :hook ((elfeed-show-mode . visual-fill-column-mode))
   :bind (:map elfeed-show-mode-map
          ("h" . evil-backward-char)
          ("8" . my/elfeed-toggle-star)
          :map elfeed-search-mode-map
          ("8" . my/elfeed-search-star)
          ("*" . my/elfeed-search-unstar))
+  :init
+  (defun my/elfeed-set-line-space ()
+    (setq-local line-spacing 0.3))
+  :hook (elfeed-search-mode . my/elfeed-set-line-space)
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
         browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "firefox"
+        browse-url-generic-program (executable-find "firefox")
         elfeed-feeds '())
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
   (evil-make-overriding-map elfeed-show-mode-map 'motion)
@@ -292,6 +299,15 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 
 (use-package calfw
   :commands cfw:open-calendar-buffer)
+#+end_src
+* EWW
+#+begin_src emacs-lisp
+(use-package eww
+  :ensure nil
+  :config
+  (setq eww-search-prefix "https://www.google.com/search?q="
+        ))
+
 #+end_src
 * Others
 #+BEGIN_SRC emacs-lisp

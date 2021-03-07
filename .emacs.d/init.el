@@ -54,7 +54,10 @@
 
 ;; magit dependencies
 (use-package with-editor
-  :defer t)
+  :commands with-editor-export-editor
+  ;; sets up the with-editor package so things that invoke $EDITOR will use the current emacs if I’m already inside of emacs
+  :hook ((shell-mode eshell-mode) . with-editor-export-editor)
+  )
 (use-package dash
   :defer t)
 (use-package transient

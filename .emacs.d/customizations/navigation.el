@@ -30,11 +30,15 @@
   :ensure nil
   :custom ((dired-listing-switches "-alh"))
   :bind (:map dired-mode-map
-              ("e" . dired-toggle-read-only)
-              ("j" . dired-next-line)
-              ("k" . dired-previous-line)
-              ("SPC" . evil-scroll-page-down)
-              ("DEL" . evil-scroll-page-up)))
+         ("e" . dired-toggle-read-only)
+         ("j" . dired-next-line)
+         ("k" . dired-previous-line)
+         ("SPC" . evil-scroll-page-down)
+         ("DEL" . evil-scroll-page-up))
+  :config
+  (setq dired-ls-F-marks-symlinks t
+        delete-by-moving-to-trash t
+        ))
 
 ;; Shows a list of buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -50,6 +54,10 @@
 (global-set-key (kbd "\C-x i") 'my/other-window-backward)
 
 ;; Third party package
+
+;; https://fuco1.github.io/2017-07-15-Collapse-unique-nested-paths-in-dired-with-dired-collapse-mode.html
+(use-package dired-collapse
+  :hook (dired-mode . dired-collapse-mode))
 
 ;; counsel ivy swiper
 (use-package counsel
@@ -105,7 +113,8 @@ _-_: -               ^ ^                   _f_: fanyi
     ("c" my/git-link-commit :exit t)
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
-    ("f" go-translate :exit t)
+    ;; ("f" go-translate :exit t)
+    ("f" osx-dictionary-search-word-at-point :exit t)
     ("e" my/epa-command :exit t)
 
     ("q" nil))
@@ -264,31 +273,32 @@ _-_: -               ^ ^                   _f_: fanyi
       (evil-emacs-state)))
 
   (evil-leader/set-key
-    "c" 'compile
-    "s" 'my/search-command
-    "a" 'swiper-isearch
-    "f" 'my/file-command
-    "b" 'counsel-bookmark
+    "w" 'eww
+    "e" 'tiny-expand
     "r" 'counsel-switch-buffer
-    "l" 'my/lsp-command
-    "," 'my/insert-comma
-    "h" 'my/major-mode-keymap
-    "z" 'my/toggle-evil-emacs-mode
-
-    "k" 'kill-buffer
-    "d" 'counsel-dired
-    "j" 'hydra-prog-menu/body
-    "m" 'hydra-multiple-cursors/body
     "u" 'mu4e
     "i" 'elfeed-dashboard
-    "SPC" 'avy-goto-word-1
-    "e" 'tiny-expand
-
-    "." 'matcha-me-space
     "p" 'matcha-projectile
-    "g" 'matcha-magit
-    "v" 'counsel-org-capture
 
+    "a" 'swiper-isearch
+    "s" 'my/search-command
+    "d" 'my/file-command
+    "f" 'counsel-find-file
+    "g" 'matcha-magit
+    "h" 'my/major-mode-keymap
+    "j" 'hydra-prog-menu/body
+    "k" 'kill-buffer
+    "l" 'my/lsp-command
+
+    "z" 'my/toggle-evil-emacs-mode
+    "c" 'compile
+    "v" 'counsel-org-capture
+    "b" 'counsel-bookmark
+    "m" 'hydra-multiple-cursors/body
+    "," 'my/insert-comma
+    "." 'matcha-me-space
+
+    "SPC" 'avy-goto-word-1
     "0" 'select-window-0
     "1" 'select-window-1
     "2" 'select-window-2

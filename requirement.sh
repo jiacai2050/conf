@@ -19,7 +19,7 @@ command_exists vmd || npm install -g vmd
 command_exists cask || curl -fsSL https://gitee.com/liujiacai/cask/raw/master/go | python
 
 # https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html
-command_exists ispell || brew install ispell
+command_exists aspell || brew install aspell
 
 command_exists rg || brew install ripgrep
 command_exists pngpaste || brew install pngpaste

@@ -38,6 +38,8 @@ git apply  ~/.emacs.d/lsp-rust.patch
 * Built-in mode
 - global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
 - [[https://emacs.stackexchange.com/questions/33627/how-to-generate-and-activate-autoloads-for-local-packages][How to generate and activate autoloads for local packages?]]
+** Org
+- https://orgmode.org/manual/Template-expansion.html
 * Third-party mode
 - [[https://github.com/abo-abo/swiper][ivy]], a completion system.
 - [[https://github.com/bbatsov/projectile][projectile]], navigate between files in a project
@@ -74,7 +76,8 @@ M-x lsp-install-server RET eslint
 pip install 'python-language-server[all]'
 #+end_src
 - =C-c C-s= pyenv-mode-set
-
+** Company
+- [[https://github.com/company-mode/company-mode/issues/360][Company seems not to include words with hyphens in the autocompletion. #360]]
 ** GPG
 - https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
 
@@ -384,7 +387,7 @@ opam install tuareg merlin utop
     ))
 #+END_SRC
 
-* Org
+** Org
 - https://emacs-china.org/t/topic/440
 #+begin_src emacs-lisp
 (use-package cnfonts

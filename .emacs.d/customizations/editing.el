@@ -137,10 +137,38 @@
       ("v" "verify" epa-verify-file)
       ("s" "sign" my/sign-file)]]))
 
+(use-package ispell
+  :ensure nil
+  :custom ((ispell-personal-dictionary "~/Documents/aspell")))
+
 ;; (use-package flyspell
 ;;   :hook ((text-mode . flyspell-mode)
 ;;          (prog-mode . flyspell-prog-mode))
 ;;   )
+
+;; https://github.com/dakrone/eos/blob/master/eos-writing.org#numbering-rectangles
+(defun my/num-list (start end format-string from)
+  "Delete (don't save) text in the region-rectangle, then number it."
+  (interactive
+   (list (region-beginning) (region-end)
+         (read-string "Number rectangle: "
+                      (if (looking-back "^ *") "%d. " "%d"))
+         (read-number "From: " 1)))
+  (save-excursion
+    (goto-char start)
+    (setq start (point-marker))
+    (goto-char end)
+    (setq end (point-marker))
+    (delete-rectangle start end)
+    (goto-char start)
+    (loop with column = (current-column)
+          while (and (<= (point) end) (not (eobp)))
+          for i from from   do
+          (move-to-column column t)
+          (insert (format format-string i))
+          (forward-line 1)))
+  (goto-char start))
+
 
 ;; 以下为第三方插件配置
 
@@ -155,9 +183,8 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-backends '((company-tabnine company-capf company-dabbrev-code)
+        company-backends '((company-capf company-dabbrev-code company-dabbrev)
                            (company-gtags company-etags company-keywords)
-                           company-dabbrev
                            ))
 
   :bind (:map company-active-map
@@ -243,6 +270,9 @@
         go-translate-buffer-follow-p t
         go-translate-token-current (cons 430675 2721866130))
   )
+
+(use-package osx-dictionary
+  :defer t)
 
 (use-package evil-numbers
   :defer t)

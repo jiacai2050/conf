@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
 (use-package rust-playground
-  :after rust-mode
+  :custom (rust-playground-run-command "cargo run --color never")
   :config
   (setq rust-playground-basedir (expand-file-name "~/code/rust/playground")))
 
