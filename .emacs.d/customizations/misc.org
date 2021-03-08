@@ -11,6 +11,7 @@
 - http://pragmaticemacs.com/category/mu4e/
 - https://www.djcbsoftware.nl/code/mu/mu4e/HV-Overview.html
 #+begin_src bash
+export XAPIAN_CJK_NGRAM=true
 mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
 #+end_src
 
@@ -30,6 +31,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                                   (:thread-subject .  nil)))
            (mu4e-hide-index-messages t))
   :config
+  (setenv "XAPIAN_CJK_NGRAM" "true")
   (require 'mu4e-contrib)
   (setq mu4e-contexts
 		(list

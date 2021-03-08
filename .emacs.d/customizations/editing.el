@@ -317,7 +317,7 @@
 
   :config
   (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode dired-mode
-                              cfw:details-mode
+                              cfw:details-mode osx-dictionary-mode
                               epa-key-list-mode epa-key-mode epa-info-mode
                               elfeed-dashboard-mode))
     (add-to-list 'evil-emacs-state-modes m))

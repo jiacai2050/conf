@@ -114,7 +114,7 @@ _-_: -               ^ ^                   _f_: fanyi
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
     ;; ("f" go-translate :exit t)
-    ("f" osx-dictionary-search-word-at-point :exit t)
+    ("f" osx-dictionary-search-pointer :exit t)
     ("e" my/epa-command :exit t)
 
     ("q" nil))
