@@ -73,11 +73,11 @@
 
 ;; https://github.com/joostkremers/visual-fill-column
 (use-package visual-fill-column
+  :init (global-visual-line-mode 1)
   :hook ((mu4e-view-mode elfeed-show-mode eww-mode) . visual-fill-column-mode)
   :config
   (setq-default fill-column 100)
   ;; https://stackoverflow.com/a/950553/2163429
-  (global-visual-line-mode 1)
   (global-visual-fill-column-mode 1)
   )
 

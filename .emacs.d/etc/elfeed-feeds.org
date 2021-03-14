@@ -27,6 +27,7 @@
 *** [[https://code.facebook.com/posts/rss/][Facebook]]
 *** [[http://tech.meituan.com/atom.xml][Meituan]]
 *** [[https://medium.com/feed/paypal-engineering][PayPal]]
+*** [[https://engineering.grab.com/feed.xml][Grab]]
 ** Emacs :emacs:
 *** https://jherrlin.github.io/index.xml
 *** [[https://www.masteringemacs.org/feed][Mastering Emacs]]

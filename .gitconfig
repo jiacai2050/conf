@@ -27,3 +27,5 @@
 	postBuffer = 524288000
 [github]
 	user = jiacai2050
+[url "https://github.com.cnpmjs.org/"]
+	insteadof = https://github.com/

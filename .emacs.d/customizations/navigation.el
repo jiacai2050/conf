@@ -217,14 +217,15 @@ _-_: -               ^ ^                   _f_: fanyi
       ("r" "References" lsp-find-references)
       ("i" "Implementation" lsp-find-implementation)
       ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)]
-     ["Other"
-      ("t" "Desc thing" lsp-describe-thing-at-point)
-      ("s" "Desc session" lsp-describe-session)
-      ("m" "Imenu" my/toggle-treemacs-symbols)
-      ("f" "Quick fix" lsp-execute-code-action)
-      ("l" "List error" flycheck-list-errors)]
+     ["Edit"
+      ("n" "reName" lsp-rename)
+      ("m" "iMenu" my/toggle-treemacs-symbols)
+      ("f" "auto Fix" lsp-execute-code-action)
+      ("e" "Error list" flycheck-list-errors)
+      ("t" "desc Thing" lsp-describe-thing-at-point)
+      ]
      ["Rust"
-      ("e" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
+      ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
   (transient-define-prefix my/file-command
     "Files"
     [["Find"

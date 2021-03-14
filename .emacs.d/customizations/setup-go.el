@@ -3,9 +3,12 @@
 (use-package go-mode
   ;; :load-path "~/.emacs.d/vendor/go-mode"
   :mode ("\\.go\\'" . go-mode)
+  :hook (go-mode . my/set-go-hook)
   :init
   (setq gofmt-command "goimports"
         indent-tabs-mode t)
+  (defun my/set-go-hook ()
+    (setq-local before-save-hook 'gofmt-before-save))
   :bind (:map go-mode-map
               ("M-." . godef-jump)))
 

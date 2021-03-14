@@ -53,6 +53,7 @@ alias gf='git diff --color | diff-so-fancy'
 alias tailf='tail -F '
 alias tf='tail -F '
 alias t='tail '
+alias dl='cd ~/Downloads'
 
 # https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
 # don't put duplicate lines or lines starting with space in the history.
