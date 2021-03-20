@@ -20,8 +20,9 @@
   (setq recentf-max-menu-items 40
         recentf-max-saved-items 150)
   (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
-  (add-to-list 'recentf-exclude "\\.emacs\\.d/ignore/.*")
+  (add-to-list 'recentf-exclude "\\.emacs\\.d/var/.*")
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
+  (add-to-list 'recentf-exclude "elfeed/db/index")
   (add-to-list 'recentf-exclude "/Applications/.*")
   (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
   (recentf-mode +1))
