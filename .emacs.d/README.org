@@ -9,6 +9,8 @@ export CPATH=`xcrun --show-sdk-path`/usr/include:`xcrun --show-sdk-path`/usr/inc
 make
 #+end_src
 
+* 访问 iCloud 文件
+- https://emacs.stackexchange.com/a/53037
 * Debug
 使用 Emacs 过程中，如果遇到报错，可以通过下面配置打印出报错的堆栈
 #+begin_src emacs-lisp

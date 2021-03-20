@@ -92,3 +92,6 @@ alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 # misc
 export PATH=$HOME/bin:$PATH:$HOME/.cask/bin
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
+
+# mu
+export XAPIAN_CJK_NGRAM=true

@@ -111,6 +111,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   )
 
 (use-package mu4e-maildirs-extension
+  :if (executable-find "mu")
   :custom ((mu4e-maildirs-extension-custom-list
             '("/ljc/INBOX"
               "/ljc/Sent Messages"
@@ -194,9 +195,12 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
-        browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program (executable-find "firefox")
         elfeed-feeds '())
+  (when-let ((ff-cmd (executable-find "firefox")))
+    (setq
+     browse-url-browser-function 'browse-url-generic
+     browse-url-generic-program ff-cmd))
+
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
   (evil-make-overriding-map elfeed-show-mode-map 'motion)
   (evil-make-overriding-map elfeed-search-mode-map 'motion)

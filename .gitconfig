@@ -1,5 +1,5 @@
 [user]
-	email = jiacai2050@gmail.com
+	email = dev@liujiacai.net
 	name = jiacai2050
 [push]
 	default = simple
@@ -27,5 +27,5 @@
 	postBuffer = 524288000
 [github]
 	user = jiacai2050
-[url "https://github.com.cnpmjs.org/"]
-	insteadof = https://github.com/
+# [url "https://github.com.cnpmjs.org/"]
+# 	insteadof = https://github.com/
