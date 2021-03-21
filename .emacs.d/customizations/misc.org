@@ -23,6 +23,10 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
          ("l" . mu4e-view-go-to-url)
          ("0" . scroll-down-command)
          ("9" . scroll-up-command)
+         :map mu4e-headers-mode-map
+         ("r" . mu4e-headers-mark-for-read)
+         ("!" . mu4e-headers-flag-all-read)
+         ("f" . mu4e-headers-mark-for-flag)
          :map mu4e-compose-mode-map
          ("C-c '" . org-mime-edit-mail-in-org-mode))
   :custom ((mu4e-headers-fields '((:human-date    .   12)
