@@ -7,6 +7,7 @@
 *** https://endler.dev/rss.xml  :rust:
 *** [[https://medium.com/feed/@steve.yegge][Steve Yegge]]
 *** [[https://1byte.io/rss.xml][1byte]]
+*** [[https://brooker.co.za/blog/rss.xml][Brooker]]
 
 ** Rust :rust:
 *** [[https://matklad.github.io/feed.xml][Matklad]]
@@ -16,8 +17,9 @@
 *** [[https://www.cockroachlabs.com/blog/index.xml][CockroachLabs]]
 *** [[https://feeds.feedburner.com/martinkl?format=xml][Martin Kleppmann]]
 *** http://mysql.taobao.org/monthly/feed.xml
-*** [[https://blog.acolyer.org/feed/][MorningPaper]]
+*** [[https://blog.acolyer.org/feed/][Morning Paper]]
 *** [[https://blog.dbi-services.com/author/franckpachot/feed][DBI Franck]]
+*** [[https://rocksdb.org/feed.xml][RocksDB]]
 ** Golang :go:
 *** [[https://blog.golang.org/feed.atom][Go blog]]
 ** Tech Blog :company:

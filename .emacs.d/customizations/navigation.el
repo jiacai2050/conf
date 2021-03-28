@@ -260,7 +260,7 @@ _-_: -               ^ ^                   _f_: fanyi
       ("f" "query-replace" query-replace)]
      ])
   :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '(".*"))
+           ;; (evil-leader/no-prefix-mode-rx '(".*"))
            (evil-leader/in-all-states t))
   :config
   (require 'matcha-me)
