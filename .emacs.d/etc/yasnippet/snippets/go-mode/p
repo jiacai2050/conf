@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: p
+# key: p
+# --
+fmt.Printf("$1 = %+v\n", $2)
+$3

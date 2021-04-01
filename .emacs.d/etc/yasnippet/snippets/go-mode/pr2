@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: 2pr
-# key: 2pr
-# --
-fmt.Printf("$1 = %+v, $2 = %+v", $3, $4)
-$0

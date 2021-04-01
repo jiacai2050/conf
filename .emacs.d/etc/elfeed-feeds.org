@@ -8,6 +8,7 @@
 *** [[https://medium.com/feed/@steve.yegge][Steve Yegge]]
 *** [[https://1byte.io/rss.xml][1byte]]
 *** [[https://brooker.co.za/blog/rss.xml][Brooker]]
+*** [[https://liujiacai.net/atom.xml][Keep Coding]]
 
 ** Rust :rust:
 *** [[https://matklad.github.io/feed.xml][Matklad]]
