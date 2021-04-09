@@ -103,16 +103,17 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         mu4e-headers-date-format "%+4Y-%m-%d"
         mu4e-view-date-format "%a, %Y-%m-%d %T"
         mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
-        mu4e-update-interval nil ;; (* 15 60)
-        mu4e-get-mail-command "offlineimap -o"
+        mu4e-update-interval (* 30 60)
+        mu4e-get-mail-command "gtimeout 60 offlineimap -o"
         mu4e-compose-format-flowed t)
   (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-fields :bcc)
+  (add-to-list 'mu4e-bookmarks '(:name "Flagged"
+                                 :query "flag:flagged"
+                                 :key ?f))
   (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
                                  :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
-                                 :key ?i))
-
-  )
+                                 :key ?i)))
 
 (use-package mu4e-maildirs-extension
   :if (executable-find "mu")
@@ -188,6 +189,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :bind (:map elfeed-show-mode-map
          ("h" . evil-backward-char)
          ("8" . my/elfeed-toggle-star)
+         ("9" . my/elfeed-show-images)
          :map elfeed-search-mode-map
          ("8" . my/elfeed-search-star)
          ("*" . my/elfeed-search-unstar))
@@ -207,7 +209,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   ;; (elfeed-load-opml "~/Documents/Inoreader Subscriptions 20210228.xml")
   (evil-make-overriding-map elfeed-show-mode-map 'motion)
   (evil-make-overriding-map elfeed-search-mode-map 'motion)
-  (defun my/show-feed-images ()
+  (defun my/elfeed-show-images ()
     (interactive)
     (let ((shr-inhibit-images nil))
       (elfeed-show-refresh)))

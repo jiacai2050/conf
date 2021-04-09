@@ -260,7 +260,7 @@ _-_: -               ^ ^                   _f_: fanyi
       ("f" "query-replace" query-replace)]
      ])
   :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit-.*" "mu4e.*" "dashboard-mode" "elfeed.*"))
+           (evil-leader/no-prefix-mode-rx '("magit-.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
            (evil-leader/in-all-states t))
   :config
   (require 'matcha-me)

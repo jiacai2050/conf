@@ -21,6 +21,7 @@
 *** [[https://blog.acolyer.org/feed/][Morning Paper]]
 *** [[https://blog.dbi-services.com/author/franckpachot/feed][DBI Franck]]
 *** [[https://rocksdb.org/feed.xml][RocksDB]]
+*** [[https://engineering.mongodb.com/post?format=rss][MongoDB]]
 ** Golang :go:
 *** [[https://blog.golang.org/feed.atom][Go blog]]
 ** Tech Blog :company:
