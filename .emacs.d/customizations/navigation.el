@@ -98,7 +98,7 @@ _t_: insert today    _v_: volume           _c_: lk-commit
 _i_: insert iso8601  _j_: json             _h_: lk-home
 _=_: +               ^ ^                   _g_: lk-git
 _-_: -               ^ ^                   _f_: fanyi
-^ ^                  ^ ^                   _e_: epa
+_w_: spell Word      ^ ^                   _e_: epa
 "
     ("r" query-replace :exit t)
     ("t" my/insert-today :exit t)
@@ -111,12 +111,13 @@ _-_: -               ^ ^                   _f_: fanyi
     ("j" my/format-json :exit t)
 
     ("s" shell :exit t)
-    ("c" my/git-link-commit :exit t)
+    ("c" my/git-link :exit t)
     ("h" git-link-homepage :exit t)
     ("g" git-link :exit t)
     ;; ("f" go-translate :exit t)
     ("f" osx-dictionary-search-pointer :exit t)
     ("e" my/epa-command :exit t)
+    ("w" ispell-word :exit t)
 
     ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
@@ -293,6 +294,7 @@ _-_: -               ^ ^                   _f_: fanyi
     "l" 'my/lsp-command
 
     "z" 'my/toggle-evil-emacs-mode
+    "x" 'counsel-rg
     "c" 'compile
     "v" 'counsel-org-capture
     "b" 'counsel-bookmark

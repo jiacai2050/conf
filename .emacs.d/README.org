@@ -37,6 +37,14 @@ cd ~/.emacs.d/vendor/lsp-mode
 git apply  ~/.emacs.d/lsp-rust.patch
 #+end_src
 
+* 证书问题
+#+begin_src
+Error (use-package): Failed to install cider: Failed to verify signature: "seq-2.22.tar.sig"
+#+end_src
+- [[https://emacs.stackexchange.com/a/53933/16450][解决方式]]
+#+begin_src
+gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+#+end_src
 * Built-in mode
 - global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.
 - [[https://emacs.stackexchange.com/questions/33627/how-to-generate-and-activate-autoloads-for-local-packages][How to generate and activate autoloads for local packages?]]

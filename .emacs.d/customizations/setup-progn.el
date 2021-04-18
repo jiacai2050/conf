@@ -1,5 +1,24 @@
 ;;; -*- lexical-binding: t; -*-
 
+;; C/C++ setup
+(use-package cmake-mode
+  :load-path "/usr/local/share/emacs/site-lisp/cmake"
+  :if (executable-find "cmake"))
+
+(use-package ggtags
+  :hook ((c-mode c++-mode java-mode) . ggtags-mode))
+
+(use-package google-c-style
+  :init (defun my/c-company-backends ()
+          (setq-local company-backends
+                      '(company-c-headers company-gtags company-dabbrev
+                                          company-dabbrev-code company-keywords)))
+  :hook ((c-mode-common . google-set-c-style)
+         (c-mode-common . google-make-newline-indent)
+         (c-mode-common . my/c-company-backends))
+  )
+;; C/C++ finish
+
 (use-package compile
   :ensure nil
   :custom (compilation-scroll-output t))
@@ -44,7 +63,6 @@
   :config
   (setq-default comment-start "# "))
 
-;; third party extensions
 (use-package sql-indent)
 
 (use-package smartparens
@@ -90,17 +108,17 @@
   :after magit)
 
 (use-package git-link
+  :load-path "~/.emacs.d/vendor/git-link"
+  :custom ((git-link-preferred-format '(tag commit branch))
+           (git-link-open-in-browser nil))
   :config
   (progn
-    (defun my/git-link-commit (remote start end)
+    (defun my/git-link (remote start end)
       (interactive (let* ((remote (git-link--select-remote))
                           (region (when (or buffer-file-name (git-link--using-magit-blob-mode))
                                     (git-link--get-region))))
                      (list remote (car region) (cadr region))))
-      (setq git-link-use-commit t)
-      (git-link remote start end)
-      (setq git-link-use-commit nil))
-    (setq git-link-open-in-browser t)
+      (git-link remote start end))
     (add-to-list 'git-link-remote-alist
                  '("gitee\\.com" git-link-github))
     (add-to-list 'git-link-commit-remote-alist
@@ -197,9 +215,6 @@
    (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
    :init
    (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/")))
-
-(use-package ggtags
-  :hook ((c-mode c++-mode java-mode) . ggtags-mode))
 
 (use-package graphviz-dot-mode
   :hook (graphviz-dot-mode . my/graphviz-company)

@@ -22,3 +22,6 @@
 [submodule ".emacs.d/vendor/no-littering"]
 	path = .emacs.d/vendor/no-littering
 	url = https://gitee.com/liujiacai/no-littering.git
+[submodule ".emacs.d/vendor/git-link"]
+	path = .emacs.d/vendor/git-link
+	url = https://github.com/jiacai2050/git-link.git

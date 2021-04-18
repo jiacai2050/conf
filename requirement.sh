@@ -9,6 +9,7 @@ function command_exists() {
 set -ex
 # create gtags for C/C++ reference
 command_exists global || brew install global
+command_exists clangd || brew install llvm
 # Steel Bank Common Lisp system
 command_exists sbcl || brew install sbcl
 # Preview markdown files in a separate window, the same as on GitHub.

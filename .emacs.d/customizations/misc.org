@@ -23,6 +23,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
          ("l" . mu4e-view-go-to-url)
          ("0" . scroll-down-command)
          ("9" . scroll-up-command)
+         :map mu4e-main-mode-map
+         ("g" . mu4e-update-mail-and-index)
          :map mu4e-headers-mode-map
          ("r" . mu4e-headers-mark-for-read)
          ("!" . mu4e-headers-flag-all-read)
@@ -46,7 +48,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                           (string-prefix-p "/ljc" (mu4e-message-field msg :maildir))))
           :vars '((mu4e-sent-folder . "/ljc/Sent Messages")
                   (mu4e-trash-folder . "/ljc/Deleted Messages")
-                  (mu4e-refile-folder . "/ljc/Archive")
+                  (mu4e-refile-folder . "/ljc/archive")
                   (mu4e-drafts-folder . "/ljc/Drafts")
                   (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
                                              (:maildir "/ljc/Sent Messages" :key ?s)
@@ -59,7 +61,9 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                                              (:maildir "/ljc/=clojure" :key ?c)
                                              (:maildir "/ljc/=mozilla" :key ?m)
                                              (:maildir "/ljc/=openjdk" :key ?o)
-                                             (:maildir "/ljc/=prometheus-user" :key ?P)
+                                             (:maildir "/ljc/archive" :key ?a)
+                                             (:maildir "/ljc/=Prometheus-user" :key ?P)
+                                             (:maildir "/ljc/Deleted Messages" :key ?M)
                                              ))
                   ))
          (make-mu4e-context
@@ -121,15 +125,16 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
             '("/ljc/INBOX"
               "/ljc/Sent Messages"
               "/ljc/Drafts"
+              "/ljc/=GitHub"
               "/ljc/=pg-hackers"
               "/ljc/=dev-news"
-              "/ljc/=GitHub"
               "/ljc/=golang"
               "/ljc/=clojure"
               "/ljc/=mongodb-dev"
               "/ljc/=mozilla"
               "/ljc/=openjdk"
               "/ljc/=prometheus-user"
+              "/ljc/archive"
               "/ljc/Deleted Messages"
               "/ljc/Junk"
 

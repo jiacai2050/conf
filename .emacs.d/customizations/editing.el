@@ -183,14 +183,17 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-backends '((company-capf company-dabbrev-code company-dabbrev)
-                           (company-gtags company-etags company-keywords)
+        company-backends '((company-capf company-dabbrev-code company-dabbrev
+                                         company-gtags company-etags company-keywords)
+                           (company-files)
                            ))
 
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ("M-i" . company-complete-selection)))
+
+(use-package company-c-headers)
 
 (use-package company-tabnine
   :custom ((company-tabnine-always-trigger nil)))

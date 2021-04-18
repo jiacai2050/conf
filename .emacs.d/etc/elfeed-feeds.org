@@ -9,6 +9,9 @@
 *** [[https://1byte.io/rss.xml][1byte]]
 *** [[https://brooker.co.za/blog/rss.xml][Brooker]]
 *** [[https://liujiacai.net/atom.xml][Keep Coding]]
+*** [[https://halfrost.com/rss/][halfrost]]
+*** [[https://erthalion.info/atom.xml][Dmitry Dolgov]] :db:
+*** [[https://ajstorm.medium.com/feed][Adam Storm]]
 
 ** Rust :rust:
 *** [[https://matklad.github.io/feed.xml][Matklad]]
