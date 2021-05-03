@@ -99,6 +99,7 @@ _i_: insert iso8601  _j_: json             _h_: lk-home
 _=_: +               ^ ^                   _g_: lk-git
 _-_: -               ^ ^                   _f_: fanyi
 _w_: spell Word      ^ ^                   _e_: epa
+_m_: mark ring       ^ ^
 "
     ("r" query-replace :exit t)
     ("t" my/insert-today :exit t)
@@ -118,6 +119,7 @@ _w_: spell Word      ^ ^                   _e_: epa
     ("f" osx-dictionary-search-pointer :exit t)
     ("e" my/epa-command :exit t)
     ("w" ispell-word :exit t)
+    ("m" counsel-mark-ring :exit t)
 
     ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
@@ -212,6 +214,11 @@ _w_: spell Word      ^ ^                   _e_: epa
     (interactive "MShell command: ")
     (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
 
+  (defun my/imenu-dispatch ()
+    (interactive)
+    (if (bound-and-true-p lsp-mode)
+        (my/toggle-treemacs-symbols)
+      (counsel-imenu)))
   (transient-define-prefix my/lsp-command
     "LSP"
     [["Find"
@@ -221,7 +228,7 @@ _w_: spell Word      ^ ^                   _e_: epa
       ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)]
      ["Edit"
       ("n" "reName" lsp-rename)
-      ("m" "iMenu" my/toggle-treemacs-symbols)
+      ("m" "iMenu" my/imenu-dispatch)
       ("f" "auto Fix" lsp-execute-code-action)
       ("e" "Error list" flycheck-list-errors)
       ("t" "desc Thing" lsp-describe-thing-at-point)

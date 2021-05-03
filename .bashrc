@@ -54,6 +54,7 @@ alias tailf='tail -F '
 alias tf='tail -F '
 alias t='tail '
 alias dl='cd ~/Downloads'
+alias p='ping qq.com'
 
 # https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
 # don't put duplicate lines or lines starting with space in the history.
@@ -83,7 +84,7 @@ export PATH=$PATH:$HOME/.cargo/bin
 export GOPATH="$HOME/code/go"
 export GO111MODULE=on
 export GOPROXY="https://goproxy.cn,direct"
-export GOPRIVATE=gitlab.alipay-inc.com,gitlab.alibaba-inc.com
+export GOPRIVATE=gitlab.alipay-inc.com,gitlab.alibaba-inc.com,code.alipay.com
 export PATH=$PATH:$GOPATH/bin
 # REPL
 alias yaegi='rlwrap yaegi'
