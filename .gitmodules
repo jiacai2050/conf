@@ -13,9 +13,6 @@
 [submodule ".emacs.d/vendor/lsp-treemacs"]
 	path = .emacs.d/vendor/lsp-treemacs
 	url = https://gitee.com/liujiacai/lsp-treemacs.git
-[submodule ".emacs.d/vendor/matcha"]
-	path = .emacs.d/vendor/matcha
-	url = https://gitee.com/liujiacai/matcha.git
 [submodule ".emacs.d/vendor/no-littering"]
 	path = .emacs.d/vendor/no-littering
 	url = https://gitee.com/liujiacai/no-littering.git

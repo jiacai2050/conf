@@ -94,11 +94,11 @@
 (use-package view
   :ensure nil
   :bind (:map view-mode-map
-              (("g" . goto-line)
-               ("j" . next-line)
-               ("k" . previous-line)
-               ("n" . next-logical-line)
-               ("p" . previous-logical-line))))
+         (("g" . goto-line)
+          ("j" . next-line)
+          ("k" . previous-line)
+          ("n" . next-logical-line)
+          ("p" . previous-logical-line))))
 
 (use-package conf-mode
   :ensure nil
@@ -116,7 +116,7 @@
            (epg-pinentry-mode 'loopback)
            (password-cache-expiry (* 60 15)))
   :config
-    ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
+  ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
 
   (defun my/sign-file (&optional initial-input initial-directory)
     (interactive)
@@ -190,9 +190,9 @@
                            ))
 
   :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("M-i" . company-complete-selection)))
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("M-i" . company-complete-selection)))
 
 (use-package company-c-headers)
 
@@ -223,10 +223,10 @@
 (use-package undo-tree
   :init (global-undo-tree-mode)
   :bind (:map undo-tree-visualizer-mode-map
-              (("j" . undo-tree-visualize-redo)
-               ("k" . undo-tree-visualize-undo)
-               ("h" . undo-tree-visualize-switch-branch-left)
-               ("l" . undo-tree-visualize-switch-branch-right))))
+         (("j" . undo-tree-visualize-redo)
+          ("k" . undo-tree-visualize-undo)
+          ("h" . undo-tree-visualize-switch-branch-left)
+          ("l" . undo-tree-visualize-switch-branch-right))))
 
 (use-package persistent-scratch
   :config
@@ -329,10 +329,10 @@
 
   :config
   (dolist (m '(dashboard-mode magit-submodule-list-mode
-               git-rebase-mode easy-hugo-mode dired-mode
-               cfw:details-mode osx-dictionary-mode
-               epa-key-list-mode epa-key-mode epa-info-mode
-               elfeed-dashboard-mode))
+                              git-rebase-mode easy-hugo-mode dired-mode
+                              cfw:details-mode osx-dictionary-mode
+                              epa-key-list-mode epa-key-mode epa-info-mode
+                              elfeed-dashboard-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))
@@ -366,7 +366,7 @@
 
 (use-package separedit
   :bind (:map prog-mode-map
-			  (("C-c '" . separedit)))
+		 (("C-c '" . separedit)))
   :config
   (add-hook 'separedit-buffer-creation-hook #'auto-fill-mode))
 
@@ -531,5 +531,30 @@
 ;; https://github.com/m00natic/vlfi
 ;; (use-package vlf
 ;;   :config (require 'vlf-setup))
+
+(defun my/copy-current-filename-to-clipboard ()
+  "Copy `buffer-file-name' to system clipboard."
+  (interactive)
+  (if (not buffer-file-name)
+      (message "Not a file...")
+    (message (format "Copying %s to clipboard..." buffer-file-name))
+    (kill-new buffer-file-name)))
+
+(defun my/rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
 
 ;;; editing.el ends here

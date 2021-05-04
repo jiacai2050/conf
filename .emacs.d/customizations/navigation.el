@@ -89,39 +89,6 @@
 
 (use-package ivy-hydra
   :config
-  (defhydra hydra-prog-menu (:color pink :hint nil)
-    "
-^Edit^                ^Human^               ^System^
-^^^^^^----------------------------------------------------
-_r_: query-replace   _d_: datetime<->ts    _s_: shell
-_t_: insert today    _v_: volume           _c_: lk-commit
-_i_: insert iso8601  _j_: json             _h_: lk-home
-_=_: +               ^ ^                   _g_: lk-git
-_-_: -               ^ ^                   _f_: fanyi
-_w_: spell Word      ^ ^                   _e_: epa
-_m_: mark ring       ^ ^
-"
-    ("r" query-replace :exit t)
-    ("t" my/insert-today :exit t)
-    ("i" my/insert-current-date-time :exit t)
-    ("=" er/expand-region)
-    ("-" er/contract-region)
-
-    ("d" my/timestamp->human-date)
-    ("v" my/storage-size->human)
-    ("j" my/format-json :exit t)
-
-    ("s" shell :exit t)
-    ("c" my/git-link :exit t)
-    ("h" git-link-homepage :exit t)
-    ("g" git-link :exit t)
-    ;; ("f" go-translate :exit t)
-    ("f" osx-dictionary-search-pointer :exit t)
-    ("e" my/epa-command :exit t)
-    ("w" ispell-word :exit t)
-    ("m" counsel-mark-ring :exit t)
-
-    ("q" nil))
   (defhydra hydra-multiple-cursors (:hint nil)
     "
  Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
@@ -146,8 +113,7 @@ _m_: mark ring       ^ ^
     ;; Help with click recognition in this hydra
     ("<down-mouse-1>" ignore)
     ("<drag-mouse-1>" ignore)
-    ("q" nil))
-  )
+    ("q" nil)))
 
 (use-package window-numbering
   :init (window-numbering-mode 1))
@@ -158,13 +124,14 @@ _m_: mark ring       ^ ^
 ;; projectile everywhere!
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
+  :custom (projectile-project-search-path '("~/code/" "~/gh/" "~/code/antfin/"))
   :config
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
         projectile-project-root-files-functions #'(projectile-root-top-down
                                                    projectile-root-top-down-recurring
-                                                 projectile-root-bottom-up
+                                                   projectile-root-bottom-up
                                                    projectile-root-local)
         projectile-ignored-project-function (lambda (project-root)
                                               (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor" ".emacs.d/ignore" ".emacs.d/elpa"))
@@ -202,11 +169,24 @@ _m_: mark ring       ^ ^
   (add-hook 'dired-mode-hook 'hl-line-mode))
 
 ;; Customization
+(defun my/switch-to-dependency-file ()
+  (interactive)
+  (let ((basename (pcase major-mode
+                    ('go-mode "go.mod")
+                    ('rust-mode "Cargo.toml")
+                    ('clojure-mode "project.clj")
+                    ('java-mode "pom.xml")
+                    ('emacs-lisp-mode "init.el")
+                    (mode nil))))
 
-(use-package matcha
-  :load-path "~/.emacs.d/vendor/matcha"
-  :config
-  (matcha-setup))
+    (if basename
+        (let ((metadata-dir (locate-dominating-file buffer-file-name basename)))
+          (when metadata-dir
+            (find-file (concat metadata-dir basename))))
+      (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
+
+(use-package reveal-in-osx-finder
+  :defer t)
 
 (use-package evil-leader
   :init
@@ -220,6 +200,7 @@ _m_: mark ring       ^ ^
     (if (bound-and-true-p lsp-mode)
         (my/toggle-treemacs-symbols)
       (counsel-imenu)))
+
   (transient-define-prefix my/lsp-command
     "LSP"
     [["Find"
@@ -244,20 +225,15 @@ _m_: mark ring       ^ ^
       ("p" "project" projectile-find-file)]
      ["Current File"
       ("s" "Save" save-buffer)
-      ("y" "Copy Filename" matcha-copy-current-filename-to-clipboard)
-      ("r" "Rename" matcha-rename-current-buffer-file)
+      ("y" "Copy Filename" my/copy-current-filename-to-clipboard)
+      ("r" "Rename" my/rename-current-buffer-file)
       ("k" "Delete" my/delete-file-and-buffer)
       ("d" "Diff buffer" my/diff-buffer-with-file)
       ("t" "Last update" my/last-save-time)
       ("e" "Exec shell" my/exec-shell-on-buffer)]
      ["Edit"
       ("id" "insert date" my/insert-today)
-      ("it" "insert time" my/insert-current-date-time)
-      ]
-     ["All Files"
-      ("S" "Save All to SavedFile" matcha-save-files-to-saved-files-list)
-      ("O" "Open All from SavedFile" matcha-open-files-from-saved-files-list)
-      ("R" "Revert/Refresh All" matcha-revert-all-file-buffers)]])
+      ("it" "insert time" my/insert-current-date-time)]])
   (transient-define-prefix my/search-command
     "Search"
     [["Search"
@@ -266,13 +242,90 @@ _m_: mark ring       ^ ^
       ("r" "Rg" counsel-rg)
       ("v" "aVy-word" avy-goto-word-1)]
      ["Replace"
-      ("f" "query-replace" query-replace)]
-     ])
+      ("f" "query-replace" query-replace)]])
+  (transient-define-prefix my/projectile-command
+    "Projectile"
+    [["Find"
+      ("f" "File" projectile-find-file)
+      ("F" "File Other Window" projectile-find-file-other-window)
+      ("s" "Ripgrep" projectile-ripgrep)
+      ;; ("r" "Recentf" projectile-recentf)
+      ("d" "Dired" projectile-dired)
+      ("v" "discoVer" projectile-discover-projects-in-search-path)
+      ("o" "multi occur" projectile-multi-occur)]
+     ["Manage"
+      ("p" "switch" projectile-switch-project)
+      ("a" "add" projectile-add-known-project)
+      ("i" "info" projectile-project-info)
+      ("t" "test" projectile-test-project)
+      ("c" "compile" projectile-compile-project)
+      ("r" "run" projectile-run-project)]
+     ["Treemacs"
+      ("P" "Switch" treemacs-projectile)
+      ("A" "Add" treemacs-add-project-to-workspace)]])
+  (transient-define-prefix my/magit-command
+    "Magit"
+    [["Repository"
+      ("s" "Status" magit-status)
+      ("c" "Clone" magit-clone)
+      ("L" "List Repositories" magit-list-repositories)
+      ("d" "Dispatch Popup" magit-dispatch)]
+     ["History"
+      ("l" "File Popup" magit-log)
+      ("b" "Blame" magit-blame-addition)
+      ("j" "Blob Next" magit-blob-next)
+      ("k" "Blob Previous" magit-blob-previous)]
+     ["Files"
+      ("p" "File Popup" magit-file-dispatch)
+      ("f" "Find File" magit-find-file)
+      ("F" "Find File in Other Window" magit-find-file-other-window)]])
+  (transient-define-prefix my/progn-command
+    "Progn"
+    [["Edit"
+      ("r" "Query Replace" query-replace)
+      ("t" "Insert Today" my/insert-today)
+      ("i" "Insert ISO8601" my/insert-current-date-time)
+      ("d" "Datetime<->ts" my/timestamp->human-date)
+      ("w" "Ispell Word" ispell-word)]
+     ["System"
+      ("F" "Finder" reveal-in-osx-finder)
+      ("s" "Shell" my/open-terminal)
+      ("f" "Fanyi" osx-dictionary-search-pointer)
+      ("t" "Treemacs" treemacs)
+      ("e" "Epa" my/epa-command)]
+     ["Goto"
+      ("m" "Mark Ring" counsel-mark-ring)
+      ("n" "Dependency files" my/switch-to-dependency-file)
+      ("SPC" "Avy" avy-goto-word-1)
+      ("c" "lk-commit" my/git-link)
+      ("h" "lk-homepage" git-link-homepage)]]
+    [:hide (lambda () t)
+     (":" eval-expression)
+     ("'" eval-expression)])
+  (transient-define-prefix my/window-command
+    "Window"
+    [["Split"
+      ("-" "Below" split-window-below)
+      ("|" "Right" split-window-right)
+      ("\\" "Right" split-window-right)]
+     ["Move"
+      ("h" "Left" evil-window-left)
+      ("l" "Right" evil-window-right)
+      ("k" "Up" evil-window-up)
+      ("j" "Down" evil-window-down)
+      ("." "Next buffer" evil-next-buffer)
+      ("," "Prev buffer" evil-prev-buffer)]
+     ["Delete"
+      ("<backspace>" "Del Win" delete-window)
+      ("DEL" "Del Win" delete-window) ;; For terminals.
+      ("x" "Kill buffer" kill-buffer)]]
+    [:hide (lambda () t)
+     ("e" eval-buffer)])
+
   :custom ((evil-leader/leader ",")
            (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
            (evil-leader/in-all-states t))
   :config
-  (require 'matcha-me)
   (defun my/insert-comma ()
     (interactive)
     (insert-char (char-from-name "COMMA")))
@@ -289,15 +342,15 @@ _m_: mark ring       ^ ^
     "r" 'counsel-switch-buffer
     "u" 'mu4e
     "i" 'elfeed-dashboard
-    "p" 'matcha-projectile
+    "p" 'my/projectile-command
 
     "a" 'swiper-isearch
     "s" 'my/search-command
     "d" 'my/file-command
     "f" 'counsel-find-file
-    "g" 'matcha-magit
+    "g" 'my/magit-command
     "h" 'my/major-mode-keymap
-    "j" 'hydra-prog-menu/body
+    "j" 'my/progn-command
     "k" 'kill-buffer
     "l" 'my/lsp-command
 
@@ -308,7 +361,7 @@ _m_: mark ring       ^ ^
     "b" 'counsel-bookmark
     "m" 'hydra-multiple-cursors/body
     "," 'my/insert-comma
-    "." 'matcha-me-space
+    "." 'my/window-command
 
     "SPC" 'avy-goto-word-1
     "0" 'select-window-0
@@ -319,103 +372,3 @@ _m_: mark ring       ^ ^
     "8" 'cfw:open-calendar-buffer
     "9" 'calendar
     ))
-
-(defun my/switch-to-metadata-file ()
-  (interactive)
-  (let ((basename (pcase major-mode
-                    ('go-mode "go.mod")
-                    ('rust-mode "Cargo.toml")
-                    ('clojure-mode "project.clj")
-                    ('java-mode "pom.xml")
-                    (mode nil))))
-
-    (if basename
-        (let ((metadata-dir (locate-dominating-file buffer-file-name basename)))
-          (when metadata-dir
-            (find-file (concat metadata-dir basename))))
-      (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
-
-;; matcha-helper https://github.com/jojojames/.emacs.d/blob/8414ea5253/config/jn-functions.el
-(defun j-open-terminal ()
-  "Open system terminal."
-  (interactive)
-  (cond
-   (MAC-P
-    (shell-command
-     ;; open -a Terminal doesn't allow us to open a particular directory unless
-     ;; We use --args AND -n, but -n opens an entirely new Terminal application
-     ;; instance on every call, not just a new window. Using the
-     ;; bundle here always opens the given directory in a new window.
-     (concat "open -b com.apple.terminal " default-directory) nil nil))
-   (WINDOWS-P
-    ;; https://stackoverflow.com/questions/13505113/how-to-open-the-native-cmd-exe-window-in-emacs
-    (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
-      (set-process-query-on-exit-flag proc nil)))
-   (t
-    (message "Implement `j-open-terminal' for this OS!"))))
-
-(use-package reveal-in-osx-finder)
-(use-package emr)
-
-(defun j-explorer-finder ()
-  "Opens up file explorer based on operating system."
-  (interactive)
-  (cond
-   ((and MAC-P
-         (fboundp #'reveal-in-osx-finder))
-    (reveal-in-osx-finder))
-   ((and WINDOWS-P
-         (fboundp #'explorer))
-    (explorer))
-   (LINUX-P
-    (if (executable-find "gio")
-        (progn
-          (shell-command (format "gio open %s" default-directory))
-          (message (format "Opened %s in file browser!" default-directory)))
-      (message "On platform Linux but executable gio not found!")))
-   (t
-    (message "Implement `explorer-finder' for this OS!"))))
-
-(defun j-resize-window ()
-  "Resize window to fit contents."
-  (interactive)
-  (with-current-buffer (current-buffer)
-    (let ((fit-window-to-buffer-horizontally t))
-      (fit-window-to-buffer))))
-
-(defun toggle-window-split ()
-  "Toggles window split."
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
-
-(defun rotate-windows-helper (x d)
-  "Rotates windows."
-  (if (equal (cdr x) nil) (set-window-buffer (car x) d)
-    (set-window-buffer (car x) (window-buffer (cadr x)))
-    (rotate-windows-helper (cdr x) d)))
-
-(defun rotate-windows ()
-  (interactive)
-  (rotate-windows-helper (window-list) (window-buffer (car (window-list))))
-  (select-window (car (last (window-list)))))

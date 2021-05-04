@@ -47,7 +47,20 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
    (my/map-key key)
    (global-set-key (kbd (concat prefix key suffix)) command))
 
-(defconst MAC-P      (eq system-type 'darwin))
-(defconst LINUX-P    (eq system-type 'gnu/linux))
-(defconst WINDOWS-P  (memq system-type '(cygwin windows-nt ms-dos)))
-(defconst BSD-P      (eq system-type 'berkeley-unix))
+(defun my/open-terminal ()
+  "Open system terminal."
+  (interactive)
+  (cond
+   ((eq system-type 'darwin)
+    (shell-command
+     ;; open -a Terminal doesn't allow us to open a particular directory unless
+     ;; We use --args AND -n, but -n opens an entirely new Terminal application
+     ;; instance on every call, not just a new window. Using the
+     ;; bundle here always opens the given directory in a new window.
+     (concat "open -b com.apple.terminal " default-directory) nil nil))
+   ((memq system-type '(cygwin windows-nt ms-dos))
+    ;; https://stackoverflow.com/questions/13505113/how-to-open-the-native-cmd-exe-window-in-emacs
+    (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
+      (set-process-query-on-exit-flag proc nil)))
+   (t
+    (message "Implement `j-open-terminal' for this OS!"))))
