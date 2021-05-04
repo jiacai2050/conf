@@ -18,11 +18,14 @@
       (make-directory pub-dir)))
   (apply orig-fun extension subtreep pub-dir nil))
 
-(use-package ox-gfm)
-(use-package htmlize)
-(use-package ob-http)
-(use-package ob-sql-mode)
-(use-package ob-go)
+(use-package ox-gfm
+  :defer t)
+(use-package htmlize
+  :defer t)
+(use-package ob-http
+  :defer t)
+(use-package ob-sql-mode
+  :defer t)
 
 (use-package org
   :ensure nil
@@ -44,7 +47,6 @@
      (sql . t)
      (awk . t)
      (sed . t)
-     (go . t)
      (emacs-lisp . t)))
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
@@ -89,4 +91,5 @@
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
 
-(use-package org-sidebar)
+(use-package org-sidebar
+  :defer t)

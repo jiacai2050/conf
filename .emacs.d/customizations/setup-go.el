@@ -27,6 +27,7 @@
   (go-test-verbose t))
 
 (use-package go-playground
+  :defer t
   :custom
   (go-playground-basedir "~/code/go/src/playground"))
 

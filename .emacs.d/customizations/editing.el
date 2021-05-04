@@ -3,7 +3,8 @@
 ;; Customizations relating to editing a buffer.
 
 (setq column-number-mode t)
-(electric-indent-mode)
+(electric-indent-mode t)
+(electric-pair-mode t)
 (setq kill-do-not-save-duplicates t)
 ;; https://stackoverflow.com/a/24639415/2163429
 (setenv "LANG" "en_US.UTF-8")
@@ -196,6 +197,7 @@
 (use-package company-c-headers)
 
 (use-package company-tabnine
+  :defer t
   :custom ((company-tabnine-always-trigger nil)))
 
 (use-package multiple-cursors
@@ -326,10 +328,11 @@
     )
 
   :config
-  (dolist (m '(dashboard-mode git-rebase-mode easy-hugo-mode dired-mode
-                              cfw:details-mode osx-dictionary-mode
-                              epa-key-list-mode epa-key-mode epa-info-mode
-                              elfeed-dashboard-mode))
+  (dolist (m '(dashboard-mode magit-submodule-list-mode
+               git-rebase-mode easy-hugo-mode dired-mode
+               cfw:details-mode osx-dictionary-mode
+               epa-key-list-mode epa-key-mode epa-info-mode
+               elfeed-dashboard-mode))
     (add-to-list 'evil-emacs-state-modes m))
   (dolist (m '(wdired-mode))
     (add-to-list 'evil-normal-state-modes m))

@@ -65,25 +65,6 @@
 
 (use-package sql-indent)
 
-(use-package smartparens
-  :init (defun my/sp-setup ()
-          (smartparens-global-strict-mode 1))
-  :hook (after-init . my/sp-setup)
-  :custom (sp-base-key-bindings 'paredit)
-  :config
-  (progn
-    (require 'smartparens-config)
-    (define-key smartparens-mode-map (kbd "C-M-b") 'backward-sexp)
-    (define-key smartparens-mode-map (kbd "C-M-f") 'forward-sexp)
-    (dolist (m '(org-mode org-agenda-mode)) ;; keybindings conflict
-      (add-to-list 'sp-ignore-modes-list m)))
-  :bind (:map smartparens-mode-map
-              ("C-M-f" . forward-sexp)
-              ("C-M-b" . backward-sexp)
-              ("M-(" . sp-wrap-round)
-              ("M-[" . sp-wrap-square)
-              ("M-{" . sp-wrap-curly)))
-
 (use-package flycheck
   :custom ((flycheck-checker-error-threshold 20))
   :config

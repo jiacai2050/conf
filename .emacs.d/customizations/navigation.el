@@ -190,7 +190,8 @@ _m_: mark ring       ^ ^
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)))
 
-(use-package treemacs-projectile)
+(use-package treemacs-projectile
+  :defer t)
 (use-package treemacs-all-the-icons
   :config
   (treemacs-load-theme "all-the-icons"))
@@ -268,7 +269,7 @@ _m_: mark ring       ^ ^
       ("f" "query-replace" query-replace)]
      ])
   :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit-.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
+           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
            (evil-leader/in-all-states t))
   :config
   (require 'matcha-me)
