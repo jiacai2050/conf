@@ -320,8 +320,21 @@
       ("DEL" "Del Win" delete-window) ;; For terminals.
       ("x" "Kill buffer" kill-buffer)]]
     [:hide (lambda () t)
+     ("m" my/derived-modes)
      ("e" eval-buffer)])
 
+  (transient-define-prefix my/helpful-command
+    "Helpful"
+    [["Which-key"
+      ("m" "Major keymap" which-key-show-major-mode)
+      ("n" "Minor keymap" which-key-show-minor-mode-keymap)]
+     ["Helpful"
+      ("f" "Function" helpful-function)
+      ("v" "Variable" helpful-variable)
+      ("c" "Command" helpful-command)
+      ("s" "Symbol" helpful-symbol)
+      ("p" "At point" helpful-at-point)
+      ("k" "Key" helpful-key)]])
   :custom ((evil-leader/leader ",")
            (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
            (evil-leader/in-all-states t))
@@ -349,7 +362,7 @@
     "d" 'my/file-command
     "f" 'counsel-find-file
     "g" 'my/magit-command
-    "h" 'my/major-mode-keymap
+    "h" 'my/helpful-command
     "j" 'my/progn-command
     "k" 'kill-buffer
     "l" 'my/lsp-command
