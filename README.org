@@ -5,8 +5,17 @@ Good tools are prerequisite to the successful execution of a job.
 工欲善其事，必先利其器。
 #+end_quote
 
+** 软件版本记录
+|                           | version                     |
+|---------------------------+-----------------------------|
+| =rust-analyzer --version= | [[https://github.com/rust-analyzer/rust-analyzer/releases/tag/2021-05-03][eb741e895 2021-05-03 stable]] |
+| =gopls version=           | [[https://github.com/golang/tools/releases/tag/gopls%2Fv0.6.10][v0.6.10]]                     |
+|                           |                             |
+- https://github.com/golang/tools/blob/master/gopls/README.md
+#+begin_src bash
+GO111MODULE=on go get golang.org/x/tools/gopls@latest
+#+end_src
 ** Submodule 更新方式
-
 - https://stackoverflow.com/a/914090/2163429
 
 #+begin_src bash
@@ -17,7 +26,8 @@ git submodule sync
 # 更新到最新 commit
 git submodule update --init --recursive --remote
 
-# 更新到指定 commit
+# https://stackoverflow.com/a/18854453/2163429
+# 更新到 .gitmodules 中的 commit
 git submodule update --init
 #+end_src
 
@@ -33,7 +43,5 @@ cp zazu-encode-decode/src/* ~/.zazu/plugins/tinytacoteam/zazu-template/src/
   "dependencies": {
     "html-entities": "^1.2.0"
   }
-
 # 更新 zazu.json
-
 #+end_src

@@ -116,6 +116,7 @@
   (load "setup-go.el")
   (load "setup-rust.el")
 
+  (load-file (no-littering-expand-var-file-name "custom.el"))
   (org-babel-load-file (expand-file-name "misc.org" custom-conf-path)))
 
 ;; (load custom-file)

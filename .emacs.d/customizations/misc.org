@@ -133,7 +133,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
               "/ljc/=mongodb-dev"
               "/ljc/=mozilla"
               "/ljc/=openjdk"
-              "/ljc/=prometheus-user"
+              "/ljc/=Prometheus-user"
               "/ljc/archive"
               "/ljc/Deleted Messages"
               "/ljc/Junk"
@@ -332,7 +332,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :mode ("\\.api\\'" . restclient-mode))
 
 (use-package protobuf-mode
-  :load-path "~/.emacs.d/vendor/protobuf-mode"
+  :load-path "/usr/local/opt/protobuf/share/doc/protobuf/editors/"
+  :if (executable-find "protoc")
   :mode ("\\.proto\\'" . protobuf-mode))
 
 ;; https://github.com/justbur/emacs-which-key

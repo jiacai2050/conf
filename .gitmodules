@@ -1,9 +1,6 @@
 [submodule "restclient"]
 	path = .emacs.d/vendor/restclient
 	url = https://github.com/pashky/restclient.el
-[submodule "protobuf-mode"]
-	path = .emacs.d/vendor/protobuf-mode
-	url = https://github.com/emacsmirror/protobuf-mode
 [submodule ".emacs.d/vendor/magit"]
 	path = .emacs.d/vendor/magit
 	url = https://gitee.com/liujiacai/magit.git

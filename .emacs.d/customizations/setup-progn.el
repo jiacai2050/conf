@@ -183,6 +183,7 @@
            (lsp-go-use-placeholders t)
            (lsp-diagnostics-provider :none)
            (lsp-modeline-diagnostics-enable nil)
+           (lsp-headerline-breadcrumb-enable nil)
            (lsp-eslint-server-command `("node"
                                         ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
                                         "--stdio")))
