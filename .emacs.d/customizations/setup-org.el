@@ -66,6 +66,7 @@
         org-confirm-babel-evaluate nil)
   ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
   (require 'ox-md nil t)
+  (require 'ox-gfm nil t)
   (require 'org-tempo)
   (custom-set-faces
    '(org-level-1 ((t (:inherit outline-1 :height 1.6 :bold t))))

@@ -124,7 +124,7 @@
 ;; projectile everywhere!
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
-  :custom (projectile-project-search-path '("~/code/" "~/gh/" "~/code/antfin/"))
+  :custom (projectile-project-search-path '("~/code/" "~/gh/" "~/code/antfin/" "~/code/misc"))
   :config
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
@@ -213,9 +213,7 @@
       ("n" "reName" lsp-rename)
       ("m" "iMenu" my/imenu-dispatch)
       ("f" "auto Fix" lsp-execute-code-action)
-      ("e" "Error list" flycheck-list-errors)
-
-      ]
+      ("e" "Error list" flycheck-list-errors)]
      ["Rust"
       ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
   (transient-define-prefix my/file-command
@@ -253,16 +251,16 @@
       ;; ("r" "Recentf" projectile-recentf)
       ("d" "Dired" projectile-dired)
       ("v" "discoVer" projectile-discover-projects-in-search-path)
-      ("o" "multi occur" projectile-multi-occur)]
+      ("o" "Occur" projectile-multi-occur)]
      ["Manage"
-      ("p" "switch" projectile-switch-project)
-      ("a" "add" projectile-add-known-project)
-      ("i" "info" projectile-project-info)
-      ("t" "test" projectile-test-project)
-      ("c" "compile" projectile-compile-project)
-      ("r" "run" projectile-run-project)]
+      ("p" "Project" projectile-switch-project)
+      ("a" "Add" projectile-add-known-project)
+      ("i" "Info" projectile-project-info)
+      ("t" "Test" projectile-test-project)
+      ("c" "Compile" projectile-compile-project)
+      ("r" "Run" projectile-run-project)]
      ["Treemacs"
-      ("P" "Switch" treemacs-projectile)
+      ("P" "Project" treemacs-projectile)
       ("A" "Add" treemacs-add-project-to-workspace)]])
   (transient-define-prefix my/magit-command
     "Magit"
