@@ -19,3 +19,18 @@
 [submodule ".emacs.d/vendor/git-link"]
 	path = .emacs.d/vendor/git-link
 	url = https://github.com/jiacai2050/git-link.git
+[submodule ".emacs.d/vendor/smartparens"]
+	path = .emacs.d/vendor/smartparens
+	url = https://gitee.com/liujiacai/smartparens.git
+[submodule ".emacs.d/vendor/company-tabnine"]
+	path = .emacs.d/vendor/company-tabnine
+	url = https://gitee.com/liujiacai/company-tabnine.git
+[submodule ".emacs.d/vendor/company-mode"]
+	path = .emacs.d/vendor/company-mode
+	url = https://gitee.com/liujiacai/company-mode.git
+[submodule ".emacs.d/vendor/company-c-headers"]
+	path = .emacs.d/vendor/company-c-headers
+	url = https://gitee.com/liujiacai/company-c-headers.git
+[submodule ".emacs.d/vendor/native-shell-complete"]
+	path = .emacs.d/vendor/native-shell-complete
+	url = https://gitee.com/liujiacai/emacs-native-shell-complete.git

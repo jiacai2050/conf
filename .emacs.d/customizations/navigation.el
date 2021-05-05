@@ -204,16 +204,17 @@
   (transient-define-prefix my/lsp-command
     "LSP"
     [["Find"
-      ("d" "Definition" lsp-find-definition)
       ("r" "References" lsp-find-references)
       ("i" "Implementation" lsp-find-implementation)
-      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)]
+      ("s" "Symbols" lsp-treemacs-symbols)
+      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)
+      ("d" "Doc" lsp-describe-thing-at-point)]
      ["Edit"
       ("n" "reName" lsp-rename)
       ("m" "iMenu" my/imenu-dispatch)
       ("f" "auto Fix" lsp-execute-code-action)
       ("e" "Error list" flycheck-list-errors)
-      ("t" "desc Thing" lsp-describe-thing-at-point)
+
       ]
      ["Rust"
       ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])

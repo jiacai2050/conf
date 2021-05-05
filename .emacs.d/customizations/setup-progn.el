@@ -8,6 +8,10 @@
 (use-package ggtags
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))
 
+(use-package company-c-headers
+  :load-path "~/.emacs.d/vendor/company-c-headers"
+  :commands (company-c-headers))
+
 (use-package google-c-style
   :init (defun my/c-company-backends ()
           (setq-local company-backends
@@ -178,15 +182,7 @@
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"
   :commands (lsp-treemacs-symbols lsp-treemacs-references
-                                  lsp-treemacs-implementations lsp-treemacs-call-hierarchy)
-  :init
-  (defun my/toggle-treemacs-symbols ()
-    (interactive)
-    (if-let (buf (get-buffer lsp-treemacs-symbols-buffer-name))
-        (kill-buffer buf)
-      (lsp-treemacs-symbols)))
-  :bind (:map lsp-mode-map
-              ("C-c C-u" . my/toggle-treemacs-symbols)))
+                                  lsp-treemacs-implementations lsp-treemacs-call-hierarchy))
 
 (comment
  (use-package lsp-java

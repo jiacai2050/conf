@@ -20,6 +20,8 @@
   )
 
 (use-package company-native-complete
+  :load-path "~/.emacs.d/vendor/native-shell-complete"
+  :commands (company-native-complete native-complete-setup-bash)
   :init
   (defun my/set-shell-backends ()
 	(setq-local company-backends '(company-native-complete)))

@@ -4,7 +4,6 @@
 
 (setq column-number-mode t)
 (electric-indent-mode t)
-(electric-pair-mode t)
 (setq kill-do-not-save-duplicates t)
 ;; https://stackoverflow.com/a/24639415/2163429
 (setenv "LANG" "en_US.UTF-8")
@@ -172,9 +171,11 @@
 
 
 ;; 以下为第三方插件配置
-
 (use-package company
-  :init (global-company-mode)
+  :load-path "~/.emacs.d/vendor/company-mode"
+  :commands (global-company-mode)
+  :init
+  (global-company-mode t)
   :config
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
@@ -194,10 +195,13 @@
          ("C-p" . company-select-previous)
          ("M-i" . company-complete-selection)))
 
-(use-package company-c-headers)
+;; company-tabnine deps
+(use-package unicode-escape
+  :defer t)
 
 (use-package company-tabnine
-  :defer t
+  :load-path "~/.emacs.d/vendor/company-tabnine"
+  :commands (company-tabnine)
   :custom ((company-tabnine-always-trigger nil)))
 
 (use-package multiple-cursors
@@ -353,8 +357,7 @@
           forward-char
           backward-char
           previous-line
-          next-line))
-  )
+          next-line)))
 
 (use-package wgrep
   :config
@@ -369,6 +372,22 @@
 		 (("C-c '" . separedit)))
   :config
   (add-hook 'separedit-buffer-creation-hook #'auto-fill-mode))
+
+(use-package smartparens
+  :load-path "~/.emacs.d/vendor/smartparens"
+  :init
+  (require 'smartparens-config)
+  (smartparens-global-strict-mode 1)
+  :config
+  (dolist (m '(org-mode org-agenda-mode)) ;; keybindings conflict
+    (add-to-list 'sp-ignore-modes-list m))
+  :custom (sp-base-key-bindings 'paredit)
+  :bind (:map smartparens-mode-map
+         ;; ("C-M-f" . forward-sexp)
+         ;; ("C-M-b" . backward-sexp)
+         ("M-(" . sp-wrap-round)
+         ("M-[" . sp-wrap-square)
+         ("M-{" . sp-wrap-curly)))
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
