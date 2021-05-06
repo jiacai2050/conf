@@ -198,7 +198,7 @@
   (defun my/imenu-dispatch ()
     (interactive)
     (if (bound-and-true-p lsp-mode)
-        (my/toggle-treemacs-symbols)
+        (lsp-treemacs-symbols)
       (counsel-imenu)))
 
   (transient-define-prefix my/lsp-command
@@ -206,7 +206,6 @@
     [["Find"
       ("r" "References" lsp-find-references)
       ("i" "Implementation" lsp-find-implementation)
-      ("s" "Symbols" lsp-treemacs-symbols)
       ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)
       ("d" "Doc" lsp-describe-thing-at-point)]
      ["Edit"
@@ -287,10 +286,10 @@
       ("d" "Datetime<->ts" my/timestamp->human-date)
       ("w" "Ispell Word" ispell-word)]
      ["System"
+      ("M" "Derived Modes" my/derived-modes)
       ("F" "Finder" reveal-in-osx-finder)
       ("s" "Shell" my/open-terminal)
       ("f" "Fanyi" osx-dictionary-search-pointer)
-      ("t" "Treemacs" treemacs)
       ("e" "Epa" my/epa-command)]
      ["Goto"
       ("m" "Mark Ring" counsel-mark-ring)
@@ -319,7 +318,6 @@
       ("DEL" "Del Win" delete-window) ;; For terminals.
       ("x" "Kill buffer" kill-buffer)]]
     [:hide (lambda () t)
-     ("m" my/derived-modes)
      ("e" eval-buffer)])
 
   (transient-define-prefix my/helpful-command

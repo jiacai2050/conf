@@ -42,8 +42,12 @@ git apply  ~/.emacs.d/lsp-rust.patch
 Error (use-package): Failed to install cider: Failed to verify signature: "seq-2.22.tar.sig"
 #+end_src
 - [[https://emacs.stackexchange.com/a/53933/16450][解决方式]]
-#+begin_src
+#+begin_src bash
 gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+#+end_src
+或者临时取消验证
+#+begin_src emacs-lisp
+(setq package-check-signature nil)
 #+end_src
 * Built-in mode
 - global-eldoc-mode is enabled by default in Emacs 25.1, so you don’t really have to do anything to enable it.

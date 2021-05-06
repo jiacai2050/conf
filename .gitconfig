@@ -21,6 +21,8 @@
 	m = merge
 [url "git@gitlab.alipay-inc.com:"]
 	insteadOf = http://gitlab.alipay-inc.com
+[url "git@code.alipay.com:"]
+	insteadOf = https://code.alipay.com
 # [commit]
 # 	gpgsign = true
 [http]
