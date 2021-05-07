@@ -271,6 +271,7 @@
      ["History"
       ("l" "File Popup" magit-log)
       ("b" "Blame" magit-blame-addition)
+      ("t" "Timemachine" git-timemachine-toggle)
       ("j" "Blob Next" magit-blob-next)
       ("k" "Blob Previous" magit-blob-previous)]
      ["Files"
@@ -286,7 +287,6 @@
       ("d" "Datetime<->ts" my/timestamp->human-date)
       ("w" "Ispell Word" ispell-word)]
      ["System"
-      ("M" "Derived Modes" my/derived-modes)
       ("F" "Finder" reveal-in-osx-finder)
       ("s" "Shell" my/open-terminal)
       ("f" "Fanyi" osx-dictionary-search-pointer)
@@ -326,6 +326,7 @@
       ("m" "Major keymap" which-key-show-major-mode)
       ("n" "Minor keymap" which-key-show-minor-mode-keymap)]
      ["Helpful"
+      ("d" "Derived Modes" my/derived-modes)
       ("f" "Function" helpful-function)
       ("v" "Variable" helpful-variable)
       ("c" "Command" helpful-command)
