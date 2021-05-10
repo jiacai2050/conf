@@ -13,8 +13,6 @@
       inhibit-startup-screen t
       ;; No need for ~ files when editing
       create-lockfiles nil
-      ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
-      enable-local-variables :safe
       source-directory (expand-file-name "~/code/misc/emacs"))
 
 (defmacro comment (&rest body)

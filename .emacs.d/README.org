@@ -25,7 +25,9 @@ make
 kill -SIGUSR2 ${pid}
 #+end_src
 - https://emacs.stackexchange.com/questions/506/debugging-a-frozen-emacs
-** Patch
+* dir-local
+- https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
+* Patch
 vendor 内 package 上游的 bug，可以通过 patch 在不同机器上同步：
 #+begin_src bash
 cd ~/.emacs.d/vendor/lsp-mode
