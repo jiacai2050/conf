@@ -137,6 +137,11 @@
       ("v" "verify" epa-verify-file)
       ("s" "sign" my/sign-file)]]))
 
+;; https://emacs.stackexchange.com/a/64721/16450
+(use-package pinentry
+  :config
+  (pinentry-start))
+
 (use-package ispell
   :ensure nil
   :custom ((ispell-personal-dictionary "~/Documents/aspell")))

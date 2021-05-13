@@ -117,6 +117,7 @@
   (load "setup-rust.el")
 
   (org-babel-load-file (expand-file-name "misc.org" custom-conf-path))
-  (load-file (no-littering-expand-var-file-name "custom.el")))
+  (when (file-exists-p custom-file)
+	(load-file custom-file)))
 
 ;; end
