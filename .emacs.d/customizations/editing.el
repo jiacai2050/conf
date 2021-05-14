@@ -111,9 +111,7 @@
 
 (use-package epa
   :ensure nil
-  :custom (;; https://emacs.stackexchange.com/a/32554/16450
-           (epg-pinentry-mode 'loopback)
-           (password-cache-expiry (* 60 15)))
+  :custom ((password-cache-expiry nil))
   :config
   ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
 
