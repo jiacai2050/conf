@@ -84,30 +84,10 @@
 ;; below, Emacs knows where to look for the corresponding file.
 (let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))
   (add-to-list 'load-path custom-conf-path)
-
-  ;; Sets up exec-path-from-shell so that Emacs will use the correct
-  ;; environment variables
-  (load "shell-integration.el")
-
-  ;; These customizations change the way emacs looks and disable/enable
-  ;; some user interface elements
-  (load "ui.el")
-
-  ;; These customizations make editing a bit nicer.
-  (load "editing.el")
-
-  ;; These customizations make it easier for you to navigate files,
-  ;; switch buffers, and choose options from the minibuffer.
-  (load "navigation.el")
-
-  ;; For editing lisps
-  (load "elisp-editing.el")
-
+  (org-babel-load-file (expand-file-name "init.org" custom-conf-path))
   ;; settings for all langauage
   (load "setup-progn.el")
-
   ;; Langauage-specific
-  (load "setup-org.el")
   (load "setup-clojure.el")
   (load "setup-js.el")
   ;; (load "setup-common-lisp.el")
@@ -116,7 +96,6 @@
   (load "setup-go.el")
   (load "setup-rust.el")
 
-  (org-babel-load-file (expand-file-name "misc.org" custom-conf-path))
   (when (file-exists-p custom-file)
 	(load-file custom-file)))
 

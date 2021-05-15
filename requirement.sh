@@ -25,6 +25,8 @@ command_exists aspell || brew install aspell
 command_exists rg || brew install ripgrep
 command_exists pngpaste || brew install pngpaste
 command_exists gtimeout || brew install coreutils
+# http://www.figlet.org/examples.html
+command_exists figlet || brew install figlet
 
 # flycheck
 function install_shellcheck() {

@@ -59,13 +59,7 @@
           (hs-show-block)
         (hs-hide-block))))
   :bind (:map prog-mode-map
-              ("C-c o" . my/toggle-fold))
-  )
-
-(use-package newcomment
-  :ensure nil
-  :config
-  (setq-default comment-start "# "))
+              ("C-c o" . my/toggle-fold)))
 
 (use-package sql-indent)
 

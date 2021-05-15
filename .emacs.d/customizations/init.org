@@ -1,0 +1,1759 @@
+#+STARTUP: content
+* Lexical binding
+- https://www.gnu.org/software/emacs/manual/html_node/elisp/Using-Lexical-Binding.html#Using-Lexical-Binding
+#+begin_src emacs-lisp
+;;; -*- lexical-binding: t; -*-
+#+end_src
+* Shell
+On OS X, an Emacs instance started from the graphical user
+interface will have a different environment than a shell in a
+terminal window, because OS X does not run a shell during the
+login. Obviously this will lead to unexpected results when
+calling external utilities like make from Emacs.
+This library works around this problem by copying important
+environment variables from the user's shell.
+- https://github.com/purcell/exec-path-from-shell
+
+#+begin_src emacs-lisp
+(when (and (memq window-system '(mac ns x))
+           (display-graphic-p))
+  ;; emacs run inside terminal will inherit env from shell
+  (use-package exec-path-from-shell
+    :custom ((exec-path-from-shell-arguments '("-l"))
+             (exec-path-from-shell-variables '("GOPROXY" "GOPATH" "PATH" "MY_THEME" "TZ")))
+    :config
+    (exec-path-from-shell-initialize))
+  )
+
+(use-package company-native-complete
+  :load-path "~/.emacs.d/vendor/native-shell-complete"
+  :commands (company-native-complete native-complete-setup-bash)
+  :init
+  (defun my/set-shell-backends ()
+	(setq-local company-backends '(company-native-complete)))
+  :hook ((shell-mode . my/set-shell-backends))
+  :mode (("\\.macosrc" . sh-mode))
+  :config
+  (native-complete-setup-bash)
+  (setq-default sh-basic-offset 2)
+  )
+
+(use-package aweshell
+  :load-path "~/.emacs.d/vendor/aweshell"
+  :bind (("<f8>" . aweshell-dedicated-toggle)
+         ("<f9>" . aweshell-toggle))
+  :config
+  (when (display-graphic-p)
+    (setq aweshell-use-exec-path-from-shell nil))
+  (setq aweshell-auto-suggestion-p nil)
+  (setq-local company-backends '(company-capf)
+              pcomplete-cycle-completions nil)
+  (setq eshell-prompt-function
+        (lambda ()
+          (setq eshell-prompt-regexp "^[^#$\n]*[#$] ")
+          (concat "["
+                  (user-login-name)
+                  "@"
+                  (system-name)
+                  " "
+                  (format-time-string "%H:%M" (current-time))
+                  " "
+                  (abbreviate-file-name (eshell/pwd))
+
+                  "] "
+                  (when (epe-git-p)
+                    (concat "("
+                            (epe-git-branch)
+                            (epe-git-dirty)
+                            (epe-git-untracked)
+                            (let ((unpushed (epe-git-unpushed-number)))
+                              (unless (= unpushed 0)
+                                (concat ":" (number-to-string unpushed))))
+                            ")"))
+                  (if (= (user-uid) 0) "# " "$ ")
+                  "\n"))))
+
+#+end_src
+* UI
+#+begin_src emacs-lisp
+;; full path in title bar
+(setq-default frame-title-format "%b (%f)")
+
+;; don't pop up font menu
+(global-set-key (kbd "s-t") '(lambda () (interactive)))
+
+;; no bell
+(setq ring-bell-function 'ignore)
+
+;; Color Themes
+;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
+;; for a great explanation of emacs color themes.
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
+;; for a more technical explanation.
+(use-package custom
+  :ensure nil
+  :config
+  ;; disable other themes before loading new one
+  (defun my/disable-previous-theme (theme &optional _ _)
+    (mapc 'disable-theme custom-enabled-themes))
+  (advice-add 'load-theme :before 'my/disable-previous-theme))
+
+(use-package frame
+  :ensure nil
+  :config
+  ;; No cursor blinking, it's distracting
+  (blink-cursor-mode 0)
+  (when (display-graphic-p)
+    (add-to-list 'default-frame-alist '(font . "Hack-16"))
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
+  (setq-default cursor-type 't))
+
+;; (global-display-line-numbers-mode 1)
+(use-package display-line-numbers
+  :ensure nil
+  :hook ((eww-mode prog-mode text-mode conf-mode mu4e-view-mode elfeed-show-mode) . display-line-numbers-mode))
+
+(use-package time
+  :ensure nil
+  :custom ((display-time-format "[%H:%M, %a]")
+           (display-time-use-mail-icon t))
+  :config
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
+  (display-time-mode 1))
+
+;; remove minor mode from mode-line
+;; https://emacs.stackexchange.com/a/41135
+(let ((my/minor-mode-alist '((flycheck-mode flycheck-mode-line))))
+  (setq mode-line-modes
+        (mapcar (lambda (elem)
+                  (pcase elem
+                    (`(:propertize (,_ minor-mode-alist . ,_) . ,_)
+                     `(:propertize ("" ,my/minor-mode-alist)
+			                       mouse-face mode-line-highlight
+			                       local-map ,mode-line-minor-mode-keymap)
+                     )
+                    (_ elem)))
+                mode-line-modes)
+        ))
+
+(global-hl-line-mode 1)
+
+;; third party packages
+
+;; https://github.com/joostkremers/visual-fill-column
+(use-package visual-fill-column
+  :init (global-visual-line-mode 1)
+  :hook ((mu4e-view-mode elfeed-show-mode eww-mode) . visual-fill-column-mode)
+  :config
+  (setq-default fill-column 100)
+  ;; https://stackoverflow.com/a/950553/2163429
+  (global-visual-fill-column-mode 1)
+  )
+
+(use-package all-the-icons
+  :defer t)
+
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+
+  (defun my/goto-dashboard ()
+    (interactive)
+    (switch-to-buffer (get-buffer "*dashboard*")))
+  (global-set-key (kbd "<f11>") 'my/goto-dashboard)
+  ;; (add-hook 'dashboard-mode-hook 'hl-line-mode)
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
+        dashboard-projects-backend 'projectile
+        dashboard-items '((recents . 10)
+                          (projects . 8)
+                          (bookmarks . 10))
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-center-content t
+        dashboard-startup-banner 'logo))
+
+(use-package gruvbox-theme
+  :defer t)
+
+(use-package modus-themes
+  :defer t)
+
+(defun my/dark-theme-config ()
+  (load-theme 'wombat t)
+  ;; https://stackoverflow.com/a/2718543/2163429
+  (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
+                    '(region ((t (:background "blue")))))
+  (set-cursor-color "green")
+  (global-hl-line-mode 1)
+  )
+
+(defun my/light-theme-config ()
+  (if (display-graphic-p)
+      (progn
+        (load-theme 'gruvbox-light-soft t)
+        ;; https://github.com/DarwinAwardWinner/dotemacs#dont-use-ns_selection_fg_color-and-ns_selection_bg_color
+        (when (and (equal (face-attribute 'region :distant-foreground)
+                          "ns_selection_fg_color")
+                   (equal (face-attribute 'region :background)
+                          "ns_selection_bg_color"))
+          (set-face-attribute
+           'region nil
+           :distant-foreground 'unspecified
+           :background "#BAD6FC"))
+        )
+    (progn
+      ;; (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
+      ;;                   '(region ((t (:background "Light Salmon")))))
+      )))
+
+(comment
+ (if (string= (getenv "MY_THEME") "light")
+     (my/light-theme-config)
+   (my/dark-theme-config)))
+
+(load-theme 'modus-operandi t)
+
+#+end_src
+* Editing
+#+begin_src emacs-lisp
+(setq column-number-mode t)
+(electric-indent-mode t)
+(setq kill-do-not-save-duplicates t)
+;; https://stackoverflow.com/a/24639415/2163429
+(setenv "LANG" "en_US.UTF-8")
+;; Don't use hard tabs
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; Highlights matching parenthesis
+(show-paren-mode 1)
+;; This is useful for working with camel-case tokens, like names of
+;; Java classes (e.g. JavaClassName)
+(global-subword-mode)
+;; Key binding to use "hippie expand" for text autocompletion
+;; http://www.emacswiki.org/emacs/HippieExpand
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;; Lisp-friendly hippie expand
+(setq hippie-expand-try-functions-list
+      '(try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+
+;; https://emacs.stackexchange.com/a/7889/16450
+(defun my/last-save-time ()
+  (interactive)
+  (message "%s"
+           (format-time-string "Last update %F %T"
+                               (visited-file-modtime))
+           ;; (buffer-name)
+           ))
+
+(use-package newcomment
+  :ensure nil
+  :config
+  (setq-default comment-start "# "))
+
+(use-package files
+  :ensure nil
+  :config
+  (setq version-control t
+        kept-new-versions 5
+        kept-old-versions 3
+        backup-by-copying-when-linked t
+        backup-by-copying t
+        vc-make-backup-files t
+        delete-old-versions t)
+
+  ;; auto save in original file
+  ;; (auto-save-visited-mode +1)
+  (setq auto-save-default t
+        auto-save-timeout 10
+        auto-save-interval 200
+        auto-save-visited-interval 5))
+
+(use-package executable
+  :ensure nil
+  :config
+  (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+  (setq executable-prefix-env t))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; When you visit a file, point goes to the last place where it
+;; was when you previously visited the same file.
+;; http://www.emacswiki.org/emacs/SavePlace
+(use-package saveplace
+  :ensure nil
+  :config
+  (save-place-mode +1)
+  (setq-default save-place t)
+  )
+
+(use-package autorevert
+  :ensure nil
+  :hook (after-init . global-auto-revert-mode))
+
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
+(use-package winner-mode
+  :ensure nil
+  :hook (after-init . winner-mode))
+
+(use-package so-long
+  :ensure nil
+  :config (global-so-long-mode 1))
+
+(use-package view
+  :ensure nil
+  :bind (:map view-mode-map
+         (("g" . goto-line)
+          ("j" . next-line)
+          ("k" . previous-line)
+          ("n" . next-logical-line)
+          ("p" . previous-logical-line))))
+
+(use-package conf-mode
+  :ensure nil
+  :mode (("\\.gitconfig\\'" . conf-mode))
+  :config
+  (define-key conf-mode-map "\C-c " nil))
+
+(use-package auth-source
+  :ensure nil
+  :custom ((auth-sources '("~/.config/authinfo.gpg"))))
+
+(use-package epa
+  :ensure nil
+  :custom ((password-cache-expiry nil))
+  :config
+  ;; (setq epa-file-encrypt-to "jiacai2050@gmail.com")
+
+  (defun my/sign-file (&optional initial-input initial-directory)
+    (interactive)
+    (when-let (f (counsel-find-file (or initial-input (buffer-name))
+                                    initial-directory))
+      (let ((epa-armor t))
+        (epa-sign-file f nil 'detached))))
+
+  (transient-define-prefix my/epa-command ()
+    [["Keys"
+      ("l" "list public" epa-list-keys)
+      ("m" "list secret" epa-list-secret-keys)
+      ("u" "unmark" epa-unmark-key)
+      ("r" "remove" epa-delete-keys)
+      ("i" "import" epa-import-keys)
+      ("o" "export" epa-export-keys)]
+     ["File"
+      ("d" "decrypt" epa-decrypt-file)
+      ("v" "verify" epa-verify-file)
+      ("s" "sign" my/sign-file)]]))
+
+(use-package ispell
+  :ensure nil
+  :custom ((ispell-personal-dictionary "~/Documents/aspell")))
+
+;; https://github.com/dakrone/eos/blob/master/eos-writing.org#numbering-rectangles
+(defun my/num-list (start end format-string from)
+  "Delete (don't save) text in the region-rectangle, then number it."
+  (interactive
+   (list (region-beginning) (region-end)
+         (read-string "Number rectangle: "
+                      (if (looking-back "^ *") "%d. " "%d"))
+         (read-number "From: " 1)))
+  (save-excursion
+    (goto-char start)
+    (setq start (point-marker))
+    (goto-char end)
+    (setq end (point-marker))
+    (delete-rectangle start end)
+    (goto-char start)
+    (loop with column = (current-column)
+          while (and (<= (point) end) (not (eobp)))
+          for i from from   do
+          (move-to-column column t)
+          (insert (format format-string i))
+          (forward-line 1)))
+  (goto-char start))
+
+;; 以下为第三方插件配置
+
+;; https://emacs.stackexchange.com/a/64721/16450
+(use-package pinentry
+  :config
+  (pinentry-start))
+
+(use-package company
+  :load-path "~/.emacs.d/vendor/company-mode"
+  :commands (global-company-mode)
+  :init
+  (global-company-mode t)
+  :config
+  (setq company-tooltip-align-annotations t
+        company-minimum-prefix-length 2
+        company-idle-delay .3
+        company-begin-commands '(self-insert-command)
+        company-dabbrev-downcase nil
+        ;; company-echo-delay 0
+        ;; Easy navigation to candidates with M-<n>
+        company-show-numbers t
+        company-backends '((company-capf company-dabbrev-code company-dabbrev
+                                         company-gtags company-etags company-keywords)
+                           (company-files)
+                           ))
+
+  :bind (:map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("M-i" . company-complete-selection)))
+
+;; company-tabnine deps
+(use-package unicode-escape
+  :defer t)
+
+(use-package company-tabnine
+  :load-path "~/.emacs.d/vendor/company-tabnine"
+  :commands (company-tabnine)
+  :custom ((company-tabnine-always-trigger nil)))
+
+(use-package multiple-cursors
+  ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key
+  ;; doesn't work in GUI
+  :bind (("C-." . mc/mark-next-like-this)))
+
+;; yay rainbows!
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings))
+
+(use-package expand-region
+  :config
+  ;; 需要配合 iTerm2 进行 key mapping
+  ;; https://stackoverflow.com/a/40222318/2163429
+  (my/global-map-and-set-key "C-=" 'er/expand-region)
+  (my/global-map-and-set-key "C--" 'er/contract-region))
+
+(use-package undo-tree
+  :init (global-undo-tree-mode)
+  :bind (:map undo-tree-visualizer-mode-map
+         (("j" . undo-tree-visualize-redo)
+          ("k" . undo-tree-visualize-undo)
+          ("h" . undo-tree-visualize-switch-branch-left)
+          ("l" . undo-tree-visualize-switch-branch-right))))
+
+(use-package persistent-scratch
+  :config
+  (setq persistent-scratch-autosave-interval 5)
+  (ignore-errors
+    (persistent-scratch-setup-default)))
+
+(use-package comment-dwim-2
+  :bind (("M-;" . comment-dwim-2)
+         :map org-mode-map
+         ("M-;" . org-comment-dwim-2)))
+
+(use-package yaml-mode
+  :mode "\\.yml\\|ymal\\'")
+
+(use-package yasnippet
+  :init
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :ensure t)
+
+(use-package iedit
+  :config
+  (my/global-map-and-set-key "C-;" 'iedit-mode))
+
+(use-package symbol-overlay
+  :config (setq symbol-overlay-scope t)
+  :bind (("M-i" . symbol-overlay-put)))
+
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+(use-package vmd-mode
+  :defer t)
+
+(use-package carbon-now-sh
+  :defer t)
+
+(use-package go-translate
+  :config
+  (setq go-translate-base-url "https://translate.google.cn"
+        go-translate-extra-directions '(("en" . "zh-CN"))
+        go-translate-target-language "zh-CN"
+        go-translate-local-language "en"
+        go-translate-buffer-follow-p t
+        go-translate-token-current (cons 430675 2721866130))
+  )
+
+(use-package osx-dictionary
+  :defer t)
+
+(use-package evil-numbers
+  :defer t)
+
+(use-package evil
+  :hook ((evil-mode . my/evil-keymap)
+         (after-init . evil-mode))
+  :custom ((evil-respect-visual-line-mode t)
+           (evil-move-beyond-eol t))
+  :commands (evil-make-overriding-map)
+  :init
+  (defun my/evil-keymap ()
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("DEL" . evil-scroll-page-up)
+                       ("C-e" . evil-end-of-line)
+                       ("C-y" . yank)
+                       ("C-f" . forward-char)
+                       ("C-d" . delete-char)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("M-." . xref-find-definitions)
+                       ("M-," . xref-pop-marker-stack)
+                       ("RET" . xref-goto-xref)
+                       ("M-;" . comment-dwim-2)
+                       ("C-M-b" . backward-sexp)
+                       ("C-M-f" . forward-sexp)
+                       ("q" . quit-window)))
+      (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)))
+      (define-key evil-motion-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("C-y" . yank)
+                       ("C-w" . kill-region)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)
+                       ("C-k" . kill-visual-line)
+                       ("C-d" . delete-char)
+                       ("C-v" . scroll-up-command)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("C-n" . next-line)
+                       ("C-p" . previous-line)))
+      (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
+
+  :config
+  (dolist (m '(dashboard-mode magit-submodule-list-mode
+                              git-rebase-mode easy-hugo-mode dired-mode
+                              cfw:details-mode osx-dictionary-mode
+                              epa-key-list-mode epa-key-mode epa-info-mode
+                              elfeed-dashboard-mode))
+    (add-to-list 'evil-emacs-state-modes m))
+  (dolist (m '(wdired-mode))
+    (add-to-list 'evil-normal-state-modes m))
+  (dolist (m '(elfeed-show-mode elfeed-search-mode))
+    (add-to-list 'evil-motion-state-modes m))
+
+  (require 'dired)
+  (evil-make-overriding-map dired-mode-map 'normal)
+  )
+
+(use-package keyfreq
+  :init (progn
+          (keyfreq-mode 1)
+          (keyfreq-autosave-mode 1))
+  :config
+  (setq keyfreq-excluded-commands
+        '(self-insert-command
+          forward-char
+          backward-char
+          previous-line
+          next-line)))
+
+(use-package wgrep
+  :config
+  (setq wgrep-auto-save-buffer t
+        wgrep-enable-key "e"))
+
+(use-package tiny
+  :bind (("C-c ;" . tiny-expand)))
+
+(use-package separedit
+  :bind (:map prog-mode-map
+		 (("C-c '" . separedit)))
+  :config
+  (add-hook 'separedit-buffer-creation-hook #'auto-fill-mode))
+
+(use-package smartparens
+  :load-path "~/.emacs.d/vendor/smartparens"
+  :init
+  (require 'smartparens-config)
+  (smartparens-global-strict-mode 1)
+  :config
+  (dolist (m '(org-mode org-agenda-mode)) ;; keybindings conflict
+    (add-to-list 'sp-ignore-modes-list m))
+  :custom (sp-base-key-bindings 'paredit)
+  :bind (:map smartparens-mode-map
+         ;; ("C-M-f" . forward-sexp)
+         ;; ("C-M-b" . backward-sexp)
+         ("M-(" . sp-wrap-round)
+         ("M-[" . sp-wrap-square)
+         ("M-{" . sp-wrap-curly)))
+
+;; use 2 spaces for tabs
+(defun my/die-tabs ()
+  (interactive)
+  (set-variable 'tab-width 2)
+  (mark-whole-buffer)
+  (untabify (region-beginning) (region-end))
+  (keyboard-quit))
+
+;; 以下为自定义函数
+(defun my/iso-8601-date-string (&optional datetime)
+  (concat
+   (format-time-string "%Y-%m-%dT%T" datetime)
+   ((lambda (x) (concat (substring x 0 3) ":" (substring x 3 5)))
+    (format-time-string "%z" datetime))))
+
+(defun my/insert-current-date-time ()
+  (interactive)
+  (insert (my/iso-8601-date-string)))
+
+(defun my/insert-today ()
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d" (current-time))))
+
+(defun my/timestamp->human-date ()
+  (interactive)
+  (unless (region-active-p)
+    (set-mark (line-beginning-position))
+    (goto-char (line-end-position)))
+  (letrec ((date-string (buffer-substring (mark) (point)))
+           (body (if (iso8601-valid-p date-string)
+                     ;; date -> ts
+                     (format-time-string "%s" (parse-iso8601-time-string date-string))
+                   ;; ts -> date
+                   (let ((timestamp-int (string-to-number date-string)))
+                     (thread-last
+                         (if (> timestamp-int (expt 10 11)) ;; 大于 10^11 为微秒，转为秒
+                             (/ timestamp-int 1000)
+                           timestamp-int)
+                       (seconds-to-time)
+                       (my/iso-8601-date-string))))))
+    (unless (string-empty-p body)
+      (end-of-line)
+      (newline-and-indent)
+      (insert body))
+    (deactivate-mark)))
+
+(defun my/zoom-in ()
+  "Increase font size by 10 points"
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height
+                      (+ (face-attribute 'default :height)
+                         10)))
+(defun my/zoom-out ()
+  "Decrease font size by 10 points"
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height
+                      (- (face-attribute 'default :height)
+                         10)))
+
+(defun my/update-path (new-path)
+  (interactive "sEnter a new path: ")
+  (if (file-directory-p new-path)
+      (progn
+        (setenv "PATH" (concat (getenv "PATH") ":" new-path))
+        (setq exec-path (append exec-path '((concat ":" new-path))))
+        (message "%s added to PATH & exec-path" new-path))
+    (message "%s not exists!")))
+
+(defun my/url-decode-region (start end)
+  "Replace a region with the same contents, only URL decoded."
+  (interactive "r")
+  (let ((text (url-unhex-string (buffer-substring start end))))
+    (delete-region start end)
+    (insert text)))
+
+(defun my/storage-size->human ()
+  "Divide by 1024 for human"
+  (interactive)
+  (unless mark-active
+    ;; require https://github.com/magnars/expand-region.el
+    (er/mark-word))
+  (letrec ((raw-size (string-to-number (buffer-substring (mark) (point)))))
+    (while (> raw-size 1024)
+      (setq raw-size (/ raw-size 1024.0)))
+    (kill-region (mark) (point))
+    (insert (format "%f" raw-size))
+    (deactivate-mark)))
+
+(defun my/format-xml ()
+  (interactive)
+  (save-excursion
+    (sgml-pretty-print (point-min) (point-max))
+    (indent-region (point-min) (point-max))))
+
+(defun my/format-json ()
+  (interactive)
+  (save-excursion
+    (if mark-active
+        (json-pretty-print (mark) (point))
+      (json-pretty-print-buffer))))
+
+(defun my/delete-file-and-buffer (buffername)
+  "Delete the file visited by the buffer named BUFFERNAME."
+  (interactive "bDelete file")
+  (let* ((buffer (get-buffer buffername))
+         (filename (buffer-file-name buffer)))
+    (when filename
+      (delete-file filename)
+      (message "Deleted file %s" filename)
+      (kill-buffer))))
+
+(defun my/eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(defun my/diff-buffer-with-file ()
+  "Compare the current modified buffer with the saved version."
+  (interactive)
+  (let ((diff-switches "-u")) ;; unified diff
+    (diff-buffer-with-file (current-buffer))
+    (other-window 1)))
+
+(defun my/derived-modes (mode)
+  "Return a list of the ancestor modes that MODE is derived from."
+  (interactive (list major-mode))
+  (defun iter (mode)
+    (and mode
+         (cons mode
+               (iter (get mode 'derived-mode-parent)))))
+  (message "%s" (iter mode)))
+
+(global-set-key (kbd "<f6>") 'my/zoom-in)
+(global-set-key (kbd "<f5>") 'my/zoom-out)
+
+(defun my/copy-current-filename-to-clipboard ()
+  "Copy `buffer-file-name' to system clipboard."
+  (interactive)
+  (if (not buffer-file-name)
+      (message "Not a file...")
+    (message (format "Copying %s to clipboard..." buffer-file-name))
+    (kill-new buffer-file-name)))
+
+(defun my/rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+#+end_src
+* Navigation
+#+begin_src emacs-lisp
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
+(use-package uniquify
+  :ensure nil
+  :init
+  (setq uniquify-buffer-name-style 'forward))
+
+(use-package recentf
+  :ensure nil
+  :config
+  (setq recentf-max-menu-items 40
+        recentf-max-saved-items 150)
+  (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
+  (add-to-list 'recentf-exclude "\\.emacs\\.d/var/.*")
+  (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
+  (add-to-list 'recentf-exclude "elfeed/db/index")
+  (add-to-list 'recentf-exclude "/Applications/.*")
+  (add-to-list 'recentf-filename-handlers 'abbreviate-file-name)
+  (recentf-mode +1))
+
+(use-package dired
+  :ensure nil
+  :custom ((dired-listing-switches "-alh"))
+  :bind (:map dired-mode-map
+         ("e" . dired-toggle-read-only)
+         ("j" . dired-next-line)
+         ("k" . dired-previous-line)
+         ("SPC" . evil-scroll-page-down)
+         ("DEL" . evil-scroll-page-up))
+  :config
+  (setq dired-ls-F-marks-symlinks t
+        delete-by-moving-to-trash t))
+
+;; Shows a list of buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; move window by shift + up/down/left/right key
+(windmove-default-keybindings)
+
+(defun my/other-window-backward ()
+  "Goto previous window"
+  (interactive)
+  (other-window -1))
+
+(global-set-key (kbd "\C-x i") 'my/other-window-backward)
+
+;; Third party package
+
+;; https://fuco1.github.io/2017-07-15-Collapse-unique-nested-paths-in-dired-with-dired-collapse-mode.html
+(use-package dired-collapse
+  :hook (dired-mode . dired-collapse-mode))
+
+;; counsel ivy swiper
+(use-package counsel
+  :init
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
+                                (t . ivy--regex-plus)))
+  :custom ((ivy-use-virtual-buffers t)
+           (ivy-count-format "(%d/%d) ")
+           (ivy-initial-inputs-alist nil)
+           (ivy-height 15)
+           (ivy-extra-directories '("./"))
+           (counsel-switch-buffer-preview-virtual-buffers nil))
+  :bind (("M-y" . counsel-yank-pop)
+         ("C-c C-r" . ivy-resume)
+         ("M-x" . counsel-M-x)
+         ("C-x f" . counsel-switch-buffer)
+         ("C-x C-f" . counsel-find-file)
+         ("C-s" . swiper-isearch)
+         ("C-r" . swiper-isearch-backward)))
+
+(use-package ivy-avy
+  :custom ((avy-all-windows nil)
+           (avy-keys (number-sequence ?a ?z)))
+  :bind (("C-x SPC" . avy-goto-char)
+         ("C-c C-l" . avy-goto-line)
+         ("C-C SPC" . avy-goto-word-1)))
+
+(use-package ivy-hydra
+  :config
+  (defhydra hydra-multiple-cursors (:hint nil)
+    "
+ Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+------------------------------------------------------------------
+ [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+ [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+ [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search      [_q_] Quit
+ [_|_] Align with input CHAR       [Click] Cursor at point"
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("|" mc/vertical-align)
+    ("s" mc/mark-all-in-region-regexp :exit t)
+    ("0" mc/insert-numbers :exit t)
+    ("A" mc/insert-letters :exit t)
+    ("<mouse-1>" mc/add-cursor-on-click)
+    ;; Help with click recognition in this hydra
+    ("<down-mouse-1>" ignore)
+    ("<drag-mouse-1>" ignore)
+    ("q" nil)))
+
+(use-package window-numbering
+  :init (window-numbering-mode 1))
+
+(use-package all-the-icons-ivy
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+
+;; projectile everywhere!
+(use-package projectile
+  :bind ("C-c p" . projectile-command-map)
+  :custom (projectile-project-search-path '("~/code/" "~/gh/" "~/code/antfin/" "~/code/misc"))
+  :config
+  (setq projectile-switch-project-action #'projectile-find-file-dwim
+        projectile-completion-system 'ivy
+        ;; projectile-enable-caching t
+        projectile-project-root-files-functions #'(projectile-root-top-down
+                                                   projectile-root-top-down-recurring
+                                                   projectile-root-bottom-up
+                                                   projectile-root-local)
+        projectile-ignored-project-function (lambda (project-root)
+                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor" ".emacs.d/ignore" ".emacs.d/elpa"))
+                                                (when (string-match-p deny project-root)
+                                                  (cl-return t))))))
+
+(use-package smex
+  :config
+  (smex-initialize))
+
+(use-package rg
+  :defer t)
+
+(use-package treemacs
+  :bind (("<f12>" . treemacs)
+         ("M-0" . treemacs-select-window)
+         :map treemacs-mode-map
+         ("j" . treemacs-next-line)
+         ("k" . treemacs-previous-line))
+  :config
+  (progn
+    (evil-make-overriding-map treemacs-mode-map 'normal)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)))
+
+(use-package treemacs-projectile
+  :defer t)
+(use-package treemacs-all-the-icons
+  :config
+  (treemacs-load-theme "all-the-icons"))
+
+(use-package all-the-icons-dired
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  (add-hook 'dired-mode-hook 'hl-line-mode))
+
+;; Customization
+(defun my/switch-to-dependency-file ()
+  (interactive)
+  (let ((basename (pcase major-mode
+                    ('go-mode "go.mod")
+                    ('rust-mode "Cargo.toml")
+                    ('clojure-mode "project.clj")
+                    ('java-mode "pom.xml")
+                    ('emacs-lisp-mode "init.el")
+                    (mode nil))))
+
+    (if basename
+        (let ((metadata-dir (locate-dominating-file buffer-file-name basename)))
+          (when metadata-dir
+            (find-file (concat metadata-dir basename))))
+      (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
+
+(use-package reveal-in-osx-finder
+  :defer t)
+
+(use-package evil-leader
+  :init
+  (global-evil-leader-mode)
+  (defun my/exec-shell-on-buffer (shell-command-text)
+    (interactive "MShell command: ")
+    (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
+
+  (defun my/imenu-dispatch ()
+    (interactive)
+    (if (bound-and-true-p lsp-mode)
+        (lsp-treemacs-symbols)
+      (counsel-imenu)))
+
+  (transient-define-prefix my/lsp-command
+    "LSP"
+    [["Find"
+      ("r" "References" lsp-find-references)
+      ("i" "Implementation" lsp-find-implementation)
+      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)
+      ("d" "Doc" lsp-describe-thing-at-point)]
+     ["Edit"
+      ("n" "reName" lsp-rename)
+      ("m" "iMenu" my/imenu-dispatch)
+      ("f" "auto Fix" lsp-execute-code-action)
+      ("e" "Error list" flycheck-list-errors)]
+     ["Rust"
+      ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
+  (transient-define-prefix my/file-command
+    "Files"
+    [["Find"
+      ("f" "find-file" counsel-find-file)
+      ("g" "git" counsel-git)
+      ("p" "project" projectile-find-file)]
+     ["Current File"
+      ("s" "Save" save-buffer)
+      ("y" "Copy Filename" my/copy-current-filename-to-clipboard)
+      ("r" "Rename" my/rename-current-buffer-file)
+      ("k" "Delete" my/delete-file-and-buffer)
+      ("d" "Diff buffer" my/diff-buffer-with-file)
+      ("t" "Last update" my/last-save-time)
+      ("e" "Exec shell" my/exec-shell-on-buffer)]
+     ["Edit"
+      ("id" "insert date" my/insert-today)
+      ("it" "insert time" my/insert-current-date-time)]])
+  (transient-define-prefix my/search-command
+    "Search"
+    [["Search"
+      ("s" "Search" swiper-isearch)
+      ("a" "Agit" counsel-git-grep)
+      ("r" "Rg" counsel-rg)
+      ("v" "aVy-word" avy-goto-word-1)]
+     ["Replace"
+      ("f" "query-replace" query-replace)]])
+  (transient-define-prefix my/projectile-command
+    "Projectile"
+    [["Find"
+      ("f" "File" projectile-find-file)
+      ("F" "File Other Window" projectile-find-file-other-window)
+      ("s" "Ripgrep" projectile-ripgrep)
+      ;; ("r" "Recentf" projectile-recentf)
+      ("d" "Dired" projectile-dired)
+      ("v" "discoVer" projectile-discover-projects-in-search-path)
+      ("o" "Occur" projectile-multi-occur)]
+     ["Manage"
+      ("p" "Project" projectile-switch-project)
+      ("a" "Add" projectile-add-known-project)
+      ("i" "Info" projectile-project-info)
+      ("t" "Test" projectile-test-project)
+      ("c" "Compile" projectile-compile-project)
+      ("r" "Run" projectile-run-project)]
+     ["Treemacs"
+      ("P" "Project" treemacs-projectile)
+      ("A" "Add" treemacs-add-project-to-workspace)]])
+  (transient-define-prefix my/magit-command
+    "Magit"
+    [["Repository"
+      ("s" "Status" magit-status)
+      ("c" "Clone" magit-clone)
+      ("L" "List Repositories" magit-list-repositories)
+      ("d" "Dispatch Popup" magit-dispatch)]
+     ["History"
+      ("l" "File Popup" magit-log)
+      ("b" "Blame" magit-blame-addition)
+      ("t" "Timemachine" git-timemachine-toggle)
+      ("j" "Blob Next" magit-blob-next)
+      ("k" "Blob Previous" magit-blob-previous)]
+     ["Files"
+      ("p" "File Popup" magit-file-dispatch)
+      ("f" "Find File" magit-find-file)
+      ("F" "Find File in Other Window" magit-find-file-other-window)]])
+  (transient-define-prefix my/progn-command
+    "Progn"
+    [["Edit"
+      ("r" "Query Replace" query-replace)
+      ("t" "Insert Today" my/insert-today)
+      ("i" "Insert ISO8601" my/insert-current-date-time)
+      ("d" "Datetime<->ts" my/timestamp->human-date)
+      ("w" "Ispell Word" ispell-word)]
+     ["System"
+      ("F" "Finder" reveal-in-osx-finder)
+      ("s" "Shell" my/open-terminal)
+      ("f" "Fanyi" osx-dictionary-search-pointer)
+      ("e" "Epa" my/epa-command)]
+     ["Goto"
+      ("m" "Mark Ring" counsel-mark-ring)
+      ("n" "Dependency files" my/switch-to-dependency-file)
+      ("SPC" "Avy" avy-goto-word-1)
+      ("c" "lk-commit" my/git-link)
+      ("h" "lk-homepage" git-link-homepage)]]
+    [:hide (lambda () t)
+     (":" eval-expression)
+     ("'" eval-expression)])
+  (transient-define-prefix my/window-command
+    "Window"
+    [["Split"
+      ("-" "Below" split-window-below)
+      ("|" "Right" split-window-right)
+      ("\\" "Right" split-window-right)]
+     ["Move"
+      ("h" "Left" evil-window-left)
+      ("l" "Right" evil-window-right)
+      ("k" "Up" evil-window-up)
+      ("j" "Down" evil-window-down)
+      ("." "Next buffer" evil-next-buffer)
+      ("," "Prev buffer" evil-prev-buffer)]
+     ["Delete"
+      ("<backspace>" "Del Win" delete-window)
+      ("DEL" "Del Win" delete-window) ;; For terminals.
+      ("x" "Kill buffer" kill-buffer)]]
+    [:hide (lambda () t)
+     ("e" eval-buffer)])
+
+  (transient-define-prefix my/helpful-command
+    "Helpful"
+    [["Which-key"
+      ("m" "Major keymap" which-key-show-major-mode)
+      ("n" "Minor keymap" which-key-show-minor-mode-keymap)]
+     ["Helpful"
+      ("d" "Derived Modes" my/derived-modes)
+      ("f" "Function" helpful-function)
+      ("v" "Variable" helpful-variable)
+      ("c" "Command" helpful-command)
+      ("s" "Symbol" helpful-symbol)
+      ("p" "At point" helpful-at-point)
+      ("k" "Key" helpful-key)]])
+  :custom ((evil-leader/leader ",")
+           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
+           (evil-leader/in-all-states t))
+  :config
+  (defun my/insert-comma ()
+    (interactive)
+    (insert-char (char-from-name "COMMA")))
+
+  (defun my/toggle-evil-emacs-mode ()
+    (interactive)
+    (if (eq evil-state 'emacs)
+        (evil-exit-emacs-state)
+      (evil-emacs-state)))
+
+  (evil-leader/set-key
+    "w" 'eww
+    "e" 'tiny-expand
+    "r" 'counsel-switch-buffer
+    "u" 'mu4e
+    "i" 'elfeed-dashboard
+    "p" 'my/projectile-command
+
+    "a" 'swiper-isearch
+    "s" 'my/search-command
+    "d" 'my/file-command
+    "f" 'counsel-find-file
+    "g" 'my/magit-command
+    "h" 'my/helpful-command
+    "j" 'my/progn-command
+    "k" 'kill-buffer
+    "l" 'my/lsp-command
+
+    "z" 'my/toggle-evil-emacs-mode
+    "x" 'counsel-rg
+    "c" 'compile
+    "v" 'counsel-org-capture
+    "b" 'counsel-bookmark
+    "m" 'hydra-multiple-cursors/body
+    "," 'my/insert-comma
+    "." 'my/window-command
+
+    "SPC" 'avy-goto-word-1
+    "0" 'select-window-0
+    "1" 'select-window-1
+    "2" 'select-window-2
+    "3" 'select-window-3
+    "4" 'select-window-4
+    "8" 'cfw:open-calendar-buffer
+    "9" 'calendar))
+
+#+end_src
+* Org
+- https://orgmode.org/worg/org-contrib/babel/languages.html
+#+begin_src emacs-lisp
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))
+
+(defun my/indent-org-block ()
+  (interactive)
+  (when (org-in-src-block-p)
+    (org-edit-special)
+    (indent-region (point-min) (point-max))
+    (org-edit-src-exit)))
+
+;; https://stackoverflow.com/a/47850858/2163429
+(defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
+  (unless pub-dir
+    (setq pub-dir "/tmp")
+    (unless (file-directory-p pub-dir)
+      (make-directory pub-dir)))
+  (apply orig-fun extension subtreep pub-dir nil))
+
+(use-package ox-gfm
+  :defer t)
+(use-package htmlize
+  :defer t)
+(use-package ob-http
+  :defer t)
+(use-package ob-sql-mode
+  :defer t)
+
+(use-package org
+  :ensure nil
+  :bind (:map org-mode-map
+         ("C-c SPC" . avy-goto-word-1)
+         ("C-c l" . org-store-link)
+         ("s-<return>" . org-table-copy-down))
+  :custom ((org-default-notes-file "~/Documents/notes.org")
+           (org-ditaa-jar-path "~/Documents/ditaa-0.11.0-standalone.jar"))
+  :custom-face
+  (org-level-1 ((t (:inherit outline-1 :height 1.6 :bold t))))
+  (org-level-2 ((t (:inherit outline-2 :height 1.4 :bold t))))
+  (org-level-3 ((t (:inherit outline-3 :height 1.2 :bold t))))
+  (org-level-4 ((t (:inherit outline-4 :height 1.0 :bold t))))
+  (org-level-5 ((t (:inherit outline-5 :height 1.0 :bold t))))
+  :init
+  (setq org-src-tab-acts-natively t
+        ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
+        org-src-preserve-indentation t
+        org-log-done 'time
+        org-startup-folded nil
+        org-startup-indented t
+        org-image-actual-width nil
+        org-export-with-sub-superscripts nil
+        org-hide-emphasis-markers nil
+        org-capture-templates '(("t" "Task" entry (file+headline "~/Documents/notes.org" "Tasks") "* TODO %?\n  %u\n  %a")
+                                ;; "* %^{单词}\n%^{含义}"
+                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %i\n%?\n%a")
+                                )
+        ;; terminal emacs can't display those lovely images :-(
+        org-startup-with-inline-images t
+        org-confirm-babel-evaluate nil)
+  ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
+  (require 'ox-md nil t)
+  (require 'ox-gfm nil t)
+  (require 'org-tempo)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((js . t)
+     (shell . t)
+     (python . t)
+     (makefile . t)
+     (http . t)
+     (clojure . t)
+     (sql . t)
+     (awk . t)
+     (sed . t)
+     (ditaa . t)
+     (emacs-lisp . t))))
+
+
+(use-package org-download
+  :bind (:map org-mode-map
+         ("C-c v" . org-download-screenshot)
+         ("C-c d" . org-download-delete))
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  (setq-default org-download-heading-lvl nil
+                org-download-image-dir "./img"
+                ;; org-download-screenshot-method "screencapture -i %s"
+                org-download-image-org-width 600
+                org-download-screenshot-method "pngpaste %s"
+                org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
+  (setq org-download-annotate-function (lambda (link) "")))
+
+(use-package org-sidebar
+  :defer t)
+
+#+end_src
+* Lisp
+#+begin_src emacs-lisp
+(use-package elisp-mode
+  :ensure nil
+  :hook ((emacs-lisp-mode . my/elisp-company)
+         (lisp-interaction-mode . my/elisp-company))
+  :bind (:map emacs-lisp-mode-map
+         ("C-c M-n" . macrostep-expand)
+         ("C-c RET" . my/elisp-macroexpand)
+         :map lisp-interaction-mode-map
+         ("C-c M-n" . macrostep-expand)
+         ("C-c RET" . my/elisp-macroexpand))
+  :config
+  (defun my/elisp-company ()
+    ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
+    (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
+    (setq-local company-backends
+                '((company-elisp company-dabbrev-code))))
+
+  (defun my/elisp-macroexpand ()
+    (interactive)
+    (let* ((start (point))
+           (exp (read (current-buffer)))
+           ;; Compute it before, since it may signal errors.
+           (new (macroexpand-1 exp)))
+      (if (equal exp new)
+          (message "Not a macro call, nothing to expand")
+        (with-current-buffer (get-buffer-create "*elisp-macroexpand*")
+          (let ((bf (current-buffer)))
+            (view-mode -1)
+            (erase-buffer)
+            (pp new bf)
+            (switch-to-buffer-other-window bf)
+            (forward-line -100)
+            (emacs-lisp-mode)
+            (view-mode 1))))))
+
+  (defun Fuco1/lisp-indent-function (indent-point state)
+    (let ((normal-indent (current-column))
+          (orig-point (point)))
+      (goto-char (1+ (elt state 1)))
+      (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+      (cond
+       ;; car of form doesn't seem to be a symbol, or is a keyword
+       ((and (elt state 2)
+             (or (not (looking-at "\\sw\\|\\s_"))
+                 (looking-at ":")))
+        (if (not (> (save-excursion (forward-line 1) (point))
+                    calculate-lisp-indent-last-sexp))
+            (progn (goto-char calculate-lisp-indent-last-sexp)
+                   (beginning-of-line)
+                   (parse-partial-sexp (point)
+                                       calculate-lisp-indent-last-sexp 0 t)))
+        ;; Indent under the list or under the first sexp on the same
+        ;; line as calculate-lisp-indent-last-sexp.  Note that first
+        ;; thing on that line has to be complete sexp since we are
+        ;; inside the innermost containing sexp.
+        (backward-prefix-chars)
+        (current-column))
+       ((and (save-excursion
+               (goto-char indent-point)
+               (skip-syntax-forward " ")
+               (not (looking-at ":")))
+             (save-excursion
+               (goto-char orig-point)
+               (looking-at ":")))
+        (save-excursion
+          (goto-char (+ 2 (elt state 1)))
+          (current-column)))
+       (t
+        (let ((function (buffer-substring (point)
+                                          (progn (forward-sexp 1) (point))))
+              method)
+          (setq method (or (function-get (intern-soft function)
+                                         'lisp-indent-function)
+                           (get (intern-soft function) 'lisp-indent-hook)))
+          (cond ((or (eq method 'defun)
+                     (and (null method)
+                          (> (length function) 3)
+                          (string-match "\\`def" function)))
+                 (lisp-indent-defform state indent-point))
+                ((integerp method)
+                 (lisp-indent-specform method state
+                                       indent-point normal-indent))
+                (method
+                 (funcall method indent-point state)))))))))
+
+(use-package ielm
+  :ensure nil
+  :config
+  (defun ielm/clear-repl ()
+    "Clear current REPL buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (ielm-send-input)))
+  :bind (:map inferior-emacs-lisp-mode-map
+         ("M-RET" . ielm-return)
+         ("C-j" . ielm-return)
+         ("RET" . electric-newline-and-maybe-indent)
+         ("C-c l" . ielm/clear-repl)))
+#+end_src
+* Email
+- https://gist.github.com/dabrahams/3030332
+- http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
+- https://github.com/munen/emacs.d/#mu4e
+- https://jherrlin.github.io/posts/emacs-mu4e/
+- http://pragmaticemacs.com/category/mu4e/
+- https://www.djcbsoftware.nl/code/mu/mu4e/HV-Overview.html
+#+begin_src bash
+export XAPIAN_CJK_NGRAM=true
+mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package mu4e
+  :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
+  :if (executable-find "mu")
+  :bind (:map mu4e-view-mode-map
+         ("l" . mu4e-view-go-to-url)
+         ("0" . scroll-down-command)
+         ("9" . scroll-up-command)
+         :map mu4e-main-mode-map
+         ("g" . mu4e-update-mail-and-index)
+         :map mu4e-headers-mode-map
+         ("r" . mu4e-headers-mark-for-read)
+         ("!" . mu4e-headers-flag-all-read)
+         ("f" . mu4e-headers-mark-for-flag)
+         :map mu4e-compose-mode-map
+         ("C-c '" . org-mime-edit-mail-in-org-mode))
+  :custom ((mu4e-headers-fields '((:human-date    .   12)
+                                  (:flags         .    6)
+                                  (:from-or-to    .   22)
+                                  (:thread-subject .  nil)))
+           (mu4e-hide-index-messages t))
+  :config
+  (setenv "XAPIAN_CJK_NGRAM" "true")
+  (require 'mu4e-contrib)
+  (setq mu4e-contexts
+		(list
+         (make-mu4e-context
+		  :name "ljc"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-prefix-p "/ljc" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/ljc/Sent Messages")
+                  (mu4e-trash-folder . "/ljc/Deleted Messages")
+                  (mu4e-refile-folder . "/ljc/archive")
+                  (mu4e-drafts-folder . "/ljc/Drafts")
+                  (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
+                                             (:maildir "/ljc/Sent Messages" :key ?s)
+                                             (:maildir "/ljc/Drafts" :key ?D)
+                                             (:maildir "/ljc/Junk" :key ?j)
+                                             (:maildir "/ljc/=pg-hackers" :key ?p)
+                                             (:maildir "/ljc/=dev-news" :key ?d)
+                                             (:maildir "/ljc/=GitHub" :key ?G)
+                                             (:maildir "/ljc/=golang" :key ?g)
+                                             (:maildir "/ljc/=clojure" :key ?c)
+                                             (:maildir "/ljc/=mozilla" :key ?m)
+                                             (:maildir "/ljc/=openjdk" :key ?o)
+                                             (:maildir "/ljc/archive" :key ?a)
+                                             (:maildir "/ljc/=Prometheus-user" :key ?P)
+                                             (:maildir "/ljc/Deleted Messages" :key ?M)
+                                             ))
+                  ))
+         (make-mu4e-context
+		  :name "outlook"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-prefix-p "/outlook" (mu4e-message-field msg :maildir))))
+          :vars '((mu4e-sent-folder . "/outlook/Sent")
+                  (mu4e-trash-folder . "/outlook/Deleted")
+                  (mu4e-refile-folder . "/outlook/Archive")
+                  (mu4e-drafts-folder . "/outlook/Drafts")
+                  (user-mail-address . "liujiacai@live.com")
+                  (smtpmail-smtp-service . 587)
+                  (smtpmail-smtp-server . "smtp.office365.com")
+                  (smtpmail-stream-type . starttls)
+                  (mu4e-maildir-shortcuts . ((:maildir "/outlook/Inbox" :key ?i)
+                                             (:maildir "/outlook/Sent" :key ?s)
+                                             (:maildir "/outlook/Deleted" :key ?t)
+                                             (:maildir "/outlook/Drafts" :key ?d)
+                                             (:maildir "/outlook/Archive" :key ?a))))))
+        user-mail-address "hello@liujiacai.net"
+        user-full-name "Jiacai Liu"
+        smtpmail-smtp-service 465
+        smtpmail-smtp-server "smtp.exmail.qq.com"
+        smtpmail-stream-type 'ssl
+        message-send-mail-function 'smtpmail-send-it
+        ;; https://emacs.stackexchange.com/a/45216/16450
+        message-citation-line-format "\nOn %a, %b %d, %Y at %r %z, %N wrote:\n"
+        message-citation-line-function 'message-insert-formatted-citation-line
+        ;; message-cite-style message-cite-style-gmail
+        mml-secure-openpgp-signers '("D3026E5C08A0BAB4")
+        ;; mml-secure-openpgp-encrypt-to-self t
+        mu4e-view-show-addresses t
+        mu4e-view-show-images t
+        mu4e-attachment-dir "~/Downloads"
+        mu4e-sent-messages-behavior 'delete
+        mu4e-context-policy 'pick-first
+        mu4e-compose-context-policy 'ask-if-none
+        mu4e-compose-dont-reply-to-self t
+        mu4e-confirm-quit nil
+        mu4e-headers-date-format "%+4Y-%m-%d"
+        mu4e-view-date-format "%a, %Y-%m-%d %T"
+        mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
+        mu4e-update-interval (* 30 60)
+        mu4e-get-mail-command "gtimeout 60 offlineimap -o"
+        mu4e-compose-format-flowed t)
+  (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
+  (add-to-list 'mu4e-view-fields :bcc)
+  (add-to-list 'mu4e-bookmarks '(:name "Flagged"
+                                 :query "flag:flagged"
+                                 :key ?f))
+  (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
+                                 :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
+                                 :key ?i)))
+
+(use-package mu4e-maildirs-extension
+  :if (executable-find "mu")
+  :custom ((mu4e-maildirs-extension-custom-list
+            '("/ljc/INBOX"
+              "/ljc/Sent Messages"
+              "/ljc/Drafts"
+              "/ljc/=GitHub"
+              "/ljc/=pg-hackers"
+              "/ljc/=dev-news"
+              "/ljc/=golang"
+              "/ljc/=clojure"
+              "/ljc/=mongodb-dev"
+              "/ljc/=mozilla"
+              "/ljc/=openjdk"
+              "/ljc/=Prometheus-user"
+              "/ljc/archive"
+              "/ljc/Deleted Messages"
+              "/ljc/Junk"
+
+	          "/outlook/Inbox"
+	          "/outlook/Sent"
+	          "/outlook/Drafts"
+	          "/outlook/Archive"
+	          "/outlook/Deleted"
+	          "/outlook/Junk"
+	          "/outlook/Notes"
+	          "/outlook/Outbox"
+              )))
+  :config
+  (mu4e-maildirs-extension))
+
+(use-package org-mime
+  :config
+
+  (defun my/org-mime-htmlize ()
+    (let ((answer (read-from-minibuffer "Org htmlize? [y/n]:")))
+      (when (string-equal "y" answer)
+          (org-mime-htmlize))))
+
+  (defun my/sign-or-encrypt-message ()
+    (let ((answer (read-from-minibuffer "Sign or encrypt?[s/e]: ")))
+      (cond
+       ((string-equal answer "s") (progn
+                                    (message "Signing message.")
+                                    (mml-secure-message-sign-pgpmime)))
+       ((string-equal answer "e") (progn
+                                    (message "Encrypt and signing message.")
+                                    (mml-secure-message-encrypt-pgpmime)))
+       (t (progn
+            (message "Dont signing or encrypting message.")
+            nil)))))
+
+  (defun my/send-message-hook ()
+    (my/org-mime-htmlize)
+    (my/sign-or-encrypt-message))
+
+  (add-hook 'message-send-hook 'my/send-message-hook)
+  (setq org-mime-export-ascii 'utf-8
+        org-mime-export-options '(:section-numbers nil
+                                  :with-author nil
+                                  :with-toc nil)))
+
+#+end_src
+
+* Feed
+- https://nullprogram.com/blog/2013/09/04/
+- https://noonker.github.io/posts/2020-04-22-elfeed/
+#+begin_src emacs-lisp
+(use-package elfeed
+  :custom ((elfeed-use-curl t)
+           (elfeed-db-directory "~/Documents/elfeed/db/")
+           (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
+  :bind (:map elfeed-show-mode-map
+         ("8" . my/elfeed-toggle-star)
+         ("9" . my/elfeed-show-images)
+         :map elfeed-search-mode-map
+         ("8" . my/elfeed-search-star)
+         ("*" . my/elfeed-search-unstar))
+  :init
+  (defun my/elfeed-set-line-space ()
+    (setq-local line-spacing 0.3))
+  :hook (elfeed-search-mode . my/elfeed-set-line-space)
+  :config
+  (setq elfeed-search-filter "@6-months-ago +unread #50"
+        shr-inhibit-images t
+        elfeed-feeds '())
+  (when-let ((ff-cmd (executable-find "firefox")))
+    (setq
+     browse-url-browser-function 'browse-url-generic
+     browse-url-generic-program ff-cmd))
+
+  (evil-make-overriding-map elfeed-show-mode-map 'motion)
+  (evil-make-overriding-map elfeed-search-mode-map 'motion)
+  (defun my/elfeed-show-images ()
+    (interactive)
+    (let ((shr-inhibit-images nil))
+      (elfeed-show-refresh)))
+  ;;functions to support syncing .elfeed between machines
+  ;;makes sure elfeed reads index from disk before launching
+  (defun my/elfeed-open-db-and-load ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force))
+
+  ;;write to disk when quiting
+  (defun my/elfeed-close-db-and-save ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    ;; (quit-window)
+    )
+
+  (defun my/elfeed-toggle-star ()
+    (interactive)
+    (when elfeed-show-entry
+      (let ((tag (intern "starred")))
+        (if (elfeed-tagged-p tag elfeed-show-entry)
+            (elfeed-untag elfeed-show-entry tag)
+          (elfeed-tag elfeed-show-entry tag)))
+      (elfeed-show-refresh)))
+
+  (defun my/elfeed-search-star ()
+    (interactive)
+	(let ((tag (intern "starred"))
+          (entries (elfeed-search-selected)))
+	  (cl-loop for entry in entries do (elfeed-tag entry tag))
+	  (mapc #'elfeed-search-update-entry entries)
+	  (unless (use-region-p) (forward-line))))
+
+  (defun my/elfeed-search-unstar ()
+    "Remove starred tag from all selected entries."
+    (interactive)
+	(let ((tag (intern "starred"))
+          (entries (elfeed-search-selected)))
+	  (cl-loop for entry in entries do (elfeed-untag entry tag))
+	  (mapc #'elfeed-search-update-entry entries)
+	  (unless (use-region-p) (forward-line))))
+
+  ;; face for starred articles
+  (defface elfeed-search-starred-title-face
+    '((t :foreground "#f77"))
+    "Marks a starred Elfeed entry.")
+
+  (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist)
+  )
+
+(use-package elfeed-dashboard
+  :config
+  (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+
+(use-package elfeed-org
+  :custom ((rmh-elfeed-org-files `(,(no-littering-expand-etc-file-name "elfeed-feeds.org"))))
+  :config
+  (defun my/reload-org-feeds ()
+    (interactive)
+    (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
+  (advice-add 'elfeed-dashboard :before #'my/reload-org-feeds)
+  (elfeed-org))
+#+end_src
+* Calendar
+#+begin_src emacs-lisp
+(use-package cal-china
+  :ensure nil
+  :custom (;; (calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
+           ;; (calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
+           (calendar-mark-holidays-flag t))
+  :config
+  (evil-make-overriding-map calendar-mode-map 'motion)
+  :bind (:map calendar-mode-map
+              ("h" . calendar-backward-day)
+              ("l" . calendar-forward-day)
+              ("k" . calendar-backward-week)
+              ("j" . calendar-forward-week)))
+
+(use-package cal-china-x
+  :config
+  (setq cal-china-x-important-holidays '((holiday-lunar 2 19 "家财生日")
+                                         (holiday-lunar 5 1 "家钰生日")
+                                         (holiday-lunar 6 29 "家辉生日")
+                                         (holiday-lunar 11 13 "万燕生日"))
+        cal-china-x-general-holidays (append cal-china-x-chinese-holidays
+                                             '((holiday-lunar 1 15 "元宵节")))
+
+        calendar-holidays (append holiday-general-holidays holiday-local-holidays
+                                  holiday-other-holidays holiday-christian-holidays
+                                  holiday-solar-holidays
+                                  cal-china-x-important-holidays cal-china-x-general-holidays)))
+
+(use-package calfw
+  :commands cfw:open-calendar-buffer)
+#+end_src
+* EWW
+#+begin_src emacs-lisp
+(use-package eww
+  :ensure nil
+  :config
+  (setq eww-search-prefix "https://www.google.com/search?q="))
+
+#+end_src
+* Others
+#+BEGIN_SRC emacs-lisp
+(use-package restclient
+  :load-path "~/.emacs.d/vendor/restclient"
+  :mode ("\\.api\\'" . restclient-mode))
+
+(use-package protobuf-mode
+  :load-path "/usr/local/opt/protobuf/share/doc/protobuf/editors/"
+  :if (executable-find "protoc")
+  :mode ("\\.proto\\'" . protobuf-mode))
+
+;; https://github.com/justbur/emacs-which-key
+(use-package which-key
+  :config
+  (which-key-mode))
+
+(use-package chronos
+  :config
+  (defun my/chronos-shell-notify (c)
+    "Notify expiration of timer C by running a shell command.
+https://gist.github.com/bravosierrasierra/59d6d0c1ddff46a1b87b18738cecf8a2"
+    (if (eq system-type 'darwin)
+        (chronos--shell-command "Chronos shell notification for Mac OS X"
+                                "terminal-notifier"
+                                (list "-sound" "default" "-title" "TIME OVER" "-message" (chronos--message c))
+                                )
+      (chronos--shell-command "Chronos shell notification for Linux & Windows"
+                              "notify-send"
+                              (list "-t" "3600000" "TIME OVER" (chronos--message c))))
+    ;; 24*60*60*1000 = 86400000  60*60*1000 = 3600000
+    )
+  (defun my/stop-expired-timer (c)
+    (chronos--pause c))
+
+  (setq chronos-expiry-functions '(chronos-buffer-notify
+                                   my/chronos-shell-notify
+                                   chronos-message-notify
+                                   my/stop-expired-timer)))
+
+(use-package helpful
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)))
+
+(use-package easy-hugo
+  :commands (easy-hugo-with-env)
+  :init
+  (defun my/hugo-newpost (slug title tags categories)
+    (interactive "sSlug: \nsTitle: \nsTags: \nsCategories: ")
+    (easy-hugo-with-env
+     (let* ((now (current-time))
+		    (basename (concat (format-time-string "%Y-%m-%d-" now)
+							  slug easy-hugo-default-ext))
+		    (postdir (expand-file-name easy-hugo-postdir easy-hugo-basedir))
+		    (filename (expand-file-name basename postdir)))
+	   (when (file-exists-p filename)
+         (error "%s already exists!" filename))
+	   (find-file filename)
+	   (insert
+	    (format "#+TITLE: %s\n#+DATE: %s\n#+TAGS[]: %s\n#+CATEGORIES[]: %s\n"
+                title (my/iso-8601-date-string) tags categories))
+	   (goto-char (point-max))
+	   (save-buffer))))
+  :bind (:map easy-hugo-mode-map
+         ("w" . my/hugo-newpost))
+  :custom ((easy-hugo-basedir  "~/gh/jiacai2050.github.io/")
+		   (easy-hugo-url  "https://liujiacai.net")
+           (easy-hugo-default-ext ".org")
+           (easy-hugo-bloglist '(((easy-hugo-basedir . "~/gh/en-blog/")
+                                  (easy-hugo-default-ext ".org")
+		                          (easy-hugo-url . "https://en.liujiacai.net"))))))
+
+(defun my/google-search ()
+  "Googles a query or region if any."
+  (interactive)
+  (ivy-read "Google: " nil
+            :action (lambda (q)
+                      (browse-url
+                       (concat
+                        "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" q)))))
+
+
+(defalias '-> 'thread-first)
+(defalias '->> 'thread-last)
+#+END_SRC
