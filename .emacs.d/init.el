@@ -2,16 +2,6 @@
 
 (require 'package)
 
-(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-                         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-                         ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
-
-;; Load and activate emacs packages. Do this first so that the
-;; packages are loaded before you start trying to modify them.
-;; This also sets the load path.
-(package-initialize)
-
 ;; Download the ELPA archive description if needed.
 ;; This informs Emacs about the latest versions of all packages, and
 ;; makes them available for download.
@@ -78,6 +68,10 @@
 (use-package spinner
   :defer t)
 (use-package lv
+  :defer t)
+
+;; easy-hugo deps
+(use-package request
   :defer t)
 
 ;; Add a directory to our load path so that when you `load` things

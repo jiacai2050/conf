@@ -3,7 +3,7 @@
 ;; C/C++ setup
 (use-package cmake-mode
   :load-path "/usr/local/share/emacs/site-lisp/cmake"
-  :if (executable-find "cmake"))
+  :if (file-exists-p "/usr/local/share/emacs/site-lisp/cmake"))
 
 (use-package ggtags
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))

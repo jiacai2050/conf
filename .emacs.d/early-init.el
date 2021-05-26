@@ -1,7 +1,6 @@
 ;;; early-init.el -*- lexical-binding: t; -*-
 
-(setq package-enable-at-startup nil
-      default-frame-alist '((tool-bar-lines . 0)
+(setq default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)
                             (vertical-scroll-bars))
       gc-cons-threshold most-positive-fixnum
@@ -13,7 +12,11 @@
       inhibit-startup-screen t
       ;; No need for ~ files when editing
       create-lockfiles nil
-      source-directory (expand-file-name "~/code/misc/emacs"))
+      source-directory (expand-file-name "~/code/misc/emacs")
+      package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
+                         ("marmalada" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
 
 (defmacro comment (&rest body)
   nil)

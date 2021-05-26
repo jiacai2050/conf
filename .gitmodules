@@ -34,3 +34,6 @@
 [submodule ".emacs.d/vendor/native-shell-complete"]
 	path = .emacs.d/vendor/native-shell-complete
 	url = https://gitee.com/liujiacai/emacs-native-shell-complete.git
+[submodule ".emacs.d/vendor/easy-hugo"]
+	path = .emacs.d/vendor/easy-hugo
+	url = https://gitee.com/liujiacai/emacs-easy-hugo.git
