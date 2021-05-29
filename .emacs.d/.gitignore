@@ -1,4 +1,4 @@
-customizations/init.el
+customizations/core.el
 /.cask
 /elpa
 

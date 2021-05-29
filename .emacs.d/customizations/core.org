@@ -504,68 +504,6 @@ environment variables from the user's shell.
 (use-package osx-dictionary
   :defer t)
 
-(use-package evil-numbers
-  :defer t)
-
-(use-package evil
-  :hook ((evil-mode . my/evil-keymap)
-         (after-init . evil-mode))
-  :custom ((evil-respect-visual-line-mode t)
-           (evil-move-beyond-eol t))
-  :commands (evil-make-overriding-map)
-  :init
-  (defun my/evil-keymap ()
-    (dolist (binding '(("SPC" . evil-scroll-page-down)
-                       ("DEL" . evil-scroll-page-up)
-                       ("C-e" . evil-end-of-line)
-                       ("C-y" . yank)
-                       ("C-f" . forward-char)
-                       ("C-d" . delete-char)
-                       ("C-t" . transpose-chars)
-                       ("C-o" . open-line)
-                       ("M-." . xref-find-definitions)
-                       ("M-," . xref-pop-marker-stack)
-                       ("RET" . xref-goto-xref)
-                       ("M-;" . comment-dwim-2)
-                       ("C-M-b" . backward-sexp)
-                       ("C-M-f" . forward-sexp)
-                       ("q" . quit-window)))
-      (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
-
-    (dolist (binding '(("SPC" . evil-scroll-page-down)
-                       ("C-e" . end-of-visual-line)
-                       ("C-a" . beginning-of-visual-line)))
-      (define-key evil-motion-state-map (kbd (car binding)) (cdr binding)))
-
-    (dolist (binding '(("C-y" . yank)
-                       ("C-w" . kill-region)
-                       ("C-e" . end-of-visual-line)
-                       ("C-a" . beginning-of-visual-line)
-                       ("C-k" . kill-visual-line)
-                       ("C-d" . delete-char)
-                       ("C-v" . scroll-up-command)
-                       ("C-t" . transpose-chars)
-                       ("C-o" . open-line)
-                       ("C-n" . next-line)
-                       ("C-p" . previous-line)))
-      (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
-
-  :config
-  (dolist (m '(dashboard-mode magit-submodule-list-mode
-                              git-rebase-mode easy-hugo-mode dired-mode
-                              cfw:details-mode osx-dictionary-mode
-                              epa-key-list-mode epa-key-mode epa-info-mode
-                              elfeed-dashboard-mode))
-    (add-to-list 'evil-emacs-state-modes m))
-  (dolist (m '(wdired-mode))
-    (add-to-list 'evil-normal-state-modes m))
-  (dolist (m '(elfeed-show-mode elfeed-search-mode))
-    (add-to-list 'evil-motion-state-modes m))
-
-  (require 'dired)
-  (evil-make-overriding-map dired-mode-map 'normal)
-  )
-
 (use-package keyfreq
   :init (progn
           (keyfreq-mode 1)
@@ -774,6 +712,74 @@ environment variables from the user's shell.
           (set-buffer-modified-p nil)
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
+#+end_src
+** Evil
+- https://github.com/noctuid/evil-guide#further-integrating-evil-and-emacs
+#+begin_src emacs-lisp
+(use-package evil-numbers
+  :defer t)
+
+(use-package evil
+  :hook ((evil-mode . my/evil-keymap)
+         (after-init . evil-mode))
+  :custom ((evil-respect-visual-line-mode t)
+           (evil-move-beyond-eol t))
+  :commands (evil-make-overriding-map evil-make-intercept-map)
+  :init
+  (defun my/evil-keymap ()
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("DEL" . evil-scroll-page-up)
+                       ("C-e" . evil-end-of-line)
+                       ("C-y" . yank)
+                       ("C-f" . forward-char)
+                       ("C-d" . delete-char)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("M-." . xref-find-definitions)
+                       ("M-," . xref-pop-marker-stack)
+                       ("RET" . xref-goto-xref)
+                       ("M-;" . comment-dwim-2)
+                       ("C-M-b" . backward-sexp)
+                       ("C-M-f" . forward-sexp)
+                       ("C-c +" . evil-numbers/inc-at-pt)
+                       ("C-c -" . evil-numbers/dec-at-pt)
+                       ("q" . quit-window)))
+      (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("C-c +" . evil-numbers/inc-at-pt)
+                       ("C-c -" . evil-numbers/dec-at-pt)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)))
+      (define-key evil-motion-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("C-y" . yank)
+                       ("C-w" . kill-region)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)
+                       ("C-k" . kill-visual-line)
+                       ("C-d" . delete-char)
+                       ("C-v" . scroll-up-command)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("C-n" . next-line)
+                       ("C-p" . previous-line)))
+      (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
+
+  :config
+  (dolist (m '(dashboard-mode magit-submodule-list-mode
+                              git-rebase-mode easy-hugo-mode dired-mode
+                              cfw:details-mode osx-dictionary-mode
+                              epa-key-list-mode epa-key-mode epa-info-mode
+                              elfeed-dashboard-mode))
+    (add-to-list 'evil-emacs-state-modes m))
+  (dolist (m '(wdired-mode))
+    (add-to-list 'evil-normal-state-modes m))
+  (dolist (m '(elfeed-show-mode elfeed-search-mode))
+    (add-to-list 'evil-motion-state-modes m))
+
+  (require 'dired)
+  (evil-make-overriding-map dired-mode-map 'normal))
 #+end_src
 * Navigation
 #+begin_src emacs-lisp
@@ -1544,6 +1550,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :bind (:map elfeed-show-mode-map
          ("8" . my/elfeed-toggle-star)
          ("9" . my/elfeed-show-images)
+         ("g" . elfeed-show-refresh)
          :map elfeed-search-mode-map
          ("8" . my/elfeed-search-star)
          ("*" . my/elfeed-search-unstar))
@@ -1560,8 +1567,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
      browse-url-browser-function 'browse-url-generic
      browse-url-generic-program ff-cmd))
 
-  (evil-make-overriding-map elfeed-show-mode-map 'motion)
-  (evil-make-overriding-map elfeed-search-mode-map 'motion)
+  (evil-make-intercept-map elfeed-show-mode-map 'motion)
+  (evil-make-intercept-map elfeed-search-mode-map 'motion)
   (defun my/elfeed-show-images ()
     (interactive)
     (let ((shr-inhibit-images nil))
@@ -1586,11 +1593,12 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (defun my/elfeed-toggle-star ()
     (interactive)
     (when elfeed-show-entry
-      (let ((tag (intern "starred")))
-        (if (elfeed-tagged-p tag elfeed-show-entry)
+      (let* ((tag (intern "starred"))
+             (taggged (elfeed-tagged-p tag elfeed-show-entry)))
+        (if taggged
             (elfeed-untag elfeed-show-entry tag)
-          (elfeed-tag elfeed-show-entry tag)))
-      (elfeed-show-refresh)))
+          (elfeed-tag elfeed-show-entry tag))
+        (message "Starred: %s" (not taggged)))))
 
   (defun my/elfeed-search-star ()
     (interactive)
@@ -1614,8 +1622,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
     '((t :foreground "#f77"))
     "Marks a starred Elfeed entry.")
 
-  (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist)
-  )
+  (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist))
 
 (use-package elfeed-dashboard
   :config
@@ -1629,7 +1636,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (defun my/reload-org-feeds ()
     (interactive)
     (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
-  (advice-add 'elfeed-dashboard :before #'my/reload-org-feeds)
+  (advice-add 'elfeed-dashboard-update :before #'my/reload-org-feeds)
   (elfeed-org))
 #+end_src
 * Calendar

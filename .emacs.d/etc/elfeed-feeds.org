@@ -12,6 +12,13 @@
 *** [[https://halfrost.com/rss/][halfrost]]
 *** [[https://erthalion.info/atom.xml][Dmitry Dolgov]] :db:
 *** [[https://ajstorm.medium.com/feed][Adam Storm]]
+*** [[https://fasterthanli.me/index.xml][Amos]] :rust:
+*** [[http://www.brendangregg.com/blog/rss.xml][Brendan Gregg]] :linux:
+*** [[https://thume.ca/atom.xml][Tristan Hume]]
+*** [[https://eli.thegreenplace.net/feeds/all.atom.xml][Eli Bendersky]]
+*** [[http://journal.stuffwithstuff.com/rss.xml][stuffwithstuff]]
+*** [[https://jvns.ca/atom.xml][jvns]]
+*** [[https://lemire.me/blog/feed/][Daniel Lemire]]
 
 ** Rust :rust:
 *** [[https://matklad.github.io/feed.xml][Matklad]]

@@ -78,7 +78,7 @@
 ;; below, Emacs knows where to look for the corresponding file.
 (let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))
   (add-to-list 'load-path custom-conf-path)
-  (org-babel-load-file (expand-file-name "init.org" custom-conf-path))
+  (org-babel-load-file (expand-file-name "core.org" custom-conf-path))
   ;; settings for all langauage
   (load "setup-progn.el")
   ;; Langauage-specific
