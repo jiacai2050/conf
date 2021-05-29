@@ -1171,14 +1171,6 @@ environment variables from the user's shell.
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
-;; https://stackoverflow.com/a/47850858/2163429
-(defun org-export-output-file-name-modified (orig-fun extension &optional subtreep pub-dir)
-  (unless pub-dir
-    (setq pub-dir "/tmp")
-    (unless (file-directory-p pub-dir)
-      (make-directory pub-dir)))
-  (apply orig-fun extension subtreep pub-dir nil))
-
 (use-package ox-gfm
   :defer t)
 (use-package htmlize
@@ -1224,6 +1216,15 @@ environment variables from the user's shell.
   (require 'ox-gfm nil t)
   (require 'org-tempo)
   :config
+;; https://stackoverflow.com/a/47850858/2163429
+  (defun my/org-export-file (orig-fun extension &optional subtreep pub-dir)
+    (unless pub-dir
+      (setq pub-dir "/tmp")
+      (unless (file-directory-p pub-dir)
+        (make-directory pub-dir)))
+    (apply orig-fun extension subtreep pub-dir nil))
+  (advice-add 'org-export-output-file-name :around #'my/org-export-file)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((js . t)
@@ -1237,7 +1238,6 @@ environment variables from the user's shell.
      (sed . t)
      (ditaa . t)
      (emacs-lisp . t))))
-
 
 (use-package org-download
   :bind (:map org-mode-map

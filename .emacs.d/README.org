@@ -427,8 +427,6 @@ opam install tuareg merlin utop
   ;; #+LaTeX_HEADER: \begin{CJK}{UTF8}{gbsn}
   (add-to-list 'org-latex-packages-alist '("" "CJKutf8" t))
 
-  (advice-add 'org-export-output-file-name :around #'org-export-output-file-name-modified)
-
   (setq org-publish-project-alist
         '(("org-notes"
            :base-directory "~/study-note/"

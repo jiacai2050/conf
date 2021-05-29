@@ -48,6 +48,7 @@
 *** [[https://www.masteringemacs.org/feed][Mastering Emacs]]
 *** [[https://emacsredux.com/atom.xml][Emacs Redux]]
 *** [[https://endlessparentheses.com/atom.xml][Endless Parentheses]]
+*** [[https://emacsair.me/feed.xml][Emacsair]]
 
 ** News :news:
 *** [[https://lillianli.substack.com/feed/][Chinese Characteristics]]
