@@ -143,12 +143,13 @@ environment variables from the user's shell.
 
 ;; https://github.com/joostkremers/visual-fill-column
 (use-package visual-fill-column
-  :init (global-visual-line-mode 1)
-  :hook ((mu4e-view-mode elfeed-show-mode eww-mode) . visual-fill-column-mode)
-  :config
+  :init
   (setq-default fill-column 100)
+  (global-visual-line-mode 1)
+  ;; :hook ((mu4e-view-mode elfeed-show-mode eww-mode) . visual-fill-column-mode)
+  :config
   ;; https://stackoverflow.com/a/950553/2163429
-  (global-visual-fill-column-mode 1)
+  ;; (global-visual-fill-column-mode 1)
   )
 
 (use-package all-the-icons
@@ -1544,6 +1545,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 - https://noonker.github.io/posts/2020-04-22-elfeed/
 #+begin_src emacs-lisp
 (use-package elfeed
+  :load-path "~/.emacs.d/vendor/elfeed"
   :custom ((elfeed-use-curl t)
            (elfeed-db-directory "~/Documents/elfeed/db/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
@@ -1557,7 +1559,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :init
   (defun my/elfeed-set-line-space ()
     (setq-local line-spacing 0.3))
-  :hook (elfeed-search-mode . my/elfeed-set-line-space)
+  :hook ((elfeed-search-mode elfeed-show-mode) . my/elfeed-set-line-space)
   :config
   (setq elfeed-search-filter "@6-months-ago +unread #50"
         shr-inhibit-images t
@@ -1625,12 +1627,15 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist))
 
 (use-package elfeed-dashboard
+  :load-path "~/.emacs.d/vendor/elfeed-dashboard"
   :config
+  (require 'elfeed-link)
   (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
   ;; update feed counts on elfeed-quit
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 
 (use-package elfeed-org
+  :load-path "~/.emacs.d/vendor/elfeed-org"
   :custom ((rmh-elfeed-org-files `(,(no-littering-expand-etc-file-name "elfeed-feeds.org"))))
   :config
   (defun my/reload-org-feeds ()

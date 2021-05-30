@@ -37,3 +37,12 @@
 [submodule ".emacs.d/vendor/easy-hugo"]
 	path = .emacs.d/vendor/easy-hugo
 	url = https://gitee.com/liujiacai/emacs-easy-hugo.git
+[submodule ".emacs.d/vendor/elfeed"]
+	path = .emacs.d/vendor/elfeed
+	url = https://gitee.com/liujiacai/elfeed.git
+[submodule ".emacs.d/vendor/elfeed-dashboard"]
+	path = .emacs.d/vendor/elfeed-dashboard
+	url = https://gitee.com/liujiacai/elfeed-dashboard.git
+[submodule ".emacs.d/vendor/elfeed-org"]
+	path = .emacs.d/vendor/elfeed-org
+	url = https://gitee.com/liujiacai/elfeed-org.git

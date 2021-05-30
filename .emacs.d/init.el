@@ -2,15 +2,9 @@
 
 (require 'package)
 
-;; Download the ELPA archive description if needed.
-;; This informs Emacs about the latest versions of all packages, and
-;; makes them available for download.
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(dolist (p '(use-package))
-  (when (not (package-installed-p p))
-    (package-install p)))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package)
@@ -62,6 +56,8 @@
 (use-package f
   :defer t)
 (use-package ht
+  :defer t)
+(use-package s
   :defer t)
 
 ;; lsp-mode deps
