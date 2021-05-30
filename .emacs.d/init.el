@@ -34,7 +34,13 @@
                                       (if (display-graphic-p)
                                           "scratch-gui.el"
                                         "scratch-terminal.el"))
-        mc/list-file (no-littering-expand-etc-file-name "mc-lists.el")))
+        mc/list-file (no-littering-expand-etc-file-name "mc-lists.el"))
+
+  (defun my/generate-autoloads (pkg-name &rest dirs)
+    (let ((generated-autoload-file (no-littering-expand-var-file-name (format "%s-autoloads.el" pkg-name))))
+      (unless (file-exists-p generated-autoload-file)
+        (apply 'update-directory-autoloads dirs))
+      (load-file generated-autoload-file))))
 
 ;; magit dependencies
 (use-package with-editor

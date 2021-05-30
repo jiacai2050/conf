@@ -120,6 +120,9 @@
 (use-package lsp-mode
   :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
   :init
+  (my/generate-autoloads "lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode/clients")
   (defun my/lsp-before-save ()
     (add-hook 'before-save-hook 'lsp-format-buffer nil t))
   (defun my/lsp-js ()
@@ -151,7 +154,7 @@
          (js-mode .  my/lsp-js)
          (lsp-mode . lsp-enable-which-key-integration)
          (lsp-mode . my/lsp-before-save))
-  :commands (lsp lsp-deferred)
+  :commands (lsp-rust-analyzer-expand-macro)
   :custom ((lsp-log-io nil)
            (lsp-eldoc-render-all nil)
            (lsp-completion-provider t)
@@ -167,7 +170,6 @@
                                         ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
                                         "--stdio")))
   :config
-  (require 'lsp-modeline)
   (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
   :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)
