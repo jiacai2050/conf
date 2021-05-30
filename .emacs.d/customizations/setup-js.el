@@ -4,14 +4,15 @@
 
 (use-package js
   :ensure nil
+  :defer t
   :custom ((js-indent-level 2)))
 
 (use-package json-mode
-  :init (defun my/json-before-save()
-          (add-hook 'before-save-hook 'json-pretty-print-buffer nil t))
+  :init
+  (defun my/json-before-save()
+    (add-hook 'before-save-hook 'json-pretty-print-buffer nil t))
   :mode (("\\.jshintrc" . json-mode))
-  :hook (json-mode . my/json-before-save)
-  )
+  :hook (json-mode . my/json-before-save))
 
 (use-package tagedit
   :config

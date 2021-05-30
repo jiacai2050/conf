@@ -748,6 +748,7 @@ environment variables from the user's shell.
       (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
 
     (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("DEL" . evil-scroll-page-up)
                        ("C-c +" . evil-numbers/inc-at-pt)
                        ("C-c -" . evil-numbers/dec-at-pt)
                        ("C-e" . end-of-visual-line)
@@ -1172,8 +1173,8 @@ environment variables from the user's shell.
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
-(use-package ox-gfm
-  :defer t)
+(use-package ox-gfm)
+
 (use-package htmlize
   :defer t)
 (use-package ob-http
@@ -1207,17 +1208,13 @@ environment variables from the user's shell.
         org-hide-emphasis-markers nil
         org-capture-templates '(("t" "Task" entry (file+headline "~/Documents/notes.org" "Tasks") "* TODO %?\n  %u\n  %a")
                                 ;; "* %^{单词}\n%^{含义}"
-                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %i\n%?\n%a")
-                                )
+                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %i\n%?\n%a"))
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t
         org-confirm-babel-evaluate nil)
-  ;; markdown export require emacs 25 https://stackoverflow.com/a/33033533/2163429
-  (require 'ox-md nil t)
-  (require 'ox-gfm nil t)
-  (require 'org-tempo)
   :config
-;; https://stackoverflow.com/a/47850858/2163429
+  (require 'org-tempo)
+  ;; https://stackoverflow.com/a/47850858/2163429
   (defun my/org-export-file (orig-fun extension &optional subtreep pub-dir)
     (unless pub-dir
       (setq pub-dir "/tmp")
@@ -1559,7 +1556,6 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :init
   (defun my/elfeed-set-line-space ()
     (setq-local line-spacing 0.3))
-
   (my/generate-autoloads "elfeed" "~/.emacs.d/vendor/elfeed")
 
   :hook ((elfeed-search-mode elfeed-show-mode) . my/elfeed-set-line-space)
@@ -1631,6 +1627,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 
 (use-package elfeed-dashboard
   :load-path "~/.emacs.d/vendor/elfeed-dashboard"
+  :commands (elfeed-dashboard)
   :config
   (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
   ;; update feed counts on elfeed-quit
