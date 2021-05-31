@@ -49,6 +49,7 @@
 *** [[https://emacsredux.com/atom.xml][Emacs Redux]]
 *** [[https://endlessparentheses.com/atom.xml][Endless Parentheses]]
 *** [[https://emacsair.me/feed.xml][Emacsair]]
+*** [[https://oremacs.com/atom.xml][Or Emacs]]
 
 ** News :news:
 *** [[https://lillianli.substack.com/feed/][Chinese Characteristics]]
