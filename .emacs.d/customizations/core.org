@@ -1211,7 +1211,7 @@ environment variables from the user's shell.
         org-hide-emphasis-markers nil
         org-capture-templates
         '(("t" "Task" entry (file org-default-notes-file) "* TODO %?\n%T\n%a")
-          ("i" "Idea" entry (file "~/Documents/ideas.org") "* %?\n%T\n%a")
+          ("i" "Idea" entry (file "~/Documents/ideas.org") "* TODO %?\n%T\n%a")
           ;; "* %^{单词}\n%^{含义}"
           ("e" "English Book" entry (file "~/Documents/english.org") "* %i\n%?\n%a %T"))
         org-todo-keywords
@@ -1291,8 +1291,7 @@ environment variables from the user's shell.
     (add-hook 'before-save-hook 'my/buffer-indent nil t)
     ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
     (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
-    (setq-local company-backends
-                '((company-elisp company-dabbrev-code))))
+    (setq-local company-backends '((company-elisp company-dabbrev-code))))
 
   (defun my/elisp-macroexpand ()
     (interactive)
@@ -1565,7 +1564,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 (use-package elfeed
   :load-path "~/.emacs.d/vendor/elfeed"
   :custom ((elfeed-use-curl t)
-           (elfeed-db-directory "~/Documents/elfeed/db/")
+           (elfeed-db-directory "~/Documents/elfeed/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
   :bind (:map elfeed-show-mode-map
          ("8" . my/elfeed-toggle-star)
@@ -1638,6 +1637,41 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 	  (cl-loop for entry in entries do (elfeed-untag entry tag))
 	  (mapc #'elfeed-search-update-entry entries)
 	  (unless (use-region-p) (forward-line))))
+
+  (defun my/elfeed-export (output)
+    (interactive "fOutput: ")
+    (require 'f)
+    (let* ((sf (elfeed-search-parse-filter "+starred"))
+	       (uf (elfeed-search-parse-filter "-unread"))
+	       (starred-entries '())
+	       (read-entries '())
+	       (hash-table (make-hash-table)))
+      (with-elfeed-db-visit (entry feed)
+	    (when (elfeed-search-filter sf entry feed)
+	      (add-to-list 'starred-entries (elfeed-entry-link entry)))
+	    (when (elfeed-search-filter uf entry feed)
+	      (add-to-list 'read-entries (elfeed-entry-link entry))))
+
+      (puthash :starred starred-entries hash-table)
+      (puthash :read read-entries hash-table)
+      (f-write-text (prin1-to-string hash-table) 'utf-8 output)
+
+      (message "Export to %s. starred: %d, read: %d" output (length starred-entries) (length read-entries))))
+
+  (defun my/elfeed-import (f)
+    (interactive "fInput: ")
+    (require 'f)
+    (let* ((hash-table (read (f-read-text f)))
+           (starred-entries (gethash :starred hash-table))
+           (read-entries (gethash :read hash-table)))
+      (with-elfeed-db-visit (entry feed)
+        (let* ((link (elfeed-entry-link entry)))
+          (when (member link starred-entries)
+            (elfeed-tag entry (intern "starred")))
+          (when (member link read-entries)
+            (elfeed-untag entry (intern "unread")))))
+
+      (message "Import starred: %d, read: %d" (length starred-entries) (length read-entries))))
 
   ;; face for starred articles
   (defface elfeed-search-starred-title-face
