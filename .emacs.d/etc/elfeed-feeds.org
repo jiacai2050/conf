@@ -19,10 +19,11 @@
 *** [[http://journal.stuffwithstuff.com/rss.xml][stuffwithstuff]]
 *** [[https://jvns.ca/atom.xml][jvns]]
 *** [[https://lemire.me/blog/feed/][Daniel Lemire]]
-
-** Rust :rust:
-*** [[https://matklad.github.io/feed.xml][Matklad]]
-*** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher]]  :python:
+** Programming Language :pl:
+*** [[https://matklad.github.io/feed.xml][Matklad]] :rust:
+*** [[https://lucumr.pocoo.org/feed.atom][Armin Ronacher]]  :python:rust:
+*** [[https://blog.golang.org/feed.atom][Go blog]] :go:
+*** [[https://clojure.org/feed.xml][Clojure News]] :clojure:
 ** Databases :db:
 *** [[https://blog.yugabyte.com/feed/][YugaByteDB]]
 *** [[https://www.cockroachlabs.com/blog/index.xml][CockroachLabs]]
@@ -32,8 +33,6 @@
 *** [[https://blog.dbi-services.com/author/franckpachot/feed][DBI Franck]]
 *** [[https://rocksdb.org/feed.xml][RocksDB]]
 *** [[https://engineering.mongodb.com/post?format=rss][MongoDB]]
-** Golang :go:
-*** [[https://blog.golang.org/feed.atom][Go blog]]
 ** Tech Blog :company:
 *** [[https://blogs.dropbox.com/tech/feed/][Dropbox]]
 *** [[https://engineering.linkedin.com/blog.rss.html][LinkedIn]]
@@ -43,6 +42,7 @@
 *** [[https://medium.com/feed/paypal-engineering][PayPal]]
 *** [[https://engineering.grab.com/feed.xml][Grab]]
 *** [[https://medium.com/feed/pinterest-engineering][Pinterest]]
+*** [[https://tech.redplanetlabs.com/feed/][Red Planet Labs]] :clojure:
 ** Emacs :emacs:
 *** https://jherrlin.github.io/index.xml
 *** [[https://www.masteringemacs.org/feed][Mastering Emacs]]

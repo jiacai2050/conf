@@ -6,11 +6,11 @@ Good tools are prerequisite to the successful execution of a job.
 #+end_quote
 
 ** 软件版本记录
-|                           | version                     |
-|---------------------------+-----------------------------|
-| =rust-analyzer --version= | [[https://github.com/rust-analyzer/rust-analyzer/releases/tag/2021-05-03][eb741e895 2021-05-03 stable]] |
-| =gopls version=           | [[https://github.com/golang/tools/releases/tag/gopls%2Fv0.6.10][v0.6.10]]                     |
-|                           |                             |
+|                           | version              | update date |
+|---------------------------+----------------------+-------------|
+| =rust-analyzer --version= | [[https://github.com/rust-analyzer/rust-analyzer/releases/tag/2021-05-31][28e32fe40 2021-05-31]] |  2021-06-05 |
+| =gopls version=           | [[https://github.com/golang/tools/releases/tag/gopls%2Fv0.6.11][v0.6.11]]              |  2021-06-05 |
+|                           |                      |             |
 - https://github.com/golang/tools/blob/master/gopls/README.md
 #+begin_src bash
 GO111MODULE=on go get golang.org/x/tools/gopls@latest

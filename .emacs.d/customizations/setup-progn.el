@@ -13,14 +13,14 @@
   :commands (company-c-headers))
 
 (use-package google-c-style
-  :init (defun my/c-company-backends ()
-          (setq-local company-backends
-                      '(company-c-headers company-gtags company-dabbrev
-                                          company-dabbrev-code company-keywords)))
+  :init
+  (defun my/c-hook ()
+    (add-hook 'before-save-hook 'my/buffer-indent nil t)
+    (setq-local company-backends
+                '(company-c-headers company-gtags company-tabnine)))
   :hook ((c-mode-common . google-set-c-style)
          (c-mode-common . google-make-newline-indent)
-         (c-mode-common . my/c-company-backends))
-  )
+         (c-mode-common . my/c-hook)))
 ;; C/C++ finish
 
 (use-package compile
@@ -59,7 +59,7 @@
           (hs-show-block)
         (hs-hide-block))))
   :bind (:map prog-mode-map
-              ("C-c o" . my/toggle-fold)))
+         ("C-c o" . my/toggle-fold)))
 
 (use-package sql-indent)
 
@@ -109,7 +109,7 @@
 
 (use-package git-timemachine
   :bind (:map vc-prefix-map
-              ("t" . git-timemachine))
+         ("t" . git-timemachine))
   :hook ((git-timemachine-mode . display-line-numbers-mode)
          (git-timemachine-mode . evil-normalize-keymaps))
   :config
@@ -123,37 +123,33 @@
   (my/generate-autoloads "lsp-mode"
                          "~/.emacs.d/vendor/lsp-mode"
                          "~/.emacs.d/vendor/lsp-mode/clients")
-  (defun my/lsp-before-save ()
-    (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+  (setq lsp-keymap-prefix "C-c l")
   (defun my/lsp-js ()
     "Enable LSP for JavaScript, but not for JSON"
     (when (eq 'js-mode major-mode)
       (lsp-deferred)))
   (defun my/lsp-rust ()
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t)
     (setq-local lsp-completion-enable nil
                 lsp-modeline-code-actions-enable nil)
     (lsp-deferred))
-  (setq lsp-keymap-prefix "C-c l")
   ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
   (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
     (-let* (((&hash "value") contents)
-            ;; (_  (message "hover value = [%s]" value))
             (groups (--partition-by (s-blank? it) (s-lines (s-trim value))))
             (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
                            (-third-item groups)
                          (car groups)))
             (sig (--> sig_group
-                      (--drop-while (s-equals? "```rust" it) it)
-                      (--take-while (not (s-equals? "```" it)) it)
-                      (s-join "" it))))
-      ;; (message "sig = [%s]" sig)
+                   (--drop-while (s-equals? "```rust" it) it)
+                   (--take-while (not (s-equals? "```" it)) it)
+                   (s-join "" it))))
       (lsp--render-element (concat "```rust\n" sig "\n```"))))
   :hook ((go-mode . lsp-deferred)
          (rust-mode . my/lsp-rust)
          (python-mode . lsp-deferred)
          (js-mode .  my/lsp-js)
-         (lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . my/lsp-before-save))
+         (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp-rust-analyzer-expand-macro)
   :custom ((lsp-log-io nil)
            (lsp-eldoc-render-all nil)
@@ -172,8 +168,8 @@
   :config
   (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
   :bind (:map lsp-mode-map
-              ("M-." . lsp-find-definition)
-              ("M-n" . lsp-find-references)))
+         ("M-." . lsp-find-definition)
+         ("M-n" . lsp-find-references)))
 
 (use-package lsp-treemacs
   :load-path "~/.emacs.d/vendor/lsp-treemacs"

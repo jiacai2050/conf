@@ -45,8 +45,15 @@
 (defun my/global-map-and-set-key (key command &optional prefix suffix)
   "`my/map-key' KEY then `global-set-key' KEY with COMMAND.
 PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
-   (my/map-key key)
-   (global-set-key (kbd (concat prefix key suffix)) command))
+  (my/map-key key)
+  (global-set-key (kbd (concat prefix key suffix)) command))
+
+(defun my/buffer-indent ()
+  (interactive)
+  (save-excursion
+    (mark-whole-buffer)
+    (indent-for-tab-command))
+  )
 
 (defun my/open-terminal ()
   "Open system terminal."

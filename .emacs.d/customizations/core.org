@@ -397,15 +397,14 @@ environment variables from the user's shell.
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
         company-idle-delay .3
-        company-begin-commands '(self-insert-command)
+        company-begin-commands '(self-insert-command org-self-insert-command)
         company-dabbrev-downcase nil
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
         company-backends '((company-capf company-dabbrev-code company-dabbrev
                                          company-gtags company-etags company-keywords)
-                           (company-files)
-                           ))
+                           (company-files)))
 
   :bind (:map company-active-map
          ("C-n" . company-select-next)
@@ -769,7 +768,7 @@ environment variables from the user's shell.
       (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
 
   :config
-  (dolist (m '(dashboard-mode magit-submodule-list-mode
+  (dolist (m '(dashboard-mode magit-submodule-list-mode helpful-mode
                               git-rebase-mode easy-hugo-mode dired-mode
                               cfw:details-mode osx-dictionary-mode
                               epa-key-list-mode epa-key-mode epa-info-mode
@@ -1190,6 +1189,7 @@ environment variables from the user's shell.
          ("s-<return>" . org-table-copy-down))
   :custom ((org-default-notes-file "~/Documents/notes.org")
            (org-ditaa-jar-path "~/Documents/ditaa-0.11.0-standalone.jar"))
+  :hook (org-mode . my/org-hook)
   :custom-face
   (org-level-1 ((t (:inherit outline-1 :height 1.6 :bold t))))
   (org-level-2 ((t (:inherit outline-2 :height 1.4 :bold t))))
@@ -1197,6 +1197,9 @@ environment variables from the user's shell.
   (org-level-4 ((t (:inherit outline-4 :height 1.0 :bold t))))
   (org-level-5 ((t (:inherit outline-5 :height 1.0 :bold t))))
   :init
+  (defun my/org-hook ()
+    (setq-local company-backends '(company-tabnine)))
+
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
         org-src-preserve-indentation t
@@ -1206,9 +1209,25 @@ environment variables from the user's shell.
         org-image-actual-width nil
         org-export-with-sub-superscripts nil
         org-hide-emphasis-markers nil
-        org-capture-templates '(("t" "Task" entry (file+headline "~/Documents/notes.org" "Tasks") "* TODO %?\n  %u\n  %a")
-                                ;; "* %^{单词}\n%^{含义}"
-                                ("e" "English Book" entry (file+headline "~/Documents/english.org" "English") "* %i\n%?\n%a"))
+        org-capture-templates
+        '(("t" "Task" entry (file org-default-notes-file) "* TODO %?\n%T\n%a")
+          ("i" "Idea" entry (file "~/Documents/ideas.org") "* %?\n%T\n%a")
+          ;; "* %^{单词}\n%^{含义}"
+          ("e" "English Book" entry (file "~/Documents/english.org") "* %i\n%?\n%a %T"))
+        org-todo-keywords
+        '((sequence "TODO(t)" "WORKING(w!)" "|" "DONE(d)")
+	      (sequence "PENDING(p@/!)" "INACTIVE(i@)" "SOMEDAY(s)" "|" "CANCELLED(c@/!)"))
+        org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold)
+	      ("TASK" :foreground "#5C888B" :weight bold)
+	      ("WORKING" :foreground "blue" :weight bold)
+	      ("DONE" :foreground "forest green" :weight bold)
+
+	      ("PENDING" :foreground "orange" :weight bold)
+	      ("INACTIVE" :foreground "magenta" :weight bold)
+	      ("SOMEDAY" :foreground "#AB47BC" :weight bold)
+	      ("CANCELLED" :foreground "#F06292" :weight bold))
+
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t
         org-confirm-babel-evaluate nil)
@@ -1259,8 +1278,8 @@ environment variables from the user's shell.
 #+begin_src emacs-lisp
 (use-package elisp-mode
   :ensure nil
-  :hook ((emacs-lisp-mode . my/elisp-company)
-         (lisp-interaction-mode . my/elisp-company))
+  :hook ((emacs-lisp-mode . my/elisp-hook)
+         (lisp-interaction-mode . my/elisp-hook))
   :bind (:map emacs-lisp-mode-map
          ("C-c M-n" . macrostep-expand)
          ("C-c RET" . my/elisp-macroexpand)
@@ -1268,7 +1287,8 @@ environment variables from the user's shell.
          ("C-c M-n" . macrostep-expand)
          ("C-c RET" . my/elisp-macroexpand))
   :config
-  (defun my/elisp-company ()
+  (defun my/elisp-hook ()
+    (add-hook 'before-save-hook 'my/buffer-indent nil t)
     ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
     (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
     (setq-local company-backends
@@ -1374,7 +1394,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
   :bind (:map mu4e-view-mode-map
-         ("l" . mu4e-view-go-to-url)
+         ("f" . mu4e~headers-jump-to-maildir)
          ("0" . scroll-down-command)
          ("9" . scroll-up-command)
          :map mu4e-main-mode-map
@@ -1464,6 +1484,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         mu4e-update-interval (* 30 60)
         mu4e-get-mail-command "gtimeout 60 offlineimap -o"
         mu4e-compose-format-flowed t)
+  (evil-add-hjkl-bindings mu4e-view-mode-map)
   (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-fields :bcc)
   (add-to-list 'mu4e-bookmarks '(:name "Flagged"

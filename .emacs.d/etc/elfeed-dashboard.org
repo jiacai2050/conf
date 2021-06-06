@@ -8,16 +8,15 @@
 
 * Bookmarks
 
- [s] Starred     [[elfeed:+starred][  1]]
- [R] Recent      [[elfeed:-unread][___]]
- [u] Unread      ([[elfeed:+unread][   774]]/[[elfeed:][   874]])
- [d] Database    ([[elfeed:+unread +db][   343]]/[[elfeed:+db][   365]])
- [c] Company     ([[elfeed:+unread +company][   359]]/[[elfeed:+company][   382]])
- [b] Blogs       ([[elfeed:+unread +blog][    71]]/[[elfeed:+blog][    93]])
- [e] Emacs       ([[elfeed:+unread +emacs][   178]]/[[elfeed:+emacs][   178]])
- [r] Rust        ([[elfeed:+unread +rust][    59]]/[[elfeed:+rust][    64]])
- [o] Golang      ([[elfeed:+unread +go][     9]]/[[elfeed:+go][    10]])
- [n] News        ([[elfeed:+unread +news][    90]]/[[elfeed:+news][   135]])
+ [s] Starred     [[elfeed:+starred][ 15]]
+ [r] Recent      [[elfeed:-unread][575]]
+ [u] Unread      ([[elfeed:+unread][  1712]]/[[elfeed:][  2287]])
+ [d] Database    ([[elfeed:+unread +db][   317]]/[[elfeed:+db][   500]])
+ [c] Company     ([[elfeed:+unread +company][   380]]/[[elfeed:+company][   477]])
+ [b] Blogs       ([[elfeed:+unread +blog][   491]]/[[elfeed:+blog][   580]])
+ [e] Emacs       ([[elfeed:+unread +emacs][   351]]/[[elfeed:+emacs][   372]])
+ [p] PLanguage   ([[elfeed:+unread +pl][    31]]/[[elfeed:+pl][    31]])
+ [n] News        ([[elfeed:+unread +news][   380]]/[[elfeed:+news][   605]])
 
 * Configuration
   :PROPERTIES:
@@ -28,14 +27,13 @@
 
   #+STARTUP: showall showstars indent
   #+KEYMAP: s | elfeed-dashboard-query "+starred"
-  #+KEYMAP: R | elfeed-dashboard-query "-unread"
+  #+KEYMAP: r | elfeed-dashboard-query "-unread"
   #+KEYMAP: u | elfeed-dashboard-query "+unread"
   #+KEYMAP: d | elfeed-dashboard-query "+unread +db"
   #+KEYMAP: c | elfeed-dashboard-query "+unread +company"
   #+KEYMAP: b | elfeed-dashboard-query "+unread +blog"
   #+KEYMAP: e | elfeed-dashboard-query "+unread +emacs"
-  #+KEYMAP: r | elfeed-dashboard-query "+unread +rust"
-  #+KEYMAP: o | elfeed-dashboard-query "+unread +go"
+  #+KEYMAP: p | elfeed-dashboard-query "+unread +pl"
   #+KEYMAP: n | elfeed-dashboard-query "+unread +news"
   #+KEYMAP: S | elfeed
   #+KEYMAP: g | elfeed-dashboard-update-links
