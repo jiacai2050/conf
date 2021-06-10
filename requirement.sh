@@ -68,3 +68,5 @@ command_exists gorename || go get -u golang.org/x/tools/cmd/gorename
 command_exists mu || brew install mu offlineimap
 mail_dir="$HOME/.mail/"
 [ -d "${mail_dir}" ] || mkdir -p "${mail_dir}"
+
+brew install font-sf-mono

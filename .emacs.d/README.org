@@ -8,7 +8,8 @@ git clone https://gitee.com/mirrors/emacs.git
 export CPATH=`xcrun --show-sdk-path`/usr/include:`xcrun --show-sdk-path`/usr/include/libxml2
 make
 #+end_src
-
+* Font
+- http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 * 访问 iCloud 文件
 - https://emacs.stackexchange.com/a/53037
 * Debug
