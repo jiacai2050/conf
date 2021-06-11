@@ -46,3 +46,15 @@
 [submodule ".emacs.d/vendor/elfeed-org"]
 	path = .emacs.d/vendor/elfeed-org
 	url = https://gitee.com/liujiacai/elfeed-org.git
+[submodule ".emacs.d/vendor/swiper"]
+	path = .emacs.d/vendor/swiper
+	url = https://gitee.com/liujiacai/swiper.git
+[submodule ".emacs.d/vendor/avy"]
+	path = .emacs.d/vendor/avy
+	url = https://gitee.com/liujiacai/avy.git
+[submodule ".emacs.d/vendor/evil"]
+	path = .emacs.d/vendor/evil
+	url = https://gitee.com/liujiacai/evil.git
+[submodule ".emacs.d/vendor/evil-leader"]
+	path = .emacs.d/vendor/evil-leader
+	url = https://gitee.com/liujiacai/evil-leader.git

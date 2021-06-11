@@ -35,8 +35,7 @@ environment variables from the user's shell.
   :mode (("\\.macosrc" . sh-mode))
   :config
   (native-complete-setup-bash)
-  (setq-default sh-basic-offset 2)
-  )
+  (setq-default sh-basic-offset 2))
 
 (use-package aweshell
   :load-path "~/.emacs.d/vendor/aweshell"
@@ -104,9 +103,7 @@ environment variables from the user's shell.
   ;; No cursor blinking, it's distracting
   (blink-cursor-mode 0)
   (when (display-graphic-p)
-    (set-frame-font "SF Mono-16" t t)
-    ;; (add-to-list 'default-frame-alist '(font . "Hack-16"))
-    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+    (set-frame-font "SF Mono-16" t t))
 
   (setq-default cursor-type 't))
 
@@ -960,6 +957,24 @@ environment variables from the user's shell.
           (when metadata-dir
             (find-file (concat metadata-dir basename))))
       (message "%s isn't support for my/switch-to-metadata-file" major-mode))))
+
+(defun my/open-terminal ()
+  "Open system terminal."
+  (interactive)
+  (cond
+   ((eq system-type 'darwin)
+    (shell-command
+     ;; open -a Terminal doesn't allow us to open a particular directory unless
+     ;; We use --args AND -n, but -n opens an entirely new Terminal application
+     ;; instance on every call, not just a new window. Using the
+     ;; bundle here always opens the given directory in a new window.
+     (concat "open -b com.apple.terminal " default-directory) nil nil))
+   ((memq system-type '(cygwin windows-nt ms-dos))
+    ;; https://stackoverflow.com/questions/13505113/how-to-open-the-native-cmd-exe-window-in-emacs
+    (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
+      (set-process-query-on-exit-flag proc nil)))
+   (t
+    (message "Implement `j-open-terminal' for this OS!"))))
 
 (use-package reveal-in-osx-finder
   :defer t)
