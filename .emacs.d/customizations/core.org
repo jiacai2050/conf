@@ -26,8 +26,6 @@ environment variables from the user's shell.
   )
 
 (use-package company-native-complete
-  :load-path "~/.emacs.d/vendor/native-shell-complete"
-  :commands (company-native-complete native-complete-setup-bash)
   :init
   (defun my/set-shell-backends ()
 	(setq-local company-backends '(company-native-complete)))
@@ -385,38 +383,6 @@ environment variables from the user's shell.
 (use-package pinentry
   :config
   (pinentry-start))
-
-(use-package company
-  :load-path "~/.emacs.d/vendor/company-mode"
-  :commands (global-company-mode)
-  :init
-  (global-company-mode t)
-  :config
-  (setq company-tooltip-align-annotations t
-        company-minimum-prefix-length 2
-        company-idle-delay .3
-        company-begin-commands '(self-insert-command org-self-insert-command)
-        company-dabbrev-downcase nil
-        ;; company-echo-delay 0
-        ;; Easy navigation to candidates with M-<n>
-        company-show-numbers t
-        company-backends '((company-capf company-dabbrev-code company-dabbrev
-                                         company-gtags company-etags company-keywords)
-                           (company-files)))
-
-  :bind (:map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ("M-i" . company-complete-selection)))
-
-;; company-tabnine deps
-(use-package unicode-escape
-  :defer t)
-
-(use-package company-tabnine
-  :load-path "~/.emacs.d/vendor/company-tabnine"
-  :commands (company-tabnine)
-  :custom ((company-tabnine-always-trigger nil)))
 
 (use-package multiple-cursors
   ;; https://emacs.stackexchange.com/questions/39129/multiple-cursors-and-return-key

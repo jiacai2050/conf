@@ -7,7 +7,6 @@
       package-check-signature nil)
 
 (require 'package)
-
 (package-initialize)
 
 (unless (package-installed-p 'use-package)

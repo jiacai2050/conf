@@ -9,8 +9,7 @@
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))
 
 (use-package company-c-headers
-  :load-path "~/.emacs.d/vendor/company-c-headers"
-  :commands (company-c-headers))
+  :defer t)
 
 (use-package google-c-style
   :init
