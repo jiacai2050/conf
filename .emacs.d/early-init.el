@@ -24,7 +24,7 @@
   nil)
 
 ;; http://akrl.sdf.org/
-(defmacro my/operation-time (&rest body)
+(defmacro my/timer (&rest body)
   "Measure and return the time it takes evaluating BODY."
   `(let ((time (current-time)))
      ,@body
@@ -36,7 +36,7 @@
                        (lambda ()
                          (let ((inhibit-read-only t)
                                (gc-msg (format "Garbage Collector has run for %.06fsec"
-                                               (my/operation-time (garbage-collect)))))
+                                               (my/timer (garbage-collect)))))
                            (with-current-buffer "*Messages*"
 	                         (insert gc-msg "\n"))))))
 
@@ -75,3 +75,9 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 (advice-add 'package-activate :around
             'my/package-activate)
+
+;; (setq my/after-early-init-loaded (current-time))
+;; (message "Load early-init.el cost %f seconds"
+;; 		 (float-time
+;; 		  (time-subtract my/after-early-init-loaded
+;;                          before-init-time)))

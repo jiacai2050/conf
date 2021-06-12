@@ -42,6 +42,7 @@
   :load-path "~/.emacs.d/vendor/transient/lisp"
   :custom (;; https://emacs.stackexchange.com/a/52002/16450
            (transient-display-buffer-action '(display-buffer-below-selected)))
+  :commands (transient-define-prefix)
   :config
   (transient-bind-q-to-quit))
 
@@ -85,3 +86,13 @@
 (use-package unicode-escape
   :load-path "~/.emacs.d/vendor/unicode-escape.el"
   :defer t)
+
+;; evil deps
+(use-package goto-chg
+  :load-path "~/.emacs.d/vendor/goto-chg"
+  :defer t)
+
+;; (setq my/after-deps-loaded (current-time))
+;; (message "Load deps.el cost %f seconds"
+;; 		 (float-time
+;; 		  (time-subtract my/after-deps-loaded my/after-early-init-loaded)))

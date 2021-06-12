@@ -88,3 +88,6 @@
 [submodule "names"]
 	path = .emacs.d/vendor/names
 	url = https://gitee.com/liujiacai/names.git
+[submodule "goto-chg"]
+	path = .emacs.d/vendor/goto-chg
+	url = https://gitee.com/liujiacai/goto-chg.git

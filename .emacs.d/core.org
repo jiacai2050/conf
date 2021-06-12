@@ -85,6 +85,7 @@
   :defer t)
 
 (use-package evil
+  :load-path "~/.emacs.d/vendor/evil"
   :hook ((evil-mode . my/evil-keymap)
          (after-init . evil-mode))
   :custom ((evil-respect-visual-line-mode t)
@@ -146,6 +147,202 @@
 
   (require 'dired)
   (evil-make-overriding-map dired-mode-map 'normal))
+
+(use-package evil-leader
+  :load-path "~/.emacs.d/vendor/evil-leader"
+  :init
+  (global-evil-leader-mode)
+  (defun my/exec-shell-on-buffer (shell-command-text)
+    (interactive "MShell command: ")
+    (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
+
+  (defun my/imenu-dispatch ()
+    (interactive)
+    (if (bound-and-true-p lsp-mode)
+        (lsp-treemacs-symbols)
+      (counsel-imenu)))
+
+  (transient-define-prefix my/lsp-command
+    "LSP"
+    [["Find"
+      ("r" "References" lsp-find-references)
+      ("i" "Implementation" lsp-find-implementation)
+      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)
+      ("d" "Doc" lsp-describe-thing-at-point)]
+     ["Edit"
+      ("n" "reName" lsp-rename)
+      ("m" "iMenu" my/imenu-dispatch)
+      ("f" "auto Fix" lsp-execute-code-action)
+      ("e" "Error list" flycheck-list-errors)]
+     ["Rust"
+      ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
+  (transient-define-prefix my/file-command
+    "Files"
+    [["Find"
+      ("f" "find-file" counsel-find-file)
+      ("g" "git" counsel-git)
+      ("p" "project" projectile-find-file)]
+     ["Current File"
+      ("s" "Save" save-buffer)
+      ("y" "Copy Filename" my/copy-current-filename-to-clipboard)
+      ("r" "Rename" my/rename-current-buffer-file)
+      ("k" "Delete" my/delete-file-and-buffer)
+      ("d" "Diff buffer" my/diff-buffer-with-file)
+      ("t" "Last update" my/last-save-time)
+      ("e" "Exec shell" my/exec-shell-on-buffer)]
+     ["Edit"
+      ("id" "insert date" my/insert-today)
+      ("it" "insert time" my/insert-current-date-time)]])
+  (transient-define-prefix my/search-command
+    "Search"
+    [["Search"
+      ("s" "Search" swiper-isearch)
+      ("a" "Agit" counsel-git-grep)
+      ("r" "Rg" counsel-rg)
+      ("v" "aVy-word" avy-goto-word-1)]
+     ["Replace"
+      ("f" "query-replace" query-replace)]])
+  (transient-define-prefix my/projectile-command
+    "Projectile"
+    [["Find"
+      ("f" "File" projectile-find-file)
+      ("F" "File Other Window" projectile-find-file-other-window)
+      ("s" "Ripgrep" projectile-ripgrep)
+      ;; ("r" "Recentf" projectile-recentf)
+      ("d" "Dired" projectile-dired)
+      ("v" "discoVer" projectile-discover-projects-in-search-path)
+      ("o" "Occur" projectile-multi-occur)]
+     ["Manage"
+      ("p" "Project" projectile-switch-project)
+      ("a" "Add" projectile-add-known-project)
+      ("i" "Info" projectile-project-info)
+      ("t" "Test" projectile-test-project)
+      ("c" "Compile" projectile-compile-project)
+      ("r" "Run" projectile-run-project)]
+     ["Treemacs"
+      ("P" "Project" treemacs-projectile)
+      ("A" "Add" treemacs-add-project-to-workspace)]])
+  (transient-define-prefix my/magit-command
+    "Magit"
+    [["Repository"
+      ("s" "Status" magit-status)
+      ("c" "Clone" magit-clone)
+      ("L" "List Repositories" magit-list-repositories)
+      ("d" "Dispatch Popup" magit-dispatch)]
+     ["History"
+      ("l" "File Popup" magit-log)
+      ("b" "Blame" magit-blame-addition)
+      ("t" "Timemachine" git-timemachine-toggle)
+      ("j" "Blob Next" magit-blob-next)
+      ("k" "Blob Previous" magit-blob-previous)]
+     ["Files"
+      ("p" "File Popup" magit-file-dispatch)
+      ("f" "Find File" magit-find-file)
+      ("F" "Find File in Other Window" magit-find-file-other-window)]])
+  (transient-define-prefix my/progn-command
+    "Progn"
+    [["Edit"
+      ("r" "Query Replace" query-replace)
+      ("t" "Insert Today" my/insert-today)
+      ("i" "Insert ISO8601" my/insert-current-date-time)
+      ("d" "Datetime<->ts" my/timestamp->human-date)
+      ("w" "Ispell Word" ispell-word)]
+     ["System"
+      ("F" "Finder" reveal-in-osx-finder)
+      ("s" "Shell" my/open-terminal)
+      ("f" "Fanyi" osx-dictionary-search-pointer)
+      ("e" "Epa" my/epa-command)]
+     ["Goto"
+      ("m" "Mark Ring" counsel-mark-ring)
+      ("n" "Dependency files" my/switch-to-dependency-file)
+      ("SPC" "Avy" avy-goto-word-1)
+      ("c" "lk-commit" my/git-link)
+      ("h" "lk-homepage" git-link-homepage)]]
+    [:hide (lambda () t)
+     (":" eval-expression)
+     ("'" eval-expression)])
+  (transient-define-prefix my/window-command
+    "Window"
+    [["Split"
+      ("-" "Below" split-window-below)
+      ("|" "Right" split-window-right)
+      ("\\" "Right" split-window-right)]
+     ["Move"
+      ("h" "Left" evil-window-left)
+      ("l" "Right" evil-window-right)
+      ("k" "Up" evil-window-up)
+      ("j" "Down" evil-window-down)
+      ("." "Next buffer" evil-next-buffer)
+      ("," "Prev buffer" evil-prev-buffer)]
+     ["Delete"
+      ("<backspace>" "Del Win" delete-window)
+      ("DEL" "Del Win" delete-window) ;; For terminals.
+      ("x" "Kill buffer" kill-buffer)]]
+    [:hide (lambda () t)
+     ("e" eval-buffer)])
+
+  (transient-define-prefix my/helpful-command
+    "Helpful"
+    [["Which-key"
+      ("m" "Major keymap" which-key-show-major-mode)
+      ("n" "Minor keymap" which-key-show-minor-mode-keymap)]
+     ["Helpful"
+      ("d" "Derived Modes" my/derived-modes)
+      ("f" "Function" helpful-function)
+      ("v" "Variable" helpful-variable)
+      ("c" "Command" helpful-command)
+      ("s" "Symbol" helpful-symbol)
+      ("p" "At point" helpful-at-point)
+      ("k" "Key" helpful-key)]])
+  :custom ((evil-leader/leader ",")
+           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
+           (evil-leader/in-all-states t))
+  :config
+  (defun my/insert-comma ()
+    (interactive)
+    (insert-char (char-from-name "COMMA")))
+
+  (defun my/toggle-evil-emacs-mode ()
+    (interactive)
+    (if (eq evil-state 'emacs)
+        (evil-exit-emacs-state)
+      (evil-emacs-state)))
+
+  (evil-leader/set-key
+    "w" 'eww
+    "e" 'tiny-expand
+    "r" 'counsel-switch-buffer
+    "u" 'mu4e
+    "i" 'elfeed-dashboard
+    "p" 'my/projectile-command
+
+    "a" 'swiper-isearch
+    "s" 'my/search-command
+    "d" 'my/file-command
+    "f" 'counsel-find-file
+    "g" 'my/magit-command
+    "h" 'my/helpful-command
+    "j" 'my/progn-command
+    "k" 'kill-buffer
+    "l" 'my/lsp-command
+
+    "z" 'my/toggle-evil-emacs-mode
+    "x" 'counsel-rg
+    "c" 'compile
+    "v" 'counsel-org-capture
+    "b" 'counsel-bookmark
+    "m" 'hydra-multiple-cursors/body
+    "," 'my/insert-comma
+    "." 'my/window-command
+
+    "SPC" 'avy-goto-word-1
+    "0" 'select-window-0
+    "1" 'select-window-1
+    "2" 'select-window-2
+    "3" 'select-window-3
+    "4" 'select-window-4
+    "8" 'cfw:open-calendar-buffer
+    "9" 'calendar))
 #+end_src
 * Shell
 On OS X, an Emacs instance started from the graphical user
@@ -156,17 +353,23 @@ calling external utilities like make from Emacs.
 This library works around this problem by copying important
 environment variables from the user's shell.
 - https://github.com/purcell/exec-path-from-shell
-
-#+begin_src emacs-lisp
-(when (and (memq window-system '(mac ns x))
-           (display-graphic-p))
-  ;; emacs run inside terminal will inherit env from shell
+#+begin_example
   (use-package exec-path-from-shell
     :custom ((exec-path-from-shell-arguments '("-l"))
              (exec-path-from-shell-variables '("GOPROXY" "GOPATH" "PATH" "MY_THEME" "TZ")))
     :config
     (exec-path-from-shell-initialize))
-  )
+#+end_example
+exec-path-from-shell takes too long to load, so set path by hand.
+#+begin_src emacs-lisp
+(when (and (memq window-system '(mac ns x))
+           (display-graphic-p))
+  (setq my/paths '("/usr/local/bin" "/usr/local/opt/jenv/shims" "~/.pyenv/shims" "~/.cargo/bin" "~/code/go/bin"))
+  (setenv "PATH" (format "%s%s%s" (getenv "PATH") path-separator (string-join my/paths path-separator)))
+  (setenv "GOPROXY" "https://goproxy.cn,direct")
+  (setenv "GOPRIVATE" "gitlab.alipay-inc.com,gitlab.alibaba-inc.com,code.alipay.com")
+  (dolist (p my/paths)
+    (push p exec-path)))
 
 (use-package company-native-complete
   :init
@@ -296,8 +499,6 @@ environment variables from the user's shell.
 
 (use-package dashboard
   :config
-  (dashboard-setup-startup-hook)
-
   (defun my/goto-dashboard ()
     (interactive)
     (switch-to-buffer (get-buffer "*dashboard*")))
@@ -311,7 +512,9 @@ environment variables from the user's shell.
         dashboard-set-heading-icons t
         dashboard-set-file-icons t
         dashboard-center-content t
-        dashboard-startup-banner 'logo))
+        dashboard-startup-banner 'logo)
+
+  (dashboard-setup-startup-hook))
 
 (use-package gruvbox-theme
   :defer t)
@@ -973,8 +1176,10 @@ environment variables from the user's shell.
 (use-package treemacs-projectile
   :defer t)
 (use-package treemacs-all-the-icons
+  :hook (treemacs-mode . my/treemacs-hook)
   :config
-  (treemacs-load-theme "all-the-icons"))
+  (defun my/treemacs-hook ()
+    (treemacs-load-theme "all-the-icons")))
 
 (use-package all-the-icons-dired
   :config
@@ -1019,200 +1224,6 @@ environment variables from the user's shell.
 (use-package reveal-in-osx-finder
   :defer t)
 
-(use-package evil-leader
-  :init
-  (global-evil-leader-mode)
-  (defun my/exec-shell-on-buffer (shell-command-text)
-    (interactive "MShell command: ")
-    (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
-
-  (defun my/imenu-dispatch ()
-    (interactive)
-    (if (bound-and-true-p lsp-mode)
-        (lsp-treemacs-symbols)
-      (counsel-imenu)))
-
-  (transient-define-prefix my/lsp-command
-    "LSP"
-    [["Find"
-      ("r" "References" lsp-find-references)
-      ("i" "Implementation" lsp-find-implementation)
-      ("c" "Call hierarchy" lsp-treemacs-call-hierarchy)
-      ("d" "Doc" lsp-describe-thing-at-point)]
-     ["Edit"
-      ("n" "reName" lsp-rename)
-      ("m" "iMenu" my/imenu-dispatch)
-      ("f" "auto Fix" lsp-execute-code-action)
-      ("e" "Error list" flycheck-list-errors)]
-     ["Rust"
-      ("M" "Macroexpand" lsp-rust-analyzer-expand-macro)]])
-  (transient-define-prefix my/file-command
-    "Files"
-    [["Find"
-      ("f" "find-file" counsel-find-file)
-      ("g" "git" counsel-git)
-      ("p" "project" projectile-find-file)]
-     ["Current File"
-      ("s" "Save" save-buffer)
-      ("y" "Copy Filename" my/copy-current-filename-to-clipboard)
-      ("r" "Rename" my/rename-current-buffer-file)
-      ("k" "Delete" my/delete-file-and-buffer)
-      ("d" "Diff buffer" my/diff-buffer-with-file)
-      ("t" "Last update" my/last-save-time)
-      ("e" "Exec shell" my/exec-shell-on-buffer)]
-     ["Edit"
-      ("id" "insert date" my/insert-today)
-      ("it" "insert time" my/insert-current-date-time)]])
-  (transient-define-prefix my/search-command
-    "Search"
-    [["Search"
-      ("s" "Search" swiper-isearch)
-      ("a" "Agit" counsel-git-grep)
-      ("r" "Rg" counsel-rg)
-      ("v" "aVy-word" avy-goto-word-1)]
-     ["Replace"
-      ("f" "query-replace" query-replace)]])
-  (transient-define-prefix my/projectile-command
-    "Projectile"
-    [["Find"
-      ("f" "File" projectile-find-file)
-      ("F" "File Other Window" projectile-find-file-other-window)
-      ("s" "Ripgrep" projectile-ripgrep)
-      ;; ("r" "Recentf" projectile-recentf)
-      ("d" "Dired" projectile-dired)
-      ("v" "discoVer" projectile-discover-projects-in-search-path)
-      ("o" "Occur" projectile-multi-occur)]
-     ["Manage"
-      ("p" "Project" projectile-switch-project)
-      ("a" "Add" projectile-add-known-project)
-      ("i" "Info" projectile-project-info)
-      ("t" "Test" projectile-test-project)
-      ("c" "Compile" projectile-compile-project)
-      ("r" "Run" projectile-run-project)]
-     ["Treemacs"
-      ("P" "Project" treemacs-projectile)
-      ("A" "Add" treemacs-add-project-to-workspace)]])
-  (transient-define-prefix my/magit-command
-    "Magit"
-    [["Repository"
-      ("s" "Status" magit-status)
-      ("c" "Clone" magit-clone)
-      ("L" "List Repositories" magit-list-repositories)
-      ("d" "Dispatch Popup" magit-dispatch)]
-     ["History"
-      ("l" "File Popup" magit-log)
-      ("b" "Blame" magit-blame-addition)
-      ("t" "Timemachine" git-timemachine-toggle)
-      ("j" "Blob Next" magit-blob-next)
-      ("k" "Blob Previous" magit-blob-previous)]
-     ["Files"
-      ("p" "File Popup" magit-file-dispatch)
-      ("f" "Find File" magit-find-file)
-      ("F" "Find File in Other Window" magit-find-file-other-window)]])
-  (transient-define-prefix my/progn-command
-    "Progn"
-    [["Edit"
-      ("r" "Query Replace" query-replace)
-      ("t" "Insert Today" my/insert-today)
-      ("i" "Insert ISO8601" my/insert-current-date-time)
-      ("d" "Datetime<->ts" my/timestamp->human-date)
-      ("w" "Ispell Word" ispell-word)]
-     ["System"
-      ("F" "Finder" reveal-in-osx-finder)
-      ("s" "Shell" my/open-terminal)
-      ("f" "Fanyi" osx-dictionary-search-pointer)
-      ("e" "Epa" my/epa-command)]
-     ["Goto"
-      ("m" "Mark Ring" counsel-mark-ring)
-      ("n" "Dependency files" my/switch-to-dependency-file)
-      ("SPC" "Avy" avy-goto-word-1)
-      ("c" "lk-commit" my/git-link)
-      ("h" "lk-homepage" git-link-homepage)]]
-    [:hide (lambda () t)
-     (":" eval-expression)
-     ("'" eval-expression)])
-  (transient-define-prefix my/window-command
-    "Window"
-    [["Split"
-      ("-" "Below" split-window-below)
-      ("|" "Right" split-window-right)
-      ("\\" "Right" split-window-right)]
-     ["Move"
-      ("h" "Left" evil-window-left)
-      ("l" "Right" evil-window-right)
-      ("k" "Up" evil-window-up)
-      ("j" "Down" evil-window-down)
-      ("." "Next buffer" evil-next-buffer)
-      ("," "Prev buffer" evil-prev-buffer)]
-     ["Delete"
-      ("<backspace>" "Del Win" delete-window)
-      ("DEL" "Del Win" delete-window) ;; For terminals.
-      ("x" "Kill buffer" kill-buffer)]]
-    [:hide (lambda () t)
-     ("e" eval-buffer)])
-
-  (transient-define-prefix my/helpful-command
-    "Helpful"
-    [["Which-key"
-      ("m" "Major keymap" which-key-show-major-mode)
-      ("n" "Minor keymap" which-key-show-minor-mode-keymap)]
-     ["Helpful"
-      ("d" "Derived Modes" my/derived-modes)
-      ("f" "Function" helpful-function)
-      ("v" "Variable" helpful-variable)
-      ("c" "Command" helpful-command)
-      ("s" "Symbol" helpful-symbol)
-      ("p" "At point" helpful-at-point)
-      ("k" "Key" helpful-key)]])
-  :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
-           (evil-leader/in-all-states t))
-  :config
-  (defun my/insert-comma ()
-    (interactive)
-    (insert-char (char-from-name "COMMA")))
-
-  (defun my/toggle-evil-emacs-mode ()
-    (interactive)
-    (if (eq evil-state 'emacs)
-        (evil-exit-emacs-state)
-      (evil-emacs-state)))
-
-  (evil-leader/set-key
-    "w" 'eww
-    "e" 'tiny-expand
-    "r" 'counsel-switch-buffer
-    "u" 'mu4e
-    "i" 'elfeed-dashboard
-    "p" 'my/projectile-command
-
-    "a" 'swiper-isearch
-    "s" 'my/search-command
-    "d" 'my/file-command
-    "f" 'counsel-find-file
-    "g" 'my/magit-command
-    "h" 'my/helpful-command
-    "j" 'my/progn-command
-    "k" 'kill-buffer
-    "l" 'my/lsp-command
-
-    "z" 'my/toggle-evil-emacs-mode
-    "x" 'counsel-rg
-    "c" 'compile
-    "v" 'counsel-org-capture
-    "b" 'counsel-bookmark
-    "m" 'hydra-multiple-cursors/body
-    "," 'my/insert-comma
-    "." 'my/window-command
-
-    "SPC" 'avy-goto-word-1
-    "0" 'select-window-0
-    "1" 'select-window-1
-    "2" 'select-window-2
-    "3" 'select-window-3
-    "4" 'select-window-4
-    "8" 'cfw:open-calendar-buffer
-    "9" 'calendar))
 
 #+end_src
 
@@ -1714,8 +1725,8 @@ environment variables from the user's shell.
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
-(use-package ox-gfm)
-
+(use-package ox-gfm
+  :defer t)
 (use-package htmlize
   :defer t)
 (use-package ob-http
@@ -1725,6 +1736,7 @@ environment variables from the user's shell.
 
 (use-package org
   :ensure nil
+  :defer t
   :bind (:map org-mode-map
          ("C-c SPC" . avy-goto-word-1)
          ("C-c l" . org-store-link)
@@ -1740,7 +1752,31 @@ environment variables from the user's shell.
   (org-level-5 ((t (:inherit outline-5 :height 1.0 :bold t))))
   :init
   (defun my/org-hook ()
-    (setq-local company-backends '(company-tabnine)))
+    (require 'ox-gfm)
+    (require 'org-tempo)
+    (setq-local company-backends '(company-tabnine))
+    ;; https://stackoverflow.com/a/47850858/2163429
+    (defun my/org-export-file (orig-fun extension &optional subtreep pub-dir)
+      (unless pub-dir
+        (setq pub-dir "/tmp")
+        (unless (file-directory-p pub-dir)
+          (make-directory pub-dir)))
+      (apply orig-fun extension subtreep pub-dir nil))
+    (advice-add 'org-export-output-file-name :around #'my/org-export-file)
+
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((js . t)
+       (shell . t)
+       (python . t)
+       (makefile . t)
+       (http . t)
+       (clojure . t)
+       (sql . t)
+       (awk . t)
+       (sed . t)
+       (ditaa . t)
+       (emacs-lisp . t))))
 
   (setq org-src-tab-acts-natively t
         ;; 代码区域禁用第一层缩进 https://emacs.stackexchange.com/a/18892/16450
@@ -1772,31 +1808,7 @@ environment variables from the user's shell.
 
         ;; terminal emacs can't display those lovely images :-(
         org-startup-with-inline-images t
-        org-confirm-babel-evaluate nil)
-  :config
-  (require 'org-tempo)
-  ;; https://stackoverflow.com/a/47850858/2163429
-  (defun my/org-export-file (orig-fun extension &optional subtreep pub-dir)
-    (unless pub-dir
-      (setq pub-dir "/tmp")
-      (unless (file-directory-p pub-dir)
-        (make-directory pub-dir)))
-    (apply orig-fun extension subtreep pub-dir nil))
-  (advice-add 'org-export-output-file-name :around #'my/org-export-file)
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((js . t)
-     (shell . t)
-     (python . t)
-     (makefile . t)
-     (http . t)
-     (clojure . t)
-     (sql . t)
-     (awk . t)
-     (sed . t)
-     (ditaa . t)
-     (emacs-lisp . t))))
+        org-confirm-babel-evaluate nil))
 
 (use-package org-download
   :bind (:map org-mode-map
@@ -1832,6 +1844,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 (use-package mu4e
   :load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/"
   :if (executable-find "mu")
+  :commands (mu4e)
   :bind (:map mu4e-view-mode-map
          ("f" . mu4e~headers-jump-to-maildir)
          ("0" . scroll-down-command)
@@ -1935,6 +1948,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 
 (use-package mu4e-maildirs-extension
   :if (executable-find "mu")
+  :after mu4e
   :custom ((mu4e-maildirs-extension-custom-list
             '("/ljc/INBOX"
               "/ljc/Sent Messages"
@@ -1965,8 +1979,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (mu4e-maildirs-extension))
 
 (use-package org-mime
+  :hook (message-send . my/send-message-hook)
   :config
-
   (defun my/org-mime-htmlize ()
     (let ((answer (read-from-minibuffer "Org htmlize? [y/n]:")))
       (when (string-equal "y" answer)
@@ -1989,7 +2003,6 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
     (my/org-mime-htmlize)
     (my/sign-or-encrypt-message))
 
-  (add-hook 'message-send-hook 'my/send-message-hook)
   (setq org-mime-export-ascii 'utf-8
         org-mime-export-options '(:section-numbers nil
                                   :with-author nil
@@ -2131,12 +2144,14 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 (use-package elfeed-org
   :load-path "~/.emacs.d/vendor/elfeed-org"
   :custom ((rmh-elfeed-org-files `(,(no-littering-expand-etc-file-name "elfeed-feeds.org"))))
+  :hook (elfeed-dashboard-mode . my/elfeed-hook)
   :config
-  (defun my/reload-org-feeds ()
-    (interactive)
-    (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
-  (advice-add 'elfeed-dashboard-update :before #'my/reload-org-feeds)
-  (elfeed-org))
+  (defun my/elfeed-hook ()
+    (defun my/reload-org-feeds ()
+      (interactive)
+      (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
+    (advice-add 'elfeed-dashboard-update :before #'my/reload-org-feeds)
+    (elfeed-org)))
 #+end_src
 * Calendar
 #+begin_src emacs-lisp
@@ -2154,6 +2169,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
               ("j" . calendar-forward-week)))
 
 (use-package cal-china-x
+  :defer t
   :config
   (setq cal-china-x-important-holidays '((holiday-lunar 2 19 "家财生日")
                                          (holiday-lunar 5 1 "家钰生日")
@@ -2169,14 +2185,6 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 
 (use-package calfw
   :commands cfw:open-calendar-buffer)
-#+end_src
-* EWW
-#+begin_src emacs-lisp
-(use-package eww
-  :ensure nil
-  :config
-  (setq eww-search-prefix "https://www.google.com/search?q="))
-
 #+end_src
 * Others
 #+BEGIN_SRC emacs-lisp
