@@ -85,3 +85,6 @@
 [submodule "unicode-escape.el"]
 	path = .emacs.d/vendor/unicode-escape.el
 	url = https://gitee.com/liujiacai/unicode-escape.el.git
+[submodule "names"]
+	path = .emacs.d/vendor/names
+	url = https://gitee.com/liujiacai/names.git

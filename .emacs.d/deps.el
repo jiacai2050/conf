@@ -76,14 +76,12 @@
   :load-path "~/.emacs.d/vendor/emacs-request"
   :defer t)
 
+;; unicode-escape deps
+(use-package names
+  :load-path "~/.emacs.d/vendor/names"
+  :defer t)
+
 ;; company-tabnine deps, other: company, dash, s, cl-lib
 (use-package unicode-escape
   :load-path "~/.emacs.d/vendor/unicode-escape.el"
   :defer t)
-
-(use-package company-tabnine
-  :load-path "~/.emacs.d/vendor/company-tabnine"
-  :commands (company-tabnine)
-  :custom ((company-tabnine-always-trigger nil)))
-
-;; (magit-submodule-add "https://gitee.com/liujiacai/unicode-escape.el.git" ".emacs.d/vendor/unicode-escape.el" "unicode-escape.el")

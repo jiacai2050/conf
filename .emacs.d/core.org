@@ -4,6 +4,149 @@
 #+begin_src emacs-lisp
 ;;; -*- lexical-binding: t; -*-
 #+end_src
+* Basic
+#+begin_src emacs-lisp
+(use-package company-tabnine
+  :load-path "~/.emacs.d/vendor/company-tabnine"
+  :commands (company-tabnine)
+  :custom ((company-tabnine-always-trigger nil)))
+
+(use-package magit
+  :load-path "~/.emacs.d/vendor/magit/lisp"
+  :bind (("C-x g" . magit-status)
+         ("C-c g" . magit-file-dispatch))
+  :custom ((magit-diff-refine-hunk 'all)
+           ;; https://emacs.stackexchange.com/a/3696/16450
+           (find-file-visit-truename t))
+  :config
+  (defun my/add-vendor-deps (url pkg-name)
+    (interactive "sUrl: \nsName: ")
+    (message "Url: %s, Name: %s" url pkg-name)
+    (magit-submodule-add url (format ".emacs.d/vendor/%s" pkg-name) pkg-name)))
+
+(use-package lsp-mode
+  :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
+  :init
+  (my/generate-autoloads "lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode/clients")
+  (setq lsp-keymap-prefix "C-c l")
+  (defun my/lsp-js ()
+    "Enable LSP for JavaScript, but not for JSON"
+    (when (eq 'js-mode major-mode)
+      (lsp-deferred)))
+  (defun my/lsp-rust ()
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+    (setq-local lsp-completion-enable nil
+                lsp-modeline-code-actions-enable nil)
+    (lsp-deferred))
+  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
+  (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
+    (-let* (((&hash "value") contents)
+            (groups (--partition-by (s-blank? it) (s-lines (s-trim value))))
+            (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
+                           (-third-item groups)
+                         (car groups)))
+            (sig (--> sig_group
+                   (--drop-while (s-equals? "```rust" it) it)
+                   (--take-while (not (s-equals? "```" it)) it)
+                   (s-join "" it))))
+      (lsp--render-element (concat "```rust\n" sig "\n```"))))
+  :hook ((go-mode . lsp-deferred)
+         (rust-mode . my/lsp-rust)
+         (python-mode . lsp-deferred)
+         (js-mode .  my/lsp-js)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp-rust-analyzer-expand-macro)
+  :custom ((lsp-log-io nil)
+           (lsp-eldoc-render-all nil)
+           (lsp-completion-provider t)
+           (lsp-signature-render-documentation nil)
+           (lsp-rust-server 'rust-analyzer)
+           (lsp-rust-analyzer-cargo-watch-enable nil)
+           (lsp-go-hover-kind "NoDocumentation")
+           (lsp-go-use-placeholders t)
+           (lsp-diagnostics-provider :none)
+           (lsp-modeline-diagnostics-enable nil)
+           (lsp-headerline-breadcrumb-enable nil)
+           (lsp-eslint-server-command `("node"
+                                        ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
+                                        "--stdio")))
+  :config
+  (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
+  :bind (:map lsp-mode-map
+         ("M-." . lsp-find-definition)
+         ("M-n" . lsp-find-references)))
+#+end_src
+** Evil
+- https://github.com/noctuid/evil-guide#further-integrating-evil-and-emacs
+#+begin_src emacs-lisp
+(use-package evil-numbers
+  :defer t)
+
+(use-package evil
+  :hook ((evil-mode . my/evil-keymap)
+         (after-init . evil-mode))
+  :custom ((evil-respect-visual-line-mode t)
+           (evil-move-beyond-eol t))
+  :commands (evil-make-overriding-map evil-make-intercept-map)
+  :init
+  (defun my/evil-keymap ()
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("DEL" . evil-scroll-page-up)
+                       ("C-e" . evil-end-of-line)
+                       ("C-y" . yank)
+                       ("C-f" . forward-char)
+                       ("C-d" . delete-char)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("M-." . xref-find-definitions)
+                       ("M-," . xref-pop-marker-stack)
+                       ("RET" . xref-goto-xref)
+                       ("M-;" . comment-dwim-2)
+                       ("C-M-b" . backward-sexp)
+                       ("C-M-f" . forward-sexp)
+                       ("C-c +" . evil-numbers/inc-at-pt)
+                       ("C-c -" . evil-numbers/dec-at-pt)
+                       ("q" . quit-window)))
+      (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("SPC" . evil-scroll-page-down)
+                       ("DEL" . evil-scroll-page-up)
+                       ("C-c +" . evil-numbers/inc-at-pt)
+                       ("C-c -" . evil-numbers/dec-at-pt)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)))
+      (define-key evil-motion-state-map (kbd (car binding)) (cdr binding)))
+
+    (dolist (binding '(("C-y" . yank)
+                       ("C-w" . kill-region)
+                       ("C-e" . end-of-visual-line)
+                       ("C-a" . beginning-of-visual-line)
+                       ("C-k" . kill-visual-line)
+                       ("C-d" . delete-char)
+                       ("C-v" . scroll-up-command)
+                       ("C-t" . transpose-chars)
+                       ("C-o" . open-line)
+                       ("C-n" . next-line)
+                       ("C-p" . previous-line)))
+      (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
+
+  :config
+  (dolist (m '(dashboard-mode magit-submodule-list-mode helpful-mode
+                              git-rebase-mode easy-hugo-mode dired-mode
+                              cfw:details-mode osx-dictionary-mode
+                              epa-key-list-mode epa-key-mode epa-info-mode
+                              elfeed-dashboard-mode))
+    (add-to-list 'evil-emacs-state-modes m))
+  (dolist (m '(wdired-mode))
+    (add-to-list 'evil-normal-state-modes m))
+  (dolist (m '(elfeed-show-mode elfeed-search-mode))
+    (add-to-list 'evil-motion-state-modes m))
+
+  (require 'dired)
+  (evil-make-overriding-map dired-mode-map 'normal))
+#+end_src
 * Shell
 On OS X, an Emacs instance started from the graphical user
 interface will have a different environment than a shell in a
@@ -677,75 +820,6 @@ environment variables from the user's shell.
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
 #+end_src
-** Evil
-- https://github.com/noctuid/evil-guide#further-integrating-evil-and-emacs
-#+begin_src emacs-lisp
-(use-package evil-numbers
-  :defer t)
-
-(use-package evil
-  :hook ((evil-mode . my/evil-keymap)
-         (after-init . evil-mode))
-  :custom ((evil-respect-visual-line-mode t)
-           (evil-move-beyond-eol t))
-  :commands (evil-make-overriding-map evil-make-intercept-map)
-  :init
-  (defun my/evil-keymap ()
-    (dolist (binding '(("SPC" . evil-scroll-page-down)
-                       ("DEL" . evil-scroll-page-up)
-                       ("C-e" . evil-end-of-line)
-                       ("C-y" . yank)
-                       ("C-f" . forward-char)
-                       ("C-d" . delete-char)
-                       ("C-t" . transpose-chars)
-                       ("C-o" . open-line)
-                       ("M-." . xref-find-definitions)
-                       ("M-," . xref-pop-marker-stack)
-                       ("RET" . xref-goto-xref)
-                       ("M-;" . comment-dwim-2)
-                       ("C-M-b" . backward-sexp)
-                       ("C-M-f" . forward-sexp)
-                       ("C-c +" . evil-numbers/inc-at-pt)
-                       ("C-c -" . evil-numbers/dec-at-pt)
-                       ("q" . quit-window)))
-      (define-key evil-normal-state-map (kbd (car binding)) (cdr binding)))
-
-    (dolist (binding '(("SPC" . evil-scroll-page-down)
-                       ("DEL" . evil-scroll-page-up)
-                       ("C-c +" . evil-numbers/inc-at-pt)
-                       ("C-c -" . evil-numbers/dec-at-pt)
-                       ("C-e" . end-of-visual-line)
-                       ("C-a" . beginning-of-visual-line)))
-      (define-key evil-motion-state-map (kbd (car binding)) (cdr binding)))
-
-    (dolist (binding '(("C-y" . yank)
-                       ("C-w" . kill-region)
-                       ("C-e" . end-of-visual-line)
-                       ("C-a" . beginning-of-visual-line)
-                       ("C-k" . kill-visual-line)
-                       ("C-d" . delete-char)
-                       ("C-v" . scroll-up-command)
-                       ("C-t" . transpose-chars)
-                       ("C-o" . open-line)
-                       ("C-n" . next-line)
-                       ("C-p" . previous-line)))
-      (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
-
-  :config
-  (dolist (m '(dashboard-mode magit-submodule-list-mode helpful-mode
-                              git-rebase-mode easy-hugo-mode dired-mode
-                              cfw:details-mode osx-dictionary-mode
-                              epa-key-list-mode epa-key-mode epa-info-mode
-                              elfeed-dashboard-mode))
-    (add-to-list 'evil-emacs-state-modes m))
-  (dolist (m '(wdired-mode))
-    (add-to-list 'evil-normal-state-modes m))
-  (dolist (m '(elfeed-show-mode elfeed-search-mode))
-    (add-to-list 'evil-motion-state-modes m))
-
-  (require 'dired)
-  (evil-make-overriding-map dired-mode-map 'normal))
-#+end_src
 * Navigation
 #+begin_src emacs-lisp
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Uniquify.html
@@ -1141,6 +1215,492 @@ environment variables from the user's shell.
     "9" 'calendar))
 
 #+end_src
+
+* Progamming
+** General
+#+BEGIN_SRC emacs-lisp
+(use-package compile
+  :ensure nil
+  :custom (compilation-scroll-output t))
+
+(use-package sql
+  :ensure nil
+  :hook ((sql-interactive-mode . my/sql-company))
+  :config
+  (defun my/sql-company ()
+    (setq-local company-minimum-prefix-length 3)
+    (setq-local company-backends
+                '((company-dabbrev-code company-dabbrev company-tabnine))))
+  )
+
+(use-package vc
+  :ensure nil
+  :config
+  (define-key ctl-x-map "j" 'vc-prefix-map))
+
+(use-package eldoc
+  :ensure nil
+  :init
+  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode))
+
+(use-package hideshow
+  :ensure nil
+  :hook (prog-mode . hs-minor-mode)
+  :config
+  (defun my/toggle-fold ()
+    (interactive)
+    (save-excursion
+      (end-of-line)
+      (if (hs-already-hidden-p)
+          (hs-show-block)
+        (hs-hide-block))))
+  :bind (:map prog-mode-map
+         ("C-c o" . my/toggle-fold)))
+
+(use-package sql-indent)
+
+(use-package flycheck
+  :custom ((flycheck-checker-error-threshold 20))
+  :config
+  (global-flycheck-mode)
+  ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-jshint)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp rust-cargo rust rust-clippy))
+  )
+
+(use-package forge
+  ;; 1. first setup USERNAME
+  ;; git config --global github.user USERNAME
+  ;; 2. token
+  ;; https://magit.vc/manual/ghub/Storing-a-Token.html#Storing-a-Token
+  :after magit)
+
+(use-package git-link
+  :load-path "~/.emacs.d/vendor/git-link"
+  :custom ((git-link-preferred-format '(tag commit branch))
+           (git-link-open-in-browser nil))
+  :config
+  (progn
+    (defun my/git-link (remote start end)
+      (interactive (let* ((remote (git-link--select-remote))
+                          (region (when (or buffer-file-name (git-link--using-magit-blob-mode))
+                                    (git-link--get-region))))
+                     (list remote (car region) (cadr region))))
+      (git-link remote start end))
+    (add-to-list 'git-link-remote-alist
+                 '("gitee\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+                 '("gitee\\.com" git-link-commit-github))
+    (add-to-list 'git-link-remote-alist
+                 '("alipay\\(-inc\\)?\\.com" git-link-github))
+    (add-to-list 'git-link-commit-remote-alist
+                 '("alipay\\(-inc\\)?\\.com" git-link-commit-github))))
+
+(use-package git-timemachine
+  :bind (:map vc-prefix-map
+         ("t" . git-timemachine))
+  :hook ((git-timemachine-mode . display-line-numbers-mode)
+         (git-timemachine-mode . evil-normalize-keymaps))
+  :config
+  ;; https://github.com/emacs-evil/evil/issues/511
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  )
+
+(use-package lsp-treemacs
+  :load-path "~/.emacs.d/vendor/lsp-treemacs"
+  :commands (lsp-treemacs-symbols lsp-treemacs-references
+                                  lsp-treemacs-implementations lsp-treemacs-call-hierarchy))
+
+(comment
+ (use-package lsp-java
+   :hook (java-mode . lsp-deferred)
+   :custom
+   ;; 0.57.0 is the last version support jdk8. https://github.com/emacs-lsp/lsp-java/issues/249
+   ;; "http://mirrors.ustc.edu.cn/eclipse/jdtls/milestones/0.57.0/jdt-language-server-0.57.0-202006172108.tar.gz"
+   (lsp-java-jdt-download-url "http://mirrors.ustc.edu.cn/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz")
+   :init
+   (setq lsp-java--download-root "https://gitee.com/liujiacai/lsp-java/raw/master/install/")))
+
+(use-package graphviz-dot-mode
+  :hook (graphviz-dot-mode . my/graphviz-company)
+  :config
+  (defun my/graphviz-company ()
+    (add-to-list 'company-backends 'company-graphviz-dot-backend))
+  (setq graphviz-dot-indent-width 4))
+
+;; bridge to go-playground and rust-playground
+(defun my/playground-exec ()
+  (interactive)
+  (cond ((rust-playground-get-snippet-basedir)
+         (rust-playground-mode)
+         (rust-playground-exec))
+        ((string-match-p (file-truename go-playground-basedir) (file-truename (buffer-file-name)))
+         (go-playground-mode)
+         (go-playground-exec))))
+
+;; for terminal
+(my/global-map-and-set-key "C-R" 'my/playground-exec)
+;; for GUI
+(global-set-key (kbd "<C-return>") 'my/playground-exec)
+#+END_SRC
+** C/C++
+#+BEGIN_SRC emacs-lisp
+(use-package cmake-mode
+  :load-path "/usr/local/share/emacs/site-lisp/cmake"
+  :if (file-exists-p "/usr/local/share/emacs/site-lisp/cmake"))
+
+(use-package ggtags
+  :hook ((c-mode c++-mode java-mode) . ggtags-mode))
+
+(use-package company-c-headers
+  :defer t)
+
+(use-package google-c-style
+  :init
+  (defun my/c-hook ()
+    (add-hook 'before-save-hook 'my/buffer-indent nil t)
+    (setq-local company-backends
+                '(company-c-headers company-gtags company-tabnine)))
+  :hook ((c-mode-common . google-set-c-style)
+         (c-mode-common . google-make-newline-indent)
+         (c-mode-common . my/c-hook)))
+#+END_SRC
+** Go
+- https://github.com/abrochard/emacs-config/blob/master/configuration.org#go
+#+BEGIN_SRC emacs-lisp
+(use-package go-mode
+  :mode ("\\.go\\'" . go-mode)
+  :hook (go-mode . my/set-go-hook)
+  :init
+  (setq gofmt-command "goimports"
+        indent-tabs-mode t)
+  (defun my/set-go-hook ()
+    (setq-local before-save-hook 'gofmt-before-save))
+  :bind (:map go-mode-map
+              ("M-." . godef-jump)))
+
+(use-package flycheck-golangci-lint
+  :hook (go-mode . flycheck-golangci-lint-setup))
+
+(use-package gotest
+  :after go-mode
+  :bind (:map go-mode-map
+              ("C-c C-f" . go-test-current-file)
+              ("C-c C-t" . go-test-current-test)
+              ("C-c C-p" . go-test-current-project)
+              ("C-c C-b" . go-test-current-benchmark)
+              ("C-x x" . go-run))
+  :custom
+  (go-test-verbose t))
+
+(use-package go-playground
+  :defer t
+  :custom
+  (go-playground-basedir "~/code/go/src/playground"))
+
+(use-package go-rename
+  :after go-mode
+  :bind (:map go-mode-map
+              ("C-c C-r" . go-rename)))
+#+END_SRC
+
+** Rust
+#+BEGIN_SRC emacs-lisp
+(use-package rust-playground
+  :custom (rust-playground-run-command "cargo run --color never")
+  :config
+  (setq rust-playground-basedir (expand-file-name "~/code/rust/playground")))
+
+(use-package rust-mode
+  :hook (rust-mode . my/rust-compile)
+  :config
+  (defun my/rust-compile ()
+    (setq-local company-backends '(company-tabnine company-dabbrev-code)
+                compile-command "cargo check --color never --tests")))
+
+(use-package cargo
+  :hook ((rust-mode . cargo-minor-mode))
+  :config
+  (defun my/cargo-test-current ()
+    (interactive)
+    (setenv "RUST_LOG" "debug")
+    (cargo-process-current-test))
+  :bind (:map rust-mode-map
+              (("C-c C-t" . my/cargo-test-current)))
+  :custom ((cargo-process--command-current-test "test --color never")
+           (cargo-process--enable-rust-backtrace t)
+           (cargo-process--command-flags "--  --nocapture")))
+#+END_SRC
+
+** Python
+#+BEGIN_SRC emacs-lisp
+(use-package pyenv-mode
+  :init
+  (defun my/set-python-exe ()
+    (let ((my/python-exe (expand-file-name "~/.pyenv/shims/python")))
+      (setq flycheck-python-pylint-executable my/python-exe
+            flycheck-python-pycompile-executable my/python-exe
+            flycheck-python-flake8-executable my/python-exe)))
+  :hook ((python-mode . pyenv-mode)
+         (python-mode . my/set-python-exe)))
+#+END_SRC
+** Ruby
+#+BEGIN_SRC emacs-lisp
+(use-package ruby-mode
+  :mode ("\\.rake$"
+         "\\.gemspec$"
+         "\\.ru$"
+         "\\.cap$"
+         "Vagrant$"
+         "\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Guard\\|Pod\\)file$"
+         ))
+
+(use-package robe
+  :after ruby-mode
+  :hook ((ruby-mode . robe-hook))
+  :config
+  (add-hook 'ruby-mode-hook (lambda ()
+                              (push 'company-robe company-backends))))
+
+(use-package ruby-end
+  :defer t)
+
+(use-package inf-ruby)
+#+END_SRC
+
+** JS/HTML
+#+BEGIN_SRC emacs-lisp
+(use-package js
+  :ensure nil
+  :defer t
+  :custom ((js-indent-level 2)))
+
+(use-package json-mode
+  :init
+  (defun my/json-before-save()
+    (add-hook 'before-save-hook 'json-pretty-print-buffer nil t))
+  :mode (("\\.jshintrc" . json-mode))
+  :hook (json-mode . my/json-before-save))
+
+(use-package tagedit
+  :config
+  (tagedit-add-paredit-like-keybindings)
+  :hook (html-mode . tagedit-mode))
+#+END_SRC
+
+** Clojure
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-clj-kondo)
+
+(use-package clojure-mode
+  :after flycheck-clj-kondo
+  :mode ("\\.clj$" "\\.cljc$" "\\.edn$" "\\.cljx$")
+  :config
+  (define-clojure-indent
+    (defroutes 'defun)
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (HEAD 2)
+    (ANY 2)
+    (OPTIONS 2)
+    (PATCH 2)
+    (rfn 2)
+    (let-routes 1)
+    (context 2))
+  ;; clojure-mode override ace-jump-mode
+  (define-key clojure-mode-map (kbd "C-c SPC") #'ace-jump-mode)
+  )
+
+(use-package clojure-mode-extra-font-locking
+  :after clojure-mode)
+
+;; (use-package clj-refactor
+;;   :after cider
+;;   :config
+;;   (progn (cljr-add-keybindings-with-prefix "C-c C-m")
+;;          (add-hook 'clojure-mode-hook (lambda () (clj-refactor-mode 1)))))
+
+(use-package cider
+  :after clojure-mode
+  :hook (clojure-mode . cider-mode)
+  :config
+  (progn
+    ;; https://docs.cider.mx/cider/0.23/repl/configuration.html#_set_ns_in_repl
+    (setq cider-repl-require-ns-on-set t)
+    (setq cider-repl-pop-to-buffer-on-connect t)
+    (setq cider-show-error-buffer t)
+    (setq cider-auto-select-error-buffer t)
+    (setq cider-repl-history-file "~/.emacs.d/cider-history")
+    (setq cider-repl-wrap-history t)
+    ;; (setq cider-default-cljs-repl 'figwheel)
+    (add-hook 'cider-repl-mode-hook 'smartparens-mode)
+
+    ;; these help me out with the way I usually develop web apps
+    (defun cider-start-http-server ()
+      (interactive)
+      (let ((ns (cider-current-ns)))
+        (cider-repl-set-ns ns)
+        (cider-interactive-eval (format "(println '(def server (%s/start))) (println 'server)" ns))
+        (cider-interactive-eval (format "(def server (%s/start)) (println server)" ns))))
+
+    (defun cider-user-ns ()
+      (interactive)
+      (cider-repl-set-ns "user"))
+
+    (defun my/cider-figwheel-repl ()
+      (interactive)
+      (save-some-buffers)
+      (with-current-buffer (cider-current-repl)
+        (goto-char (point-max))
+        (insert "(require 'figwheel-sidecar.repl-api)
+             (figwheel-sidecar.repl-api/start-figwheel!)
+             (figwheel-sidecar.repl-api/cljs-repl)")
+        (cider-repl-return)))
+
+    (defun my/cider-node-repl ()
+      (interactive)
+      (save-some-buffers)
+      (with-current-buffer (cider-current-repl)
+        (goto-char (point-max))
+        (insert "(do (require 'cljs.repl.node) (cider.piggieback/cljs-repl (cljs.repl.node/repl-env)))")
+        (cider-repl-return)))
+
+    (defun my/start-cider-repl-with-profile (profile)
+      (interactive "sEnter profile name: ")
+      (letrec ((lein-params (concat "with-profile +" profile " repl :headless")))
+        (message "lein-params set to: %s" lein-params)
+        (set-variable 'cider-lein-parameters lein-params)
+        (cider-jack-in '())
+        (set-variable 'cider-lein-parameters "repl :headless")))
+
+    )
+  (defun my/browse-current-ns ()
+    (interactive)
+    (cider-browse-ns (cider-current-ns)))
+
+  :bind (("C-c M-RET" . cider-macroexpand-1)
+         ("C-c c s" . cider-start-http-server)
+         ("C-c c r" . cider-ns-refresh)
+         ("C-c c u" . cider-user-ns)
+         ("C-c l" . my/browse-current-ns)
+         :map cider-inspector-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
+         ))
+#+END_SRC
+
+** Emacs Lisp
+#+begin_src emacs-lisp
+(use-package elisp-mode
+  :ensure nil
+  :hook ((emacs-lisp-mode . my/elisp-hook)
+         (lisp-interaction-mode . my/elisp-hook))
+  :bind (:map emacs-lisp-mode-map
+         ("C-c M-n" . macrostep-expand)
+         ("C-c RET" . my/elisp-macroexpand)
+         :map lisp-interaction-mode-map
+         ("C-c M-n" . macrostep-expand)
+         ("C-c RET" . my/elisp-macroexpand))
+  :config
+  (defun my/elisp-hook ()
+    (add-hook 'before-save-hook 'my/buffer-indent nil t)
+    ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
+    (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
+    (setq-local company-backends '((company-elisp company-dabbrev-code))))
+
+  (defun my/elisp-macroexpand ()
+    (interactive)
+    (let* ((start (point))
+           (exp (read (current-buffer)))
+           ;; Compute it before, since it may signal errors.
+           (new (macroexpand-1 exp)))
+      (if (equal exp new)
+          (message "Not a macro call, nothing to expand")
+        (with-current-buffer (get-buffer-create "*elisp-macroexpand*")
+          (let ((bf (current-buffer)))
+            (view-mode -1)
+            (erase-buffer)
+            (pp new bf)
+            (switch-to-buffer-other-window bf)
+            (forward-line -100)
+            (emacs-lisp-mode)
+            (view-mode 1))))))
+
+  (defun Fuco1/lisp-indent-function (indent-point state)
+    (let ((normal-indent (current-column))
+          (orig-point (point)))
+      (goto-char (1+ (elt state 1)))
+      (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+      (cond
+       ;; car of form doesn't seem to be a symbol, or is a keyword
+       ((and (elt state 2)
+             (or (not (looking-at "\\sw\\|\\s_"))
+                 (looking-at ":")))
+        (if (not (> (save-excursion (forward-line 1) (point))
+                    calculate-lisp-indent-last-sexp))
+            (progn (goto-char calculate-lisp-indent-last-sexp)
+                   (beginning-of-line)
+                   (parse-partial-sexp (point)
+                                       calculate-lisp-indent-last-sexp 0 t)))
+        ;; Indent under the list or under the first sexp on the same
+        ;; line as calculate-lisp-indent-last-sexp.  Note that first
+        ;; thing on that line has to be complete sexp since we are
+        ;; inside the innermost containing sexp.
+        (backward-prefix-chars)
+        (current-column))
+       ((and (save-excursion
+               (goto-char indent-point)
+               (skip-syntax-forward " ")
+               (not (looking-at ":")))
+             (save-excursion
+               (goto-char orig-point)
+               (looking-at ":")))
+        (save-excursion
+          (goto-char (+ 2 (elt state 1)))
+          (current-column)))
+       (t
+        (let ((function (buffer-substring (point)
+                                          (progn (forward-sexp 1) (point))))
+              method)
+          (setq method (or (function-get (intern-soft function)
+                                         'lisp-indent-function)
+                           (get (intern-soft function) 'lisp-indent-hook)))
+          (cond ((or (eq method 'defun)
+                     (and (null method)
+                          (> (length function) 3)
+                          (string-match "\\`def" function)))
+                 (lisp-indent-defform state indent-point))
+                ((integerp method)
+                 (lisp-indent-specform method state
+                                       indent-point normal-indent))
+                (method
+                 (funcall method indent-point state)))))))))
+
+(use-package ielm
+  :ensure nil
+  :config
+  (defun ielm/clear-repl ()
+    "Clear current REPL buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (ielm-send-input)))
+  :bind (:map inferior-emacs-lisp-mode-map
+         ("M-RET" . ielm-return)
+         ("C-j" . ielm-return)
+         ("RET" . electric-newline-and-maybe-indent)
+         ("C-c l" . ielm/clear-repl)))
+#+end_src
+** Common lisp
+- https://common-lisp.net/project/slime/doc/html/Installation.html#Installation
+#+BEGIN_SRC emacs-lisp
+(use-package slime
+  :config
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+#+END_SRC
+
 * Org
 - https://orgmode.org/worg/org-contrib/babel/languages.html
 #+begin_src emacs-lisp
@@ -1255,108 +1815,6 @@ environment variables from the user's shell.
 (use-package org-sidebar
   :defer t)
 
-#+end_src
-* Lisp
-#+begin_src emacs-lisp
-(use-package elisp-mode
-  :ensure nil
-  :hook ((emacs-lisp-mode . my/elisp-hook)
-         (lisp-interaction-mode . my/elisp-hook))
-  :bind (:map emacs-lisp-mode-map
-         ("C-c M-n" . macrostep-expand)
-         ("C-c RET" . my/elisp-macroexpand)
-         :map lisp-interaction-mode-map
-         ("C-c M-n" . macrostep-expand)
-         ("C-c RET" . my/elisp-macroexpand))
-  :config
-  (defun my/elisp-hook ()
-    (add-hook 'before-save-hook 'my/buffer-indent nil t)
-    ;; https://emacs.stackexchange.com/questions/10230/how-to-indent-keywords-aligned
-    (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
-    (setq-local company-backends '((company-elisp company-dabbrev-code))))
-
-  (defun my/elisp-macroexpand ()
-    (interactive)
-    (let* ((start (point))
-           (exp (read (current-buffer)))
-           ;; Compute it before, since it may signal errors.
-           (new (macroexpand-1 exp)))
-      (if (equal exp new)
-          (message "Not a macro call, nothing to expand")
-        (with-current-buffer (get-buffer-create "*elisp-macroexpand*")
-          (let ((bf (current-buffer)))
-            (view-mode -1)
-            (erase-buffer)
-            (pp new bf)
-            (switch-to-buffer-other-window bf)
-            (forward-line -100)
-            (emacs-lisp-mode)
-            (view-mode 1))))))
-
-  (defun Fuco1/lisp-indent-function (indent-point state)
-    (let ((normal-indent (current-column))
-          (orig-point (point)))
-      (goto-char (1+ (elt state 1)))
-      (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
-      (cond
-       ;; car of form doesn't seem to be a symbol, or is a keyword
-       ((and (elt state 2)
-             (or (not (looking-at "\\sw\\|\\s_"))
-                 (looking-at ":")))
-        (if (not (> (save-excursion (forward-line 1) (point))
-                    calculate-lisp-indent-last-sexp))
-            (progn (goto-char calculate-lisp-indent-last-sexp)
-                   (beginning-of-line)
-                   (parse-partial-sexp (point)
-                                       calculate-lisp-indent-last-sexp 0 t)))
-        ;; Indent under the list or under the first sexp on the same
-        ;; line as calculate-lisp-indent-last-sexp.  Note that first
-        ;; thing on that line has to be complete sexp since we are
-        ;; inside the innermost containing sexp.
-        (backward-prefix-chars)
-        (current-column))
-       ((and (save-excursion
-               (goto-char indent-point)
-               (skip-syntax-forward " ")
-               (not (looking-at ":")))
-             (save-excursion
-               (goto-char orig-point)
-               (looking-at ":")))
-        (save-excursion
-          (goto-char (+ 2 (elt state 1)))
-          (current-column)))
-       (t
-        (let ((function (buffer-substring (point)
-                                          (progn (forward-sexp 1) (point))))
-              method)
-          (setq method (or (function-get (intern-soft function)
-                                         'lisp-indent-function)
-                           (get (intern-soft function) 'lisp-indent-hook)))
-          (cond ((or (eq method 'defun)
-                     (and (null method)
-                          (> (length function) 3)
-                          (string-match "\\`def" function)))
-                 (lisp-indent-defform state indent-point))
-                ((integerp method)
-                 (lisp-indent-specform method state
-                                       indent-point normal-indent))
-                (method
-                 (funcall method indent-point state)))))))))
-
-(use-package ielm
-  :ensure nil
-  :config
-  (defun ielm/clear-repl ()
-    "Clear current REPL buffer."
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (ielm-send-input)))
-  :bind (:map inferior-emacs-lisp-mode-map
-         ("M-RET" . ielm-return)
-         ("C-j" . ielm-return)
-         ("RET" . electric-newline-and-maybe-indent)
-         ("C-c l" . ielm/clear-repl)))
 #+end_src
 * Email
 - https://gist.github.com/dabrahams/3030332

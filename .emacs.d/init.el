@@ -32,28 +32,18 @@
         mc/list-file (no-littering-expand-etc-file-name "mc-lists.el"))
 
   (defun my/generate-autoloads (pkg-name &rest dirs)
-    (let ((generated-autoload-file (no-littering-expand-var-file-name (format "%s-autoloads.el" pkg-name))))
+    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s.el" pkg-name)))
+    (let* ((autoload-timestamps nil)
+           (backup-inhibited t)
+           (version-control 'never))
       (unless (file-exists-p generated-autoload-file)
+        (package-autoload-ensure-default-file generated-autoload-file)
         (apply 'update-directory-autoloads dirs))
       (load-file generated-autoload-file))))
 
-;; Add a directory to our load path so that when you `load` things
-;; below, Emacs knows where to look for the corresponding file.
-(let ((custom-conf-path (file-name-as-directory (expand-file-name "customizations" user-emacs-directory))))
-  (add-to-list 'load-path custom-conf-path)
-  (org-babel-load-file (expand-file-name "core.org" custom-conf-path))
-  ;; settings for all langauage
-  (load "setup-progn.el")
-  ;; Langauage-specific
-  (load "setup-clojure.el")
-  (load "setup-js.el")
-  ;; (load "setup-common-lisp.el")
-  ;; (load "setup-ruby.el")
-  (load "setup-python.el")
-  (load "setup-go.el")
-  (load "setup-rust.el")
+(org-babel-load-file (expand-file-name "core.org" user-emacs-directory))
 
-  (when (file-exists-p custom-file)
-	(load-file custom-file)))
+(when (file-exists-p custom-file)
+  (load-file custom-file))
 
 ;; end

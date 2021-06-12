@@ -1,4 +1,4 @@
-customizations/core.el
+core.el
 /.cask
 /elpa
 
@@ -6,4 +6,8 @@ customizations/core.el
 /var/*
 !/var/auto-save
 /var/auto-save/*
-!var/auto-save/*.gitkeep
+!var/auto-save/.gitkeep
+
+!/var/autoloads
+/var/autoloads/*
+!var/autoloads/.gitkeep
