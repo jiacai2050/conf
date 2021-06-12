@@ -9,53 +9,35 @@
 (require 'package)
 (package-initialize)
 
-(eval-when-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/use-package")
-  (require 'use-package)
-  (setq use-package-always-ensure t
-        use-package-verbose t))
-
 ;; Changes all yes/no questions to y/n type
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(use-package no-littering
-  :load-path "~/.emacs.d/vendor/no-littering"
-  :config
-  (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/no-littering")
+  (setq auto-save-file-name-transforms '((".*" "~/tt/miniemacs-var" t))
         no-littering-var-directory (expand-file-name "~/tt/miniemacs-var")
         no-littering-etc-directory (expand-file-name "~/tt/miniemacs-etc")
-        my/autoloads-dir (no-littering-expand-var-file-name "autoloads"))
+        my/autoloads-dir (expand-file-name "~/tt/miniemacs-var/autoloads"))
 
   (unless (file-exists-p my/autoloads-dir)
     (make-directory my/autoloads-dir t))
+
   (unless (file-exists-p no-littering-etc-directory)
     (make-directory no-littering-etc-directory t))
-  (defun my/generate-autoloads (pkg-name &rest dirs)
-    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s-autoloads.el" pkg-name)))
-    (let* ((autoload-timestamps nil)
-           (backup-inhibited t)
-           (version-control 'never))
-      (unless (file-exists-p generated-autoload-file)
-        (package-autoload-ensure-default-file generated-autoload-file)
-        (apply 'update-directory-autoloads dirs))
-      (load-file generated-autoload-file))))
+  (require 'no-littering))
 
-(use-package frame
-  :ensure nil
-  :config
+;; UI improve.
+(eval-and-compile
   ;; No cursor blinking, it's distracting
   (blink-cursor-mode 0)
   (when (display-graphic-p)
     (set-frame-font "SF Mono-16" t t))
   (setq-default cursor-type 't))
 
-(use-package company
-  :load-path "~/.emacs.d/vendor/company-mode"
-  :commands (global-company-mode)
-  :init
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/company-mode")
+  (require 'company)
   (global-company-mode t)
-
-  :config
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
         company-idle-delay .3
@@ -65,47 +47,41 @@
         company-backends '((company-capf company-dabbrev-code company-dabbrev
                                          company-gtags company-etags company-keywords)
                            (company-files)))
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "M-i") 'company-complete-selection))
 
-  :bind (:map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ("M-i" . company-complete-selection)))
-
-(use-package counsel
-  :load-path "~/.emacs.d/vendor/swiper"
-  :commands (ivy-mode)
-  :init
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/swiper")
+  (require 'counsel)
   (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
-                                (t . ivy--regex-plus)))
-  (ivy-mode 1)
-  :custom ((ivy-use-virtual-buffers t)
-           (ivy-count-format "(%d/%d) ")
-           (ivy-initial-inputs-alist nil)
-           (ivy-height 15)
-           (ivy-extra-directories '("./"))
-           (counsel-switch-buffer-preview-virtual-buffers nil))
-  :bind (("M-y" . counsel-yank-pop)
-         ("C-c C-r" . ivy-resume)
-         ("M-x" . counsel-M-x)
-         ("C-x f" . counsel-switch-buffer)
-         ("C-x C-f" . counsel-find-file)
-         ("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward)))
+                                (t . ivy--regex-plus))
+        ivy-use-virtual-buffers t
+        ivy-count-format "(%d/%d) "
+        ivy-initial-inputs-alist nil
+        ivy-height 15
+        ivy-extra-directories '("./")
+        counsel-switch-buffer-preview-virtual-buffers nil)
+  (global-set-key (kbd "C-s") 'swiper-isearch)
+  (global-set-key (kbd "C-r") 'swiper-isearch-backward)
+  (global-set-key (kbd "C-x f") 'counsel-switch-buffer)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
 
-(use-package ivy-avy
-  :load-path ("~/.emacs.d/vendor/swiper" "~/.emacs.d/vendor/avy")
-  :custom ((avy-all-windows nil)
-           (avy-keys (number-sequence ?a ?z)))
-  :bind (("C-x SPC" . avy-goto-char)
-         ("C-c C-l" . avy-goto-line)
-         ("C-C SPC" . avy-goto-word-1)))
+  (ivy-mode 1))
 
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/avy")
+  (setq avy-all-windows nil
+        avy-keys (number-sequence ?a ?z))
+  (global-set-key (kbd "C-C SPC") 'avy-goto-word-1))
 
-(use-package evil
-  :load-path "~/.emacs.d/vendor/evil"
-  :custom ((evil-respect-visual-line-mode t)
-           (evil-move-beyond-eol t))
-  :init
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/evil")
+  (setq evil-respect-visual-line-mode t
+        evil-move-beyond-eol t)
+
+  (require 'evil)
   (defun my/evil-keymap ()
     (dolist (binding '(("SPC" . evil-scroll-page-down)
                        ("DEL" . evil-scroll-page-up)
@@ -140,23 +116,22 @@
                        ("C-n" . next-line)
                        ("C-p" . previous-line)))
       (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
-  :config
-  (require 'evil)
   (my/evil-keymap)
   (require 'dired)
-  (evil-make-overriding-map dired-mode-map 'normal))
+  (evil-make-overriding-map dired-mode-map 'normal)
+  )
 
-(use-package evil-leader
-  :load-path "~/.emacs.d/vendor/evil-leader"
-  :init
+(eval-and-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/evil-leader")
+  (require 'evil-leader)
+  (setq evil-leader/leader ","
+        evil-leader/no-prefix-mode-rx '("dired.*")
+        evil-leader/in-all-states t)
+
   (defun my/exec-shell-on-buffer (shell-command-text)
     (interactive "MShell command: ")
     (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
-  :config
-  (setq evil-leader/leader ","
-        evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*")
-        evil-leader/in-all-states t)
-  (require 'evil-leader)
+
   (defun my/insert-comma ()
     (interactive)
     (insert-char (char-from-name "COMMA")))
@@ -172,24 +147,22 @@
     "r" 'counsel-switch-buffer
 
     "a" 'swiper-isearch
-    "s" 'my/search-command
+    "s" 'counsel-git-grep
     "d" 'dired
     "f" 'counsel-find-file
     "k" 'kill-buffer
+    "l" 'my/exec-shell-on-buffer
 
     "z" 'my/toggle-evil-emacs-mode
     "x" 'counsel-rg
     "c" 'compile
-    "v" 'counsel-org-capture
-    "b" 'counsel-bookmark
     "," 'my/insert-comma
 
     "SPC" 'avy-goto-word-1
     "0" 'select-window-0
     "1" 'select-window-1
     "2" 'select-window-2
-    "3" 'select-window-3
-    "4" 'select-window-4)
+    "3" 'select-window-3)
 
   (global-evil-leader-mode 1)
   (evil-mode 1)
