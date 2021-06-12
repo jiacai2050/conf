@@ -1404,7 +1404,9 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (go-test-verbose t))
 
 (use-package go-playground
-  :defer t
+  :load-path "~/.emacs.d/vendor/go-playground"
+  :config
+  (require 'go-playground)
   :custom
   (go-playground-basedir "~/code/go/src/playground"))
 
