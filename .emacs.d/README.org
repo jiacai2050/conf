@@ -445,3 +445,21 @@ opam install tuareg merlin utop
            :recursive t
            :publishing-function org-publish-attachment)))
 #+end_src
+
+** Package.el
+#+BEGIN_SRC emacs-lisp
+;; (setq my/max-semantic-version "999.999.999")
+;; (my/generate-autoloads 'company my/max-semantic-version
+;;                        "~/.emacs.d/vendor/company-mode")
+(defun my/generate-autoloads (pkg-name version &rest dirs)
+  (setq generated-autoload-file (no-littering-expand-var-file-name (format "%s-autoloads.el" pkg-name)))
+  (unless (file-exists-p generated-autoload-file)
+    (apply 'update-directory-autoloads dirs))
+  (load-file generated-autoload-file)
+  ;; push PACKAGE to package-alist so that package-installed-p can find it.
+  (push (cons pkg-name (list (package-desc-create
+                              :name pkg-name
+                              :dir no-littering-var-directory
+                              :version (version-to-list version))))
+        package-alist))
+#+END_SRC

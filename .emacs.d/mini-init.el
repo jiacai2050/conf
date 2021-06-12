@@ -3,17 +3,14 @@
 (toggle-debug-on-error)
 (load-file (expand-file-name "early-init.el" user-emacs-directory))
 
-(setq package-user-dir "/tmp/elpa"
+(setq package-user-dir "~/tt/miniemacs-elpa"
       package-check-signature nil)
 
 (require 'package)
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
 (eval-when-compile
+  (add-to-list 'load-path "~/.emacs.d/vendor/use-package")
   (require 'use-package)
   (setq use-package-always-ensure t
         use-package-verbose t))
@@ -25,23 +22,23 @@
   :load-path "~/.emacs.d/vendor/no-littering"
   :config
   (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))
-        my/max-semantic-version "999.999.999"
-        no-littering-var-directory (expand-file-name "~/tt/")
-        no-littering-etc-directory (expand-file-name "~/tt/"))
+        no-littering-var-directory (expand-file-name "~/tt/miniemacs-var")
+        no-littering-etc-directory (expand-file-name "~/tt/miniemacs-etc")
+        my/autoloads-dir (no-littering-expand-var-file-name "autoloads"))
 
-  ;; (my/generate-autoloads 'company my/max-semantic-version
-  ;;                        "~/.emacs.d/vendor/company-mode")
-  (defun my/generate-autoloads (pkg-name version &rest dirs)
-    (setq generated-autoload-file (no-littering-expand-var-file-name (format "%s-autoloads.el" pkg-name)))
-    (unless (file-exists-p generated-autoload-file)
-      (apply 'update-directory-autoloads dirs))
-    (load-file generated-autoload-file)
-    ;; push PACKAGE to package-alist so that package-installed-p can find it.
-    (push (cons pkg-name (list (package-desc-create
-                                :name pkg-name
-                                :dir no-littering-var-directory
-                                :version (version-to-list version))))
-          package-alist)))
+  (unless (file-exists-p my/autoloads-dir)
+    (make-directory my/autoloads-dir t))
+  (unless (file-exists-p no-littering-etc-directory)
+    (make-directory no-littering-etc-directory t))
+  (defun my/generate-autoloads (pkg-name &rest dirs)
+    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s-autoloads.el" pkg-name)))
+    (let* ((autoload-timestamps nil)
+           (backup-inhibited t)
+           (version-control 'never))
+      (unless (file-exists-p generated-autoload-file)
+        (package-autoload-ensure-default-file generated-autoload-file)
+        (apply 'update-directory-autoloads dirs))
+      (load-file generated-autoload-file))))
 
 (use-package frame
   :ensure nil
@@ -103,15 +100,12 @@
          ("C-c C-l" . avy-goto-line)
          ("C-C SPC" . avy-goto-word-1)))
 
+
 (use-package evil
   :load-path "~/.emacs.d/vendor/evil"
-  :hook ((evil-mode . my/evil-keymap))
   :custom ((evil-respect-visual-line-mode t)
            (evil-move-beyond-eol t))
-  :commands (evil-mode evil-make-overriding-map evil-make-intercept-map)
   :init
-  (require 'evil)
-  (evil-mode 1)
   (defun my/evil-keymap ()
     (dolist (binding '(("SPC" . evil-scroll-page-down)
                        ("DEL" . evil-scroll-page-up)
@@ -123,7 +117,6 @@
                        ("M-." . xref-find-definitions)
                        ("M-," . xref-pop-marker-stack)
                        ("RET" . xref-goto-xref)
-                       ("M-;" . comment-dwim-2)
                        ("C-M-b" . backward-sexp)
                        ("C-M-f" . forward-sexp)
                        ("q" . quit-window)))
@@ -147,24 +140,23 @@
                        ("C-n" . next-line)
                        ("C-p" . previous-line)))
       (define-key evil-insert-state-map (kbd (car binding)) (cdr binding))))
-
   :config
+  (require 'evil)
+  (my/evil-keymap)
   (require 'dired)
   (evil-make-overriding-map dired-mode-map 'normal))
 
 (use-package evil-leader
   :load-path "~/.emacs.d/vendor/evil-leader"
   :init
-  (require 'evil-leader)
-  (global-evil-leader-mode)
   (defun my/exec-shell-on-buffer (shell-command-text)
     (interactive "MShell command: ")
     (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
-
-  :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
-           (evil-leader/in-all-states t))
   :config
+  (setq evil-leader/leader ","
+        evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*")
+        evil-leader/in-all-states t)
+  (require 'evil-leader)
   (defun my/insert-comma ()
     (interactive)
     (insert-char (char-from-name "COMMA")))
@@ -197,4 +189,8 @@
     "1" 'select-window-1
     "2" 'select-window-2
     "3" 'select-window-3
-    "4" 'select-window-4))
+    "4" 'select-window-4)
+
+  (global-evil-leader-mode 1)
+  (evil-mode 1)
+  )

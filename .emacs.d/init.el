@@ -32,7 +32,7 @@
         mc/list-file (no-littering-expand-etc-file-name "mc-lists.el"))
 
   (defun my/generate-autoloads (pkg-name &rest dirs)
-    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s.el" pkg-name)))
+    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s-autoloads.el" pkg-name)))
     (let* ((autoload-timestamps nil)
            (backup-inhibited t)
            (version-control 'never))
