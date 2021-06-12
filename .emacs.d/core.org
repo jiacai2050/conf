@@ -23,60 +23,6 @@
     (interactive "sUrl: \nsName: ")
     (message "Url: %s, Name: %s" url pkg-name)
     (magit-submodule-add url (format ".emacs.d/vendor/%s" pkg-name) pkg-name)))
-
-(use-package lsp-mode
-  :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
-  :init
-  (my/generate-autoloads "lsp-mode"
-                         "~/.emacs.d/vendor/lsp-mode"
-                         "~/.emacs.d/vendor/lsp-mode/clients")
-  (setq lsp-keymap-prefix "C-c l")
-  (defun my/lsp-js ()
-    "Enable LSP for JavaScript, but not for JSON"
-    (when (eq 'js-mode major-mode)
-      (lsp-deferred)))
-  (defun my/lsp-rust ()
-    (add-hook 'before-save-hook 'lsp-format-buffer nil t)
-    (setq-local lsp-completion-enable nil
-                lsp-modeline-code-actions-enable nil)
-    (lsp-deferred))
-  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
-  (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
-    (-let* (((&hash "value") contents)
-            (groups (--partition-by (s-blank? it) (s-lines (s-trim value))))
-            (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
-                           (-third-item groups)
-                         (car groups)))
-            (sig (--> sig_group
-                   (--drop-while (s-equals? "```rust" it) it)
-                   (--take-while (not (s-equals? "```" it)) it)
-                   (s-join "" it))))
-      (lsp--render-element (concat "```rust\n" sig "\n```"))))
-  :hook ((go-mode . lsp-deferred)
-         (rust-mode . my/lsp-rust)
-         (python-mode . lsp-deferred)
-         (js-mode .  my/lsp-js)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp-rust-analyzer-expand-macro)
-  :custom ((lsp-log-io nil)
-           (lsp-eldoc-render-all nil)
-           (lsp-completion-provider t)
-           (lsp-signature-render-documentation nil)
-           (lsp-rust-server 'rust-analyzer)
-           (lsp-rust-analyzer-cargo-watch-enable nil)
-           (lsp-go-hover-kind "NoDocumentation")
-           (lsp-go-use-placeholders t)
-           (lsp-diagnostics-provider :none)
-           (lsp-modeline-diagnostics-enable nil)
-           (lsp-headerline-breadcrumb-enable nil)
-           (lsp-eslint-server-command `("node"
-                                        ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
-                                        "--stdio")))
-  :config
-  (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
-  :bind (:map lsp-mode-map
-         ("M-." . lsp-find-definition)
-         ("M-n" . lsp-find-references)))
 #+end_src
 ** Evil
 - https://github.com/noctuid/evil-guide#further-integrating-evil-and-emacs
@@ -523,6 +469,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   :defer t)
 
 (defun my/dark-theme-config ()
+  (interactive)
   (load-theme 'wombat t)
   ;; https://stackoverflow.com/a/2718543/2163429
   (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
@@ -532,6 +479,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   )
 
 (defun my/light-theme-config ()
+  (interactive)
   (if (display-graphic-p)
       (progn
         (load-theme 'gruvbox-light-soft t)
@@ -545,17 +493,13 @@ exec-path-from-shell takes too long to load, so set path by hand.
            :distant-foreground 'unspecified
            :background "#BAD6FC"))
         )
-    (progn
-      ;; (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
-      ;;                   '(region ((t (:background "Light Salmon")))))
-      )))
+    (comment
+      (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
+                        '(region ((t (:background "Light Salmon"))))))
+    ))
 
-(comment
- (if (string= (getenv "MY_THEME") "light")
-     (my/light-theme-config)
-   (my/dark-theme-config)))
-
-(load-theme 'modus-operandi t)
+(when (display-graphic-p)
+  (load-theme 'modus-operandi t))
 
 #+end_src
 * Editing
@@ -1455,6 +1399,12 @@ exec-path-from-shell takes too long to load, so set path by hand.
             flycheck-python-flake8-executable my/python-exe)))
   :hook ((python-mode . pyenv-mode)
          (python-mode . my/set-python-exe)))
+
+(use-package lsp-python-ms
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))
 #+END_SRC
 ** Ruby
 #+BEGIN_SRC emacs-lisp

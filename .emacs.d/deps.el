@@ -4,6 +4,29 @@
   (setq use-package-always-ensure t
         use-package-verbose t))
 
+(use-package no-littering
+  :load-path "~/.emacs.d/vendor/no-littering"
+  :config
+  ;; don't forget the slash at the end of your string
+  ;; https://emacs.stackexchange.com/a/17214/16450
+  (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))
+        custom-file (no-littering-expand-var-file-name "custom.el")
+        persistent-scratch-save-file (no-littering-expand-var-file-name
+                                      (if (display-graphic-p)
+                                          "scratch-gui.el"
+                                        "scratch-terminal.el"))
+        mc/list-file (no-littering-expand-etc-file-name "mc-lists.el"))
+
+  (defun my/generate-autoloads (pkg-name &rest dirs)
+    (setq generated-autoload-file (no-littering-expand-var-file-name (format "autoloads/%s-autoloads.el" pkg-name)))
+    (let* ((autoload-timestamps nil)
+           (backup-inhibited t)
+           (version-control 'never))
+      (unless (file-exists-p generated-autoload-file)
+        (package-autoload-ensure-default-file generated-autoload-file)
+        (apply 'update-directory-autoloads dirs))
+      (load-file generated-autoload-file))))
+
 (use-package company
   :load-path "~/.emacs.d/vendor/company-mode"
   :commands (global-company-mode)
@@ -91,6 +114,59 @@
 (use-package goto-chg
   :load-path "~/.emacs.d/vendor/goto-chg"
   :defer t)
+
+(use-package lsp-mode
+  :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
+  :init
+  (my/generate-autoloads "lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode"
+                         "~/.emacs.d/vendor/lsp-mode/clients")
+  (setq lsp-keymap-prefix "C-c l")
+  (defun my/lsp-js ()
+    "Enable LSP for JavaScript, but not for JSON"
+    (when (eq 'js-mode major-mode)
+      (lsp-deferred)))
+  (defun my/lsp-rust ()
+    (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+    (setq-local lsp-completion-enable nil
+                lsp-modeline-code-actions-enable nil)
+    (lsp-deferred))
+  ;; https://github.com/emacs-lsp/lsp-mode/pull/1740
+  (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
+    (-let* (((&hash "value") contents)
+            (groups (--partition-by (s-blank? it) (s-lines (s-trim value))))
+            (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
+                           (-third-item groups)
+                         (car groups)))
+            (sig (--> sig_group
+                   (--drop-while (s-equals? "```rust" it) it)
+                   (--take-while (not (s-equals? "```" it)) it)
+                   (s-join "" it))))
+      (lsp--render-element (concat "```rust\n" sig "\n```"))))
+  :hook ((go-mode . lsp-deferred)
+         (rust-mode . my/lsp-rust)
+         (js-mode .  my/lsp-js)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp-rust-analyzer-expand-macro)
+  :custom ((lsp-log-io nil)
+           (lsp-eldoc-render-all nil)
+           (lsp-completion-provider t)
+           (lsp-signature-render-documentation nil)
+           (lsp-rust-server 'rust-analyzer)
+           (lsp-rust-analyzer-cargo-watch-enable nil)
+           (lsp-go-hover-kind "NoDocumentation")
+           (lsp-go-use-placeholders t)
+           (lsp-diagnostics-provider :none)
+           (lsp-modeline-diagnostics-enable nil)
+           (lsp-headerline-breadcrumb-enable nil)
+           (lsp-eslint-server-command `("node"
+                                        ,(expand-file-name  "eslint/unzipped/extension/server/out/eslintServer.js" lsp-server-install-dir)
+                                        "--stdio")))
+  :config
+  (push "[/\\\\]vendor$" lsp-file-watch-ignored-directories)
+  :bind (:map lsp-mode-map
+         ("M-." . lsp-find-definition)
+         ("M-n" . lsp-find-references)))
 
 ;; (setq my/after-deps-loaded (current-time))
 ;; (message "Load deps.el cost %f seconds"
