@@ -25,8 +25,8 @@ __pid_port() {
 }
 
 alias pidport=" __pid_port "
-alias bci="brew cask install "
 alias bi="brew install "
+alias bs='brew services'
 alias d="docker "
 alias dc="docker-compose "
 
@@ -36,9 +36,6 @@ if [[ -d $completion_dir && -r $completion_dir && -x $completion_dir ]];then
     . $i
   done
 fi
-
-# Nodejs
-export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
 
 # Java
 # brew install jenv
@@ -66,19 +63,9 @@ export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
 # ocaml
 [ -r ~/.opam/opam-init/init.sh ] && . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-# goenv
-export GOENV_ROOT="$HOME/.goenv/"
-if [[ -s "$GOENV_ROOT" ]]; then
-  export GOENV_DISABLE_GOPATH=1
-  eval "$(goenv init -)"
-fi
-
 # fix Inappropriate ioctl for device
 # https://stackoverflow.com/a/41054093/2163429
-export GPG_TTY=$(tty)
-export GRADLE_HOME=/usr/local/opt/gradle/libexec
+GPG_TTY=$(tty)
+export GPG_TTY
 
-alias bs='brew services'
-export TZ='Asia/Shanghai'
-
-# test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

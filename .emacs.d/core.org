@@ -1445,7 +1445,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
   :init
   (defun my/json-before-save()
     (add-hook 'before-save-hook 'json-pretty-print-buffer nil t))
-  :mode (("\\.jshintrc" . json-mode))
   :hook (json-mode . my/json-before-save))
 
 (use-package tagedit

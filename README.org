@@ -45,3 +45,16 @@ cp zazu-encode-decode/src/* ~/.zazu/plugins/tinytacoteam/zazu-template/src/
   }
 # 更新 zazu.json
 #+end_src
+
+** XDG support
+- https://wiki.archlinux.org/title/XDG_Base_Directory
+- 找出失效的软连接
+  #+begin_src bash
+find ~ -maxdepth 1 -type l  -exec file {} \; |grep  broken
+  #+end_src
+*** Done
+- https://github.com/tmux/tmux/issues/142
+*** Issue
+- https://github.com/npm/npm/issues/6675
+- https://github.com/rust-lang/cargo/issues/1734
+- [[https://gist.github.com/dkasak/6ae1c6bf0d771155f23b][XDG Environment For VIM]]

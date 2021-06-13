@@ -6,19 +6,12 @@
 # 自己程序中的相关配置
 [ -r ~/.devrc ] && source ~/.devrc
 
-# brew install bash-completion
-# https://computingforgeeks.com/how-to-fix-get-comp-words-by-ref-command-not-found/
-bash_comp_sh="/usr/local/etc/profile.d/bash_completion.sh"
-# [ -r "$bash_comp_sh" ] && . "$bash_comp_sh"
-# Bash completion has been installed to:
-# /usr/local/etc/bash_completion.d
-
+export TZ='Asia/Shanghai'
 export LC_ALL=en_US.UTF-8
 #export EDITOR="emacsclient -t -a=\"\""
 # for ctrl-x e
 export VISUAL=vim
 export EDITOR="$VISUAL"
-
 export ALTERNATE_EDITOR=""
 export LANG=en_US.UTF-8
 
@@ -44,9 +37,11 @@ function command_exists() {
 
 alias ls='ls -FG'
 alias ll='ls -lh'
+alias lla='ls -lah'
 alias cd.='cd ..'
 alias cd..='cd ../..'
 alias cd...='cd ../../..'
+alias cd....='cd ../../../..'
 alias gc='git clone '
 alias gf='git diff --color | diff-so-fancy'
 # alias e='emacsclient -t -a ""'
@@ -54,7 +49,8 @@ alias tailf='tail -F '
 alias tf='tail -F '
 alias t='tail '
 alias dl='cd ~/Downloads'
-alias p='ping qq.com'
+alias p='python'
+alias p2='ping qq.com'
 alias gpg-kill='gpgconf --kill gpg-agent'
 alias pgrep='pgrep -l '
 
@@ -88,8 +84,6 @@ export GO111MODULE=on
 export GOPROXY="https://goproxy.cn,direct"
 export GOPRIVATE=gitlab.alipay-inc.com,gitlab.alibaba-inc.com,code.alipay.com
 export PATH=$PATH:$GOPATH/bin
-# REPL
-alias yaegi='rlwrap yaegi'
 alias gobx='GOOS=linux GOARCH=amd64 go build -v '
 
 # misc

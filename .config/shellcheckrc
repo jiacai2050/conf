@@ -1,0 +1,2 @@
+# https://github.com/koalaman/shellcheck/wiki/Ignore
+disable=SC1090
