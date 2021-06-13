@@ -1,96 +1,96 @@
 [submodule "restclient"]
-	path = .emacs.d/vendor/restclient
+	path = .config/emacs/vendor/restclient
 	url = https://github.com/pashky/restclient.el
 [submodule "magit"]
-	path = .emacs.d/vendor/magit
+	path = .config/emacs/vendor/magit
 	url = https://gitee.com/liujiacai/magit.git
 [submodule "aweshell"]
-	path = .emacs.d/vendor/aweshell
+	path = .config/emacs/vendor/aweshell
 	url = https://gitee.com/liujiacai/aweshell.git
 [submodule "lsp-mode"]
-	path = .emacs.d/vendor/lsp-mode
+	path = .config/emacs/vendor/lsp-mode
 	url = https://gitee.com/liujiacai/lsp-mode.git
 [submodule "lsp-treemacs"]
-	path = .emacs.d/vendor/lsp-treemacs
+	path = .config/emacs/vendor/lsp-treemacs
 	url = https://gitee.com/liujiacai/lsp-treemacs.git
 [submodule "no-littering"]
-	path = .emacs.d/vendor/no-littering
+	path = .config/emacs/vendor/no-littering
 	url = https://gitee.com/liujiacai/no-littering.git
 [submodule "git-link"]
-	path = .emacs.d/vendor/git-link
+	path = .config/emacs/vendor/git-link
 	url = https://gitee.com/liujiacai/git-link.git
 [submodule "smartparens"]
-	path = .emacs.d/vendor/smartparens
+	path = .config/emacs/vendor/smartparens
 	url = https://gitee.com/liujiacai/smartparens.git
 [submodule "company-tabnine"]
-	path = .emacs.d/vendor/company-tabnine
+	path = .config/emacs/vendor/company-tabnine
 	url = https://gitee.com/liujiacai/company-tabnine.git
 [submodule "company-mode"]
-	path = .emacs.d/vendor/company-mode
+	path = .config/emacs/vendor/company-mode
 	url = https://gitee.com/liujiacai/company-mode.git
 [submodule "easy-hugo"]
-	path = .emacs.d/vendor/easy-hugo
+	path = .config/emacs/vendor/easy-hugo
 	url = https://gitee.com/liujiacai/emacs-easy-hugo.git
 [submodule "elfeed"]
-	path = .emacs.d/vendor/elfeed
+	path = .config/emacs/vendor/elfeed
 	url = https://gitee.com/liujiacai/elfeed.git
 [submodule "elfeed-dashboard"]
-	path = .emacs.d/vendor/elfeed-dashboard
+	path = .config/emacs/vendor/elfeed-dashboard
 	url = https://gitee.com/liujiacai/elfeed-dashboard.git
 [submodule "elfeed-org"]
-	path = .emacs.d/vendor/elfeed-org
+	path = .config/emacs/vendor/elfeed-org
 	url = https://gitee.com/liujiacai/elfeed-org.git
 [submodule "swiper"]
-	path = .emacs.d/vendor/swiper
+	path = .config/emacs/vendor/swiper
 	url = https://gitee.com/liujiacai/swiper.git
 [submodule "avy"]
-	path = .emacs.d/vendor/avy
+	path = .config/emacs/vendor/avy
 	url = https://gitee.com/liujiacai/avy.git
 [submodule "evil"]
-	path = .emacs.d/vendor/evil
+	path = .config/emacs/vendor/evil
 	url = https://gitee.com/liujiacai/evil.git
 [submodule "evil-leader"]
-	path = .emacs.d/vendor/evil-leader
+	path = .config/emacs/vendor/evil-leader
 	url = https://gitee.com/liujiacai/evil-leader.git
 [submodule "use-package"]
-	path = .emacs.d/vendor/use-package
+	path = .config/emacs/vendor/use-package
 	url = https://gitee.com/liujiacai/use-package.git
 [submodule "with-editor"]
-	path = .emacs.d/vendor/with-editor
+	path = .config/emacs/vendor/with-editor
 	url = https://gitee.com/liujiacai/with-editor.git
 [submodule "dash.el"]
-	path = .emacs.d/vendor/dash.el
+	path = .config/emacs/vendor/dash.el
 	url = https://gitee.com/liujiacai/dash.el.git
 [submodule "transient"]
-	path = .emacs.d/vendor/transient
+	path = .config/emacs/vendor/transient
 	url = https://gitee.com/liujiacai/transient.git
 [submodule "s.el"]
-	path = .emacs.d/vendor/s.el
+	path = .config/emacs/vendor/s.el
 	url = https://gitee.com/liujiacai/s.el.git
 [submodule "f.el"]
-	path = .emacs.d/vendor/f.el
+	path = .config/emacs/vendor/f.el
 	url = https://gitee.com/liujiacai/f.el.git
 [submodule "ht.el"]
-	path = .emacs.d/vendor/ht.el
+	path = .config/emacs/vendor/ht.el
 	url = https://gitee.com/liujiacai/ht.el.git
 [submodule "spinner.el"]
-	path = .emacs.d/vendor/spinner.el
+	path = .config/emacs/vendor/spinner.el
 	url = https://gitee.com/liujiacai/spinner.el.git
 [submodule "hydra"]
-	path = .emacs.d/vendor/hydra
+	path = .config/emacs/vendor/hydra
 	url = https://gitee.com/liujiacai/hydra.git
 [submodule "emacs-request"]
-	path = .emacs.d/vendor/emacs-request
+	path = .config/emacs/vendor/emacs-request
 	url = https://gitee.com/liujiacai/emacs-request.git
 [submodule "unicode-escape.el"]
-	path = .emacs.d/vendor/unicode-escape.el
+	path = .config/emacs/vendor/unicode-escape.el
 	url = https://gitee.com/liujiacai/unicode-escape.el.git
 [submodule "names"]
-	path = .emacs.d/vendor/names
+	path = .config/emacs/vendor/names
 	url = https://gitee.com/liujiacai/names.git
 [submodule "goto-chg"]
-	path = .emacs.d/vendor/goto-chg
+	path = .config/emacs/vendor/goto-chg
 	url = https://gitee.com/liujiacai/goto-chg.git
 [submodule "go-playground"]
-	path = .emacs.d/vendor/go-playground
+	path = .config/emacs/vendor/go-playground
 	url = https://gitee.com/liujiacai/go-playground.git
