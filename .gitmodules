@@ -18,7 +18,7 @@
 	url = https://gitee.com/liujiacai/no-littering.git
 [submodule "git-link"]
 	path = .emacs.d/vendor/git-link
-	url = https://github.com/jiacai2050/git-link.git
+	url = https://gitee.com/liujiacai/git-link.git
 [submodule "smartparens"]
 	path = .emacs.d/vendor/smartparens
 	url = https://gitee.com/liujiacai/smartparens.git

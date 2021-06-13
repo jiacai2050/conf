@@ -1,11 +1,23 @@
 (eval-when-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/use-package")
+  (setq my/vendor-dir (expand-file-name "vendor" user-emacs-directory))
+
+  (defun my/expand-vendor-dir (dir)
+    (expand-file-name dir my/vendor-dir))
+
+  (dolist (dir (directory-files my/vendor-dir t "[^\.]" t))
+    (cond ((or (string-suffix-p "magit" dir)
+               (string-suffix-p "transient" dir)) (push (expand-file-name "lisp" dir) load-path))
+          ((string-suffix-p "lsp-mode" dir)
+           (progn (push (expand-file-name "clients" dir) load-path)
+                  (push dir load-path)))
+          (t (push dir load-path))))
+
   (require 'use-package)
   (setq use-package-always-ensure t
         use-package-verbose t))
 
 (use-package no-littering
-  :load-path "~/.emacs.d/vendor/no-littering"
+  :ensure nil
   :config
   ;; don't forget the slash at the end of your string
   ;; https://emacs.stackexchange.com/a/17214/16450
@@ -28,7 +40,7 @@
       (load-file generated-autoload-file))))
 
 (use-package company
-  :load-path "~/.emacs.d/vendor/company-mode"
+  :ensure nil
   :commands (global-company-mode)
   :init
   (global-company-mode t)
@@ -52,17 +64,17 @@
 
 ;; magit deps
 (use-package with-editor
-  :load-path "~/.emacs.d/vendor/with-editor"
+  :ensure nil
   :commands with-editor-export-editor
   ;; sets up the with-editor package so things that invoke $EDITOR will use the current emacs if I’m already inside of emacs
   :hook ((shell-mode eshell-mode) . with-editor-export-editor))
 
 (use-package dash
-  :load-path "~/.emacs.d/vendor/dash.el"
+  :ensure nil
   :defer t)
 
 (use-package transient
-  :load-path "~/.emacs.d/vendor/transient/lisp"
+  :ensure nil
   :custom (;; https://emacs.stackexchange.com/a/52002/16450
            (transient-display-buffer-action '(display-buffer-below-selected)))
   :commands (transient-define-prefix)
@@ -71,56 +83,56 @@
 
 ;; lsp-treemacs deps
 (use-package dash-functional
-  :load-path "~/.emacs.d/vendor/dash.el"
+  :ensure nil
   :defer t)
 
 (use-package ht
-  :load-path "~/.emacs.d/vendor/ht.el"
+  :ensure nil
   :defer t)
 
 (use-package s
-  :load-path "~/.emacs.d/vendor/s.el"
+  :ensure nil
   :defer t)
 
 (use-package f
-  :load-path "~/.emacs.d/vendor/f.el"
+  :ensure nil
   :defer t)
 
 ;; lsp-mode deps
 (use-package spinner
-  :load-path "~/.emacs.d/vendor/spinner.el"
+  :ensure nil
   :defer t)
 
 (use-package lv
-  :load-path "~/.emacs.d/vendor/hydra"
+  :ensure nil
   :defer t)
 
 ;; easy-hugo deps
 (use-package request
-  :load-path "~/.emacs.d/vendor/emacs-request"
+  :ensure nil
   :defer t)
 
 ;; unicode-escape deps
 (use-package names
-  :load-path "~/.emacs.d/vendor/names"
+  :ensure nil
   :defer t)
 
 ;; company-tabnine deps, other: company, dash, s, cl-lib
 (use-package unicode-escape
-  :load-path "~/.emacs.d/vendor/unicode-escape.el"
+  :ensure nil
   :defer t)
 
 ;; evil deps
 (use-package goto-chg
-  :load-path "~/.emacs.d/vendor/goto-chg"
+  :ensure nil
   :defer t)
 
 (use-package lsp-mode
-  :load-path ("~/.emacs.d/vendor/lsp-mode" "~/.emacs.d/vendor/lsp-mode/clients")
+  :ensure nil
   :init
   (my/generate-autoloads "lsp-mode"
-                         "~/.emacs.d/vendor/lsp-mode"
-                         "~/.emacs.d/vendor/lsp-mode/clients")
+                         (my/expand-vendor-dir "lsp-mode")
+                         (my/expand-vendor-dir "lsp-mode/clients"))
   (setq lsp-keymap-prefix "C-c l"
         lsp-enabled-clients '(mspyls gopls rust-analyzer
                                      ts-ls ;; js

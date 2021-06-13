@@ -7,12 +7,12 @@
 * Basic
 #+begin_src emacs-lisp
 (use-package company-tabnine
-  :load-path "~/.emacs.d/vendor/company-tabnine"
+  :ensure nil
   :commands (company-tabnine)
   :custom ((company-tabnine-always-trigger nil)))
 
 (use-package magit
-  :load-path "~/.emacs.d/vendor/magit/lisp"
+  :ensure nil
   :bind (("C-x g" . magit-status)
          ("C-c g" . magit-file-dispatch))
   :custom ((magit-diff-refine-hunk 'all)
@@ -31,7 +31,7 @@
   :defer t)
 
 (use-package evil
-  :load-path "~/.emacs.d/vendor/evil"
+  :ensure nil
   :hook ((evil-mode . my/evil-keymap)
          (after-init . evil-mode))
   :custom ((evil-respect-visual-line-mode t)
@@ -95,9 +95,10 @@
   (evil-make-overriding-map dired-mode-map 'normal))
 
 (use-package evil-leader
-  :load-path "~/.emacs.d/vendor/evil-leader"
-  :init
+  :ensure nil
+  :config
   (global-evil-leader-mode)
+  :init
   (defun my/exec-shell-on-buffer (shell-command-text)
     (interactive "MShell command: ")
     (shell-command (format "%s %s" shell-command-text (shell-quote-argument buffer-file-name))))
@@ -330,7 +331,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (setq-default sh-basic-offset 2))
 
 (use-package aweshell
-  :load-path "~/.emacs.d/vendor/aweshell"
+  :ensure nil
   :bind (("<f8>" . aweshell-dedicated-toggle)
          ("<f9>" . aweshell-toggle))
   :config
@@ -787,7 +788,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (add-hook 'separedit-buffer-creation-hook #'auto-fill-mode))
 
 (use-package smartparens
-  :load-path "~/.emacs.d/vendor/smartparens"
+  :ensure nil
   :init
   (require 'smartparens-config)
   (smartparens-global-strict-mode 1)
@@ -1234,7 +1235,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   :after magit)
 
 (use-package git-link
-  :load-path "~/.emacs.d/vendor/git-link"
+  :ensure nil
   :custom ((git-link-preferred-format '(tag commit branch))
            (git-link-open-in-browser nil))
   :config
@@ -1265,7 +1266,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   )
 
 (use-package lsp-treemacs
-  :load-path "~/.emacs.d/vendor/lsp-treemacs"
+  :ensure nil
   :commands (lsp-treemacs-symbols lsp-treemacs-references
                                   lsp-treemacs-implementations lsp-treemacs-call-hierarchy))
 
@@ -1352,7 +1353,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (go-test-verbose t))
 
 (use-package go-playground
-  :load-path "~/.emacs.d/vendor/go-playground"
+  :ensure nil
   :config
   (require 'go-playground)
   :custom
@@ -1970,7 +1971,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 - https://noonker.github.io/posts/2020-04-22-elfeed/
 #+begin_src emacs-lisp
 (use-package elfeed
-  :load-path "~/.emacs.d/vendor/elfeed"
+  :ensure nil
   :custom ((elfeed-use-curl t)
            (elfeed-db-directory "~/Documents/elfeed/")
            (elfeed-curl-extra-arguments '("-x" "socks5h://localhost:13659")))
@@ -1984,7 +1985,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   :init
   (defun my/elfeed-set-line-space ()
     (setq-local line-spacing 0.3))
-  (my/generate-autoloads "elfeed" "~/.emacs.d/vendor/elfeed")
+  (my/generate-autoloads "elfeed" (my/expand-vendor-dir "elfeed"))
 
   :hook ((elfeed-search-mode elfeed-show-mode) . my/elfeed-set-line-space)
   :config
@@ -2089,7 +2090,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (push '(starred elfeed-search-starred-title-face) elfeed-search-face-alist))
 
 (use-package elfeed-dashboard
-  :load-path "~/.emacs.d/vendor/elfeed-dashboard"
+  :ensure nil
   :commands (elfeed-dashboard)
   :config
   (setq elfeed-dashboard-file (expand-file-name "elfeed-dashboard.org" no-littering-etc-directory))
@@ -2097,7 +2098,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 
 (use-package elfeed-org
-  :load-path "~/.emacs.d/vendor/elfeed-org"
+  :ensure nil
   :custom ((rmh-elfeed-org-files `(,(no-littering-expand-etc-file-name "elfeed-feeds.org"))))
   :hook (elfeed-dashboard-mode . my/elfeed-hook)
   :config
@@ -2144,7 +2145,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 * Others
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
-  :load-path "~/.emacs.d/vendor/restclient"
+  :ensure nil
   :mode ("\\.api\\'" . restclient-mode))
 
 (use-package protobuf-mode
@@ -2186,7 +2187,7 @@ https://gist.github.com/bravosierrasierra/59d6d0c1ddff46a1b87b18738cecf8a2"
          ("C-h k" . helpful-key)))
 
 (use-package easy-hugo
-  :load-path "~/.emacs.d/vendor/easy-hugo"
+  :ensure nil
   :commands (easy-hugo-with-env easy-hugo easy-hugo-nth-blog)
   :init
   (defun my/hugo-newpost (slug title tags categories)
