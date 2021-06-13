@@ -22,7 +22,7 @@
   (defun my/add-vendor-deps (url pkg-name)
     (interactive "sUrl: \nsName: ")
     (message "Url: %s, Name: %s" url pkg-name)
-    (magit-submodule-add url (format ".emacs.d/vendor/%s" pkg-name) pkg-name)))
+    (magit-submodule-add url (format ".config/vendor/%s" pkg-name) pkg-name)))
 #+end_src
 ** Evil
 - https://github.com/noctuid/evil-guide#further-integrating-evil-and-emacs
@@ -1354,8 +1354,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
 
 (use-package go-playground
   :ensure nil
-  :config
-  (require 'go-playground)
+  :commands (go-playground-mode go-playground-exec)
   :custom
   (go-playground-basedir "~/code/go/src/playground"))
 

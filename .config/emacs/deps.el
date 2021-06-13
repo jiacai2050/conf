@@ -1,5 +1,7 @@
+;;; -*- lexical-binding: t; -*-
+
 (eval-when-compile
-  (setq my/vendor-dir (expand-file-name "vendor" user-emacs-directory))
+  (setq my/vendor-dir "~/.config/vendor")
 
   (defun my/expand-vendor-dir (dir)
     (expand-file-name dir my/vendor-dir))
