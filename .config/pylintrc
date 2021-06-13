@@ -1,5 +1,11 @@
 [MASTER]
 
+[FOMAT]
+max-line-length=120
+
+[DESIGN]
+max-statements=100
+
 [MESSAGES CONTROL]
 disable = all
 enable =
@@ -184,7 +190,7 @@ enable =
 	no-staticmethod-decorator,
 	old-raise-syntax,
 	old-style-class,
-	protected-access,
+	# protected-access,
 	redundant-unittest-assert,
 	reimported,
 	simplifiable-if-statement,

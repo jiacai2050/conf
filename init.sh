@@ -23,46 +23,21 @@ install_java() {
   brew install borkdude/brew/clj-kondo
   jenv enable-plugin export
 }
-install_cpp() {
-  # http://www.gnu.org/software/global/
-  brew install global
-}
-install_python() {
-  brew install pyenv pyenv-virtualenvwrapper pyenv-virtualenv
-}
-install_node() {
-  brew install nvm
-}
-install_ruby() {
-  curl -sSL https://get.rvm.io | bash -s stable
-}
+
 install_ocaml() {
   brew install opam ocaml
   # https://opam.ocaml.org/doc/Install.html
   # opam init
   # opam install tuareg merlin utop
-
-}
-install_go() {
-  brew install go
-  go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.27.0
-  go get -u golang.org/x/tools/cmd/goimports
-  go get golang.org/x/tools/gopls@latest
 }
 
 install_rust() {
   rustup toolchain add nightly
   rustup component add rust-src
-  # cargo +nightly install racer
 }
 
 install_misc() {
   brew install terminal-notifier
-}
-
-install_md() {
-  npm install -g vmd
-  brew install multimarkdown
 }
 
 install_ss() {
@@ -82,7 +57,7 @@ EOF
 }
 
 install_dbgui() {
-  brew cask install sequel-pro robo-3t Postgres postico # mysql mongodb postgresql
+  brew install sequel-pro robo-3t Postgres postico # mysql mongodb postgresql
 }
 
 install_vm() {
@@ -92,9 +67,11 @@ install_vm() {
   # vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box --name tsing/trusty
 }
 
-install_life() {
-  brew cask install Itsycal iterm2 tmux firefox google-chrome chromium licecap the-unarchiver microsoft-edge
+install_cask() {
+    # google-chrome chromium
+    brew install --cask Itsycal iterm2 firefox licecap the-unarchiver microsoft-edge
 }
+
 case $1 in
   "link")
     link_dotfiles_if_necessary ".macosrc"
@@ -115,6 +92,7 @@ case $1 in
     link_dotfiles_if_necessary ".gnupg"
     # link_dotfiles_if_necessary ".jshintrc"
     link_dotfiles_if_necessary ".eslintrc.json"
+    link_dotfiles_if_necessary ".golangci.yml"
     ;;
   "brew")
     # https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git

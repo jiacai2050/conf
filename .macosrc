@@ -23,6 +23,7 @@ switch_theme_config
 __pid_port() {
     lsof -P -i4TCP:$1 | grep LISTEN
 }
+
 alias pidport=" __pid_port "
 alias bci="brew cask install "
 alias bi="brew install "
@@ -36,18 +37,10 @@ if [[ -d $completion_dir && -r $completion_dir && -x $completion_dir ]];then
   done
 fi
 
-# brew install nvm
-# export NVM_DIR="$HOME/.nvm"
-# export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
-# [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-# [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+# Nodejs
+export NVM_NODEJS_ORG_MIRROR=https://mirrors.huaweicloud.com/nodejs/
 
-# curl -sSL https://get.rvm.io | bash -s stable
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-# java
+# Java
 # brew install jenv
 export JENV_ROOT=/usr/local/opt/jenv
 if [ -d "${JENV_ROOT}" ]; then
@@ -58,17 +51,12 @@ if [ -d "${JENV_ROOT}" ]; then
   export JAVA_HOME="$(jenv javahome)"
 fi
 
-# brew install pyenv  pyenv-virtualenvwrapper pyenv-virtualenv
-# 激活 virtualenvwrapper
-# pyenv virtualenvwrapper
+# brew install pyenv pyenv-virtualenv
 export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
+    export PATH="${PYENV_ROOT}/shims:$PATH"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-    export WORKON_HOME=~/.pyenv/envwrappers
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-else
-    export PIP_REQUIRE_VIRTUALENV=true
 fi
 
 # brew

@@ -88,11 +88,11 @@ M-x lsp-install-server RET eslint
 #+end_src
 
 ** Python
-- https://github.com/palantir/python-language-server
-#+begin_src bash
-pip install 'python-language-server[all]'
-#+end_src
 - =C-c C-s= pyenv-mode-set
+- 生成 lint 的配置文件
+  #+begin_src bash
+  python -m pylint --generate-rcfile
+  #+end_src
 ** Company
 - [[https://github.com/company-mode/company-mode/issues/360][Company seems not to include words with hyphens in the autocompletion. #360]]
 ** GPG

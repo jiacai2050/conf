@@ -223,6 +223,7 @@
      ["Delete"
       ("<backspace>" "Del Win" delete-window)
       ("DEL" "Del Win" delete-window) ;; For terminals.
+      ("SPC" "Del Others" delete-other-windows)
       ("x" "Kill buffer" kill-buffer)]]
     [:hide (lambda () t)
      ("e" eval-buffer)])
@@ -255,9 +256,10 @@
       (evil-emacs-state)))
 
   (evil-leader/set-key
-    "w" 'eww
+    "w" 'my/window-command
     "e" 'tiny-expand
     "r" 'counsel-switch-buffer
+    "t" 'treemacs
     "u" 'mu4e
     "i" 'elfeed-dashboard
     "p" 'my/projectile-command
@@ -1219,8 +1221,10 @@ exec-path-from-shell takes too long to load, so set path by hand.
   :config
   (global-flycheck-mode)
   ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-jshint)
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp rust-cargo rust rust-clippy))
-  )
+  (setq-default flycheck-disabled-checkers
+                '(emacs-lisp-checkdoc emacs-lisp
+                                      rust-cargo rust rust-clippy
+                                      python-flake8)))
 
 (use-package forge
   ;; 1. first setup USERNAME
@@ -1391,20 +1395,20 @@ exec-path-from-shell takes too long to load, so set path by hand.
 ** Python
 #+BEGIN_SRC emacs-lisp
 (use-package pyenv-mode
-  :init
-  (defun my/set-python-exe ()
-    (let ((my/python-exe (expand-file-name "~/.pyenv/shims/python")))
-      (setq flycheck-python-pylint-executable my/python-exe
-            flycheck-python-pycompile-executable my/python-exe
-            flycheck-python-flake8-executable my/python-exe)))
   :hook ((python-mode . pyenv-mode)
-         (python-mode . my/set-python-exe)))
+         (python-mode . my/py-hook)))
 
 (use-package lsp-python-ms
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp))))
+  :defer t
+  :init (setq lsp-python-ms-auto-install-server t))
+
+(defun my/py-hook ()
+  (let ((my/python-exe (expand-file-name "~/.pyenv/shims/python")))
+    (setq flycheck-python-pylint-executable my/python-exe
+          flycheck-python-pycompile-executable my/python-exe
+          flycheck-python-flake8-executable my/python-exe)
+    (require 'lsp-python-ms)
+    (lsp-deferred)))
 #+END_SRC
 ** Ruby
 #+BEGIN_SRC emacs-lisp

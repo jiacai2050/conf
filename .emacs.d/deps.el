@@ -121,10 +121,14 @@
   (my/generate-autoloads "lsp-mode"
                          "~/.emacs.d/vendor/lsp-mode"
                          "~/.emacs.d/vendor/lsp-mode/clients")
-  (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+        lsp-enabled-clients '(mspyls gopls rust-analyzer
+                                     ts-ls ;; js
+                                     ))
   (defun my/lsp-js ()
     "Enable LSP for JavaScript, but not for JSON"
     (when (eq 'js-mode major-mode)
+      (add-hook 'before-save-hook 'lsp-format-buffer nil t)
       (lsp-deferred)))
   (defun my/lsp-rust ()
     (add-hook 'before-save-hook 'lsp-format-buffer nil t)

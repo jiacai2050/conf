@@ -1,0 +1,27 @@
+# https://golangci-lint.run/usage/configuration/
+run:
+  skip-dirs:
+    - vendor
+  # readonly|vendor|mod
+  # modules-download-mode: vendor
+
+linters:
+  enable:
+      - goimports
+      - stylecheck
+      - misspell
+
+linters-settings:
+  # https://golangci-lint.run/usage/linters/#stylecheck
+  stylecheck:
+    go: "1.16"
+    checks: [ "all" ]
+
+  # https://golangci-lint.run/usage/linters/#govet
+  govet:
+    enable-all: true
+    # enable:
+    #   - fieldalignment
+
+  misspell:
+    locale: US

@@ -3,17 +3,31 @@
 function command_exists() {
     command -v "$1" &> /dev/null
 }
-# build from source instead
-# brew install emacs --with-cocoa --with-dbus --with-librsvg --with-imagemagick@6 --with-mailutils --with-ctags
+
+function font_installed() {
+    name="$1"
+    fc-match "$name" | grep "$name"
+}
 
 set -ex
+
+command_exists go || brew install go
+command_exists node || brew install node
+command_exists rustup || brew install rustup
+
 # create gtags for C/C++ reference
 command_exists global || brew install global
 command_exists clangd || brew install llvm
+
 # Steel Bank Common Lisp system
 command_exists sbcl || brew install sbcl
-# Preview markdown files in a separate window, the same as on GitHub.
+
+# Python
+command_exists pyenv || brew install pyenv pyenv-virtualenv
+
+# Markdown
 command_exists vmd || npm install -g vmd
+command_exists multimarkdown || brew install multimarkdown
 
 # project management tool for Emacs
 # brew install cask
@@ -22,6 +36,9 @@ command_exists cask || curl -fsSL https://gitee.com/liujiacai/cask/raw/master/go
 # https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html
 command_exists aspell || brew install aspell
 
+# Utils
+command_exists pinentry || brew install pinentry
+command_exists tmux || brew install tmux
 command_exists rg || brew install ripgrep
 command_exists pngpaste || brew install pngpaste
 command_exists gtimeout || brew install coreutils
@@ -40,33 +57,23 @@ function install_shellcheck() {
 }
 command_exists shellcheck || install_shellcheck
 
-function install_staticcheck() {
-  version="2020.2.1"
-  curl -Lo /tmp/staticcheck.tar.gz "https://github.com/dominikh/go-tools/releases/download/${version}/staticcheck_darwin_amd64.tar.gz"
-  pushd /tmp
-  tar xf /tmp/staticcheck.tar.gz
-  cp "/tmp/staticcheck/staticcheck" /usr/local/bin/
-  staticcheck --version
-  popd
-}
-
 command_exists eslint || npm install -g eslint
 # LSP
 command_exists gopls || go get golang.org/x/tools/gopls@latest
-# https://github.com/palantir/python-language-server
-command_exists pyls || pip install 'python-language-server[all]'
+
+# Nodejs.
 # https://github.com/theia-ide/typescript-language-server
 command_exists typescript-language-server || (npm i -g typescript-language-server && npm i -g typescript)
 
 
 # Golang
-# command_exists staticcheck || install_staticcheck
-command_exists goimports || go get -u golang.org/x/tools/cmd/goimports
-command_exists gorename || go get -u golang.org/x/tools/cmd/gorename
+command_exists golangci-lint|| go get  -v github.com/golangci/golangci-lint/cmd/golangci-lint@v1.40.1
+command_exists goimports || go get -u -v golang.org/x/tools/cmd/goimports
 
 # Mail
 command_exists mu || brew install mu offlineimap
 mail_dir="$HOME/.mail/"
 [ -d "${mail_dir}" ] || mkdir -p "${mail_dir}"
 
-brew install font-sf-mono
+font_installed "SF Mono" || brew install font-sf-mono
+font_installed "Hack" || brew install font-hack
