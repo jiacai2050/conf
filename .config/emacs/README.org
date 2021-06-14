@@ -93,6 +93,16 @@ M-x lsp-install-server RET eslint
   #+begin_src bash
   python -m pylint --generate-rcfile
   #+end_src
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package lsp-python-ms
+  :defer t
+  :init (setq lsp-python-ms-auto-install-server t))
+
+(require 'lsp-python-ms)
+#+END_SRC
+
 ** Company
 - [[https://github.com/company-mode/company-mode/issues/360][Company seems not to include words with hyphens in the autocompletion. #360]]
 ** GPG

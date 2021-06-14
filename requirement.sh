@@ -60,11 +60,11 @@ command_exists shellcheck || install_shellcheck
 command_exists eslint || npm install -g eslint
 # LSP
 command_exists gopls || go get golang.org/x/tools/gopls@latest
+command_exists pyright || npm install -g pyright
 
 # Nodejs.
 # https://github.com/theia-ide/typescript-language-server
 command_exists typescript-language-server || (npm i -g typescript-language-server && npm i -g typescript)
-
 
 # Golang
 command_exists golangci-lint|| go get  -v github.com/golangci/golangci-lint/cmd/golangci-lint@v1.40.1

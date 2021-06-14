@@ -136,9 +136,10 @@
                          (my/expand-vendor-dir "lsp-mode")
                          (my/expand-vendor-dir "lsp-mode/clients"))
   (setq lsp-keymap-prefix "C-c l"
-        lsp-enabled-clients '(mspyls gopls rust-analyzer
-                                     ts-ls ;; js
-                                     ))
+        lsp-enabled-clients '(gopls
+                              rust-analyzer
+                              pyright
+                              ts-ls))
   (defun my/lsp-js ()
     "Enable LSP for JavaScript, but not for JSON"
     (when (eq 'js-mode major-mode)
