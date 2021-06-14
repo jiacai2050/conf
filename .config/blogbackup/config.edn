@@ -1,0 +1,63 @@
+{:description "Blog-backup config"
+ :home-page "https://github.com/jiacai2050/blog-backup"
+ :blogs [{:id "go-blog"
+          :base-url "https://blog.golang.org/index"
+          :posts-selector "div#content > p > a"
+          :page-tmpl "{{base-url}}"
+          :total-page 1}
+         {:id "meituan"
+          :base-url "https://tech.meituan.com/"
+          :posts-selector "div.post-container > h2 > a"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}.html{{/first-page}}"
+          :total-page 21}
+         {:id "fish"
+          :base-url "https://tech.ipalfish.com/blog/archives/"
+          :posts-selector "div.post-title > a.post-title-link"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}/{{/first-page}}"
+          :total-page 6}
+         {:id "grab"
+          :base-url "https://engineering.grab.com/"
+          :posts-selector "h2 > a.post-title"
+          :page-tmpl "{{base-url}}{{^first-page}}blog/{{page-num}}/{{/first-page}}"
+          :total-page 18}
+         {:id "martin"
+          :base-url "http://martin.kleppmann.com/archive.html"
+          :posts-selector "div#content > ul > li > a"
+          :page-tmpl "{{base-url}}"
+          :total-page 1}
+         {:id "ljc-hexo"
+          :base-url "https://liujiacai.net/archives/"
+          :posts-selector "ul.listing > li > a"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}{{/first-page}}"
+          :total-page 8}
+         {:id "ljc"
+          :base-url "https://liujiacai.net/post/"
+          :posts-selector "div.archive-post > span > a.archive-post-link"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}{{/first-page}}"
+          :total-page 3}
+         {:id "yw"
+          :base-url "http://www.yinwang.org/"
+          :posts-selector "ul.list-group > li > a"
+          :page-tmpl "{{base-url}}"
+          :total-page 1}
+         {:id "yw-wp"
+          :base-url "https://yinwang0.wordpress.com/author/yinwang0/"
+          :posts-selector "div#posts-wrapper > article > a"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}/{{/first-page}}"
+          :total-page 2}
+         {:id "nathan"
+          :base-url "http://nathanmarz.com/archives/"
+          :posts-selector "div.journal-archive-set > ul > li > a"
+          :page-tmpl "{{base-url}}"
+          :total-page 1}
+         {:id "mindhacks"
+          :base-url "http://mindhacks.cn/"
+          :posts-selector "h2.entry-title > a"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}/{{/first-page}}"
+          :total-page 5}
+         {:id "sean"
+          :base-url "https://links.seanmonstar.com/"
+          :posts-selector "div.link > h2 > a"
+          :page-tmpl "{{base-url}}{{^first-page}}page/{{page-num}}{{/first-page}}"
+          :total-page 14}
+         ]}

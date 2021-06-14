@@ -38,6 +38,7 @@ function command_exists() {
 alias ls='ls -FG'
 alias ll='ls -lh'
 alias lla='ls -lah'
+alias cde='cd ~/.config/emacs'
 alias cd.='cd ..'
 alias cd..='cd ../..'
 alias cd...='cd ../../..'

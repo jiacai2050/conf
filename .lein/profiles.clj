@@ -2,14 +2,14 @@
                   [com.gfredericks/lein-shorthand "0.4.1"]
                   ;; [venantius/ultra "0.6.0"]
                   [jonase/eastwood "0.3.5"]
-                  [lein-ancient "0.6.15"]
+                  [lein-ancient "0.7.0"]
                   ]
 
         :dependencies [[alembic "0.3.2"]
                        [vvvvalvalval/scope-capture "0.3.2"]
                        [spieden/spyscope "0.1.7"]
-                       ;; https://github.com/Raynes/fs
-                       [me.raynes/fs "1.4.6"]
+                       ;; https://github.com/jiacai2050/fs
+                       [org.clojars.jiacai/fs "1.4.6"]
                        ;; https://github.com/magnars/java-time-literals
                        ;; [java-time-literals "2018-04-06"]
                        [clj-kondo "2020.06.21"]]

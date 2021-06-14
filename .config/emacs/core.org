@@ -33,11 +33,17 @@
 (use-package evil
   :ensure nil
   :hook ((evil-mode . my/evil-keymap)
+         (evil-local-mode . my/fix-evil-company)
          (after-init . evil-mode))
   :custom ((evil-respect-visual-line-mode t)
            (evil-move-beyond-eol t))
   :commands (evil-make-overriding-map evil-make-intercept-map)
   :init
+  (defun my/fix-evil-company ()
+    ;; https://github.com/hlissner/doom-emacs/issues/1335
+    (when (memq 'company-emulation-alist emulation-mode-map-alists)
+      (company-ensure-emulation-alist)))
+
   (defun my/evil-keymap ()
     (dolist (binding '(("SPC" . evil-scroll-page-down)
                        ("DEL" . evil-scroll-page-up)
@@ -645,7 +651,8 @@ exec-path-from-shell takes too long to load, so set path by hand.
 
 (use-package ispell
   :ensure nil
-  :custom ((ispell-personal-dictionary "~/Documents/aspell")))
+  :custom ((ispell-personal-dictionary "~/Documents/aspell")
+           (ispell-program-name "aspell")))
 
 ;; https://github.com/dakrone/eos/blob/master/eos-writing.org#numbering-rectangles
 (defun my/num-list (start end format-string from)
@@ -1493,14 +1500,9 @@ exec-path-from-shell takes too long to load, so set path by hand.
   :config
   (progn
     ;; https://docs.cider.mx/cider/0.23/repl/configuration.html#_set_ns_in_repl
-    (setq cider-repl-require-ns-on-set t)
-    (setq cider-repl-pop-to-buffer-on-connect t)
-    (setq cider-show-error-buffer t)
-    (setq cider-auto-select-error-buffer t)
-    (setq cider-repl-history-file "~/.emacs.d/cider-history")
-    (setq cider-repl-wrap-history t)
-    ;; (setq cider-default-cljs-repl 'figwheel)
-    (add-hook 'cider-repl-mode-hook 'smartparens-mode)
+    (setq cider-repl-require-ns-on-set t
+          cider-enhanced-cljs-completion-p nil
+          cider-repl-wrap-history t)
 
     ;; these help me out with the way I usually develop web apps
     (defun cider-start-http-server ()
