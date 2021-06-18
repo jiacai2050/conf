@@ -1,8 +1,8 @@
 ;;; -*- lexical-binding: t; -*-
 
+(require 'package)
 (load-file (expand-file-name "deps.el" user-emacs-directory))
 
-(require 'package)
 (package-initialize)
 
 ;; Changes all yes/no questions to y/n type

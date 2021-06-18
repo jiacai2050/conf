@@ -89,13 +89,16 @@ M-x lsp-install-server RET eslint
 
 ** Python
 - =C-c C-s= pyenv-mode-set
-- 生成 lint 的配置文件
+- 常用命令
   #+begin_src bash
-  python -m pylint --generate-rcfile
+# 安装新版本
+v=3.7.3;wget https://npm.taobao.org/mirrors/python/$v/Python-$v.tar.xz -P ~/.pyenv/cache/;pyenv install $v
+
+# 生成 lint 的配置文件
+python -m pylint --generate-rcfile
   #+end_src
 
 #+BEGIN_SRC emacs-lisp
-
 (use-package lsp-python-ms
   :defer t
   :init (setq lsp-python-ms-auto-install-server t))

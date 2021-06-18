@@ -5,3 +5,4 @@
 .DS_Store
 *pyc
 .lein/repl-port
+.config/karabiner/automatic_backups

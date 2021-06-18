@@ -24,6 +24,7 @@ command_exists sbcl || brew install sbcl
 
 # Python
 command_exists pyenv || brew install pyenv pyenv-virtualenv
+command_exists black || pip install black
 
 # Markdown
 command_exists vmd || npm install -g vmd
