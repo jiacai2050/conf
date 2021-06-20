@@ -997,6 +997,8 @@ exec-path-from-shell takes too long to load, so set path by hand.
         recentf-max-saved-items 150)
   (add-to-list 'recentf-exclude "\\.emacs\\.d/elpa/.*")
   (add-to-list 'recentf-exclude "\\.emacs\\.d/var/.*")
+  (add-to-list 'recentf-exclude "emacs/elpa/.*")
+  (add-to-list 'recentf-exclude "emacs/var/.*")
   (add-to-list 'recentf-exclude "/usr/local/Cellar/.*")
   (add-to-list 'recentf-exclude "elfeed/db/index")
   (add-to-list 'recentf-exclude "/Applications/.*")
@@ -1104,12 +1106,13 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (setq projectile-switch-project-action #'projectile-find-file-dwim
         projectile-completion-system 'ivy
         ;; projectile-enable-caching t
-        projectile-project-root-files-functions #'(projectile-root-top-down
-                                                   projectile-root-top-down-recurring
-                                                   projectile-root-bottom-up
-                                                   projectile-root-local)
+        projectile-project-root-functions '(projectile-root-local
+                                            projectile-root-bottom-up)
+        projectile-project-root-files-bottom-up '(".projectile" "README.org" "README.md"
+                                                  "Makefile" "pom.xml" "go.mod" "cargo.toml" "project.clj"
+                                                  ".git" ".hg")
         projectile-ignored-project-function (lambda (project-root)
-                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor" ".emacs.d/ignore" ".emacs.d/elpa"))
+                                              (cl-dolist (deny '("\\.git" "\\.rustup" "\\.cargo" "go/pkg" "vendor"))
                                                 (when (string-match-p deny project-root)
                                                   (cl-return t))))))
 

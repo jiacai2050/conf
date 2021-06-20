@@ -5,6 +5,11 @@
           :posts-selector "div#content > p > a"
           :page-tmpl "{{base-url}}"
           :total-page 1}
+         {:id "paul"
+          :base-url "http://www.paulgraham.com/articles.html"
+          :posts-selector "body > table > tbody > tr > td:nth-child(3) > table:nth-child(6) > tbody > tr > td > font > a"
+          :page-tmpl "{{base-url}}"
+          :total-page 1}
          {:id "meituan"
           :base-url "https://tech.meituan.com/"
           :posts-selector "div.post-container > h2 > a"

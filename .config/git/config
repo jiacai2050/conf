@@ -32,3 +32,5 @@
 	user = jiacai2050
 # [url "https://github.com.cnpmjs.org/"]
 # 	insteadof = https://github.com/
+# [url "https://github.com.cnpmjs.org/"]
+# 	insteadOf = git@github.com:

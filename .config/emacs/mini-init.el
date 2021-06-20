@@ -13,7 +13,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/no-littering")
+  (add-to-list 'load-path "~/.config/vendor/no-littering")
   (setq auto-save-file-name-transforms '((".*" "~/tt/miniemacs-var" t))
         no-littering-var-directory (expand-file-name "~/tt/miniemacs-var")
         no-littering-etc-directory (expand-file-name "~/tt/miniemacs-etc")
@@ -35,7 +35,7 @@
   (setq-default cursor-type 't))
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/company-mode")
+  (add-to-list 'load-path "~/.config/vendor/company-mode")
   (require 'company)
   (global-company-mode t)
   (setq company-tooltip-align-annotations t
@@ -52,7 +52,7 @@
   (define-key company-active-map (kbd "M-i") 'company-complete-selection))
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/swiper")
+  (add-to-list 'load-path "~/.config/vendor/swiper")
   (require 'counsel)
   (setq ivy-re-builders-alist '((counsel-M-x . ivy--regex-fuzzy)
                                 (t . ivy--regex-plus))
@@ -71,13 +71,13 @@
   (ivy-mode 1))
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/avy")
+  (add-to-list 'load-path "~/.config/vendor/avy")
   (setq avy-all-windows nil
         avy-keys (number-sequence ?a ?z))
   (global-set-key (kbd "C-C SPC") 'avy-goto-word-1))
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/evil")
+  (add-to-list 'load-path "~/.config/vendor/evil")
   (setq evil-respect-visual-line-mode t
         evil-move-beyond-eol t)
 
@@ -122,7 +122,7 @@
   )
 
 (eval-and-compile
-  (add-to-list 'load-path "~/.emacs.d/vendor/evil-leader")
+  (add-to-list 'load-path "~/.config/vendor/evil-leader")
   (require 'evil-leader)
   (setq evil-leader/leader ","
         evil-leader/no-prefix-mode-rx '("dired.*")
