@@ -407,7 +407,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   ;; No cursor blinking, it's distracting
   (blink-cursor-mode 0)
   (when (display-graphic-p)
-    (set-frame-font "SF Mono-16" t t))
+    (set-frame-font "PT Mono-16" t t))
 
   (setq-default cursor-type 't))
 
@@ -1320,8 +1320,13 @@ exec-path-from-shell takes too long to load, so set path by hand.
 ** C/C++
 #+BEGIN_SRC emacs-lisp
 (use-package cmake-mode
-  :load-path "/usr/local/share/emacs/site-lisp/cmake"
-  :if (file-exists-p "/usr/local/share/emacs/site-lisp/cmake"))
+  :hook (cmake-mode . my/cmake-hook)
+  :init
+  (defun my/cmake-hook ()
+    (unless company-cmake-executable
+      (when-let ((cmake (executable-find "cmake")))
+        (setq company-cmake-executable cmake)))
+    (setq-local company-backends '(company-cmake company-tabnine))))
 
 (use-package ggtags
   :hook ((c-mode c++-mode java-mode) . ggtags-mode))

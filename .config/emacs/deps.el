@@ -55,6 +55,10 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
+        company-cmake-executable-arguments '("--help-command-list"
+                                             "--help-module-list"
+                                             "--help-property-list"
+                                             "--help-variable-list")
         company-backends '((company-capf company-dabbrev-code company-dabbrev
                                          company-gtags company-etags company-keywords)
                            (company-files)))
