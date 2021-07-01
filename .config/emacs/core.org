@@ -249,7 +249,7 @@
       ("p" "At point" helpful-at-point)
       ("k" "Key" helpful-key)]])
   :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e.*" "dashboard-mode" "elfeed.*" "dired.*"))
+           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e-headers-mode" "mu4e-main-mode" "dashboard-mode" "elfeed.*" "dired.*"))
            (evil-leader/in-all-states t))
   :config
   (defun my/insert-comma ()
@@ -1374,7 +1374,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
 
 (use-package go-playground
   :ensure nil
-  :commands (go-playground-mode go-playground-exec)
+  :commands (go-playground go-playground-exec)
   :custom
   (go-playground-basedir "~/code/go/src/playground"))
 
