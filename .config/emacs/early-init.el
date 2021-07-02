@@ -58,7 +58,7 @@ PREFIX or SUFFIX can wrap the key when passing to `global-set-key'."
 
 ;; hack package.el, so it can find vendored packages
 (defconst my/vendored-packages '(use-package company with-editor dash dash-functional
-                                  transient ht s f spinner lv hydra request
+                                  transient ht s f spinner lv hydra request magit
                                   unicode-escape lsp-mode))
 
 (defun my/package-installed-p (fn package &optional min-version)

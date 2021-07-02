@@ -23,6 +23,7 @@
         markdown-outdent-or-delete
         org-delete-char
         org-metaright
+        org-return-and-maybe-indent
         org-return-indent
         org-self-insert-command
         org-yank
