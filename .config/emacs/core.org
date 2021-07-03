@@ -102,8 +102,57 @@
 
 (use-package evil-leader
   :ensure nil
+  :custom ((evil-leader/leader ",")
+           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e-headers-mode" "mu4e-main-mode" "helpful-mode" "dashboard-mode" "elfeed.*" "dired.*"))
+           (evil-leader/in-all-states t))
   :config
   (global-evil-leader-mode)
+  (defun my/insert-comma ()
+    (interactive)
+    (insert-char (char-from-name "COMMA")))
+
+  (defun my/toggle-evil-emacs-mode ()
+    (interactive)
+    (if (eq evil-state 'emacs)
+        (evil-exit-emacs-state)
+      (evil-emacs-state)))
+
+  (evil-leader/set-key
+    "w" 'my/window-command
+    "e" 'tiny-expand
+    "r" 'counsel-switch-buffer
+    "t" 'treemacs
+    "u" 'mu4e
+    "i" 'elfeed-dashboard
+    "p" 'my/projectile-command
+
+    "a" 'swiper-isearch
+    "s" 'my/search-command
+    "d" 'my/file-command
+    "f" 'counsel-find-file
+    "g" 'my/magit-command
+    "h" 'my/helpful-command
+    "j" 'my/progn-command
+    "k" 'kill-buffer
+    "l" 'my/lsp-command
+
+    "z" 'my/toggle-evil-emacs-mode
+    "x" 'counsel-rg
+    "c" 'compile
+    "v" 'counsel-org-capture
+    "b" 'counsel-bookmark
+    "m" 'hydra-multiple-cursors/body
+    "," 'my/insert-comma
+    "." 'my/window-command
+
+    "SPC" 'avy-goto-word-1
+    "0" 'select-window-0
+    "1" 'select-window-1
+    "2" 'select-window-2
+    "3" 'select-window-3
+    "4" 'select-window-4
+    "8" 'cfw:open-calendar-buffer
+    "9" 'calendar)
   :init
   (defun my/exec-shell-on-buffer (shell-command-text)
     (interactive "MShell command: ")
@@ -248,56 +297,7 @@
       ("s" "Symbol" helpful-symbol)
       ("p" "At point" helpful-at-point)
       ("k" "Key" helpful-key)]])
-  :custom ((evil-leader/leader ",")
-           (evil-leader/no-prefix-mode-rx '("magit.*" "mu4e-headers-mode" "mu4e-main-mode" "dashboard-mode" "elfeed.*" "dired.*"))
-           (evil-leader/in-all-states t))
-  :config
-  (defun my/insert-comma ()
-    (interactive)
-    (insert-char (char-from-name "COMMA")))
-
-  (defun my/toggle-evil-emacs-mode ()
-    (interactive)
-    (if (eq evil-state 'emacs)
-        (evil-exit-emacs-state)
-      (evil-emacs-state)))
-
-  (evil-leader/set-key
-    "w" 'my/window-command
-    "e" 'tiny-expand
-    "r" 'counsel-switch-buffer
-    "t" 'treemacs
-    "u" 'mu4e
-    "i" 'elfeed-dashboard
-    "p" 'my/projectile-command
-
-    "a" 'swiper-isearch
-    "s" 'my/search-command
-    "d" 'my/file-command
-    "f" 'counsel-find-file
-    "g" 'my/magit-command
-    "h" 'my/helpful-command
-    "j" 'my/progn-command
-    "k" 'kill-buffer
-    "l" 'my/lsp-command
-
-    "z" 'my/toggle-evil-emacs-mode
-    "x" 'counsel-rg
-    "c" 'compile
-    "v" 'counsel-org-capture
-    "b" 'counsel-bookmark
-    "m" 'hydra-multiple-cursors/body
-    "," 'my/insert-comma
-    "." 'my/window-command
-
-    "SPC" 'avy-goto-word-1
-    "0" 'select-window-0
-    "1" 'select-window-1
-    "2" 'select-window-2
-    "3" 'select-window-3
-    "4" 'select-window-4
-    "8" 'cfw:open-calendar-buffer
-    "9" 'calendar))
+  )
 #+end_src
 * Shell
 On OS X, an Emacs instance started from the graphical user
@@ -1808,6 +1808,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
 - https://jherrlin.github.io/posts/emacs-mu4e/
 - http://pragmaticemacs.com/category/mu4e/
 - https://www.djcbsoftware.nl/code/mu/mu4e/HV-Overview.html
+- https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf
 #+begin_src bash
 export XAPIAN_CJK_NGRAM=true
 mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.mail
@@ -1847,24 +1848,8 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                           (string-prefix-p "/ljc" (mu4e-message-field msg :maildir))))
           :vars '((mu4e-sent-folder . "/ljc/Sent Messages")
                   (mu4e-trash-folder . "/ljc/Deleted Messages")
-                  (mu4e-refile-folder . "/ljc/archive")
-                  (mu4e-drafts-folder . "/ljc/Drafts")
-                  (mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
-                                             (:maildir "/ljc/Sent Messages" :key ?s)
-                                             (:maildir "/ljc/Drafts" :key ?D)
-                                             (:maildir "/ljc/Junk" :key ?j)
-                                             (:maildir "/ljc/=pg-hackers" :key ?p)
-                                             (:maildir "/ljc/=dev-news" :key ?d)
-                                             (:maildir "/ljc/=GitHub" :key ?G)
-                                             (:maildir "/ljc/=golang" :key ?g)
-                                             (:maildir "/ljc/=clojure" :key ?c)
-                                             (:maildir "/ljc/=mozilla" :key ?m)
-                                             (:maildir "/ljc/=openjdk" :key ?o)
-                                             (:maildir "/ljc/archive" :key ?a)
-                                             (:maildir "/ljc/=Prometheus-user" :key ?P)
-                                             (:maildir "/ljc/Deleted Messages" :key ?M)
-                                             ))
-                  ))
+                  (mu4e-refile-folder . "/ljc/Archive")
+                  (mu4e-drafts-folder . "/ljc/Drafts")))
          (make-mu4e-context
 		  :name "outlook"
           :match-func (lambda (msg)
@@ -1877,12 +1862,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                   (user-mail-address . "liujiacai@live.com")
                   (smtpmail-smtp-service . 587)
                   (smtpmail-smtp-server . "smtp.office365.com")
-                  (smtpmail-stream-type . starttls)
-                  (mu4e-maildir-shortcuts . ((:maildir "/outlook/Inbox" :key ?i)
-                                             (:maildir "/outlook/Sent" :key ?s)
-                                             (:maildir "/outlook/Deleted" :key ?t)
-                                             (:maildir "/outlook/Drafts" :key ?d)
-                                             (:maildir "/outlook/Archive" :key ?a))))))
+                  (smtpmail-stream-type . starttls))))
         user-mail-address "hello@liujiacai.net"
         user-full-name "Jiacai Liu"
         smtpmail-smtp-service 465
@@ -1907,49 +1887,34 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         mu4e-view-date-format "%a, %Y-%m-%d %T"
         mu4e-view-html-plaintext-ratio-heuristic  most-positive-fixnum
         mu4e-update-interval (* 30 60)
-        mu4e-get-mail-command "gtimeout 60 offlineimap -o"
-        mu4e-compose-format-flowed t)
+        mu4e-get-mail-command "gtimeout 120 offlineimap -o"
+        mu4e-compose-format-flowed t
+        mu4e-completing-read-function 'ivy-read
+        mu4e-bookmarks '((:name "All Inbox"
+                          :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
+                          :key ?i)
+                         (:name  "Unread messages"
+                          :query "flag:unread AND NOT flag:trashed"
+                          :key ?u)
+                         (:name "Today's messages"
+                          :query "date:today..now"
+                          :key ?t)
+                         (:name "Last 7 days"
+                          :query "date:7d..now"
+                          :hide-unread t
+                          :key ?w)
+                         (:name "Flagged"
+                          :query "flag:flagged"
+                          :key ?f)
+                         (:name "Sent"
+                          :query "maildir:/ljc/Sent Messages"
+                          :key ?s)
+                         (:name "GitHub"
+                          :query "maildir:/ljc/=GitHub"
+                          :key ?g)))
   (evil-add-hjkl-bindings mu4e-view-mode-map)
   (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
-  (add-to-list 'mu4e-view-fields :bcc)
-  (add-to-list 'mu4e-bookmarks '(:name "Flagged"
-                                 :query "flag:flagged"
-                                 :key ?f))
-  (add-to-list 'mu4e-bookmarks '(:name "All Inbox"
-                                 :query "maildir:/ljc/INBOX or maildir:/outlook/Inbox"
-                                 :key ?i)))
-
-(use-package mu4e-maildirs-extension
-  :if (executable-find "mu")
-  :after mu4e
-  :custom ((mu4e-maildirs-extension-custom-list
-            '("/ljc/INBOX"
-              "/ljc/Sent Messages"
-              "/ljc/Drafts"
-              "/ljc/=GitHub"
-              "/ljc/=pg-hackers"
-              "/ljc/=dev-news"
-              "/ljc/=golang"
-              "/ljc/=clojure"
-              "/ljc/=mongodb-dev"
-              "/ljc/=mozilla"
-              "/ljc/=openjdk"
-              "/ljc/=Prometheus-user"
-              "/ljc/archive"
-              "/ljc/Deleted Messages"
-              "/ljc/Junk"
-
-	          "/outlook/Inbox"
-	          "/outlook/Sent"
-	          "/outlook/Drafts"
-	          "/outlook/Archive"
-	          "/outlook/Deleted"
-	          "/outlook/Junk"
-	          "/outlook/Notes"
-	          "/outlook/Outbox"
-              )))
-  :config
-  (mu4e-maildirs-extension))
+  (add-to-list 'mu4e-view-fields :bcc))
 
 (use-package org-mime
   :hook (message-send . my/send-message-hook)
@@ -1957,7 +1922,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
   (defun my/org-mime-htmlize ()
     (let ((answer (read-from-minibuffer "Org htmlize? [y/n]:")))
       (when (string-equal "y" answer)
-          (org-mime-htmlize))))
+        (org-mime-htmlize))))
 
   (defun my/sign-or-encrypt-message ()
     (let ((answer (read-from-minibuffer "Sign or encrypt?[s/e]: ")))

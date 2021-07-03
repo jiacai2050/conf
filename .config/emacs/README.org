@@ -476,3 +476,57 @@ opam install tuareg merlin utop
                               :version (version-to-list version))))
         package-alist))
 #+END_SRC
+** mu4e
+#+BEGIN_SRC emacs-lisp
+(use-package mu4e-maildirs-extension
+  :if (executable-find "mu")
+  :after mu4e
+  :custom ((mu4e-maildirs-extension-custom-list
+            '("/ljc/INBOX"
+              "/ljc/Sent Messages"
+              "/ljc/Drafts"
+              "/ljc/Deleted Messages"
+              "/ljc/=golang"
+              "/ljc/=GitHub"
+              "/ljc/=pg-hackers"
+              "/ljc/=Prometheus-user"
+              "/ljc/=dev-news"
+              "/ljc/=clojure"
+              "/ljc/=mongodb-dev"
+              "/ljc/=mozilla"
+              "/ljc/=openjdk"
+
+	          "/outlook/Inbox"
+	          "/outlook/Sent"
+	          "/outlook/Drafts"
+	          "/outlook/Archive"
+	          "/outlook/Deleted"
+	          "/outlook/Junk"
+	          "/outlook/Notes"
+	          "/outlook/Outbox"
+              )))
+  :config
+  (setq mu4e-maildirs-extension-use-bookmarks t)
+  (mu4e-maildirs-extension))
+
+(mu4e-maildir-shortcuts . ((:maildir "/ljc/INBOX" :key ?i)
+                           (:maildir "/ljc/Sent Messages" :key ?s)
+                           (:maildir "/ljc/Drafts" :key ?D)
+                           (:maildir "/ljc/Junk" :key ?j)
+                           (:maildir "/ljc/=pg-hackers" :key ?p)
+                           (:maildir "/ljc/=dev-news" :key ?d)
+                           (:maildir "/ljc/=GitHub" :key ?G)
+                           (:maildir "/ljc/=golang" :key ?g)
+                           (:maildir "/ljc/=clojure" :key ?c)
+                           (:maildir "/ljc/=mozilla" :key ?m)
+                           (:maildir "/ljc/=openjdk" :key ?o)
+                           (:maildir "/ljc/archive" :key ?a)
+                           (:maildir "/ljc/=Prometheus-user" :key ?P)
+                           (:maildir "/ljc/Deleted Messages" :key ?M)
+                           ))
+(mu4e-maildir-shortcuts . ((:maildir "/outlook/Inbox" :key ?i)
+                           (:maildir "/outlook/Sent" :key ?s)
+                           (:maildir "/outlook/Deleted" :key ?t)
+                           (:maildir "/outlook/Drafts" :key ?d)
+                           (:maildir "/outlook/Archive" :key ?a)))
+#+END_SRC

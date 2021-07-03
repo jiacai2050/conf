@@ -6,10 +6,12 @@ pythonfile = ~/.config/offlineimap/pass.py
 [Account ljc]
 localrepository = LocalLJC
 remoterepository = RemoteLJC
-# postsynchook = mu index
+postsynchook = mu index
+# use mu4e timers instead
 # autorefresh = 30
 quick = 10
-maxage = 365
+# config max fetch time in QQ console
+# maxage = 365
 
 [Repository LocalLJC]
 type = Maildir
@@ -19,7 +21,7 @@ nametrans = lambda folder: re.sub('^=', '&UXZO1mWHTvZZOQ-/', folder)
 [Repository RemoteLJC]
 nametrans = lambda folder: re.sub('^&UXZO1mWHTvZZOQ-\/', '=', folder)
 sslcacertfile = /usr/local/etc/openssl@1.1/cert.pem
-folderfilter = lambda f: 'kK5O9l9SaGM' not in f and '&UXZO1mWHTvZZOQ-' != f and 'liujiacai' not in f
+folderfilter = lambda f: 'kK5O9l9SaGM' not in f and '&UXZO1mWHTvZZOQ-' != f and 'liujiacai' not in f and 'pg-hackers' not in f
 type = IMAP
 remotehost = imap.exmail.qq.com
 remoteuser = hello@liujiacai.net
