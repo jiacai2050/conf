@@ -2151,6 +2151,13 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
 #+BEGIN_SRC emacs-lisp
 (use-package restclient
   :ensure nil
+  :init
+  (defun my/disable-flycheck ()
+    (flycheck-mode -1))
+  :hook (restclient-response-mode . my/disable-flycheck)
+  :bind (:map restclient-mode-map
+         ("C-c C-c" . restclient-http-send-current-stay-in-window)
+         ("C-c C-v" . restclient-http-send-current))
   :mode ("\\.api\\'" . restclient-mode))
 
 (use-package protobuf-mode
