@@ -15,6 +15,7 @@
       create-lockfiles nil
       source-directory (expand-file-name "~/code/misc/emacs")
       package-enable-at-startup nil
+      my/contacts-file "~/Documents/contacts.org"
       package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")

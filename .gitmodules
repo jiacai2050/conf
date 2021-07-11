@@ -94,3 +94,6 @@
 [submodule "go-playground"]
 	path = .config/vendor/go-playground
 	url = https://gitee.com/liujiacai/go-playground.git
+[submodule "org-contrib"]
+	path = .config/vendor/org-contrib
+	url = https://gitee.com/liujiacai/org-contrib.git

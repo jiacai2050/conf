@@ -1687,6 +1687,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
 
 * Org
 - https://orgmode.org/worg/org-contrib/babel/languages.html
+- https://orgmode.org/manual/Template-expansion.html#Template-expansion
 #+begin_src emacs-lisp
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
@@ -1764,7 +1765,13 @@ exec-path-from-shell takes too long to load, so set path by hand.
         '(("t" "Task" entry (file org-default-notes-file) "* TODO %?\n%T\n%a")
           ("i" "Idea" entry (file "~/Documents/ideas.org") "* TODO %?\n%T\n%a")
           ;; "* %^{单词}\n%^{含义}"
-          ("e" "English Book" entry (file "~/Documents/english.org") "* %i\n%?\n%a %T"))
+          ("e" "English Book" entry (file "~/Documents/english.org") "* %i\n%?\n%a %T")
+          ("c" "Contacts" entry (file my/contacts-file)
+           "* %(org-contacts-template-name)
+:PROPERTIES:
+:EMAIL: %^{Email}
+:NICK: %^{Nick}
+:END:"))
         org-todo-keywords
         '((sequence "TODO(t)" "WORKING(w!)" "|" "DONE(d)")
 	      (sequence "PENDING(p@/!)" "INACTIVE(i@)" "SOMEDAY(s)" "|" "CANCELLED(c@/!)"))
@@ -1796,6 +1803,12 @@ exec-path-from-shell takes too long to load, so set path by hand.
                 org-download-screenshot-method "pngpaste %s"
                 org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory))
   (setq org-download-annotate-function (lambda (link) "")))
+
+(use-package org-contacts
+  :load-path "~/.config/vendor/org-contrib/lisp"
+  :config
+  (setq org-contacts-files `(,my/contacts-file)
+        org-contacts-nickname-property "NICK"))
 
 (use-package org-sidebar
   :defer t)
@@ -1865,6 +1878,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                   (smtpmail-stream-type . starttls))))
         user-mail-address "hello@liujiacai.net"
         user-full-name "Jiacai Liu"
+        mail-user-agent 'mu4e-user-agent
         smtpmail-smtp-service 465
         smtpmail-smtp-server "smtp.exmail.qq.com"
         smtpmail-stream-type 'ssl
@@ -1875,6 +1889,7 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
         ;; message-cite-style message-cite-style-gmail
         mml-secure-openpgp-signers '("D3026E5C08A0BAB4")
         ;; mml-secure-openpgp-encrypt-to-self t
+        mu4e-compose-complete-only-personal t
         mu4e-view-show-addresses t
         mu4e-view-show-images t
         mu4e-attachment-dir "~/Downloads"
@@ -1914,6 +1929,14 @@ mu init --my-address liujiacai@live.com --my-address hello@liujiacai.net -m ~/.m
                           :key ?g)))
   (evil-add-hjkl-bindings mu4e-view-mode-map)
   (add-to-list 'mu4e-view-actions '("browser" . mu4e-action-view-in-browser) t)
+
+  (require 'cl)
+  (require 'org-contacts)
+  (setq mu4e-org-contacts-file my/contacts-file)
+  (add-to-list 'mu4e-headers-actions
+               '("org-contact-add" . mu4e-action-add-org-contact) t)
+  (add-to-list 'mu4e-view-actions
+               '("org-contact-add" . mu4e-action-add-org-contact) t)
   (add-to-list 'mu4e-view-fields :bcc))
 
 (use-package org-mime
