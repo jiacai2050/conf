@@ -55,3 +55,4 @@
 *** [[https://lillianli.substack.com/feed/][Chinese Characteristics]]
 *** [[http://ithare.com/feed/][IT Hare]]
 *** [[https://hnrss.org/best][Hacker News: Best]]
+*** [[https://www.zhihu.com/rss][zhihu]]
