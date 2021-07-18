@@ -28,7 +28,7 @@
         persistent-scratch-save-file (no-littering-expand-var-file-name
                                       (if (display-graphic-p)
                                           "scratch-gui.el"
-                                        "scratch-terminal.el"))
+                                        "scratch-tui.el"))
         mc/list-file (no-littering-expand-etc-file-name "mc-lists.el"))
 
   (defun my/generate-autoloads (pkg-name &rest dirs)

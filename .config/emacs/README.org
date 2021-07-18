@@ -26,6 +26,9 @@ make
 kill -SIGUSR2 ${pid}
 #+end_src
 - https://emacs.stackexchange.com/questions/506/debugging-a-frozen-emacs
+* TUI
+[[https://unix.stackexchange.com/questions/229122/find-os-x-terminal-key-combination-escape-sequence-for-ctrl][Find OS X terminal key combination/escape sequence for Ctrl-']]
+
 * dir-local
 - https://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html
 * Patch
