@@ -401,16 +401,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
     (mapc 'disable-theme custom-enabled-themes))
   (advice-add 'load-theme :before 'my/disable-previous-theme))
 
-(use-package frame
-  :ensure nil
-  :config
-  ;; No cursor blinking, it's distracting
-  (blink-cursor-mode 0)
-  (when (display-graphic-p)
-    (set-frame-font "PT Mono-16" t t))
-
-  (setq-default cursor-type 't))
-
 ;; (global-display-line-numbers-mode 1)
 (use-package display-line-numbers
   :ensure nil
@@ -454,9 +444,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
   ;; (global-visual-fill-column-mode 1)
   )
 
-(use-package all-the-icons
-  :defer t)
-
 (use-package dashboard
   :config
   (defun my/goto-dashboard ()
@@ -475,49 +462,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
         dashboard-startup-banner 'logo)
 
   (dashboard-setup-startup-hook))
-
-(use-package gruvbox-theme
-  :defer t)
-
-(use-package modus-themes
-  :defer t)
-
-(defun my/dark-theme-config ()
-  (interactive)
-  (load-theme 'wombat t)
-  ;; https://stackoverflow.com/a/2718543/2163429
-  (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
-                    '(region ((t (:background "blue")))))
-  (set-cursor-color "green")
-  (global-hl-line-mode 1))
-
-(defun my/light-theme-config ()
-  (interactive)
-  (if (display-graphic-p)
-      (progn
-        (load-theme 'gruvbox-light-soft t)
-        ;; https://github.com/DarwinAwardWinner/dotemacs#dont-use-ns_selection_fg_color-and-ns_selection_bg_color
-        (when (and (equal (face-attribute 'region :distant-foreground)
-                          "ns_selection_fg_color")
-                   (equal (face-attribute 'region :background)
-                          "ns_selection_bg_color"))
-          (set-face-attribute
-           'region nil
-           :distant-foreground 'unspecified
-           :background "#BAD6FC"))
-        )
-    (comment
-      (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
-                        '(region ((t (:background "Light Salmon"))))))
-    ))
-
-(defun my/terminal-light-config ()
-  (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#F4F4F4"))))))
-
-(if (display-graphic-p)
-    (load-theme 'modus-operandi t)
-  (my/terminal-light-config)
-  )
 
 #+end_src
 * Editing
@@ -1094,9 +1038,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
 (use-package window-numbering
   :init (window-numbering-mode 1))
 
-(use-package all-the-icons-ivy
-  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
-
 ;; projectile everywhere!
 (use-package projectile
   :bind ("C-c p" . projectile-command-map)
@@ -1136,16 +1077,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
 
 (use-package treemacs-projectile
   :defer t)
-(use-package treemacs-all-the-icons
-  :hook (treemacs-mode . my/treemacs-hook)
-  :config
-  (defun my/treemacs-hook ()
-    (treemacs-load-theme "all-the-icons")))
-
-(use-package all-the-icons-dired
-  :config
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  (add-hook 'dired-mode-hook 'hl-line-mode))
 
 ;; Customization
 (defun my/switch-to-dependency-file ()
@@ -1812,6 +1743,79 @@ exec-path-from-shell takes too long to load, so set path by hand.
 (use-package org-sidebar
   :defer t)
 
+#+end_src
+* GUI/TUI
+#+begin_src emacs-lisp
+(defun my/dark-theme-config ()
+  (interactive)
+  (load-theme 'wombat t)
+  ;; https://stackoverflow.com/a/2718543/2163429
+  (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
+                    '(region ((t (:background "blue")))))
+  (set-cursor-color "green")
+  (global-hl-line-mode 1))
+
+(defun my/light-theme-config ()
+  (interactive)
+  (if (display-graphic-p)
+      (progn
+        (load-theme 'gruvbox-light-soft t)
+        ;; https://github.com/DarwinAwardWinner/dotemacs#dont-use-ns_selection_fg_color-and-ns_selection_bg_color
+        (when (and (equal (face-attribute 'region :distant-foreground)
+                          "ns_selection_fg_color")
+                   (equal (face-attribute 'region :background)
+                          "ns_selection_bg_color"))
+          (set-face-attribute
+           'region nil
+           :distant-foreground 'unspecified
+           :background "#BAD6FC"))
+        )
+    (comment
+      (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
+                        '(region ((t (:background "Light Salmon"))))))
+    ))
+
+(defun my/terminal-light-config ()
+  (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#F4F4F4"))))))
+
+(if (display-graphic-p)
+    (progn
+      (use-package gruvbox-theme
+        :defer t)
+      (use-package modus-themes
+        :defer t)
+
+      (load-theme 'modus-operandi t)
+      (use-package frame
+        :ensure nil
+        :config
+        ;; No cursor blinking, it's distracting
+        (blink-cursor-mode 0)
+        (set-frame-font "PT Mono-16" t t)
+        (setq-default cursor-type 't))
+
+      (use-package all-the-icons
+        :defer t)
+
+      (use-package all-the-icons-ivy
+        :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
+
+      (use-package treemacs-all-the-icons
+        :hook (treemacs-mode . my/treemacs-hook)
+        :config
+        (defun my/treemacs-hook ()
+          (treemacs-load-theme "all-the-icons")))
+      (use-package all-the-icons-dired
+        :config
+        (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+        (add-hook 'dired-mode-hook 'hl-line-mode)))
+  (progn
+    (use-package evil-terminal-cursor-changer
+      :config
+      (evil-terminal-cursor-changer-activate))
+
+    (my/terminal-light-config)
+    ))
 #+end_src
 * Email
 - https://gist.github.com/dabrahams/3030332
