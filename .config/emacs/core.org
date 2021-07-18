@@ -1619,9 +1619,6 @@ exec-path-from-shell takes too long to load, so set path by hand.
 - https://orgmode.org/worg/org-contrib/babel/languages.html
 - https://orgmode.org/manual/Template-expansion.html#Template-expansion
 #+begin_src emacs-lisp
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode))
-
 (defun my/indent-org-block ()
   (interactive)
   (when (org-in-src-block-p)
@@ -1771,8 +1768,8 @@ exec-path-from-shell takes too long to load, so set path by hand.
            :background "#BAD6FC"))
         )
     (comment
-      (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
-                        '(region ((t (:background "Light Salmon"))))))
+     (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "grey"))))
+                       '(region ((t (:background "Light Salmon"))))))
     ))
 
 (defun my/terminal-light-config ()
@@ -1784,6 +1781,9 @@ exec-path-from-shell takes too long to load, so set path by hand.
         :defer t)
       (use-package modus-themes
         :defer t)
+
+      (use-package org-bullets
+        :hook (org-mode . org-bullets-mode))
 
       (load-theme 'modus-operandi t)
       (use-package frame
@@ -1814,6 +1814,8 @@ exec-path-from-shell takes too long to load, so set path by hand.
       :config
       (evil-terminal-cursor-changer-activate))
 
+    ;; for evil-leader
+    (my/map-key "C-,")
     (my/terminal-light-config)
     ))
 #+end_src
