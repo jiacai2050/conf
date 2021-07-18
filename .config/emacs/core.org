@@ -489,8 +489,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (custom-set-faces '(hl-line ((t (:foreground nil :underline t :background "#111"))))
                     '(region ((t (:background "blue")))))
   (set-cursor-color "green")
-  (global-hl-line-mode 1)
-  )
+  (global-hl-line-mode 1))
 
 (defun my/light-theme-config ()
   (interactive)
@@ -512,8 +511,13 @@ exec-path-from-shell takes too long to load, so set path by hand.
                         '(region ((t (:background "Light Salmon"))))))
     ))
 
-(when (display-graphic-p)
-  (load-theme 'modus-operandi t))
+(defun my/terminal-light-config ()
+  (custom-set-faces '(hl-line ((t (:foreground nil :underline nil :background "#F4F4F4"))))))
+
+(if (display-graphic-p)
+    (load-theme 'modus-operandi t)
+  (my/terminal-light-config)
+  )
 
 #+end_src
 * Editing
@@ -808,12 +812,7 @@ exec-path-from-shell takes too long to load, so set path by hand.
   (dolist (m '(org-mode org-agenda-mode)) ;; keybindings conflict
     (add-to-list 'sp-ignore-modes-list m))
   :custom (sp-base-key-bindings 'paredit)
-  :bind (:map smartparens-mode-map
-         ;; ("C-M-f" . forward-sexp)
-         ;; ("C-M-b" . backward-sexp)
-         ("M-(" . sp-wrap-round)
-         ("M-[" . sp-wrap-square)
-         ("M-{" . sp-wrap-curly)))
+  )
 
 ;; use 2 spaces for tabs
 (defun my/die-tabs ()
